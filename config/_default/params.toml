@@ -1,0 +1,6 @@
+[doks]
+  flexSearch = false
+  searchExclKinds = []
+  searchExclTypes = []
+  showSearch = []
+  indexSummary = false
