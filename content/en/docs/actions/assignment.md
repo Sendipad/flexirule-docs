@@ -9,11 +9,11 @@ The **Assignment** action is a powerful tool for performing batch state mutation
 
 ## Key Features
 
-- **Batch Processing**: Define multiple mutations within a single action node.
-- **Dual-Mode Editor**: Seamlessly switch between a visual **Formula Resolver** (for dates, math, and aggregations) and a **Template Editor** (for rich text and complex Jinja logic).
-- **Conditional Execution**: Each assignment row can have its own **"Run If"** condition using the visual Condition Builder, allowing for granular control over which mutations are applied.
-- **Multiple Operators**: Beyond simple assignment, it supports math, list operations, and object merging.
-- **Path Validation**: Prevents accidental mutation of protected system paths.
+-   **Batch Processing**: Define multiple mutations within a single action node.
+-   **Dual-Mode Editor**: Seamlessly switch between a visual **Formula Resolver** (for dates, math, and aggregations) and a **Template Editor** (for rich text and complex Jinja logic).
+-   **Conditional Execution**: Each assignment row can have its own **"Run If"** condition using the visual Condition Builder, allowing for granular control over which mutations are applied.
+-   **Multiple Operators**: Beyond simple assignment, it supports math, list operations, and object merging.
+-   **Path Validation**: Prevents accidental mutation of protected system paths.
 
 ## Value Editors
 
@@ -23,18 +23,18 @@ The Assignment action provides two modes for defining values:
 
 A "no-code" interface for common operations:
 
-- **Date Math**: `Today + 5 Days`, `doc.posting_date - 1 Month`.
-- **Numeric Calculations**: Basic math between fields or constants.
-- **Aggregations**: `SUM`, `AVG`, or `COUNT` of child table rows.
-- **String Helpers**: Concatenation, Case conversion, and Currency formatting.
+-   **Date Math**: `Today + 5 Days`, `doc.posting_date - 1 Month`.
+-   **Numeric Calculations**: Basic math between fields or constants.
+-   **Aggregations**: `SUM`, `AVG`, or `COUNT` of child table rows.
+-   **String Helpers**: Concatenation, Case conversion, and Currency formatting.
 
 ### 2. Template Editor
 
 A rich-text interface for:
 
-- **Jinja Templates**: Dynamic strings with full access to the execution context.
-- **Variable Insertion**: Easily pick fields from `doc` or `vars`.
-- **Manual Overrides**: Write custom logic when the visual resolver isn't enough.
+-   **Jinja Templates**: Dynamic strings with full access to the execution context.
+-   **Variable Insertion**: Easily pick fields from `doc` or `vars`.
+-   **Manual Overrides**: Write custom logic when the visual resolver isn't enough.
 
 ## Operators
 
@@ -58,15 +58,15 @@ Assignments can target two primary scopes:
 
 Mutates fields on the document that triggered the rule.
 
-- **Root Fields**: `doc.status`, `doc.naming_series`.
-- **Note**: In V1, deep document path assignments for child tables (e.g., `doc.items.0.qty`) are not supported directly via this action.
+-   **Root Fields**: `doc.status`, `doc.naming_series`.
+-   **Note**: In V1, deep document path assignments for child tables (e.g., `doc.items.0.qty`) are not supported directly via this action.
 
 ### 2. Context Variables (`vars.*`)
 
 Mutates variables in the execution context.
 
-- **Nesting**: Supports deep paths like `vars.totals.tax_amount`.
-- **Auto-Initialization**: Intermediate dictionaries are created automatically if they don't exist.
+-   **Nesting**: Supports deep paths like `vars.totals.tax_amount`.
+-   **Auto-Initialization**: Intermediate dictionaries are created automatically if they don't exist.
 
 ## Configuration (JSON)
 
@@ -106,6 +106,6 @@ The configuration is stored as a JSON array of assignment objects. The engine ha
 
 ## Safety & Restrictions
 
-- **System Protection**: Mutations to paths starting with `meta.`, `frappe.`, `rule.`, or `caller.` are blocked.
-- **Event Awareness**: `doc.*` mutations are prohibited during `after_save` and other read-only events to prevent inconsistent states.
-- **Sandboxed Evaluation**: Values are evaluated using Jinja templates with a restricted `SafeFrappeAPI` context.
+-   **System Protection**: Mutations to paths starting with `meta.`, `frappe.`, `rule.`, or `caller.` are blocked.
+-   **Event Awareness**: `doc.*` mutations are prohibited during `after_save` and other read-only events to prevent inconsistent states.
+-   **Sandboxed Evaluation**: Values are evaluated using Jinja templates with a restricted `SafeFrappeAPI` context.

@@ -31,31 +31,31 @@ FlexiRule provides a variety of action types, each represented as a node in the 
 
 Executes reusable business logic defined in a `Process` DocType. This is the primary way to extend FlexiRule with custom Python code.
 
-- **Inputs**: Defined by the Operation's `config_schema`.
-- **Outputs**: Defined by the Operation's `output_schema`.
-- **Mutation Logic**: Processes are designed to be side-effect free. They return results (data) or explicit **Mutation Intents**. The Rule Engine is responsible for applying these changes (e.g., updating a document field or context variable) based on the **Mutation Mode** selected by the rule designer.
+-   **Inputs**: Defined by the Operation's `config_schema`.
+-   **Outputs**: Defined by the Operation's `output_schema`.
+-   **Mutation Logic**: Processes are designed to be side-effect free. They return results (data) or explicit **Mutation Intents**. The Rule Engine is responsible for applying these changes (e.g., updating a document field or context variable) based on the **Mutation Mode** selected by the rule designer.
 
 ### **Assignment**
 
 Updates a document field or a context variable using a suite of operators. This action replaces the legacy **Set Value** action.
 
-- **Batching**: Allows multiple assignments in a single node.
-- **Operators**: Supports `Set`, `Clear`, `Increment`, `Decrement`, `Append`, `Merge`, and `Toggle`.
-- **Validation**: Strict path protection and event-based mutation blocking.
+-   **Batching**: Allows multiple assignments in a single node.
+-   **Operators**: Supports `Set`, `Clear`, `Increment`, `Decrement`, `Append`, `Merge`, and `Toggle`.
+-   **Validation**: Strict path protection and event-based mutation blocking.
 
 ### **Query Records**
 
 Retrieves data from the database.
 
-- **Operations**: `Query List`, `Query Doc`, `Exist Record`, `Count`, `Sum`, `Average`, `Min`, `Max`, `Group By`.
-- **Filters**: Visual filter builder with support for dynamic variable values.
+-   **Operations**: `Query List`, `Query Doc`, `Exist Record`, `Count`, `Sum`, `Average`, `Min`, `Max`, `Group By`.
+-   **Filters**: Visual filter builder with support for dynamic variable values.
 
 ### **Document Action**
 
 Standard CRUD and social operations on DocTypes.
 
-- **Operations**: `Create New`, `Update Existing`, `Delete Record`, `Create ToDo`, `Add Comment`.
-- **Mappings**: Direct mapping of data to fields.
+-   **Operations**: `Create New`, `Update Existing`, `Delete Record`, `Create ToDo`, `Add Comment`.
+-   **Mappings**: Direct mapping of data to fields.
 
 ---
 
@@ -65,15 +65,15 @@ Standard CRUD and social operations on DocTypes.
 
 Communicates with the user or external systems.
 
-- **Channels**: `Toast`, `System Notification`, `Email`, `External Provider`.
-- **Dynamic Content**: Uses Jinja templates for subjects and messages.
+-   **Channels**: `Toast`, `System Notification`, `Email`, `External Provider`.
+-   **Dynamic Content**: Uses Jinja templates for subjects and messages.
 
 ### **Stop**
 
 The final node of a path.
 
-- **Success**: Ends execution and marks the path as successful.
-- **Error**: Aborts the current operation and raises a custom error message to the user.
+-   **Success**: Ends execution and marks the path as successful.
+-   **Error**: Aborts the current operation and raises a custom error message to the user.
 
 ### **Raise Error**
 
@@ -87,10 +87,10 @@ Immediately terminates the rule by throwing a Python exception. Used for strict 
 
 Every action type is governed by a **Contract** defined in `flexirule/ruleflow/core/contracts.py`. This contract specifies:
 
-- Required configuration fields.
-- Available outgoing handles (True/False/Default).
-- Allowed **Mutation Modes** (e.g., whether it can update the document).
-- Expected **Return Types**.
+-   Required configuration fields.
+-   Available outgoing handles (True/False/Default).
+-   Allowed **Mutation Modes** (e.g., whether it can update the document).
+-   Expected **Return Types**.
 
 ### **Action Handlers**
 

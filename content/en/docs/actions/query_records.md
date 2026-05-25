@@ -9,11 +9,11 @@ The **Query Records** action retrieves data from any DocType in the system.
 
 ## Query Modes
 
-- **Query List**: Returns a list of records matching the filters.
-- **Query Doc**: Returns a single record by name or ID.
-- **Exist Record**: Returns `True` or `False` based on whether matching records exist.
-- **Aggregate Operations**: `Count`, `Sum`, `Average`, `Min`, `Max`.
-- **Group By**: Returns aggregated results grouped by a specific field.
+-   **Query List**: Returns a list of records matching the filters.
+-   **Query Doc**: Returns a single record by name or ID.
+-   **Exist Record**: Returns `True` or `False` based on whether matching records exist.
+-   **Aggregate Operations**: `Count`, `Sum`, `Average`, `Min`, `Max`.
+-   **Group By**: Returns aggregated results grouped by a specific field.
 
 ## Filters
 

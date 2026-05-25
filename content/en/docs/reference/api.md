@@ -13,23 +13,23 @@ FlexiRule provides a comprehensive set of whitelisted backend methods for progra
 
 Executes a rule against a document for testing purposes. Works for draft and inactive rules.
 
-- **Parameters**:
-    - `rule_name`: Name of the Rule.
-    - `doctype` / `docname`: Target document.
-    - `document_json`: Transient document data (alternative to docname).
-    - `dry_run` (bool): If true, rolls back changes after execution.
-    - `skip_log_enqueue` (bool): If true, does not persist logs.
-    - `save_log` (bool): Forces log persistence regardless of dry_run.
-- **Returns**: Execution payload including `status`, `path_trace`, `vars`, and legacy `context_snapshot`.
+-   **Parameters**:
+    -   `rule_name`: Name of the Rule.
+    -   `doctype` / `docname`: Target document.
+    -   `document_json`: Transient document data (alternative to docname).
+    -   `dry_run` (bool): If true, rolls back changes after execution.
+    -   `skip_log_enqueue` (bool): If true, does not persist logs.
+    -   `save_log` (bool): Forces log persistence regardless of dry_run.
+-   **Returns**: Execution payload including `status`, `path_trace`, `vars`, and legacy `context_snapshot`.
 
 ### `execute_rule`
 
 The primary API for manual or programmatic rule execution.
 
-- **Parameters**:
-    - `rule_name`: Name of the Rule.
-    - `context` (dict): Initial variable state.
-    - `dry_run` (bool): Execution safety flag.
+-   **Parameters**:
+    -   `rule_name`: Name of the Rule.
+    -   `context` (dict): Initial variable state.
+    -   `dry_run` (bool): Execution safety flag.
 
 ---
 
@@ -39,14 +39,14 @@ The primary API for manual or programmatic rule execution.
 
 Moves a rule through its lifecycle states.
 
-- **Statuses**: `Draft`, `Active`, `Disabled`, `Archived`.
-- **Note**: Transitioning to `Active` triggers a full validation check.
+-   **Statuses**: `Draft`, `Active`, `Disabled`, `Archived`.
+-   **Note**: Transitioning to `Active` triggers a full validation check.
 
 ### `validate_rule_document`
 
 Performs deep validation of a rule's graph, configuration, and conditions.
 
-- **Modes**: `full` (for activation), `draft` (partial check), `node` (single action).
+-   **Modes**: `full` (for activation), `draft` (partial check), `node` (single action).
 
 ### `clone_rule` / `amend_rule`
 
@@ -64,7 +64,7 @@ Returns the global contract for all action types, including CSS styles, required
 
 Returns the dynamic configuration schema for a specific action type or process operation.
 
-- **Parameters**: `action_type`, `operation`, `process_name`.
+-   **Parameters**: `action_type`, `operation`, `process_name`.
 
 ### `get_action_context_schema`
 

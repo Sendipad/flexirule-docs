@@ -33,8 +33,8 @@ _"If the status is Open AND (Priority is High OR the Customer is VIP)."_
 
 1.  Click **+ Group**. A new nested box appears.
 2.  **Toggle Logic**: Click the **AND** or **OR** button at the top of the group.
-    - **AND**: All conditions inside must be true.
-    - **OR**: Only one needs to be true.
+    -   **AND**: All conditions inside must be true.
+    -   **OR**: Only one needs to be true.
 3.  **Add Sub-conditions**: Click the buttons _inside_ the group box to add conditions specifically to that container.
 
 ---
@@ -50,9 +50,9 @@ Click **+ Collection** to create a specialized loop checker.
 1.  **Collection Path**: Pick the child table (e.g., `doc.items`).
 2.  **Alias**: By default, this is `row`. It represents a single row in the table.
 3.  **Quantifier**:
-    - **Any**: True if at least one row matches.
-    - **All**: True only if every single row matches.
-    - **None**: True if no rows match.
+    -   **Any**: True if at least one row matches.
+    -   **All**: True only if every single row matches.
+    -   **None**: True if no rows match.
 4.  **Criteria**: Use the sub-builder inside the collection node to define what you are looking for in each row (e.g., `row.qty > 10`).
 
 ---
@@ -61,9 +61,9 @@ Click **+ Collection** to create a specialized loop checker.
 
 Don't worry if you build things in the wrong order. You can easily reorganize your logic:
 
-- **Move**: Grab the drag handle (⠿) on the left of any condition or group and move it.
-- **Nesting**: Drag a condition into an existing group to include it in that group's logic.
-- **Reordering**: Move conditions up or down to change the visual flow (and execution order).
+-   **Move**: Grab the drag handle (⠿) on the left of any condition or group and move it.
+-   **Nesting**: Drag a condition into an existing group to include it in that group's logic.
+-   **Reordering**: Move conditions up or down to change the visual flow (and execution order).
 
 ---
 
@@ -71,14 +71,14 @@ Don't worry if you build things in the wrong order. You can easily reorganize yo
 
 One of the most powerful uses for conditions is detecting changes.
 
-- **Trigger Level**: Use `doc.status != old_doc.status` to make a rule run ONLY when the status field is actually modified.
-- **Previous Value**: Check if a value _was_ something specific: `old_doc.status == "Draft"`.
+-   **Trigger Level**: Use `doc.status != old_doc.status` to make a rule run ONLY when the status field is actually modified.
+-   **Previous Value**: Check if a value _was_ something specific: `old_doc.status == "Draft"`.
 
 ---
 
 ## Best Practices
 
-- **Keep it Simple**: If a condition group gets too deep (more than 3 levels), consider splitting the logic into multiple rules or sub-rules.
-- **Use Clear Aliases**: When using collection nodes, use descriptive aliases like `item` or `entry` instead of just `row` if you have nested collections.
-- **Check for "Is Set"**: Before comparing values of optional fields, it's often safer to first check if the field `is set`.
-- **Naming**: If a condition action is complex, give the node a descriptive label (e.g., "Check VIP Eligibility") so it's easy to understand the graph at a glance.
+-   **Keep it Simple**: If a condition group gets too deep (more than 3 levels), consider splitting the logic into multiple rules or sub-rules.
+-   **Use Clear Aliases**: When using collection nodes, use descriptive aliases like `item` or `entry` instead of just `row` if you have nested collections.
+-   **Check for "Is Set"**: Before comparing values of optional fields, it's often safer to first check if the field `is set`.
+-   **Naming**: If a condition action is complex, give the node a descriptive label (e.g., "Check VIP Eligibility") so it's easy to understand the graph at a glance.

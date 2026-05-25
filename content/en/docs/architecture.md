@@ -62,15 +62,15 @@ FlexiRule uses several Frappe DocTypes to maintain rules, processes, and audit t
 
 The system includes a built-in technical audit mechanism to ensure rule integrity:
 
-- **Graph Validation**: Prevents disconnected nodes, cycles, and invalid exit paths.
-- **Contract Enforcement**: Ensures action configurations match the backend expectations defined in `contracts.py`.
-- **Pre-Activation Check**: A full validation suite runs automatically before a rule can be transitioned to "Active" status.
+-   **Graph Validation**: Prevents disconnected nodes, cycles, and invalid exit paths.
+-   **Contract Enforcement**: Ensures action configurations match the backend expectations defined in `contracts.py`.
+-   **Pre-Activation Check**: A full validation suite runs automatically before a rule can be transitioned to "Active" status.
 
 ---
 
 ## Integration with Frappe
 
-- **Doc Events**: Rules are hooked into the standard Frappe lifecycle via `hooks.py`.
-- **Background Jobs**: Asynchronous rules are offloaded using `frappe.enqueue`.
-- **Distributed Caching**: Uses Frappe's Redis cache and Realtime events to synchronize rule states across multiple web workers.
-- **Security**: Execution is sandboxed using `SafeFrappeAPI` and `frappe.safe_eval`.
+-   **Doc Events**: Rules are hooked into the standard Frappe lifecycle via `hooks.py`.
+-   **Background Jobs**: Asynchronous rules are offloaded using `frappe.enqueue`.
+-   **Distributed Caching**: Uses Frappe's Redis cache and Realtime events to synchronize rule states across multiple web workers.
+-   **Security**: Execution is sandboxed using `SafeFrappeAPI` and `frappe.safe_eval`.

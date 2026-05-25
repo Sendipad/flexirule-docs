@@ -33,17 +33,17 @@ A specialized interface for evaluating logic across child tables. It allows user
 
 The leaf node component where actual comparisons are defined. It includes:
 
-- **Context Picker**: To select fields from `doc`, `old_doc`, or loop aliases.
-- **Operator Dropdown**: Dynamically filtered based on the selected field's type (e.g., showing "Contains" for strings but ">" for numbers).
-- **Value Input**: Uses `FlexStructuredValueControl` to allow both literal values and dynamic expressions.
+-   **Context Picker**: To select fields from `doc`, `old_doc`, or loop aliases.
+-   **Operator Dropdown**: Dynamically filtered based on the selected field's type (e.g., showing "Contains" for strings but ">" for numbers).
+-   **Value Input**: Uses `FlexStructuredValueControl` to allow both literal values and dynamic expressions.
 
 ---
 
 ## State Management & Synchronization
 
-- **JSON AST**: The builder maintains a single reactive JSON object representing the entire logic tree.
-- **UUIDs**: Every node in the tree is assigned a unique ID upon creation. This is critical for the **Drag-and-Drop** system to track nodes as they are moved between groups.
-- **Reactivity**: Any change in a leaf node (e.g., changing an operator) bubbles up through the reactive state, which the parent `RuleConfigModal` then syncs to the Rule DocType.
+-   **JSON AST**: The builder maintains a single reactive JSON object representing the entire logic tree.
+-   **UUIDs**: Every node in the tree is assigned a unique ID upon creation. This is critical for the **Drag-and-Drop** system to track nodes as they are moved between groups.
+-   **Reactivity**: Any change in a leaf node (e.g., changing an operator) bubbles up through the reactive state, which the parent `RuleConfigModal` then syncs to the Rule DocType.
 
 ## Logical Grouping & Operators
 
@@ -53,8 +53,8 @@ FlexiRule supports sophisticated logical grouping to handle complex business req
 
 Each group (including the root) has a logical operator toggle.
 
-- **AND**: All conditions within the group must evaluate to True.
-- **OR**: At least one condition within the group must evaluate to True.
+-   **AND**: All conditions within the group must evaluate to True.
+-   **OR**: At least one condition within the group must evaluate to True.
 
 ### Infinite Nesting
 
@@ -73,20 +73,20 @@ The builder implements a custom drag-and-drop layer to allow reordering and re-g
 
 Users can grab any condition or entire group by its drag handle and move it:
 
-- **Reordering**: Dragging a node up or down within the same group.
-- **Nesting**: Dragging a node into a different group or collection.
-- **Promoting**: Dragging a node out of a nested group back to a parent level.
+-   **Reordering**: Dragging a node up or down within the same group.
+-   **Nesting**: Dragging a node into a different group or collection.
+-   **Promoting**: Dragging a node out of a nested group back to a parent level.
 
 ### Technical Implementation & Safety
 
-- **UUID-Based Tracking**: Every node has a unique `id`. The `moveNode(fromGroup, fromIndex, toGroup, toIndex)` method uses these IDs to safely splice nodes out of their source array and into their target destination.
-- **AST Integrity**: When a node is moved, its entire subtree in the JSON AST is moved with it. The `ConditionCompiler` then automatically handles the structural change upon the next save, regenerating the Python expression based on the new hierarchy.
-- **Illegal Move Prevention**: The system includes a recursive `isDescendantOf(parent, targetId)` check. This prevents a user from accidentally dropping a parent group into one of its own children, which would cause a circular reference and crash the builder.
-- **Visual Feedback**: Real-time "drop zone" highlighting shows exactly where a node will land.
-- **Smooth Transitions**: Uses Vue's `<TransitionGroup>` to animate nodes as they are added, removed, or moved.
+-   **UUID-Based Tracking**: Every node has a unique `id`. The `moveNode(fromGroup, fromIndex, toGroup, toIndex)` method uses these IDs to safely splice nodes out of their source array and into their target destination.
+-   **AST Integrity**: When a node is moved, its entire subtree in the JSON AST is moved with it. The `ConditionCompiler` then automatically handles the structural change upon the next save, regenerating the Python expression based on the new hierarchy.
+-   **Illegal Move Prevention**: The system includes a recursive `isDescendantOf(parent, targetId)` check. This prevents a user from accidentally dropping a parent group into one of its own children, which would cause a circular reference and crash the builder.
+-   **Visual Feedback**: Real-time "drop zone" highlighting shows exactly where a node will land.
+-   **Smooth Transitions**: Uses Vue's `<TransitionGroup>` to animate nodes as they are added, removed, or moved.
 
 ## Keyboard Shortcuts & Accessibility
 
-- **Focus Management**: When a new condition is added, focus is automatically shifted to the field picker.
-- **ARIA Labels**: All icon buttons include descriptive ARIA labels for screen readers.
-- **Standard Controls**: Uses standard HTML input types where possible to ensure native browser accessibility features work as expected.
+-   **Focus Management**: When a new condition is added, focus is automatically shifted to the field picker.
+-   **ARIA Labels**: All icon buttons include descriptive ARIA labels for screen readers.
+-   **Standard Controls**: Uses standard HTML input types where possible to ensure native browser accessibility features work as expected.

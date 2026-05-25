@@ -44,8 +44,8 @@ When a Rule is saved, deleted, or its status changes:
 
 The engine maintains a granular approach to transactions. Instead of a single "all-or-nothing" rule execution, each action can be its own transactional unit:
 
-- **Savepoint Naming**: `flexirule_action_{action_id}`.
-- **Savepoint Logic**: Enables the "Rollback" error policy, allowing one node to fail and revert its specific database changes while the rule execution continues or escalates gracefully.
+-   **Savepoint Naming**: `flexirule_action_{action_id}`.
+-   **Savepoint Logic**: Enables the "Rollback" error policy, allowing one node to fail and revert its specific database changes while the rule execution continues or escalates gracefully.
 
 ---
 

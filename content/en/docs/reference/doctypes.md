@@ -194,19 +194,19 @@ Global application configuration.
 
 ### Rule Permission (Child Table)
 
-- `role` (Link): Frappe Role allowed to execute the rule.
-- `can_execute` (Check): Permission flag.
+-   `role` (Link): Frappe Role allowed to execute the rule.
+-   `can_execute` (Check): Permission flag.
 
 ### Data Review Task
 
-- `task_type` (Select): `Duplicate Review`, `Data Quality`, etc.
-- `status` (Select): `Open`, `In Progress`, `Resolved`, `Rejected`.
-- `priority` (Select): `Low` to `Critical`.
-- `source_doctype` / `source_document`: The record being reviewed.
-- `similarity_score` (Percent): Match score for duplicate detection.
-- `context_json` (Code): Snapshot of context when task was created.
-- `related_documents` (Table): List of `Data Review Related Document`.
+-   `task_type` (Select): `Duplicate Review`, `Data Quality`, etc.
+-   `status` (Select): `Open`, `In Progress`, `Resolved`, `Rejected`.
+-   `priority` (Select): `Low` to `Critical`.
+-   `source_doctype` / `source_document`: The record being reviewed.
+-   `similarity_score` (Percent): Match score for duplicate detection.
+-   `context_json` (Code): Snapshot of context when task was created.
+-   `related_documents` (Table): List of `Data Review Related Document`.
 
 ### RuleFlow Excluded DocType (Child Table)
 
-- `document_type` (Link): The DocType to blacklist from rule evaluation.
+-   `document_type` (Link): The DocType to blacklist from rule evaluation.

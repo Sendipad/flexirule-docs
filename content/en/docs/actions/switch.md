@@ -9,9 +9,9 @@ The **Switch** action enables multi-path branching based on the value of an expr
 
 ## Configuration
 
-- **Expression**: A Python expression that evaluates to a value (e.g., `doc.status` or `vars.category`).
-- **Cases**: A mapping of expected values to target Action IDs.
-- **Default Path**: If no case matches the expression's value, execution follows the `next_step_if_false` (labeled as "Default" in the UI) path.
+-   **Expression**: A Python expression that evaluates to a value (e.g., `doc.status` or `vars.category`).
+-   **Cases**: A mapping of expected values to target Action IDs.
+-   **Default Path**: If no case matches the expression's value, execution follows the `next_step_if_false` (labeled as "Default" in the UI) path.
 
 ## Execution Logic
 
@@ -22,6 +22,6 @@ The **Switch** action enables multi-path branching based on the value of an expr
 
 ## Use Cases
 
-- **Document Routing**: Direct a document to different approval paths based on its status.
-- **Category Handling**: Apply different logic based on a "Type" or "Category" field without nesting multiple `Condition` nodes.
-- **Error Code Handling**: Branch execution based on the specific result of a `Process` or `Query` action.
+-   **Document Routing**: Direct a document to different approval paths based on its status.
+-   **Category Handling**: Apply different logic based on a "Type" or "Category" field without nesting multiple `Condition` nodes.
+-   **Error Code Handling**: Branch execution based on the specific result of a `Process` or `Query` action.
