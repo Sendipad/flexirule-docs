@@ -1,6 +1,9 @@
-<nav class="breadcrumbs" aria-label="breadcrumb">
+<nav class="breadcrumbs" aria-label="breadcrumb" style="display: flex; align-items: center; gap: 0.5rem;">
+  <button id="mobile-menu-toggle" class="btn-icon" style="margin-left: -0.5rem; color: var(--color-text-primary);">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg>
+  </button>
   <ol>
-    {{ range .Ancestors.Reverse }}
+    {{ with .Parent }}
       <li><a href="{{ .RelPermalink }}">{{ if .IsHome }}Home{{ else }}{{ .Title }}{{ end }}</a></li>
     {{ end }}
     <li><span>{{ .Title }}</span></li>

@@ -16,6 +16,7 @@
 </head>
 <body>
   {{ partial "header.html" . }}
+  <div id="sidebar-overlay" class="sidebar-overlay"></div>
   <div class="main-container">
     {{ if ne .Type "page" }}
       {{ partial "sidebar.html" . }}

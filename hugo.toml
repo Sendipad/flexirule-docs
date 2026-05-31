@@ -7,14 +7,14 @@ enableRobotsTXT = true
 
 [languages]
   [languages.en]
-    label = 'English'
+    languageName = 'English'
     contentDir = 'content/en'
     weight = 1
 
 [params]
   description = 'Production-ready Hugo documentation theme for FlexiRule.'
   github_repo = 'https://github.com/Sendipad/flexirule'
-  github_branch = 'main'
+  github_branch = 'develop'
 
   [params.seo]
     twitter_handle = '@flexirule'
