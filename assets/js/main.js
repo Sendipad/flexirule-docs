@@ -27,6 +27,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // TOC Drawer Toggle
   const tocToggle = document.getElementById('toc-toggle');
+  const tocFab = document.getElementById('toc-fab');
   const tocDrawer = document.getElementById('toc-drawer');
   const tocOverlay = document.getElementById('toc-overlay');
 
@@ -38,7 +39,27 @@ document.addEventListener('DOMContentLoaded', () => {
   };
 
   if (tocToggle) tocToggle.addEventListener('click', toggleTOC);
+  if (tocFab) tocFab.addEventListener('click', toggleTOC);
   if (tocOverlay) tocOverlay.addEventListener('click', toggleTOC);
+
+  // Dropdown Logic
+  const aiDropdownToggle = document.getElementById('ai-dropdown-toggle');
+  const aiDropdownMenu = document.getElementById('ai-dropdown-menu');
+
+  if (aiDropdownToggle && aiDropdownMenu) {
+    aiDropdownToggle.addEventListener('click', (e) => {
+      e.stopPropagation();
+      aiDropdownMenu.classList.toggle('show');
+      aiDropdownToggle.classList.toggle('active');
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!aiDropdownToggle.contains(e.target) && !aiDropdownMenu.contains(e.target)) {
+        aiDropdownMenu.classList.remove('show');
+        aiDropdownToggle.classList.remove('active');
+      }
+    });
+  }
 
   // Action Bar Logic
   const showToast = (message) => {
@@ -99,6 +120,35 @@ document.addEventListener('DOMContentLoaded', () => {
       });
     });
   });
+
+  // Deep Link & Browser Link Logic
+  const openAppBtn = document.querySelector('.open-app-btn');
+  const openBrowserBtn = document.querySelector('.open-browser-btn');
+
+  const getEncodedContent = () => {
+    const el = document.getElementById('raw-content');
+    if (!el) return '';
+    const content = el.textContent;
+    return encodeURIComponent(content);
+  };
+
+  if (openAppBtn) {
+    openAppBtn.addEventListener('click', () => {
+      const protocol = openAppBtn.getAttribute('data-protocol');
+      const context = getEncodedContent();
+      const finalUrl = `${protocol}?context=${context}`;
+      window.location.href = finalUrl;
+    });
+  }
+
+  if (openBrowserBtn) {
+    openBrowserBtn.addEventListener('click', () => {
+      const baseUrl = openBrowserBtn.getAttribute('data-url');
+      const context = getEncodedContent();
+      const finalUrl = `${baseUrl}?context=${context}`;
+      window.open(finalUrl, '_blank');
+    });
+  }
 
   // Heading Anchors
   const headings = document.querySelectorAll('.docs-content h2, .docs-content h3, .docs-content h4');

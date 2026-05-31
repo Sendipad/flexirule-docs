@@ -6,6 +6,9 @@
   {{ .Content }}
   <div id="raw-content" style="display:none;">{{ .RawContent }}</div>
   {{ partial "pager.html" . }}
+  <div class="last-modified" style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--color-border); color: var(--color-text-secondary); font-size: 0.8125rem; text-align: right;">
+    {{ T "last_updated" }}: {{ .Lastmod.Format "2006-01-02" }}
+  </div>
 </article>
 {{ partial "toc.html" . }}
 {{ end }}
