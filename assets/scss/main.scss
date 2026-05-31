@@ -230,8 +230,8 @@ pre code {
 /* Breadcrumbs */
 .breadcrumbs {
   margin-bottom: 2rem;
-  font-size: 0.875rem;
-  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+  overflow: hidden;
 }
 
 .breadcrumbs ol {
@@ -240,28 +240,58 @@ pre code {
   margin: 0;
   display: flex;
   align-items: center;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
 }
 
 .breadcrumbs li {
   display: flex;
   align-items: center;
+  flex-shrink: 1;
+  min-width: 0;
+}
+
+.breadcrumbs li a, .breadcrumbs li span {
+  display: inline-block;
+  padding: 0.25rem 0.75rem;
+  border-radius: 4px;
+  max-width: 180px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s;
+}
+
+.breadcrumbs li a {
+  background-color: rgba(0, 0, 0, 0.05);
+  color: var(--color-text-secondary);
+}
+
+[data-theme="dark"] .breadcrumbs li a {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.breadcrumbs li a:hover {
+  background-color: rgba(0, 0, 0, 0.1);
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+[data-theme="dark"] .breadcrumbs li a:hover {
+  background-color: rgba(255, 255, 255, 0.15);
+}
+
+.breadcrumbs li span {
+  font-weight: 500;
+  color: var(--color-text-primary);
+  max-width: 300px;
 }
 
 .breadcrumbs li:not(:last-child)::after {
-  content: "/";
-  margin: 0 0.75rem;
-  color: var(--color-border);
-}
-
-.breadcrumbs a {
+  content: "›";
+  margin: 0 0.5rem;
   color: var(--color-text-secondary);
-  transition: color 0.2s;
-}
-
-.breadcrumbs a:hover {
-  color: var(--color-primary);
-  text-decoration: none;
+  opacity: 0.5;
+  flex-shrink: 0;
 }
 
 /* TOC Drawer */

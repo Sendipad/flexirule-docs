@@ -1,15 +1,8 @@
 <nav class="breadcrumbs" aria-label="breadcrumb">
   <ol>
-    <li><a href="{{ .Site.BaseURL | relLangURL }}">Home</a></li>
     {{ range .Ancestors.Reverse }}
-      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
+      <li><a href="{{ .RelPermalink }}">{{ if .IsHome }}Home{{ else }}{{ .Title }}{{ end }}</a></li>
     {{ end }}
     <li><span>{{ .Title }}</span></li>
-    <li style="margin-left: auto;">
-      <button id="toc-toggle" class="btn-icon" title="Toggle Table of Contents" style="color: var(--color-primary); font-weight: 500; font-size: 0.8125rem; gap: 0.25rem; border-radius: 4px; padding: 0.25rem 0.5rem;">
-        <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><line x1="21" y1="10" x2="3" y2="10"></line><line x1="21" y1="6" x2="3" y2="6"></line><line x1="21" y1="14" x2="3" y2="14"></line><line x1="21" y1="18" x2="3" y2="18"></line></svg>
-        <span>On this page</span>
-      </button>
-    </li>
   </ol>
 </nav>
