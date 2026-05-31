@@ -1,0 +1,33 @@
+baseURL = 'https://flexirule.com/'
+locale = 'en-us'
+title = 'FlexiRule Documentation'
+
+defaultContentLanguage = 'en'
+enableRobotsTXT = true
+
+[languages]
+  [languages.en]
+    label = 'English'
+    contentDir = 'content/en'
+    weight = 1
+
+[params]
+  description = 'Production-ready Hugo documentation theme for FlexiRule.'
+  github_repo = 'https://github.com/Sendipad/flexirule'
+  github_branch = 'main'
+
+  [params.seo]
+    twitter_handle = '@flexirule'
+    google_site_verification = ''
+
+[markup]
+  [markup.goldmark]
+    [markup.goldmark.renderer]
+      unsafe = true
+  [markup.tableOfContents]
+    endLevel = 3
+    ordered = false
+    startLevel = 2
+
+[build]
+  writeStats = true

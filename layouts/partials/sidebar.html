@@ -1,0 +1,29 @@
+<aside class="sidebar" id="sidebar">
+  <nav class="sidebar-nav">
+    {{ $currentSection := .Section }}
+    {{ range .Site.Sections }}
+      {{ if eq .Section "docs" }}
+        <div class="sidebar-section">
+          <h4 class="sidebar-title">{{ .Title }}</h4>
+          {{ template "sidebar-tree" (dict "context" . "current" $) }}
+        </div>
+      {{ end }}
+    {{ end }}
+  </nav>
+</aside>
+
+{{ define "sidebar-tree" }}
+  <ul class="sidebar-list">
+    {{ $current := .current }}
+    {{ range .context.Pages.ByWeight }}
+      <li class="sidebar-item">
+        <a href="{{ .RelPermalink }}" class="sidebar-link {{ if eq $current.RelPermalink .RelPermalink }}active{{ end }}">
+          {{ .Title }}
+        </a>
+        {{ if .IsSection }}
+          {{ template "sidebar-tree" (dict "context" . "current" $current) }}
+        {{ end }}
+      </li>
+    {{ end }}
+  </ul>
+{{ end }}

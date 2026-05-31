@@ -1,0 +1,27 @@
+<div class="action-menu dropdown">
+  <button class="btn-icon dropdown-toggle" title="Actions">
+    <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="1"></circle><circle cx="12" cy="5" r="1"></circle><circle cx="12" cy="19" r="1"></circle></svg>
+  </button>
+  <div class="dropdown-menu">
+    <button class="dropdown-item" onclick="window.print()">{{ T "download" }}</button>
+    <button class="dropdown-item" id="copy-markdown">{{ T "copy" }}</button>
+    <div class="dropdown-divider"></div>
+    <div class="dropdown-submenu">
+      <span class="dropdown-item">Ask AI</span>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" href="https://chatgpt.com/?q=Explain {{ .Permalink }}" target="_blank">ChatGPT</a>
+        <a class="dropdown-item" href="https://claude.ai/?q=Explain {{ .Permalink }}" target="_blank">Claude</a>
+        <a class="dropdown-item" href="https://gemini.google.com/app?q=Explain {{ .Permalink }}" target="_blank">Gemini</a>
+        <a class="dropdown-item" href="https://www.perplexity.ai/?q=Explain {{ .Permalink }}" target="_blank">Perplexity</a>
+      </div>
+    </div>
+    <div class="dropdown-submenu">
+      <span class="dropdown-item">Share</span>
+      <div class="dropdown-menu">
+        <button class="dropdown-item" id="share-copy-url">Copy URL</button>
+        <a class="dropdown-item" href="https://twitter.com/intent/tweet?url={{ .Permalink }}&text={{ .Title }}" target="_blank">Twitter/X</a>
+        <a class="dropdown-item" href="https://www.linkedin.com/sharing/share-offsite/?url={{ .Permalink }}" target="_blank">LinkedIn</a>
+      </div>
+    </div>
+  </div>
+</div>

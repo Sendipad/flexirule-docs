@@ -1,0 +1,33 @@
+<footer class="footer">
+  <div class="footer-inner">
+    <div class="footer-nav" style="display: flex; justify-content: space-between; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border);">
+      {{ if .PrevInSection }}
+        <a href="{{ .PrevInSection.RelPermalink }}" class="footer-prev">
+          <span class="muted">{{ T "previous" }}</span>
+          <div>← {{ .PrevInSection.Title }}</div>
+        </a>
+      {{ else }}
+        <div></div>
+      {{ end }}
+
+      {{ if .NextInSection }}
+        <a href="{{ .NextInSection.RelPermalink }}" class="footer-next" style="text-align: right;">
+          <span class="muted">{{ T "next" }}</span>
+          <div>{{ .NextInSection.Title }} →</div>
+        </a>
+      {{ else }}
+        <div></div>
+      {{ end }}
+    </div>
+
+    <div class="footer-meta" style="margin-top: 2rem; color: var(--color-muted); font-size: 0.875rem;">
+      <div>{{ T "last_updated" }}: {{ .Lastmod.Format "2006-01-02" }}</div>
+      <div>{{ .ReadingTime }} min read</div>
+      {{ if .Site.Params.github_repo }}
+        <a href="{{ .Site.Params.github_repo }}/edit/{{ .Site.Params.github_branch }}/content/{{ .Path }}" target="_blank" rel="noopener">
+          {{ T "edit_on_github" }}
+        </a>
+      {{ end }}
+    </div>
+  </div>
+</footer>
