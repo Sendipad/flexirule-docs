@@ -1,0 +1,129 @@
+<!doctype html><html lang=en-us data-theme=light><head><meta charset=UTF-8><meta name=viewport content="width=device-width,initial-scale=1"><title>| FlexiRule Documentation</title><link rel=stylesheet href=/flexirule-docs/scss/main.min.4b21103d39c76880ef55dace3f08d56b040688396592fae566e5e1a885c132f9.css integrity="sha256-SyEQPTnHaIDvVdrOPwjVawQGiDllkvrlZuXhqIXBMvk="><script src=/flexirule-docs/js/theme.min.8ddafbf7e48ea26871ad63632966ad337f009e5da8068c57834477d14b864146.js integrity="sha256-jdr79+SOomhxrWNjKWatM38Anl2oBoxXg0R30UuGQUY="></script><link rel=canonical href=https://sendipad.github.io/flexirule-docs/docs/actions/action_types_catalog/><meta property="og:type" content="article"><meta property="og:url" content="https://sendipad.github.io/flexirule-docs/docs/actions/action_types_catalog/"><meta property="og:title" content=" | FlexiRule Documentation"><meta property="og:description" content="Actions: Action Types Catalog
+📚 Discovered Action Primitives
+This catalog describes the building blocks of FlexiRule orchestration.
+1. Assignment
+
+Purpose: Update fields or variables.
+Runtime: Performs sequential mutations on the ExecutionContext.
+Flexibility: Supports arithmetic, date math, and string concatenation via resolvers.
+Enterprise Power: Allows complex state transitions (e.g., &ldquo;If Status is Open, set Assigned Date to Today&rdquo;).
+
+2. Condition (Decision)
+
+Purpose: Binary branching (True/False).
+Runtime: Evaluates a compiled Python expression.
+Flexibility: Supports nested AND/OR logic and collection-based checks (any/all).
+
+3. Switch
+
+Purpose: Multi-path branching based on conditions.
+Runtime: Evaluates cases in priority order and follows the first match.
+
+4. Loop (Collection Iterator)
+
+Purpose: Execute a sub-graph for each item in a list.
+Runtime: Manages an internal iterator and injects the item into the context of its children.
+Orchestration: Essential for batch processing (e.g., &ldquo;For each item in Sales Order, check stock&rdquo;).
+
+5. Process
+
+Purpose: Execute a reusable, developer-defined operation.
+Runtime: Calls a specific Python method with contract-based validation.
+Capability: Can trigger side effects, return data, or request state mutations.
+
+6. Query Records
+
+Purpose: Fetch data from other DocTypes.
+Runtime: Executes a filtered database lookup.
+Flexibility: Resolves filters dynamically from the current context.
+
+7. Sub-Rule
+
+Purpose: Hierarchical orchestration.
+Runtime: Invokes another Rule engine instance and merges the resulting context.
+Power: Enables &ldquo;SoC&rdquo; (Separation of Concerns) in complex automation.
+
+
+🏗️ Reusable Orchestration Patterns
+The &ldquo;Enrichment&rdquo; Pattern
+
+Query Records: Fetch related Customer data.
+Assignment: Populate current document fields from the queried record.
+
+The &ldquo;Validation&rdquo; Pattern
+
+Condition: Check complex multi-field rules.
+Process (Stop): If invalid, call a process that throws a frappe.ValidationError.
+
+The &ldquo;Transformation&rdquo; Pipeline
+
+Loop: Iterate over a collection.
+Assignment: Use resolvers to transform data in each row.
+Process (External API): Send the cleaned collection to an external system.
+"><meta property="twitter:card" content="summary_large_image"><meta property="twitter:url" content="https://sendipad.github.io/flexirule-docs/docs/actions/action_types_catalog/"><meta property="twitter:title" content=" | FlexiRule Documentation"><meta property="twitter:description" content="Actions: Action Types Catalog
+📚 Discovered Action Primitives
+This catalog describes the building blocks of FlexiRule orchestration.
+1. Assignment
+
+Purpose: Update fields or variables.
+Runtime: Performs sequential mutations on the ExecutionContext.
+Flexibility: Supports arithmetic, date math, and string concatenation via resolvers.
+Enterprise Power: Allows complex state transitions (e.g., &ldquo;If Status is Open, set Assigned Date to Today&rdquo;).
+
+2. Condition (Decision)
+
+Purpose: Binary branching (True/False).
+Runtime: Evaluates a compiled Python expression.
+Flexibility: Supports nested AND/OR logic and collection-based checks (any/all).
+
+3. Switch
+
+Purpose: Multi-path branching based on conditions.
+Runtime: Evaluates cases in priority order and follows the first match.
+
+4. Loop (Collection Iterator)
+
+Purpose: Execute a sub-graph for each item in a list.
+Runtime: Manages an internal iterator and injects the item into the context of its children.
+Orchestration: Essential for batch processing (e.g., &ldquo;For each item in Sales Order, check stock&rdquo;).
+
+5. Process
+
+Purpose: Execute a reusable, developer-defined operation.
+Runtime: Calls a specific Python method with contract-based validation.
+Capability: Can trigger side effects, return data, or request state mutations.
+
+6. Query Records
+
+Purpose: Fetch data from other DocTypes.
+Runtime: Executes a filtered database lookup.
+Flexibility: Resolves filters dynamically from the current context.
+
+7. Sub-Rule
+
+Purpose: Hierarchical orchestration.
+Runtime: Invokes another Rule engine instance and merges the resulting context.
+Power: Enables &ldquo;SoC&rdquo; (Separation of Concerns) in complex automation.
+
+
+🏗️ Reusable Orchestration Patterns
+The &ldquo;Enrichment&rdquo; Pattern
+
+Query Records: Fetch related Customer data.
+Assignment: Populate current document fields from the queried record.
+
+The &ldquo;Validation&rdquo; Pattern
+
+Condition: Check complex multi-field rules.
+Process (Stop): If invalid, call a process that throws a frappe.ValidationError.
+
+The &ldquo;Transformation&rdquo; Pipeline
+
+Loop: Iterate over a collection.
+Assignment: Use resolvers to transform data in each row.
+Process (External API): Send the cleaned collection to an external system.
+"><meta property="twitter:site" content="@flexirule"><script type=application/ld+json>{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"Home","item":"https:\/\/sendipad.github.io\/flexirule-docs\/"},{"@type":"ListItem","position":2,"name":"FlexiRule Documentation","item":"https:\/\/sendipad.github.io\/flexirule-docs\/"},{"@type":"ListItem","position":3,"name":"FlexiRule Documentation","item":"https:\/\/sendipad.github.io\/flexirule-docs\/docs\/"},{"@type":"ListItem","position":4,"name":"Actions","item":"https:\/\/sendipad.github.io\/flexirule-docs\/docs\/actions\/"},{"@type":"ListItem","position":5,"name":"","item":"https:\/\/sendipad.github.io\/flexirule-docs\/docs\/actions\/action_types_catalog\/"}]}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"Article","headline":"","datePublished":"0001-01-01T00:00:00Z","dateModified":"0001-01-01T00:00:00Z","author":{"@type":"Organization","name":"FlexiRule"},"publisher":{"@type":"Organization","name":"FlexiRule"},"description":"\u003ch1 id=\u0022actions-action-types-catalog\u0022\u003eActions: Action Types Catalog\u003c\/h1\u003e\n\u003ch2 id=\u0022-discovered-action-primitives\u0022\u003e📚 Discovered Action Primitives\u003c\/h2\u003e\n\u003cp\u003eThis catalog describes the building blocks of FlexiRule orchestration.\u003c\/p\u003e\n\u003ch3 id=\u00221-assignment\u0022\u003e1. Assignment\u003c\/h3\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ePurpose\u003c\/strong\u003e: Update fields or variables.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eRuntime\u003c\/strong\u003e: Performs sequential mutations on the \u003ccode\u003eExecutionContext\u003c\/code\u003e.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eFlexibility\u003c\/strong\u003e: Supports arithmetic, date math, and string concatenation via resolvers.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eEnterprise Power\u003c\/strong\u003e: Allows complex state transitions (e.g., \u0026ldquo;If Status is Open, set Assigned Date to Today\u0026rdquo;).\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch3 id=\u00222-condition-decision\u0022\u003e2. Condition (Decision)\u003c\/h3\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ePurpose\u003c\/strong\u003e: Binary branching (True\/False).\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eRuntime\u003c\/strong\u003e: Evaluates a compiled Python expression.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eFlexibility\u003c\/strong\u003e: Supports nested AND\/OR logic and collection-based checks (any\/all).\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch3 id=\u00223-switch\u0022\u003e3. Switch\u003c\/h3\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ePurpose\u003c\/strong\u003e: Multi-path branching based on conditions.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eRuntime\u003c\/strong\u003e: Evaluates cases in priority order and follows the first match.\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch3 id=\u00224-loop-collection-iterator\u0022\u003e4. Loop (Collection Iterator)\u003c\/h3\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ePurpose\u003c\/strong\u003e: Execute a sub-graph for each item in a list.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eRuntime\u003c\/strong\u003e: Manages an internal iterator and injects the \u003ccode\u003eitem\u003c\/code\u003e into the context of its children.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eOrchestration\u003c\/strong\u003e: Essential for batch processing (e.g., \u0026ldquo;For each item in Sales Order, check stock\u0026rdquo;).\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch3 id=\u00225-process\u0022\u003e5. Process\u003c\/h3\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ePurpose\u003c\/strong\u003e: Execute a reusable, developer-defined operation.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eRuntime\u003c\/strong\u003e: Calls a specific Python method with contract-based validation.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eCapability\u003c\/strong\u003e: Can trigger side effects, return data, or request state mutations.\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch3 id=\u00226-query-records\u0022\u003e6. Query Records\u003c\/h3\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ePurpose\u003c\/strong\u003e: Fetch data from other DocTypes.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eRuntime\u003c\/strong\u003e: Executes a filtered database lookup.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eFlexibility\u003c\/strong\u003e: Resolves filters dynamically from the current context.\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003ch3 id=\u00227-sub-rule\u0022\u003e7. Sub-Rule\u003c\/h3\u003e\n\u003cul\u003e\n\u003cli\u003e\u003cstrong\u003ePurpose\u003c\/strong\u003e: Hierarchical orchestration.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eRuntime\u003c\/strong\u003e: Invokes another Rule engine instance and merges the resulting context.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003ePower\u003c\/strong\u003e: Enables \u0026ldquo;SoC\u0026rdquo; (Separation of Concerns) in complex automation.\u003c\/li\u003e\n\u003c\/ul\u003e\n\u003chr\u003e\n\u003ch2 id=\u0022-reusable-orchestration-patterns\u0022\u003e🏗️ Reusable Orchestration Patterns\u003c\/h2\u003e\n\u003ch3 id=\u0022the-enrichment-pattern\u0022\u003eThe \u0026ldquo;Enrichment\u0026rdquo; Pattern\u003c\/h3\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003eQuery Records\u003c\/strong\u003e: Fetch related Customer data.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eAssignment\u003c\/strong\u003e: Populate current document fields from the queried record.\u003c\/li\u003e\n\u003c\/ol\u003e\n\u003ch3 id=\u0022the-validation-pattern\u0022\u003eThe \u0026ldquo;Validation\u0026rdquo; Pattern\u003c\/h3\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003eCondition\u003c\/strong\u003e: Check complex multi-field rules.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eProcess (Stop)\u003c\/strong\u003e: If invalid, call a process that throws a \u003ccode\u003efrappe.ValidationError\u003c\/code\u003e.\u003c\/li\u003e\n\u003c\/ol\u003e\n\u003ch3 id=\u0022the-transformation-pipeline\u0022\u003eThe \u0026ldquo;Transformation\u0026rdquo; Pipeline\u003c\/h3\u003e\n\u003col\u003e\n\u003cli\u003e\u003cstrong\u003eLoop\u003c\/strong\u003e: Iterate over a collection.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eAssignment\u003c\/strong\u003e: Use resolvers to transform data in each row.\u003c\/li\u003e\n\u003cli\u003e\u003cstrong\u003eProcess (External API)\u003c\/strong\u003e: Send the cleaned collection to an external system.\u003c\/li\u003e\n\u003c\/ol\u003e"}</script><script type=application/ld+json>{"@context":"https://schema.org","@type":"SoftwareApplication","name":"FlexiRule","applicationCategory":"BusinessApplication","operatingSystem":"All","publisher":{"@type":"Organization","name":"FlexiRule"},"offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"FlexiRule is an enterprise-grade rules engine and documentation portal."}</script></head><body><header class=header><div class=header-logo><a href=/flexirule-docs><span class=logo-text>FlexiRule</span></a></div><div class=header-actions style=margin-left:auto;display:flex;align-items:center;gap:1rem><button id=theme-toggle class=btn-icon title="Toggle theme">
+<svg class="sun-icon" viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+</button>
+<button id=mobile-menu-toggle class="btn-icon md:hidden">
+<svg viewBox="0 0 24 24" width="24" height="24" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg></button></div></header><div class=main-container><aside class=sidebar id=sidebar><nav class=sidebar-nav><div class=sidebar-section><h4 class=sidebar-title>FlexiRule Documentation</h4><ul class=sidebar-list><li class=sidebar-item><a href=/flexirule-docs/docs/architecture/ class=sidebar-link>Architecture</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/system_overview_ar/ class=sidebar-link>System Overview (AR)</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/controls/ class=sidebar-link>Controls</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/builder/ class=sidebar-link>Builder</a><ul class=sidebar-list><li class=sidebar-item><a href=/flexirule-docs/docs/builder/rule_builder/ class=sidebar-link>Rule Builder</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/builder/condition_builder/ class=sidebar-link>Condition Builder</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/builder/user_guide_conditions/ class=sidebar-link>User Guide (Conditions)</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/builder/frontend_technical/ class=sidebar-link>Frontend Technical</a></li></ul></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/ class=sidebar-link>Actions</a><ul class=sidebar-list><li class=sidebar-item><a href=/flexirule-docs/docs/actions/overview/ class=sidebar-link>Overview</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/assignment/ class=sidebar-link>Assignment</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/condition/ class=sidebar-link>Condition</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/document_action/ class=sidebar-link>Document Action</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/loop/ class=sidebar-link>Loop</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/notify/ class=sidebar-link>Notify</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/process/ class=sidebar-link>Process</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/query_records/ class=sidebar-link>Query Records</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/switch/ class=sidebar-link>Switch</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/standards/ class=sidebar-link>Standards</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/action_patterns/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/actions/action_types_catalog/ class="sidebar-link active"></a></li></ul></li><li class=sidebar-item><a href=/flexirule-docs/docs/engine/ class=sidebar-link>Engine</a><ul class=sidebar-list><li class=sidebar-item><a href=/flexirule-docs/docs/engine/execution_engine/ class=sidebar-link>Execution Engine</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/engine/condition_system/ class=sidebar-link>Condition System</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/engine/trigger_system/ class=sidebar-link>Trigger System</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/engine/orchestration/ class=sidebar-link>Orchestration</a></li></ul></li><li class=sidebar-item><a href=/flexirule-docs/docs/reference/ class=sidebar-link>Reference</a><ul class=sidebar-list><li class=sidebar-item><a href=/flexirule-docs/docs/reference/api/ class=sidebar-link>API</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/reference/internals/ class=sidebar-link>Internals</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/reference/doctypes/ class=sidebar-link>Doctypes</a></li><li class=sidebar-item><a href=/flexirule-docs/docs/reference/contracts/ class=sidebar-link>Contracts</a></li></ul></li><li class=sidebar-item><a href=/flexirule-docs/docs/roadmap/ class=sidebar-link>Roadmap</a><ul class=sidebar-list><li class=sidebar-item><a href=/flexirule-docs/docs/roadmap/technical_audit/ class=sidebar-link>Technical Audit</a></li></ul></li><li class=sidebar-item><a href=/flexirule-docs/docs/action_zone/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/architecture/action_runtime/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/architecture/execution_context/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/architecture/graph_orchestration/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/architecture/system_philosophy/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/future/event_driven_architecture/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/future/low_code_platform_potential/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/future/runtime_optimization/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/resolver/resolver_engine/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/resolver/resolver_patterns/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/ui/action_config_panels/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/ui/flexigrid_architecture/ class=sidebar-link></a></li><li class=sidebar-item><a href=/flexirule-docs/docs/ui/schema_driven_ui/ class=sidebar-link></a></li></ul></div></nav></aside><main class=content-area><article class=docs-content><nav class=breadcrumbs aria-label=breadcrumb style=margin-bottom:1.5rem;font-size:.875rem;color:var(--color-muted)><ol style=list-style:none;padding:0;margin:0;display:flex;gap:.5rem><li><a href=/flexirule-docs style=color:inherit>Home</a></li><li><span style=margin-right:.5rem>/</span><a href=/flexirule-docs/ style=color:inherit>FlexiRule Documentation</a></li><li><span style=margin-right:.5rem>/</span><a href=/flexirule-docs/docs/ style=color:inherit>FlexiRule Documentation</a></li><li><span style=margin-right:.5rem>/</span><a href=/flexirule-docs/docs/actions/ style=color:inherit>Actions</a></li><li><span style=margin-right:.5rem>/</span><span style=color:var(--color-text)></span></li></ol></nav><h1></h1><aside class=toc style=margin-bottom:2rem;padding:1rem;background-color:var(--color-surface);border-radius:.5rem><h4 style=margin-top:0>Table of Contents</h4><nav id=TableOfContents><ul><li><a href=#-discovered-action-primitives>📚 Discovered Action Primitives</a><ul><li><a href=#1-assignment>1. Assignment</a></li><li><a href=#2-condition-decision>2. Condition (Decision)</a></li><li><a href=#3-switch>3. Switch</a></li><li><a href=#4-loop-collection-iterator>4. Loop (Collection Iterator)</a></li><li><a href=#5-process>5. Process</a></li><li><a href=#6-query-records>6. Query Records</a></li><li><a href=#7-sub-rule>7. Sub-Rule</a></li></ul></li><li><a href=#-reusable-orchestration-patterns>🏗️ Reusable Orchestration Patterns</a><ul><li><a href=#the-enrichment-pattern>The &ldquo;Enrichment&rdquo; Pattern</a></li><li><a href=#the-validation-pattern>The &ldquo;Validation&rdquo; Pattern</a></li><li><a href=#the-transformation-pipeline>The &ldquo;Transformation&rdquo; Pipeline</a></li></ul></li></ul></nav></aside><h1 id=actions-action-types-catalog>Actions: Action Types Catalog</h1><h2 id=-discovered-action-primitives>📚 Discovered Action Primitives</h2><p>This catalog describes the building blocks of FlexiRule orchestration.</p><h3 id=1-assignment>1. Assignment</h3><ul><li><strong>Purpose</strong>: Update fields or variables.</li><li><strong>Runtime</strong>: Performs sequential mutations on the <code>ExecutionContext</code>.</li><li><strong>Flexibility</strong>: Supports arithmetic, date math, and string concatenation via resolvers.</li><li><strong>Enterprise Power</strong>: Allows complex state transitions (e.g., &ldquo;If Status is Open, set Assigned Date to Today&rdquo;).</li></ul><h3 id=2-condition-decision>2. Condition (Decision)</h3><ul><li><strong>Purpose</strong>: Binary branching (True/False).</li><li><strong>Runtime</strong>: Evaluates a compiled Python expression.</li><li><strong>Flexibility</strong>: Supports nested AND/OR logic and collection-based checks (any/all).</li></ul><h3 id=3-switch>3. Switch</h3><ul><li><strong>Purpose</strong>: Multi-path branching based on conditions.</li><li><strong>Runtime</strong>: Evaluates cases in priority order and follows the first match.</li></ul><h3 id=4-loop-collection-iterator>4. Loop (Collection Iterator)</h3><ul><li><strong>Purpose</strong>: Execute a sub-graph for each item in a list.</li><li><strong>Runtime</strong>: Manages an internal iterator and injects the <code>item</code> into the context of its children.</li><li><strong>Orchestration</strong>: Essential for batch processing (e.g., &ldquo;For each item in Sales Order, check stock&rdquo;).</li></ul><h3 id=5-process>5. Process</h3><ul><li><strong>Purpose</strong>: Execute a reusable, developer-defined operation.</li><li><strong>Runtime</strong>: Calls a specific Python method with contract-based validation.</li><li><strong>Capability</strong>: Can trigger side effects, return data, or request state mutations.</li></ul><h3 id=6-query-records>6. Query Records</h3><ul><li><strong>Purpose</strong>: Fetch data from other DocTypes.</li><li><strong>Runtime</strong>: Executes a filtered database lookup.</li><li><strong>Flexibility</strong>: Resolves filters dynamically from the current context.</li></ul><h3 id=7-sub-rule>7. Sub-Rule</h3><ul><li><strong>Purpose</strong>: Hierarchical orchestration.</li><li><strong>Runtime</strong>: Invokes another Rule engine instance and merges the resulting context.</li><li><strong>Power</strong>: Enables &ldquo;SoC&rdquo; (Separation of Concerns) in complex automation.</li></ul><hr><h2 id=-reusable-orchestration-patterns>🏗️ Reusable Orchestration Patterns</h2><h3 id=the-enrichment-pattern>The &ldquo;Enrichment&rdquo; Pattern</h3><ol><li><strong>Query Records</strong>: Fetch related Customer data.</li><li><strong>Assignment</strong>: Populate current document fields from the queried record.</li></ol><h3 id=the-validation-pattern>The &ldquo;Validation&rdquo; Pattern</h3><ol><li><strong>Condition</strong>: Check complex multi-field rules.</li><li><strong>Process (Stop)</strong>: If invalid, call a process that throws a <code>frappe.ValidationError</code>.</li></ol><h3 id=the-transformation-pipeline>The &ldquo;Transformation&rdquo; Pipeline</h3><ol><li><strong>Loop</strong>: Iterate over a collection.</li><li><strong>Assignment</strong>: Use resolvers to transform data in each row.</li><li><strong>Process (External API)</strong>: Send the cleaned collection to an external system.</li></ol></article></main></div><footer class=footer><div class=footer-inner><div class=footer-nav style="display:flex;justify-content:space-between;margin-top:3rem;padding-top:1.5rem;border-top:1px solid var(--color-border)"><div></div><a href=/flexirule-docs/docs/actions/action_patterns/ class=footer-next style=text-align:right><span class=muted>Next</span><div>→</div></a></div><div class=footer-meta style=margin-top:2rem;color:var(--color-muted);font-size:.875rem><div>Last Updated: 0001-01-01</div><div>2 min read</div><a href=https://github.com/Sendipad/flexirule/edit/main/content//docs/actions/action_types_catalog target=_blank rel=noopener>Edit on GitHub</a></div></div></footer><script src=/flexirule-docs/js/main.min.9bf1e004d49fac0e83faecaff9735d195e74ecbf7ad0a9d0130e96d6d2f8bb5e.js integrity="sha256-m/HgBNSfrA6D+uyv+XNdGV507L960KnQEw6W1tL4u14="></script></body></html>
