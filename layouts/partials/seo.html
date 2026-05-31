@@ -1,0 +1,93 @@
+{{ $description := .Description | default .Summary | default .Site.Params.description }}
+{{ $title := .Site.Title }}{{ if not .IsHome }}{{ $title = printf "%s | %s" .Title .Site.Title }}{{ end }}
+
+<link rel="canonical" href="{{ .Permalink }}">
+
+<!-- Open Graph / Facebook -->
+<meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
+<meta property="og:url" content="{{ .Permalink }}">
+<meta property="og:title" content="{{ $title }}">
+<meta property="og:description" content="{{ $description }}">
+{{ with .Params.images | default .Site.Params.images }}
+<meta property="og:image" content="{{ index . 0 | absURL }}">
+{{ end }}
+
+<!-- Twitter -->
+<meta property="twitter:card" content="summary_large_image">
+<meta property="twitter:url" content="{{ .Permalink }}">
+<meta property="twitter:title" content="{{ $title }}">
+<meta property="twitter:description" content="{{ $description }}">
+{{ with .Site.Params.seo.twitter_handle }}
+<meta property="twitter:site" content="{{ . }}">
+{{ end }}
+{{ with .Params.images | default .Site.Params.images }}
+<meta property="twitter:image" content="{{ index . 0 | absURL }}">
+{{ end }}
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {
+      "@type": "ListItem",
+      "position": 1,
+      "name": "Home",
+      "item": "{{ .Site.BaseURL }}"
+    }
+    {{ range $index, $element := .Ancestors.Reverse }}
+    ,{
+      "@type": "ListItem",
+      "position": {{ add $index 2 }},
+      "name": "{{ .Title }}",
+      "item": "{{ .Permalink }}"
+    }
+    {{ end }}
+    ,{
+      "@type": "ListItem",
+      "position": {{ add (len .Ancestors) 2 }},
+      "name": "{{ .Title }}",
+      "item": "{{ .Permalink }}"
+    }
+  ]
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ .Title }}",
+  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
+  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
+  "author": {
+    "@type": "Organization",
+    "name": "FlexiRule"
+  },
+  "publisher": {
+    "@type": "Organization",
+    "name": "FlexiRule"
+  },
+  "description": "{{ $description }}"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FlexiRule",
+  "applicationCategory": "BusinessApplication",
+  "operatingSystem": "All",
+  "publisher": {
+    "@type": "Organization",
+    "name": "FlexiRule"
+  },
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "description": "FlexiRule is an enterprise-grade rules engine and documentation portal."
+}
+</script>

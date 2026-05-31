@@ -1,0 +1,9 @@
+<nav class="breadcrumbs" aria-label="breadcrumb" style="margin-bottom: 1.5rem; font-size: 0.875rem; color: var(--color-muted);">
+  <ol style="list-style: none; padding: 0; margin: 0; display: flex; gap: 0.5rem;">
+    <li><a href="{{ .Site.BaseURL | relLangURL }}" style="color: inherit;">Home</a></li>
+    {{ range .Ancestors.Reverse }}
+      <li><span style="margin-right: 0.5rem;">/</span><a href="{{ .RelPermalink }}" style="color: inherit;">{{ .Title }}</a></li>
+    {{ end }}
+    <li><span style="margin-right: 0.5rem;">/</span><span style="color: var(--color-text);">{{ .Title }}</span></li>
+  </ol>
+</nav>

@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="{{ .Site.Language.Locale }}" data-theme="light">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ if .IsHome }}{{ .Site.Title }}{{ else }}{{ .Title }} | {{ .Site.Title }}{{ end }}</title>
+  {{ $style := resources.Get "scss/main.scss" | toCSS | minify | fingerprint }}
+  <link rel="stylesheet" href="{{ $style.RelPermalink }}" integrity="{{ $style.Data.Integrity }}">
+  {{ $js := resources.Get "js/theme.js" | minify | fingerprint }}
+  <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}"></script>
+  {{ partial "seo.html" . }}
+</head>
+<body>
+  {{ partial "header.html" . }}
+  <div class="main-container">
+    {{ if ne .Type "page" }}
+      {{ partial "sidebar.html" . }}
+    {{ end }}
+    <main class="content-area">
+      {{ block "main" . }}{{ end }}
+    </main>
+  </div>
+  {{ partial "footer.html" . }}
+
+  {{ $mainJs := resources.Get "js/main.js" | resources.Minify | resources.Fingerprint }}
+  <script src="{{ $mainJs.RelPermalink }}" integrity="{{ $mainJs.Data.Integrity }}"></script>
+</body>
+</html>

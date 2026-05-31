@@ -1,0 +1,8 @@
+{{ define "main" }}
+<article class="docs-content">
+  {{ partial "breadcrumbs.html" . }}
+  <h1>{{ .Title }}</h1>
+  {{ partial "toc.html" . }}
+  {{ .Content }}
+</article>
+{{ end }}
