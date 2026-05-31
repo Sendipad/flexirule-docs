@@ -2,7 +2,10 @@
 <article class="docs-content">
   {{ partial "breadcrumbs.html" . }}
   <h1>{{ .Title }}</h1>
-  {{ partial "toc.html" . }}
+  {{ partial "action-bar.html" . }}
   {{ .Content }}
+  <div id="raw-content" style="display:none;">{{ .RawContent }}</div>
+  {{ partial "pager.html" . }}
 </article>
+{{ partial "toc.html" . }}
 {{ end }}

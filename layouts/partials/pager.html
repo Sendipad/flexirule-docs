@@ -1,0 +1,74 @@
+{{ $pages := where .Site.RegularPages "Section" "docs" }}
+{{ $pages = $pages.ByWeight }}
+
+{{ $prev := .PrevInSection }}
+{{ $next := .NextInSection }}
+
+<div class="pager">
+  {{ with $prev }}
+  <a href="{{ .RelPermalink }}" class="pager-link prev">
+    <div class="pager-direction">Previous</div>
+    <div class="pager-title">{{ .Title }}</div>
+  </a>
+  {{ else }}
+  <div class="pager-spacer"></div>
+  {{ end }}
+
+  {{ with $next }}
+  <a href="{{ .RelPermalink }}" class="pager-link next">
+    <div class="pager-direction">Next</div>
+    <div class="pager-title">{{ .Title }}</div>
+  </a>
+  {{ end }}
+</div>
+
+<style>
+.pager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  padding-top: 2rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.pager-link {
+  display: flex;
+  flex-direction: column;
+  padding: 1.25rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  transition: all 0.2s;
+  text-decoration: none !important;
+}
+
+.pager-link:hover {
+  border-color: var(--color-primary);
+  background-color: var(--color-surface);
+}
+
+.pager-direction {
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  color: var(--color-text-secondary);
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+.pager-title {
+  font-size: 1.125rem;
+  color: var(--color-primary);
+  font-weight: 500;
+}
+
+.pager-link.next {
+  text-align: right;
+  align-items: flex-end;
+}
+
+@media (max-width: 600px) {
+  .pager {
+    grid-template-columns: 1fr;
+  }
+}
+</style>
