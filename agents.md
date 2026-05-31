@@ -5,6 +5,15 @@ All agents working on this repository must follow the requirements in this docum
 
 ---
 
+Environment & Setup Rules
+To prevent redundant installations and save time during startup:
+1. DO NOT download or install Hugo if it is already present in the environment.
+2. ALWAYS verify if Hugo is installed first by running `command -v hugo` and checking `hugo version`.
+3. If Hugo v0.162.1 must be installed, place the binary in a persistent global path (e.g., `/usr/local/bin` or `~/.local/bin`) and ensure it is in the `$PATH`. 
+4. Never repeatedly download `.tar` files into temporary directories that get wiped between sessions.
+
+---
+
 Hugo Version Requirement
 Required Hugo version:
 Hugo v0.162.1
@@ -81,7 +90,7 @@ Always use Hugo's safe serialization filters (`jsonify`) inside script blocks, a
 
 Performance & Log Handling Rules
 To prevent context window bloat, terminal hangs, and infinite rebuild loops:
-1. **Never read or index the entire `hugo.log` file.** To verify builds or catch compilation errors, exclusively read the last 50 lines using target tools (e.g., `tail -n 50`).
+1. **Never read or index the entire `hugo.log` file.** To verify builds or catch compilation errors, exclusively read the last 50 lines using target tools (e.g., `tail -n 50 hugo.log`).
 2. Do not monitor or track changes to `hugo.log` within active file-watching tool loops. Treat log outputs as transient and ephemeral.
 3. Keep the development server light: if log parsing slows down processing, run the Hugo builder with the `--quiet` flag.
 
