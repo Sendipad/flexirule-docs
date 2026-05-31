@@ -1,9 +1,0 @@
-[en]
-  languageName = "English"
-  contentDir = "content/en"
-  weight = 10
-  [en.params]
-    languageISO = "EN"
-    languageTag = "en-US"
-    footer = "© 2024 FlexiRule. Built for the Frappe Ecosystem."
-    titleHome = "FlexiRule Documentation"
