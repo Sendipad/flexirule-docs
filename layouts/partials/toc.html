@@ -1,6 +1,53 @@
 {{ if .TableOfContents }}
-<aside class="toc" style="margin-bottom: 2rem; padding: 1rem; background-color: var(--color-surface); border-radius: 0.5rem;">
-  <h4 style="margin-top: 0;">{{ T "table_of_contents" }}</h4>
-  {{ .TableOfContents }}
+<div id="toc-overlay" class="toc-overlay"></div>
+<aside id="toc-drawer" class="toc-drawer">
+  <div class="toc-header" style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+    <h3 style="margin: 0; font-size: 1.125rem;">Table of Contents</h3>
+    <button id="toc-close" class="btn-icon" style="margin-right: -0.5rem;">
+      <svg viewBox="0 0 24 24" width="20" height="20" stroke="currentColor" stroke-width="2" fill="none"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+    </button>
+  </div>
+  <div class="toc-body">
+    {{ .TableOfContents }}
+  </div>
 </aside>
+
+<style>
+.toc-body ul {
+  list-style: none;
+  padding-left: 1rem;
+  margin: 0;
+}
+
+.toc-body > nav > ul {
+  padding-left: 0;
+}
+
+.toc-body li {
+  margin-bottom: 0.5rem;
+}
+
+.toc-body a {
+  color: var(--color-text-secondary);
+  font-size: 0.9375rem;
+  transition: color 0.2s;
+}
+
+.toc-body a:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+</style>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+  const tocClose = document.getElementById('toc-close');
+  if (tocClose) {
+    tocClose.addEventListener('click', () => {
+      document.getElementById('toc-drawer').classList.remove('open');
+      document.getElementById('toc-overlay').classList.remove('show');
+    });
+  }
+});
+</script>
 {{ end }}

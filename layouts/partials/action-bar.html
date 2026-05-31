@@ -1,0 +1,112 @@
+<div class="action-bar">
+  <div class="action-group">
+    <button class="action-btn" id="btn-print" title="Download PDF / Print">
+      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><polyline points="6 9 6 2 18 2 18 9"></polyline><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"></path><rect x="6" y="14" width="12" height="8"></rect></svg>
+      <span>PDF</span>
+    </button>
+    <button class="action-btn" id="btn-copy-url" title="Copy Page URL">
+      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+      <span>Link</span>
+    </button>
+    <button class="action-btn" id="btn-copy-md" title="Copy Markdown Source">
+      <svg viewBox="0 0 24 24" width="18" height="18" stroke="currentColor" stroke-width="2" fill="none"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path><polyline points="7 15 12 10 17 15"></polyline></svg>
+      <span>MD</span>
+    </button>
+  </div>
+  <div class="action-divider"></div>
+  <div class="action-group">
+    <button class="action-btn ai-btn" data-ai="chatgpt" title="Ask ChatGPT about this page">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/04/ChatGPT_logo.svg" width="18" height="18" alt="ChatGPT">
+      <span>ChatGPT</span>
+    </button>
+    <button class="action-btn ai-btn" data-ai="claude" title="Ask Claude about this page">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/b/bd/Claude_AI_logo.svg" width="18" height="18" alt="Claude">
+      <span>Claude</span>
+    </button>
+    <button class="action-btn ai-btn" data-ai="gemini" title="Ask Gemini about this page">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/8/8a/Google_Gemini_logo.svg" width="18" height="18" alt="Gemini">
+      <span>Gemini</span>
+    </button>
+  </div>
+</div>
+
+<div id="toast" class="toast">Context copied to clipboard!</div>
+
+<style>
+.action-bar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-bottom: 2rem;
+  padding: 0.5rem;
+  border: 1px solid var(--color-border);
+  border-radius: 8px;
+  background-color: var(--color-surface);
+  flex-wrap: wrap;
+}
+
+.action-group {
+  display: flex;
+  gap: 0.25rem;
+}
+
+.action-divider {
+  width: 1px;
+  height: 24px;
+  background-color: var(--color-border);
+  margin: 0 0.5rem;
+}
+
+.action-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--color-text-secondary);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.action-btn:hover {
+  background-color: var(--color-background);
+  border-color: var(--color-border);
+  color: var(--color-text-primary);
+}
+
+.action-btn svg, .action-btn img {
+  flex-shrink: 0;
+}
+
+.toast {
+  position: fixed;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(100px);
+  background-color: #323232;
+  color: white;
+  padding: 0.75rem 1.5rem;
+  border-radius: 4px;
+  font-size: 0.875rem;
+  z-index: 3000;
+  transition: transform 0.3s ease;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.toast.show {
+  transform: translateX(-50%) translateY(0);
+}
+
+@media (max-width: 600px) {
+  .action-btn span {
+    display: none;
+  }
+  .action-btn {
+    padding: 0.5rem;
+  }
+}
+</style>
