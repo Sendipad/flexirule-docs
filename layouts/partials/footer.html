@@ -3,11 +3,6 @@
     <div class="footer-meta" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-muted); font-size: 0.875rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
       <div style="display: flex; gap: 1.5rem;">
         <div>{{ .ReadingTime }} min read</div>
-        {{ if and .Site.Params.github_repo .File }}
-          <a href="{{ .Site.Params.github_repo }}/edit/{{ .Site.Params.github_branch }}/content/en/{{ .File.Path }}" target="_blank" rel="noopener" style="color: var(--color-muted);">
-            {{ T "edit_on_github" }}
-          </a>
-        {{ end }}
       </div>
       <div>© {{ now.Year }} FlexiRule</div>
     </div>
