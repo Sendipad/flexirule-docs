@@ -1,7 +1,15 @@
-<nav class="breadcrumbs" aria-label="Breadcrumb">
-  <ol>
-    <li><a href="{{ .Site.BaseURL | relLangURL }}">Home</a></li>
-    {{ range .Ancestors.Reverse }}{{ if not .IsHome }}<li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>{{ end }}{{ end }}
-    <li><span aria-current="page">{{ .Title }}</span></li>
-  </ol>
+<nav class="breadcrumb-container" aria-label="Breadcrumb">
+  <div class="breadcrumb-badge">
+    <a href="{{ .Site.BaseURL | relLangURL }}" class="breadcrumb-item">
+      <svg viewBox="0 0 24 24" class="breadcrumb-icon"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+    </a>
+    {{ range .Ancestors.Reverse }}
+      {{ if not .IsHome }}
+        <span class="breadcrumb-separator">/</span>
+        <a href="{{ .RelPermalink }}" class="breadcrumb-item">{{ .Title }}</a>
+      {{ end }}
+    {{ end }}
+    <span class="breadcrumb-separator">/</span>
+    <span class="breadcrumb-item is-current" aria-current="page">{{ .Title }}</span>
+  </div>
 </nav>

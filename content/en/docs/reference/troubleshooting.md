@@ -7,21 +7,11 @@ parent: "advanced"
 
 # Troubleshooting
 
-Keywords: troubleshooting, errors, debugging, logs, issues
-
-## Audience
-
-- End Users
-- Administrators
-- Developers
-
-## Overview
-
-This guide provides strategies for identifying and resolving common issues encountered when building or executing rules in FlexiRule.
-
----
+Strategies for identifying and resolving common issues encountered when building or executing rules in FlexiRule.
 
 ## Debugging Workflow
+
+Use this systematic approach to isolate and fix problems with your rules.
 
 ```mermaid
 flowchart TD
@@ -40,40 +30,47 @@ flowchart TD
 
 ## Common Issues
 
-### 1. Rule Not Triggering
-- **Check**: Is the rule status set to `Active`?
-- **Check**: Does the `Trigger Event` match the action being performed (e.g., `Before Save` vs `After Save`)?
-- **Check**: Are there `Watched Fields` configured that didn't change?
-- **Check**: Does the user triggering the event have a role listed in `Skip for Roles`?
+{{< accordion title="1. Rule Not Triggering" >}}
+If a rule fails to trigger when expected, verify the following configuration points:
+- **Status**: Is the rule set to **Active**?
+- **Trigger Event**: Does the event match the action (e.g., using `Before Save` when the logic depends on values only available `After Save`)?
+- **Watched Fields**: If configured, did any of the specified fields actually change during the transaction?
+- **Role Permissions**: Is the user triggering the event assigned a role that is listed in **Skip for Roles**?
+{{< /accordion >}}
 
-### 2. Variable Resolution Fails
-- **Error**: `KeyError: 'my_var'` or `undefined` in template.
-- **Check**: Ensure the variable is set by an **upstream** node in the same execution path.
-- **Check**: Verify the spelling and case of the variable name.
-- **Check**: If using `doc.*`, ensure the field exists on the DocType.
+{{< accordion title="2. Variable Resolution Fails" >}}
+Errors like `KeyError: 'my_var'` typically indicate the execution engine cannot find a referenced variable.
+- **Flow Logic**: Ensure the variable is defined by an **upstream** node in the current execution path.
+- **Naming**: Verify the spelling and case-sensitivity of the variable name.
+- **Data Model**: If referencing `doc.*`, ensure the field exists on the target DocType.
+{{< /accordion >}}
 
-### 3. Infinite Loops (Reentrancy)
-- **Symptom**: "Reentrancy guard blocked execution" error in logs.
-- **Cause**: A rule is performing a mutation that triggers the same rule again.
-- **Fix**: Add a condition to the entry action to prevent execution if the field is already set to the target value (e.g., `doc.status != "Processed"`).
+{{< accordion title="3. Infinite Loops (Reentrancy)" >}}
+**Symptom**: "Reentrancy guard blocked execution" error in logs.
+- **Cause**: A rule performs a mutation (like `doc.save()`) that triggers the same rule again, creating a loop.
+- **Solution**: Add a condition to the entry action to prevent execution if the document is already in the desired state (e.g., `doc.status != "Processed"`).
+{{< /accordion >}}
 
-### 4. Permission Denied
-- **Error**: `frappe.exceptions.PermissionError`
-- **Fix**: Check if the action requires specific permissions. You can enable `Ignore Permissions` on individual action nodes if necessary (requires an audit reason).
+{{< accordion title="4. Permission Denied" >}}
+**Error**: `frappe.exceptions.PermissionError`
+- **Solution**: Check if the action requires specific user permissions. You can enable **Ignore Permissions** on individual action nodes if necessary (this requires providing an audit reason).
+{{< /accordion >}}
 
----
-
-## Tools for Debugging
+## Debugging Tools
 
 ### Rule Execution Log
-The first place to look. It contains:
-- **Status**: Success or Failure.
-- **Path Trace**: Exactly which nodes were executed.
-- **Context Snapshot**: The state of all `vars` at the time of execution.
-- **Error Traceback**: The full Python error if the execution failed.
+The primary diagnostic tool for FlexiRule. It provides a detailed record of each execution:
+- **Status**: Clear indication of Success or Failure.
+- **Path Trace**: A visual or list-based trace of exactly which nodes were executed.
+- **Context Snapshot**: The state of all variables (`vars`) at the time of execution.
+- **Error Traceback**: The full Python traceback for failed executions.
 
 ### Test Rule (Dry Run)
-Located in the Rule Builder. Allows you to run the rule against an existing document without committing changes.
+Available directly within the Rule Builder. This feature allows you to simulate a rule execution against an existing document record without committing any changes to the database.
+
+{{< tip >}}
+Always perform a **Test Rule** execution before activating complex logic in a production environment to ensure the path trace matches your expectations.
+{{< /tip >}}
 
 ---
 

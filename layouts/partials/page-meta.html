@@ -1,13 +1,7 @@
 <footer class="page-meta">
-  <div>
+  <div class="page-meta-item">
+    <svg viewBox="0 0 24 24" class="page-meta-icon"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
     <span>Last updated</span>
     <strong>{{ .Lastmod.Format "Jan 2, 2006" }}</strong>
   </div>
-  {{ with .GitInfo }}
-    <div>
-      <span>Commit</span>
-      <a href="{{ $.Site.Params.github_docs_repo }}/commit/{{ .Hash }}" target="_blank" rel="noopener noreferrer"><code>{{ substr .Hash 0 7 }}</code></a>
-    </div>
-    {{ with .AuthorName }}<div><span>Author</span><strong>{{ . }}</strong></div>{{ end }}
-  {{ end }}
 </footer>
