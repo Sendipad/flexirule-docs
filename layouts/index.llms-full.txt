@@ -1,0 +1,18 @@
+# {{ .Site.Title }} — Full AI Index
+
+{{ .Site.Params.description }}
+
+{{ range where .Site.RegularPages "Section" "docs" }}
+---
+title: {{ .Title }}
+url: {{ .Permalink }}
+lastmod: {{ .Lastmod.Format "2006-01-02" }}
+summary: {{ .Params.summary | default .Description | default (.Summary | plainify) }}
+concepts: {{ with .Params.concepts }}{{ delimit . ", " }}{{ else }}{{ with .Params.tags }}{{ delimit . ", " }}{{ end }}{{ end }}
+tags: {{ with .Params.tags }}{{ delimit . ", " }}{{ end }}
+difficulty: {{ .Params.difficulty | default "" }}
+related: {{ with .Params.related }}{{ delimit . ", " }}{{ end }}
+actions: read, implement, integrate, troubleshoot, improve
+
+{{ .Plain | truncate 2200 }}
+{{ end }}

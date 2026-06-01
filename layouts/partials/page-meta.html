@@ -1,0 +1,13 @@
+<footer class="page-meta">
+  <div>
+    <span>Last updated</span>
+    <strong>{{ .Lastmod.Format "Jan 2, 2006" }}</strong>
+  </div>
+  {{ with .GitInfo }}
+    <div>
+      <span>Commit</span>
+      <a href="{{ $.Site.Params.github_docs_repo }}/commit/{{ .Hash }}" target="_blank" rel="noopener noreferrer"><code>{{ substr .Hash 0 7 }}</code></a>
+    </div>
+    {{ with .AuthorName }}<div><span>Author</span><strong>{{ . }}</strong></div>{{ end }}
+  {{ end }}
+</footer>

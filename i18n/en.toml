@@ -1,10 +1,8 @@
-toggle_theme = "Toggle theme"
-previous = "Previous"
-next = "Next"
-last_updated = "Last Updated"
-edit_on_github = "Edit on GitHub"
-search = "Search"
-documentation = "Documentation"
-copy = "Copy"
-download = "Download"
-table_of_contents = "Table of Contents"
+[edit_on_github]
+other = "Improve this page"
+
+[last_updated]
+other = "Last updated"
+
+[toggle_theme]
+other = "Toggle theme"

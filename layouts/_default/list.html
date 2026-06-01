@@ -1,27 +1,24 @@
 {{ define "main" }}
-<article class="docs-content">
-  {{ partial "breadcrumbs.html" . }}
-  <h1>{{ .Title }}</h1>
-  {{ .Content }}
-
-  <ul class="list-pages">
-    {{ range .Pages.ByWeight }}
-      <li><a href="{{ .RelPermalink }}">{{ .Title }}</a></li>
-    {{ end }}
-  </ul>
-
-  <div class="page-footer-meta" style="margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--color-border); display: flex; justify-content: space-between; align-items: center; color: var(--color-text-secondary); font-size: 0.875rem;">
-    <div class="last-updated">
-      {{ T "last_updated" }}: {{ .Lastmod.Format "2006-01-02" }}
-    </div>
-    {{ if and .Site.Params.github_repo .File }}
-    <div class="edit-github">
-      <a href="{{ .Site.Params.github_repo }}/edit/{{ .Site.Params.github_branch }}/content/en/{{ .File.Path }}" target="_blank" rel="noopener" style="display: flex; align-items: center; gap: 0.5rem; color: var(--color-text-secondary);">
-        <svg viewBox="0 0 24 24" width="16" height="16" stroke="currentColor" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path></svg>
-        {{ T "edit_on_github" }}
-      </a>
-    </div>
-    {{ end }}
-  </div>
-</article>
+{{ $summary := .Params.summary | default .Description | default .Summary }}
+<div class="docs-layout">
+  <article class="docs-content section-content" data-pagefind-body data-ai-summary="{{ $summary | plainify }}" data-ai-concepts="{{ delimit (.Params.concepts | default .Params.tags | default (slice)) "," }}">
+    {{ partial "breadcrumbs.html" . }}
+    <header class="doc-hero">
+      <p class="eyebrow">FlexiRule Docs</p>
+      <h1>{{ .Title }}</h1>
+      {{ with $summary }}<p class="lead">{{ . | plainify }}</p>{{ end }}
+    </header>
+    <section class="doc-body">{{ .Content }}</section>
+    <section class="card-grid" aria-label="Pages in {{ .Title }}">
+      {{ range .Pages.ByWeight }}
+        <a class="doc-card" href="{{ .RelPermalink }}">
+          <span class="card-title">{{ .Title }}</span>
+          <span class="card-desc">{{ .Description | default .Summary | plainify | truncate 140 }}</span>
+        </a>
+      {{ end }}
+    </section>
+    {{ partial "page-meta.html" . }}
+  </article>
+  {{ partial "toc.html" . }}
+</div>
 {{ end }}

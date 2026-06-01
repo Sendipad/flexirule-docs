@@ -1,0 +1,1 @@
+{{ $id := printf "tab-%d" .Ordinal }}<input id="{{ $id }}" name="tabs-{{ .Page.File.UniqueID }}" type="radio" {{ if eq .Ordinal 0 }}checked{{ end }}><label for="{{ $id }}">{{ .Get "title" }}</label><div class="tab-panel">{{ .Inner | markdownify }}</div>

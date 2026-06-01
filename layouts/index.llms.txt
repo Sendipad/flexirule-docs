@@ -1,0 +1,13 @@
+# {{ .Site.Title }}
+
+> {{ .Site.Params.description }}
+
+Base URL: {{ .Site.BaseURL }}
+Application repository: {{ .Site.Params.github_app_repo }}
+Documentation repository: {{ .Site.Params.github_docs_repo }}
+Generated: {{ now.Format "2006-01-02" }}
+
+## Core documentation
+{{ range where .Site.RegularPages "Section" "docs" }}
+- [{{ .Title }}]({{ .Permalink }}) — {{ .Params.summary | default .Description | default (.Summary | plainify) | truncate 180 }}{{ with .Params.concepts }} Concepts: {{ delimit . ", " }}.{{ end }}{{ with .Params.difficulty }} Difficulty: {{ . }}.{{ end }}
+{{ end }}

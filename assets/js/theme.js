@@ -1,28 +1,13 @@
-(function() {
-  const themeKey = 'flexirule-theme';
-  const getStoredTheme = () => localStorage.getItem(themeKey);
-  const setStoredTheme = (theme) => localStorage.setItem(themeKey, theme);
-
-  const getPreferredTheme = () => {
-    const storedTheme = getStoredTheme();
-    if (storedTheme) {
-      return storedTheme;
-    }
-    return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-  };
-
+(() => {
+  const key = 'flexirule-theme';
+  const stored = () => localStorage.getItem(key);
+  const preferred = () => stored() || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
   window.setTheme = (theme) => {
     document.documentElement.setAttribute('data-theme', theme);
-    setStoredTheme(theme);
+    localStorage.setItem(key, theme);
   };
-
-  const currentTheme = getPreferredTheme();
-  setTheme(currentTheme);
-
-  // Listen for system changes
-  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
-    if (!getStoredTheme()) {
-      setTheme(e.matches ? 'dark' : 'light');
-    }
+  document.documentElement.setAttribute('data-theme', preferred());
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
+    if (!stored()) document.documentElement.setAttribute('data-theme', event.matches ? 'dark' : 'light');
   });
 })();
