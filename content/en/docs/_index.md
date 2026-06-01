@@ -1,100 +1,78 @@
 ---
-title: "FlexiRule Documentation"
+title: "Introduction"
 description: "Advanced Visual Rule Engine & Orchestration for Frappe and ERPNext."
-lead: "FlexiRule is a powerful visual logic layer that transforms how you build and manage business processes in Frappe apps."
+lead: "FlexiRule is a high-performance visual logic layer that transforms how you build and manage business processes in Frappe applications."
 date: 2024-03-20T00:00:00+00:00
 lastmod: 2024-03-20T00:00:00+00:00
 draft: false
 weight: 1
 ---
 
-<div align="center">
-  <img width="180" alt="flexiRule" src="/flexirule-docs/landing-page/flexiRule.png" />
+FlexiRule provides a powerful visual interface for orchestrating complex business logic in Frappe and ERPNext. It moves logic from scattered code hooks into a centralized, observable, and auditable visual graph.
 
-  <h1>FlexiRule</h1>
+{{< feature-grid >}}
+{{< card title="Centralized Logic" icon="layers" >}}
+Move rules out of scattered `.py` files into a single, auditable dashboard for better visibility.
+{{< /card >}}
+{{< card title="No-Code Configuration" icon="zap" >}}
+Custom UI controls allow complex logic setup without writing code, powered by JSON schemas.
+{{< /card >}}
+{{< card title="Explicit Execution" icon="activity" >}}
+Connections define deterministic paths, ensuring you always know exactly how your logic flows.
+{{< /card >}}
+{{< /feature-grid >}}
 
-[![CI](https://github.com/Sendipad/flexirule/actions/workflows/ci.yml/badge.svg?branch=develop)](https://github.com/Sendipad/flexirule/actions/workflows/ci.yml?query=branch%3Adevelop)
-![Beta Release](https://img.shields.io/badge/release-beta-orange)
-![Frappe](https://img.shields.io/badge/built%20for-Frappe%20v15%2B-blue)
+## Why FlexiRule?
 
-  <p><strong>The Visual Logic Layer for Frappe & ERPNext</strong></p>
+In modern enterprise systems, business logic often evolves into a fragmented web of Python hooks scattered across multiple custom applications. This technical debt lead to "hook-hell," where execution order is implicit, debugging is difficult, and upgrades become risky.
 
-</div>
+FlexiRule changes this paradigm by providing a **visual, graph-based orchestration layer**. Instead of writing hidden code, you design executable business logic visually — with full control, observability, and safety.
 
-<div align="center">
-<img width="1307" height="751" alt="rule_builder" src="/flexirule-docs/landing-page/rule_builder.png" />
+## Core Concepts
 
-  <p>
-    <em>The Visual Rule Builder is the canonical representation of FlexiRule logic — what you see is exactly what executes.</em>
-  </p>
-</div>
+FlexiRule is built around three primary components that define how your business logic is structured and executed.
 
----
+### 1. The Rule
+Defines **when** logic should trigger. Rules can be tied to DocType Events (like `on_update` or `after_insert`), Schedulers, or manual Callables.
 
-## 🚀 Overview
+### 2. The Action
+Represents a **node** in the visual graph. Each action is a specific step in your business process, such as a condition check, a notification, or a data transformation.
 
-In modern enterprise systems like **Frappe / ERPNext**, business logic often evolves into a fragmented web of Python hooks scattered across multiple custom apps. This technical debt leads to "hook-hell," where execution order is implicit, debugging is a nightmare, and upgrades are risky.
+### 3. The Process
+The code-backed reusable modules that perform the actual heavy lifting. Processes are modular and can be used across multiple different rules.
 
-**FlexiRule** changes the paradigm by providing a **visual, graph-based orchestration layer**. Instead of writing hidden code, you design executable business logic visually — with full control, observability, and safety.
+## Quick Start
 
----
+Get FlexiRule installed and running in your Frappe environment in just a few steps:
 
-## ✨ Special Features
-
-### 💎 Why FlexiRule?
-
--   **Centralized Logic**: Move rules out of scattered `.py` files into a single, auditable dashboard.
--   **No-Code Configuration**: Custom UI controls (pickers, autocomplete) allow complex logic setup without a single line of code.
--   **Explicit Execution**: Connections define deterministic paths. No more guessing which hook runs first.
--   **Schema-Driven UI**: Configuration forms for custom logic are auto-generated from JSON schemas.
-
-### 🧠 The Mental Model
-
-1. **The Rule**: Defines _when_ logic should trigger (DocType Events, Schedulers, or Callables).
-2. **The Action**: Represents a _node_ in the graph - a specific step in your business process.
-3. **The Process**: Code-backed reusable modules that perform the actual heavy lifting.
-
----
-
-## 🏎️ Quick Start
-
-Get up and running with FlexiRule in minutes:
-
+{{< steps >}}
+### Download the App
+Fetch the FlexiRule repository using the Bench CLI.
 ```bash
-# Get the app
 bench get-app flexirule https://github.com/Sendipad/flexirule.git
-
-# Install to your site
-bench --site [your-site] install-app flexirule
-
-# Build assets
-bench build --app flexirule
 ```
 
----
+### Install to Site
+Install the application onto your specific Frappe site.
+```bash
+bench --site [your-site] install-app flexirule
+```
 
-## 🖼️ Visual Tour
+### Build Assets
+Compile the necessary frontend assets for the visual builder.
+```bash
+bench build --app flexirule
+```
+{{< /steps >}}
 
-<details>
-<summary><strong>View Detailed Screenshots</strong></summary>
+{{< notice type="info" >}}
+After installation, you can access the FlexiRule Dashboard from your Frappe Desk to begin building your first rule.
+{{< /notice >}}
 
-<br/>
-<img width="1280" height="583" alt="IMG_20260509_194450_181" src="https://github.com/user-attachments/assets/212b96bf-9259-426b-90c1-dd55efce0bd7" />
+## Visual Tour
 
-<img
-  src="https://github.com/user-attachments/assets/41ac7963-f334-4fb2-bf0a-49409956c4a3"
-  alt="Condition node configuration"
-  width="900"
-  style="border-radius:14px;"
-/>
+The Visual Rule Builder is the canonical representation of FlexiRule logic — what you see is exactly what executes.
 
-<p align="center"><em>Declarative, deeply nested condition trees with deterministic evaluation.</em></p>
+![Visual Rule Builder](/flexirule-docs/landing-page/rule_builder.png)
 
-</details>
-
----
-
-<div align="center">
-  <p><strong>FlexiRule</strong> — Declarative, Visual, and Safe Business Logic for Frappe.</p>
-  <p>Built with ❤️ by the community.</p>
-</div>
+*Declarative, deeply nested condition trees with deterministic evaluation ensure your business logic remains clear and maintainable.*

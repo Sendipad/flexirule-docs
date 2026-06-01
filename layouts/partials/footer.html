@@ -1,13 +1,17 @@
-<footer class="footer">
-  <div class="footer-inner">
-    <div>
-      <strong>FlexiRule Documentation</strong>
-      <p>Static, fast, and enterprise-ready guidance for rule automation teams.</p>
+<footer class="site-footer">
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-copyright">Copyright © {{ now.Year }} FlexiRule</div>
+      <p class="footer-tagline">An Open Source, Highly Optimized, Enterprise-Grade Rule Flow and Decision Automation Engine</p>
     </div>
-    <nav aria-label="Footer links">
-      <a href="{{ .Site.Params.github_app_repo }}" target="_blank" rel="noopener noreferrer">Application</a>
-      <a href="{{ .Site.Params.github_docs_repo }}" target="_blank" rel="noopener noreferrer">Documentation source</a>
-      <a href='{{ "llms.txt" | relURL }}'>llms.txt</a>
+
+    <nav class="footer-nav" aria-label="Footer links">
+      <div class="footer-nav-group">
+        <span class="footer-nav-title">Resources</span>
+        <a href="{{ .Site.Params.github_app_repo }}" class="footer-link" target="_blank" rel="noopener noreferrer">Open App</a>
+        <a href="{{ .Site.Params.github_docs_repo }}" class="footer-link" target="_blank" rel="noopener noreferrer">Source Code</a>
+        <a href='{{ "llms.txt" | relURL }}' class="footer-link">LLMS Context</a>
+      </div>
     </nav>
   </div>
 </footer>

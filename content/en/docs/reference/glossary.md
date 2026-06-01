@@ -6,48 +6,39 @@ weight: 100
 
 # Glossary
 
-Keywords: rule engine, terminology, glossary, definitions
+Common terminology and core concepts used throughout the FlexiRule documentation.
 
-## Audience
+<dl class="glossary-list">
+  <dt>Rule</dt>
+  <dd>The top-level container for logic. A Rule defines <strong>when</strong> logic should trigger (e.g., on DocType events, schedulers, or manual calls) and contains the graph of actions to be executed.</dd>
 
-- End Users
-- Administrators
-- Developers
-- Contributors
+  <dt>Action</dt>
+  <dd>A single node in the Rule's execution graph. Each action represents a specific step, such as a condition, an assignment, or a process execution.</dd>
 
----
+  <dt>Condition</dt>
+  <dd>A logic node that evaluates a Python expression to branch the execution flow. It determines which path (True or False) the engine should follow.</dd>
 
-## Terms
+  <dt>Condition Group</dt>
+  <dd>A hierarchical collection of conditions combined using logical operators (AND, OR) for complex decision making.</dd>
 
-### Rule
-The top-level container for logic. A Rule defines **when** logic should trigger (e.g., on DocType events, schedulers, or manual calls) and contains the graph of actions to be executed.
+  <dt>Process</dt>
+  <dd>A code-backed, reusable module that performs specific business logic or integrations. Processes are typically written in Python and can be called from within a Rule.</dd>
 
-### Action
-A single node in the Rule's execution graph. Each action represents a specific step, such as a condition, an assignment, or a process execution.
+  <dt>Assignment</dt>
+  <dd>An action that mutates the state of the current document or context variables. It supports various operators like Set, Increment, Append, and Toggle.</dd>
 
-### Condition
-A logic node that evaluates a Python expression to branch the execution flow. It determines which path (True or False) the engine should follow.
+  <dt>Execution Context</dt>
+  <dd>The environment in which a Rule runs. It contains the current document (<code>doc</code>), the previous document state (<code>old_doc</code>), and any local variables (<code>vars</code>) generated during execution.</dd>
 
-### Condition Group
-A hierarchical collection of conditions combined using logical operators (AND, OR).
+  <dt>Variables (<code>vars</code>)</dt>
+  <dd>Local data storage within the execution context. Variables allow passing data between different action nodes in the same execution path.</dd>
 
-### Process
-A code-backed, reusable module that performs specific business logic or integrations. Processes are typically written in Python and can be called from within a Rule.
+  <dt>Field References</dt>
+  <dd>Dynamic pointers to data within the execution context, usually expressed using dot notation (e.g., <code>doc.status</code>, <code>vars.total_amount</code>).</dd>
 
-### Assignment
-An action that mutates the state of the current document or context variables. It supports various operators like Set, Increment, Append, and Toggle.
-
-### Execution Context
-The environment in which a Rule runs. it contains the current document (`doc`), the previous document state (`old_doc`), and any local variables (`vars`) generated during execution.
-
-### Variables (`vars`)
-Local data storage within the execution context. Variables allow passing data between different action nodes in the same execution path.
-
-### Field References
-Dynamic pointers to data within the execution context, usually expressed using dot notation (e.g., `doc.status`, `vars.total_amount`).
-
-### Outputs
-The data produced by an Action or Process that can be stored in the Execution Context for use by subsequent nodes.
+  <dt>Outputs</dt>
+  <dd>The data produced by an Action or Process that can be stored in the Execution Context for use by subsequent nodes.</dd>
+</dl>
 
 ---
 
