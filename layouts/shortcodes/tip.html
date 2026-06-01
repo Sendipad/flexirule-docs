@@ -1,1 +1,2 @@
-<div class="admonition" style="--admonition: var(--color-accent);"><div class="admonition-title">Tip</div>{{ .Inner | markdownify }}</div>
+{{ $title := .Get "title" | default "Tip" }}
+<div class="admonition callout-tip" role="note" aria-label="{{ $title }}"><div class="admonition-title"><span aria-hidden="true">💡</span>{{ $title }}</div>{{ .Inner | markdownify }}</div>
