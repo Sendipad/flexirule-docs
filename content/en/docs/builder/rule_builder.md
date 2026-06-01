@@ -1,70 +1,98 @@
 ---
 title: "Rule Builder"
+description: "Visual workspace for designing business logic graphs."
 weight: 10
+parent: "rule-building"
 ---
 
 # Visual Rule Builder
 
-The Rule Builder is a Vue 3-based visual workspace for designing business logic graphs. It provides a drag-and-drop canvas where you can orchestrate complex workflows.
+Keywords: rule builder, visual editor, drag and drop, workflow, no-code, vueflow
+
+## Audience
+
+- End Users
+- Developers
+
+## Overview
+
+The Rule Builder is a Vue 3-based visual workspace for designing business logic graphs. It provides a drag-and-drop canvas where you can orchestrate complex workflows without writing code, while maintaining full visibility into the execution flow.
+
+### When to Use
+- Use this to design new business rules and processes.
+- Use this to visualize the logical flow of an existing rule.
+- Use this to test and debug rules using real document data.
+
+---
+
+## Visual Example
+
+![Rule Builder Overview](../../landing-page/rule_builder.png)
+
+---
 
 ## Key Concepts
 
 ### Nodes (Actions)
-
 Each node in the graph represents a **Rule Action**.
 
--   **Entry Action**: The starting point. Defines trigger criteria.
--   **Functional Nodes**: Perform work (Process, Assignment, Query Records, Document Action, Notify).
--   **Control Nodes**: Manage flow (Condition, Loop, Switch, Wait, Stop, Raise Error).
+- **Entry Action**: The starting point of the graph.
+- **Functional Nodes**: Perform work (e.g., [Process](../actions/process/), [Assignment](../actions/assignment/)).
+- **Control Nodes**: Manage flow (e.g., [Condition](../actions/condition/), [Loop](../actions/loop/)).
 
 ---
 
 ## No-Code & Error Prevention
 
-A primary goal of the Rule Builder is to eliminate error-prone manual input by providing a strictly guided configuration experience.
+### Temporal Context Visibility
+The builder ensures that an action can only access variables that are logically available at its point in the execution flow.
 
-### Temporal Context Visibility (Context-Awareness)
-
-One of the core safety features of the builder is **Temporal Context Isolation**. At design-time, the builder ensures that an action can only access variables that are logically available at its point in the execution flow.
-
--   **Upstream-Only Visibility**: The field picker _only_ displays variables created or updated by **upstream nodes** (nodes that execute before the current one).
--   **Isolation from the Future**: A node cannot "see" or reference variables that are created or updated by actions that come after it in the graph.
--   **Dynamic Schema Switching**: When a node points to a different record (e.g., in a `Query Records` action), the picker automatically switches to the schema of that reference DocType, while maintaining access to all valid upstream context.
+- **Upstream-Only Visibility**: The field picker *only* displays variables created by upstream nodes.
+- **Dynamic Schema Switching**: Automatically switches field pickers based on the DocType context.
 
 ### Reactive & Type-Aware Controls
-
-The builder's input controls are highly reactive and understand the **FieldType** of the selected data.
-
--   **Intelligent Filter Builder (`FilterGroup`)**: Used in Query and Condition nodes, it dynamically adapts operators based on field types and supports advanced **Timespan** tokens (e.g., "Last Week").
--   **Magic Formula Builder (`ValueResolver`)**: Allows defining complex logic (Date math, Aggregations, String manipulation) via a guided UI that generates safe Jinja snippets.
--   **Automatic Validation**: If a user selects a Date field (`posting_date`), the system ensures the comparison value is a date, preventing invalid configurations like `posting_date == "Yes"`.
--   **Dynamic Operator Filtering**: Available operators (e.g., `Greater Than`, `Contains`) change based on the data type (numeric, string, or collection).
+- **Intelligent Filter Builder**: Adapts operators based on field types.
+- **Magic Formula Builder**: Guided UI for complex logic (Date math, Aggregations).
 
 ---
 
-## Builder UI Features
+## Rule Lifecycle
 
-### 1. The Canvas (VueFlow)
-
--   **Auto-Layout**: Automatically organize nodes using the "Auto Layout" button.
--   **Mini-map & Controls**: Navigate large graphs with ease.
-
-### 2. Configuration Modes
-
--   **Sidebar Mode**: Quick edits on the right panel.
--   **Modal Mode**: Focused full-screen dialog.
+```mermaid
+stateDiagram-v2
+    [*] --> Draft: Create Rule
+    Draft --> Active: Validate & Activate
+    Active --> Draft: Edit/Amend
+    Active --> Disabled: Disable
+    Disabled --> Active: Re-activate
+    Active --> Archived: Archive
+```
 
 ---
 
-## Testing & Debugging
+## Examples
 
-### Live Test
+### Basic Example
+**Problem**: Create a simple rule that sets a field.
+**Configuration**:
+1. Add an **Entry Action**.
+2. Connect it to an **Assignment** action.
+3. Configure the Assignment to set `doc.status = "Open"`.
+**Result**: When the rule triggers, the status is updated.
 
-Click **Test Rule** to execute the current logic against a real document.
+### Real-world Example
+**Problem**: Complex approval workflow with notifications.
+**Configuration**:
+1. **Entry**: On Sales Order Submit.
+2. **Condition**: Is Total > 10,000?
+3. **True Path**: Send **Email** to Manager and set `doc.workflow_state = "Pending Manager"`.
+4. **False Path**: Set `doc.workflow_state = "Approved"`.
+**Result**: Automated routing based on order value.
 
--   **Dry Run**: No database commits.
--   **Visual Feedback**: Highlights the execution path and provides real-time status badges (✅/❌) on each node.
+---
 
-### Simulation
+## Related Topics
 
-Step through rule logic without executing side-effects to verify condition paths and variable changes.
+- [Condition Builder](../condition_builder/)
+- [Execution Engine](../../engine/execution_engine/)
+- [Action Catalog](../../actions/action_types_catalog/)
