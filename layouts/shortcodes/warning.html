@@ -1,1 +1,2 @@
-<div class="admonition" style="--admonition: #f59e0b;"><div class="admonition-title">Warning</div>{{ .Inner | markdownify }}</div>
+{{ $title := .Get "title" | default "Warning" }}
+<div class="admonition callout-warning" role="note" aria-label="{{ $title }}"><div class="admonition-title"><span aria-hidden="true">⚠️</span>{{ $title }}</div>{{ .Inner | markdownify }}</div>

@@ -34,6 +34,28 @@ document.addEventListener('DOMContentLoaded', () => {
   overlay?.addEventListener('click', () => setSidebar(false));
   $$('[data-sidebar-close]').forEach((button) => button.addEventListener('click', () => setSidebar(false)));
 
+
+  const sidebar = $('#sidebar');
+  if (sidebar) {
+    const sidebarScrollKey = 'flexirule:sidebar-scroll';
+    sidebar.scrollTop = Number(sessionStorage.getItem(sidebarScrollKey) || 0);
+    sidebar.addEventListener('scroll', () => sessionStorage.setItem(sidebarScrollKey, String(sidebar.scrollTop)), { passive: true });
+  }
+
+  const prefetched = new Set();
+  const prefetchPage = (href) => {
+    if (!href || prefetched.has(href) || href.startsWith('#')) return;
+    prefetched.add(href);
+    const link = document.createElement('link');
+    link.rel = 'prefetch';
+    link.href = href;
+    document.head.appendChild(link);
+  };
+  $$('.sidebar-link, .doc-card, .pager-link').forEach((link) => {
+    link.addEventListener('mouseenter', () => prefetchPage(link.href), { once: true });
+    link.addEventListener('focus', () => prefetchPage(link.href), { once: true });
+  });
+
   $('#btn-copy-url')?.addEventListener('click', () => copyText(window.location.href, 'Page link copied'));
   $('#btn-copy-md')?.addEventListener('click', () => {
     const source = $('#page-source');
@@ -106,20 +128,76 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#command-trigger')?.addEventListener('click', openSearch);
   $$('[data-dialog-close]').forEach((button) => button.addEventListener('click', () => dialog?.close()));
   document.addEventListener('keydown', (event) => {
-    if (event.key === '/' && !/input|textarea|select/i.test(document.activeElement?.tagName || '')) {
+    const isTyping = /input|textarea|select/i.test(document.activeElement?.tagName || '');
+    const isCommandK = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 'k';
+    if ((event.key === '/' && !isTyping) || isCommandK) {
       event.preventDefault();
       openSearch();
     }
   });
 
+
+  const searchMemoryKey = 'flexirule:recent-searches';
+  const pinnedSearches = ['conditions', 'action runtime', 'rule builder', 'execution context'];
+  const readRecentSearches = () => {
+    try { return JSON.parse(localStorage.getItem(searchMemoryKey) || '[]'); } catch (_) { return []; }
+  };
+  const saveRecentSearch = (query) => {
+    const normalized = query.trim();
+    if (normalized.length < 2) return;
+    const recent = [normalized, ...readRecentSearches().filter((item) => item.toLowerCase() !== normalized.toLowerCase())].slice(0, 5);
+    try { localStorage.setItem(searchMemoryKey, JSON.stringify(recent)); } catch (_) { /* ignore unavailable storage */ }
+    renderSearchChips();
+  };
+  const runSearchShortcut = (query) => {
+    const input = $('.pagefind-ui__search-input');
+    if (!input) return;
+    input.value = query;
+    input.dispatchEvent(new Event('input', { bubbles: true }));
+    input.focus();
+    saveRecentSearch(query);
+  };
+  function renderSearchChips() {
+    const render = (root, items) => {
+      if (!root) return;
+      root.innerHTML = '';
+      items.forEach((item) => {
+        const button = document.createElement('button');
+        button.type = 'button';
+        button.className = 'search-chip';
+        button.textContent = item;
+        button.addEventListener('click', () => runSearchShortcut(item));
+        root.appendChild(button);
+      });
+      if (!items.length) {
+        const empty = document.createElement('span');
+        empty.className = 'search-empty';
+        empty.textContent = 'No searches yet';
+        root.appendChild(empty);
+      }
+    };
+    render($('#recent-searches'), readRecentSearches());
+    render($('#pinned-searches'), pinnedSearches);
+  }
+
   let pagefindLoaded = false;
   function initPagefind() {
+    renderSearchChips();
     if (pagefindLoaded || !$('#pagefind-search')) return;
     pagefindLoaded = true;
     const script = document.createElement('script');
     script.src = dialog.getAttribute('data-pagefind-script') || '/pagefind/pagefind-ui.js';
     script.onload = () => {
-      if (window.PagefindUI) new window.PagefindUI({ element: '#pagefind-search', showSubResults: true, highlightParam: 'highlight' });
+      if (window.PagefindUI) {
+        new window.PagefindUI({ element: '#pagefind-search', showSubResults: true, highlightParam: 'highlight', autofocus: true });
+        window.setTimeout(() => {
+          const input = $('.pagefind-ui__search-input');
+          input?.addEventListener('change', () => saveRecentSearch(input.value));
+          input?.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter') saveRecentSearch(input.value);
+          });
+        }, 0);
+      }
     };
     script.onerror = () => { $('#pagefind-search').innerHTML = '<p class="pagefind-ui__message">Search index is generated during production builds.</p>'; };
     document.head.appendChild(script);

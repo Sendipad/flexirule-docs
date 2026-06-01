@@ -1,0 +1,97 @@
+{{ define "main" }}
+{{ $docs := site.GetPage "section" "docs" }}
+<section class="home-hero" data-pagefind-body>
+  <div class="home-hero__content">
+    <p class="eyebrow">Enterprise rules orchestration for Frappe</p>
+    <h1>Build visual business logic that is auditable, deterministic, and fast.</h1>
+    <p class="lead">FlexiRule turns scattered hooks into a product-grade automation layer: visual rules, reusable actions, explicit execution paths, and documentation designed for developers.</p>
+    <div class="hero-actions" aria-label="Primary actions">
+      <a class="btn btn-primary" href='{{ "docs/" | relLangURL }}'>Get Started</a>
+      <a class="btn btn-secondary" href='{{ "docs/architecture/" | relLangURL }}'>View Architecture</a>
+    </div>
+    <dl class="hero-metrics" aria-label="FlexiRule documentation highlights">
+      <div><dt>4</dt><dd>core concepts</dd></div>
+      <div><dt>12+</dt><dd>action patterns</dd></div>
+      <div><dt>v1.0</dt><dd>docs version</dd></div>
+    </dl>
+  </div>
+  <div class="home-hero__visual" aria-label="FlexiRule execution preview">
+    <div class="workflow-card">
+      <div class="workflow-node node-trigger">Trigger</div>
+      <div class="workflow-edge"></div>
+      <div class="workflow-node node-condition">Condition</div>
+      <div class="workflow-edge"></div>
+      <div class="workflow-node node-action">Action</div>
+    </div>
+    <div class="floating-panel">
+      <span class="status-dot"></span>
+      Rule graph validated
+    </div>
+  </div>
+</section>
+
+<section class="home-section quickstart-section" aria-labelledby="quickstart-title">
+  <div class="section-heading">
+    <p class="eyebrow">Quick Start</p>
+    <h2 id="quickstart-title">Go from install to executable rule in five steps.</h2>
+  </div>
+  <div class="step-grid">
+    <article class="step-card"><span>1</span><h3>Install app</h3><p>Add FlexiRule to your Frappe bench and site.</p></article>
+    <article class="step-card"><span>2</span><h3>Open builder</h3><p>Launch the visual rule builder from Desk.</p></article>
+    <article class="step-card"><span>3</span><h3>Define trigger</h3><p>Choose DocType event, scheduler, or callable entry point.</p></article>
+    <article class="step-card"><span>4</span><h3>Compose actions</h3><p>Connect conditions, assignments, notifications, and processes.</p></article>
+    <article class="step-card"><span>5</span><h3>Validate & run</h3><p>Preview the graph, publish safely, and observe execution.</p></article>
+  </div>
+</section>
+
+<section class="home-section" aria-labelledby="concepts-title">
+  <div class="section-heading">
+    <p class="eyebrow">Core Concepts</p>
+    <h2 id="concepts-title">Everything starts with a small, memorable model.</h2>
+  </div>
+  <div class="card-grid feature-grid">
+    <a class="doc-card feature-card" href='{{ "docs/engine/condition_system/" | relLangURL }}'><span class="feature-icon">◇</span><span class="card-title">Conditions</span><span class="card-desc">Model nested logic with deterministic evaluation and reusable branches.</span></a>
+    <a class="doc-card feature-card" href='{{ "docs/actions/overview/" | relLangURL }}'><span class="feature-icon">▶</span><span class="card-title">Actions</span><span class="card-desc">Run assignments, notifications, document updates, and code-backed processes.</span></a>
+    <a class="doc-card feature-card" href='{{ "docs/actions/assignment/" | relLangURL }}'><span class="feature-icon">=</span><span class="card-title">Assignments</span><span class="card-desc">Map values across documents and execution context without hidden glue code.</span></a>
+    <a class="doc-card feature-card" href='{{ "docs/actions/process/" | relLangURL }}'><span class="feature-icon">↻</span><span class="card-title">Processes</span><span class="card-desc">Encapsulate reusable business capabilities behind visual configuration.</span></a>
+  </div>
+</section>
+
+<section class="home-section architecture-strip" aria-labelledby="architecture-title">
+  <div>
+    <p class="eyebrow">Architecture Overview</p>
+    <h2 id="architecture-title">A minimal pipeline from event to observed execution.</h2>
+    <p>FlexiRule separates trigger selection, graph orchestration, action runtime, and execution context so teams can reason about behavior before it ships.</p>
+    <a class="text-link" href='{{ "docs/architecture/graph_orchestration/" | relLangURL }}'>Explore graph orchestration →</a>
+  </div>
+  <div class="architecture-diagram" role="img" aria-label="Trigger flows into rule graph, then runtime, then Frappe documents and logs">
+    <span>Trigger</span><i></i><span>Rule Graph</span><i></i><span>Runtime</span><i></i><span>Documents + Logs</span>
+  </div>
+</section>
+
+<section class="home-section" aria-labelledby="tutorials-title">
+  <div class="section-heading split-heading">
+    <div><p class="eyebrow">Featured Tutorials</p><h2 id="tutorials-title">Navigation paths for every role.</h2></div>
+    <a class="text-link" href='{{ "docs/" | relLangURL }}'>Browse all docs →</a>
+  </div>
+  <div class="card-grid">
+    {{ with $docs }}{{ range first 6 .Pages.ByWeight }}
+      <a class="doc-card guide-card" href="{{ .RelPermalink }}"><span class="card-title">{{ .Title }}</span><span class="card-desc">{{ .Description | default .Summary | plainify | truncate 132 }}</span></a>
+    {{ end }}{{ end }}
+  </div>
+</section>
+
+<section class="home-section support-grid" aria-label="Updates and support">
+  <article class="surface-card">
+    <p class="eyebrow">Latest Updates</p>
+    <h2>Documentation system refreshed</h2>
+    <p>Modern navigation, local-first search affordances, dark mode polish, and reusable documentation components are now built into the portal.</p>
+  </article>
+  <article class="surface-card">
+    <p class="eyebrow">Community & Support</p>
+    <h2>Need the source?</h2>
+    <p>Jump into the application or documentation repositories to inspect implementation details, request changes, and track releases.</p>
+    <div class="hero-actions compact"><a class="btn btn-secondary" href="{{ .Site.Params.github_app_repo }}">GitHub</a><a class="btn btn-secondary" href="{{ .Site.Params.github_docs_repo }}">Docs source</a></div>
+  </article>
+</section>
+{{ end }}
