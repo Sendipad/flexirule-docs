@@ -56,13 +56,62 @@ document.addEventListener('DOMContentLoaded', () => {
     link.addEventListener('focus', () => prefetchPage(link.href), { once: true });
   });
 
-  $('#btn-copy-url')?.addEventListener('click', () => copyText(window.location.href, 'Page link copied'));
-  $('#btn-copy-md')?.addEventListener('click', () => {
-    const source = $('#page-source');
-    if (!source) return;
-    const data = JSON.parse(source.textContent || '{}');
-    copyText(data.raw || '', 'Markdown copied');
-  });
+  const btnCopyUrl = $('#btn-copy-url');
+  if (btnCopyUrl) {
+    const originalText = btnCopyUrl.querySelector('span').textContent;
+    btnCopyUrl.addEventListener('click', async () => {
+      try {
+        await navigator.clipboard.writeText(window.location.href);
+        showToast('Page link copied');
+        btnCopyUrl.querySelector('span').textContent = 'Copied ✓';
+        setTimeout(() => { btnCopyUrl.querySelector('span').textContent = originalText; }, 2000);
+      } catch (_) {
+        showToast('Copy failed');
+      }
+    });
+  }
+
+  const btnCopyMd = $('#btn-copy-md');
+  if (btnCopyMd) {
+    const originalText = btnCopyMd.querySelector('span').textContent;
+    btnCopyMd.addEventListener('click', async () => {
+      const source = $('#page-source');
+      let markdown = '';
+      if (source) {
+        try {
+          const data = JSON.parse(source.textContent || '{}');
+          markdown = data.raw || '';
+        } catch (_) { /* fallback */ }
+      }
+
+      if (!markdown) {
+        const body = $('.doc-body');
+        markdown = body ? body.innerText : document.body.innerText;
+      }
+
+      try {
+        await navigator.clipboard.writeText(markdown);
+        showToast('Markdown copied');
+        btnCopyMd.querySelector('span').textContent = 'Copied ✓';
+        setTimeout(() => { btnCopyMd.querySelector('span').textContent = originalText; }, 2000);
+      } catch (_) {
+        showToast('Copy failed');
+        btnCopyMd.querySelector('span').textContent = 'Copy Failed';
+        setTimeout(() => { btnCopyMd.querySelector('span').textContent = originalText; }, 2000);
+      }
+    });
+  }
+
+  $('#btn-download-pdf')?.addEventListener('click', () => window.print());
+
+  const openAI = (baseUrl) => {
+    const prompt = `I'm currently reading the following documentation page:\n\nTitle: ${document.title}\nURL: ${window.location.href}\n\nPlease answer any questions I have based on the contents of this page.`;
+    const url = `${baseUrl}${encodeURIComponent(prompt)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  $('#btn-chatgpt')?.addEventListener('click', () => openAI('https://chatgpt.com/?q='));
+  $('#btn-claude')?.addEventListener('click', () => openAI('https://claude.ai/new?q='));
 
   $$('.doc-body h2[id], .doc-body h3[id]').forEach((heading) => {
     if (heading.querySelector('.heading-anchor')) return;
