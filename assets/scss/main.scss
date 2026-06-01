@@ -444,3 +444,50 @@ mark { background: rgba(6, 182, 212, .22); color: inherit; border-radius: .2rem;
 @media (prefers-reduced-motion: reduce) {
   *, *::before, *::after { scroll-behavior: auto !important; transition: none !important; }
 }
+
+@media print {
+  .site-header, .sidebar, .toc, .action-bar, .toc-toggle, .reading-progress, .page-meta, .pager, .site-footer, .heading-anchor, .site-overlay, .copy-code {
+    display: none !important;
+  }
+
+  .shell, .shell:has(.sidebar) {
+    display: block;
+    max-width: 100%;
+  }
+
+  .content-area {
+    padding: 0;
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .docs-layout {
+    display: block;
+    width: 100%;
+  }
+
+  .docs-content {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 12pt;
+  }
+
+  a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+
+  h1, h2, h3, h4 {
+    page-break-after: avoid;
+    color: #000 !important;
+  }
+
+  pre, blockquote, img, figure, table {
+    page-break-inside: avoid;
+  }
+}
