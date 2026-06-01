@@ -1,76 +1,92 @@
 ---
 title: "Architecture"
+description: "Core architecture and design philosophy of FlexiRule."
 weight: 20
 ---
 
 # FlexiRule Architecture
 
+Keywords: architecture, system overview, design, layers, frappe, vueflow
+
+## Audience
+
+- Developers
+- Administrators
+- Contributors
+
+## Overview
+
 FlexiRule is a visual rule orchestration engine built for Frappe v15+. It bridges the gap between no-code configuration and standard Python business logic by providing a graph-based execution layer.
 
-## System Overview
+---
 
-FlexiRule follows a layered architecture that integrates deeply with the Frappe Framework:
+## Rule Execution Lifecycle
 
-1.  **Presentation Layer (Vue 3 + VueFlow)**: A modern, reactive visual builder for designing rules. See [Rule Builder Guide](builder/rule_builder.md).
-2.  **API Layer (`flexirule.ruleflow.api`)**: Standardized whitelisted endpoints for lifecycle management, execution, and metadata introspection. See [API Reference](reference/api.md).
-3.  **Domain Layer (Core Engine)**: The heart of the system, responsible for rule compilation, validation, and deterministic execution. See [Execution Engine](engine/execution_engine.md) and [Condition System](engine/condition_system.md).
-4.  **Persistence Layer (DocTypes)**: Frappe DocTypes for storing rule definitions, process metadata, and execution logs. See [DocType Reference](reference/doctypes.md).
+```mermaid
+sequenceDiagram
+    participant F as Frappe Hook
+    participant RC as RuleCoordinator
+    participant RE as RuleEngine
+    participant AH as ActionHandlers
+    F->>RC: Trigger Event (e.g., on_update)
+    RC->>RC: Find & Filter Rules
+    RC->>RE: Execute Rule(s)
+    loop For each Node
+        RE->>AH: Handle Action
+        AH-->>RE: Return Result
+    end
+    RE-->>RC: Execution Finished
+    RC-->>F: Done
+```
 
 ---
 
-## 1. Presentation Layer (Frontend)
+## System Layers
 
+### 1. Presentation Layer (Frontend)
 The frontend is built using **Vue 3** and **VueFlow**, integrated into the Frappe Desk. It manages complex graph states and ensures design-time safety through context-aware validation.
 
----
-
-## 2. API Layer
-
+### 2. API Layer
 The API layer provides a secure bridge between the frontend and backend. Key functionalities include introspection, validation, and execution testing.
 
----
-
-## 3. Domain Layer (The Core Engine)
-
+### 3. Domain Layer (Core Engine)
 The core engine is responsible for the deterministic execution of rules.
+- **RuleCoordinator**: Handles event dispatching and caching.
+- **RuleEngine**: Traverses the graph using a Strategy Pattern.
+- **ContextManager**: Manages variable scope (`vars`) and mutation modes.
 
-### **RuleCoordinator**
-
-The entry point for all rule executions. It handles event dispatching, layered caching, and pruning via `watched_fields`. See [Trigger System](engine/trigger_system.md).
-
-### **RuleEngine**
-
-The executor that traverses the graph using a Strategy Pattern. It manages the orchestration flow and error recovery. See [Orchestration Capabilities](engine/orchestration.md).
-
-### **ConditionCompiler**
-
-Compiles visual JSON condition trees into optimized Python strings for ultra-fast evaluation. See [Condition System Technical Details](engine/condition_system.md).
-
-### **ContextManager**
-
-Manages variable scope (`vars`) and provides structured mutation modes.
+### 4. Persistence Layer (Data Model)
+FlexiRule uses several Frappe DocTypes to maintain rules, processes, and audit trails.
 
 ---
 
-## 4. Persistence Layer (Data Model)
+## Integration Flow
 
-FlexiRule uses several Frappe DocTypes to maintain rules, processes, and audit trails. See [DocType Reference](reference/doctypes.md) for a full breakdown of fields and usages.
+```mermaid
+graph TD
+    A[Frappe App] -->|Hooks| B[RuleCoordinator]
+    B -->|Registry| C{Rules Active?}
+    C -- Yes --> D[RuleEngine]
+    C -- No --> E[Exit]
+    D --> F[Action Handlers]
+    F -->|Result| G[Update doc/vars]
+    G --> D
+```
 
 ---
 
-## Technical Audit & Integrity
+## Technical Integrity
 
 The system includes a built-in technical audit mechanism to ensure rule integrity:
 
--   **Graph Validation**: Prevents disconnected nodes, cycles, and invalid exit paths.
--   **Contract Enforcement**: Ensures action configurations match the backend expectations defined in `contracts.py`.
--   **Pre-Activation Check**: A full validation suite runs automatically before a rule can be transitioned to "Active" status.
+- **Graph Validation**: Prevents disconnected nodes, cycles, and invalid exit paths.
+- **Contract Enforcement**: Ensures action configurations match backend expectations.
+- **Pre-Activation Check**: A full validation suite runs automatically before activation.
 
 ---
 
-## Integration with Frappe
+## Related Topics
 
--   **Doc Events**: Rules are hooked into the standard Frappe lifecycle via `hooks.py`.
--   **Background Jobs**: Asynchronous rules are offloaded using `frappe.enqueue`.
--   **Distributed Caching**: Uses Frappe's Redis cache and Realtime events to synchronize rule states across multiple web workers.
--   **Security**: Execution is sandboxed using `SafeFrappeAPI` and `frappe.safe_eval`.
+- [Execution Engine](../engine/execution_engine/)
+- [API Reference](../reference/api/)
+- [DocType Reference](../reference/doctypes/)

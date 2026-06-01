@@ -1,111 +1,118 @@
 ---
 title: "Assignment"
+description: "Mutating document state and context variables."
 weight: 20
 ---
 
 # Assignment Action
 
+Keywords: assignment, set value, variables, mutation, state change
+
+## Audience
+
+- End Users
+- Developers
+
+## Overview
+
 The **Assignment** action is a powerful tool for performing batch state mutations on the current document or context variables. It replaces the legacy **Set Value** action with a more robust system that supports multiple operators and sequential execution.
 
-## Key Features
+### When to Use
+- Use this when you need to update fields on the current document (e.g., `doc.status = "Completed"`).
+- Use this to store temporary data in `vars` for use later in the rule.
+- Use this for basic mathematical transformations or list operations.
 
--   **Batch Processing**: Define multiple mutations within a single action node.
--   **Dual-Mode Editor**: Seamlessly switch between a visual **Formula Resolver** (for dates, math, and aggregations) and a **Template Editor** (for rich text and complex Jinja logic).
--   **Conditional Execution**: Each assignment row can have its own **"Run If"** condition using the visual Condition Builder, allowing for granular control over which mutations are applied.
--   **Multiple Operators**: Beyond simple assignment, it supports math, list operations, and object merging.
--   **Path Validation**: Prevents accidental mutation of protected system paths.
+### Do Not Use
+- Do not use this to create *new* documents (use [Document Action](../document_action/) instead).
+- Do not use this for complex business logic that requires database lookups or external API calls (use [Process](../process/) instead).
 
-## Value Editors
+---
+
+## Visual Example
+
+```mermaid
+graph LR
+    A[Start] --> B[Assignment Node]
+    B --> C["doc.status = 'Approved'"]
+    B --> D["vars.count += 1"]
+    D --> E[Next Action]
+```
+
+---
+
+## Configuration
+
+### Value Editors
 
 The Assignment action provides two modes for defining values:
 
-### 1. Formula Resolver
-
+#### 1. Formula Resolver
 A "no-code" interface for common operations:
+- **Date Math**: `Today + 5 Days`.
+- **Numeric Calculations**: Arithmetic between fields or constants.
+- **Aggregations**: `SUM`, `AVG`, or `COUNT` of child table rows.
 
--   **Date Math**: `Today + 5 Days`, `doc.posting_date - 1 Month`.
--   **Numeric Calculations**: Basic math between fields or constants.
--   **Aggregations**: `SUM`, `AVG`, or `COUNT` of child table rows.
--   **String Helpers**: Concatenation, Case conversion, and Currency formatting.
-
-### 2. Template Editor
-
+#### 2. Template Editor
 A rich-text interface for:
+- **Jinja Templates**: Dynamic strings with full access to the execution context.
+- **Variable Insertion**: Easily pick fields from `doc` or `vars`.
 
--   **Jinja Templates**: Dynamic strings with full access to the execution context.
--   **Variable Insertion**: Easily pick fields from `doc` or `vars`.
--   **Manual Overrides**: Write custom logic when the visual resolver isn't enough.
+---
 
 ## Operators
 
-The Assignment action utilizes a registry of operators, each designed for specific data types:
+| Operator | Description | Supported Types |
+| :--- | :--- | :--- |
+| **Set Value** | Replaces the target with a new value. | All |
+| **Clear** | Resets the target to its default empty state. | All |
+| **Increment By** | Adds a numeric value to the target. | Numeric |
+| **Append To List** | Adds an item to the end of a list. | Tables, Lists |
+| **Toggle Boolean** | Flips a boolean value (1 to 0, 0 to 1). | Check |
 
-| Operator                       | Description                                                           | Supported Types | Idempotent |
-| :----------------------------- | :-------------------------------------------------------------------- | :-------------- | :--------- |
-| **Set Value** (`set`)          | Replaces the target with a new value.                                 | All             | Yes        |
-| **Clear** (`clear`)            | Resets the target to its default empty state (null, empty list, etc). | All             | Yes        |
-| **Increment By** (`increment`) | Adds a numeric value to the target.                                   | Numeric         | No         |
-| **Decrement By** (`decrement`) | Subtracts a numeric value from the target.                            | Numeric         | No         |
-| **Append To List** (`append`)  | Adds an item to the end of a list.                                    | Tables, Lists   | No         |
-| **Merge Object** (`merge`)     | Merges a dictionary into the target object.                           | JSON, Dicts     | No         |
-| **Toggle Boolean** (`toggle`)  | Flips a boolean value (1 to 0, 0 to 1).                               | Check           | No         |
+---
 
-## Target Paths
+## Examples
 
-Assignments can target two primary scopes:
+### Basic Example
+**Problem**: Mark an Invoice as "Paid" once a payment is confirmed.
+**Configuration**:
+- Target: `doc.status`
+- Operator: `Set Value`
+- Value: `Paid`
+**Execution**: The engine updates the status field on the document.
+**Result**: The document reflects the updated status.
 
-### 1. Document (`doc.*`)
+### Real-world Example
+**Problem**: Track the number of high-value items in an order.
+**Configuration**:
+- Target: `vars.high_value_count`
+- Operator: `Increment By`
+- Value: `1`
+- **Run If**: `item.price > 1000` (within a loop)
+**Execution**: Increments the variable each time an item meets the condition.
+**Result**: `vars.high_value_count` contains the final tally.
 
-Mutates fields on the document that triggered the rule.
+### Advanced Example
+**Problem**: Calculate a custom expiry date based on a document's posting date and a customer category.
+**Configuration**:
+- Target: `doc.expiry_date`
+- Operator: `Set Value`
+- Value (Formula): `doc.posting_date + 30 Days`
+**Execution**: The Formula Resolver calculates the date.
+**Result**: `doc.expiry_date` is set to 30 days after `posting_date`.
 
--   **Root Fields**: `doc.status`, `doc.naming_series`.
--   **Note**: In V1, deep document path assignments for child tables (e.g., `doc.items.0.qty`) are not supported directly via this action.
+---
 
-### 2. Context Variables (`vars.*`)
+## Common Mistakes
 
-Mutates variables in the execution context.
+- **Circular Assignments**: Setting `doc.total = doc.total + 10` in a rule that triggers on "Total Change" (can cause loops).
+- **Type Mismatches**: Trying to `Increment` a string field.
+- **Save Hooks**: Forgetting that `doc.*` mutations might not be saved if the rule is triggered in a read-only event (like `after_save`).
 
--   **Nesting**: Supports deep paths like `vars.totals.tax_amount`.
--   **Auto-Initialization**: Intermediate dictionaries are created automatically if they don't exist.
+---
 
-## Configuration (JSON)
+## Related Topics
 
-The configuration is stored as a JSON array of assignment objects. The engine handles both simple legacy formats and the modern structured UI state:
-
-```json
-[
-	{
-		"target": "doc.status",
-		"operator": "set",
-		"value_mode": "template",
-		"value_template": "Closed",
-		"when_condition": null
-	},
-	{
-		"target": "vars.counter",
-		"operator": "increment",
-		"value_mode": "resolver",
-		"value_template": "{% raw %}{{ 1 }}{% endraw %}",
-		"value_template_ui": {
-			"kind": "math_formula",
-			"constant_b": 1
-		},
-		"when_condition": {
-			"op": "and",
-			"conditions": [
-				{
-					"left": "doc.docstatus",
-					"op": "==",
-					"right": 0
-				}
-			]
-		}
-	}
-]
-```
-
-## Safety & Restrictions
-
--   **System Protection**: Mutations to paths starting with `meta.`, `frappe.`, `rule.`, or `caller.` are blocked.
--   **Event Awareness**: `doc.*` mutations are prohibited during `after_save` and other read-only events to prevent inconsistent states.
--   **Sandboxed Evaluation**: Values are evaluated using Jinja templates with a restricted `SafeFrappeAPI` context.
+- [Variables Reference](../#variables)
+- [Formula Resolver](../../ui/action_config_panels/#1-valueresolvercontrol)
+- [Execution Lifecycle](../../engine/execution_engine/#1-triggering)

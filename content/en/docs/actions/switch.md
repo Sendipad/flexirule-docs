@@ -1,27 +1,83 @@
 ---
 title: "Switch"
+description: "Multi-path branching based on expression values."
 weight: 90
 ---
 
 # Switch Action
 
-The **Switch** action enables multi-path branching based on the value of an expression. It functions similarly to a `switch` statement in programming or a router in logic flows.
+Keywords: switch, case, branching, routing, multi-path
+
+## Audience
+
+- End Users
+- Developers
+
+## Overview
+
+The **Switch** action enables multi-path branching based on the value of an expression. It functions similarly to a `switch` statement in programming, allowing you to route execution to many different paths based on a single variable or field.
+
+### When to Use
+- Use this when you have more than two possible paths based on a single field (e.g., "Status" can be New, Open, Closed, or Pending).
+- Use this to simplify logic that would otherwise require multiple nested [Condition](../condition/) nodes.
+
+### Do Not Use
+- Do not use this if you need complex boolean logic (use [Condition](../condition/) instead).
+- Do not use this if you only have two paths (True/False).
+
+---
+
+## Visual Example
+
+```mermaid
+graph TD
+    A[Start] --> B{Switch: doc.status}
+    B -- "Draft" --> C[Assign User]
+    B -- "Submitted" --> D[Notify Manager]
+    B -- "Cancelled" --> E[Log Reason]
+    B -- "Default" --> F[Standard Flow]
+```
+
+---
 
 ## Configuration
 
--   **Expression**: A Python expression that evaluates to a value (e.g., `doc.status` or `vars.category`).
--   **Cases**: A mapping of expected values to target Action IDs.
--   **Default Path**: If no case matches the expression's value, execution follows the `next_step_if_false` (labeled as "Default" in the UI) path.
+- **Expression**: A Python expression that evaluates to a value (e.g., `doc.status`).
+- **Cases**: A list of possible values. Each value creates a unique output port in the Rule Builder.
+- **Default Path**: The path followed if the expression's result doesn't match any of the defined cases.
 
-## Execution Logic
+---
 
-1. The engine evaluates the **Expression**.
-2. It attempts to match the result against the defined **Cases** (using both raw value and string comparison).
-3. If a match is found, it jumps to the corresponding action.
-4. If no match is found, it follows the **Default** path.
+## Examples
 
-## Use Cases
+### Basic Example
+**Problem**: Route a Support Ticket to different teams based on its priority.
+**Configuration**:
+- Expression: `doc.priority`
+- Cases: `Low`, `Medium`, `High`, `Urgent`
+**Execution**: The engine evaluates the priority field and matches it to the corresponding port.
+**Result**: Tickets are routed to the appropriate team-specific actions.
 
--   **Document Routing**: Direct a document to different approval paths based on its status.
--   **Category Handling**: Apply different logic based on a "Type" or "Category" field without nesting multiple `Condition` nodes.
--   **Error Code Handling**: Branch execution based on the specific result of a `Process` or `Query` action.
+### Real-world Example
+**Problem**: Apply different discount logic based on a customer's loyalty tier.
+**Configuration**:
+- Expression: `vars.customer_tier`
+- Cases: `Bronze`, `Silver`, `Gold`, `Platinum`
+**Execution**: The tier (retrieved earlier in the rule) determines which path is taken.
+**Result**: Each tier follows its own specific [Assignment](../assignment/) logic for discounts.
+
+---
+
+## Common Mistakes
+
+- **Case Sensitivity**: Forgetting that `Gold` and `gold` are different values.
+- **Missing Default Path**: Not configuring logic for the Default path, which can lead to unexpected "ends" in the execution flow if an unknown value is encountered.
+- **Overlapping Cases**: While the UI prevents identical cases, ensure your expression doesn't resolve to values that are logically ambiguous.
+
+---
+
+## Related Topics
+
+- [Condition Action](../condition/)
+- [Rule Building](../../builder/rule_builder/)
+- [Variables Reference](../../engine/variable_resolution/)
