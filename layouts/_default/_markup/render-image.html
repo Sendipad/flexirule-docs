@@ -1,13 +1,4 @@
 <figure>
-  <img src="{{ .Destination | safeURL }}"
-       alt="{{ .Text }}"
-       {{ with .Title }} title="{{ . }}" {{ end }}
-       loading="lazy"
-       decoding="async"
-       style="max-width: 100%; height: auto; border-radius: 0.5rem; border: 1px solid var(--color-border);">
-  {{ with .Text }}
-    <figcaption style="font-size: 0.875rem; color: var(--color-muted); text-align: center; margin-top: 0.5rem;">
-      {{ . }}
-    </figcaption>
-  {{ end }}
+  <img src="{{ .Destination | safeURL }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
+  {{ with .Title | default .Text }}<figcaption>{{ . }}</figcaption>{{ end }}
 </figure>

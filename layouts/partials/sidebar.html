@@ -1,27 +1,31 @@
-<aside class="sidebar" id="sidebar">
+<aside class="sidebar" id="sidebar" aria-label="Documentation navigation">
+  <div class="sidebar-head">
+    <span>Documentation</span>
+    <button class="icon-button sidebar-close" type="button" data-sidebar-close aria-label="Close documentation menu">×</button>
+  </div>
   <nav class="sidebar-nav">
-    {{ $currentSection := .Section }}
     {{ range .Site.Sections }}
       {{ if eq .Section "docs" }}
-        <div class="sidebar-section">
-          <h4 class="sidebar-title">{{ .Title }}</h4>
-          {{ template "sidebar-tree" (dict "context" . "current" $) }}
-        </div>
+        {{ template "sidebar-tree" (dict "node" . "current" $ "level" 0) }}
       {{ end }}
     {{ end }}
   </nav>
 </aside>
 
 {{ define "sidebar-tree" }}
-  <ul class="sidebar-list">
-    {{ $current := .current }}
-    {{ range .context.Pages.ByWeight }}
-      <li class="sidebar-item">
-        <a href="{{ .RelPermalink }}" class="sidebar-link {{ if eq $current.RelPermalink .RelPermalink }}active{{ end }}">
-          {{ .Title }}
-        </a>
-        {{ if .IsSection }}
-          {{ template "sidebar-tree" (dict "context" . "current" $current) }}
+  {{ $node := .node }}{{ $current := .current }}{{ $level := .level }}
+  <ul class="sidebar-list level-{{ $level }}">
+    {{ range $node.Pages.ByWeight }}
+      {{ $active := eq $current.RelPermalink .RelPermalink }}
+      {{ $open := or $active (.IsAncestor $current) }}
+      <li class="sidebar-item{{ if $active }} is-active{{ end }}{{ if $open }} is-open{{ end }}">
+        {{ if and .IsSection .Pages }}
+          <details {{ if $open }}open{{ end }}>
+            <summary><a class="sidebar-link{{ if $active }} active{{ end }}" href="{{ .RelPermalink }}" {{ if $active }}aria-current="page"{{ end }}>{{ .Title }}</a></summary>
+            {{ template "sidebar-tree" (dict "node" . "current" $current "level" (add $level 1)) }}
+          </details>
+        {{ else }}
+          <a class="sidebar-link{{ if $active }} active{{ end }}" href="{{ .RelPermalink }}" {{ if $active }}aria-current="page"{{ end }}>{{ .Title }}</a>
         {{ end }}
       </li>
     {{ end }}

@@ -1,10 +1,13 @@
 <footer class="footer">
   <div class="footer-inner">
-    <div class="footer-meta" style="margin-top: 2rem; padding-top: 2rem; border-top: 1px solid var(--color-border); color: var(--color-muted); font-size: 0.875rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
-      <div style="display: flex; gap: 1.5rem;">
-        <div>{{ .ReadingTime }} min read</div>
-      </div>
-      <div>© {{ now.Year }} FlexiRule</div>
+    <div>
+      <strong>FlexiRule Documentation</strong>
+      <p>Static, fast, and enterprise-ready guidance for rule automation teams.</p>
     </div>
+    <nav aria-label="Footer links">
+      <a href="{{ .Site.Params.github_app_repo }}" target="_blank" rel="noopener noreferrer">Application</a>
+      <a href="{{ .Site.Params.github_docs_repo }}" target="_blank" rel="noopener noreferrer">Documentation source</a>
+      <a href='{{ "llms.txt" | relURL }}'>llms.txt</a>
+    </nav>
   </div>
 </footer>

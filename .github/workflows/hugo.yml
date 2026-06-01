@@ -43,6 +43,17 @@ jobs:
           hugo-version: '0.162.1'
           extended: true
 
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install static asset tooling
+        run: npm install
+
+      - name: Copy self-hosted fonts
+        run: npm run copy-fonts
+
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v5
@@ -55,6 +66,9 @@ jobs:
           hugo \
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
+
+      - name: Build Pagefind index
+        run: npm run pagefind
 
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3

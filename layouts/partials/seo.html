@@ -1,93 +1,31 @@
-{{ $description := .Description | default .Summary | default .Site.Params.description }}
-{{ $title := .Site.Title }}{{ if not .IsHome }}{{ $title = printf "%s | %s" .Title .Site.Title }}{{ end }}
-
+{{ $description := .Params.description | default .Description | default (.Summary | plainify) | default .Site.Params.description }}
+{{ $description = $description | plainify | truncate 160 }}
+{{ $title := cond .IsHome .Site.Title (printf "%s | %s" .Title .Site.Title) }}
+{{ $image := "" }}{{ with .Params.images | default .Site.Params.images }}{{ $image = index . 0 | absURL }}{{ end }}
+<meta name="description" content="{{ $description }}">
+{{ with .Params.tags }}<meta name="keywords" content="{{ delimit . ", " }}">{{ end }}
+{{ with .Site.Params.seo.google_site_verification }}<meta name="google-site-verification" content="{{ . }}">{{ end }}
 <link rel="canonical" href="{{ .Permalink }}">
-
-<!-- Open Graph / Facebook -->
 <meta property="og:type" content="{{ if .IsPage }}article{{ else }}website{{ end }}">
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $description }}">
-{{ with .Params.images | default .Site.Params.images }}
-<meta property="og:image" content="{{ index . 0 | absURL }}">
+{{ with $image }}<meta property="og:image" content="{{ . }}">{{ end }}
+<meta name="twitter:card" content="{{ if $image }}summary_large_image{{ else }}summary{{ end }}">
+<meta name="twitter:title" content="{{ $title }}">
+<meta name="twitter:description" content="{{ $description }}">
+{{ with .Site.Params.seo.twitter_handle }}<meta name="twitter:site" content="{{ . }}">{{ end }}
+{{ with $image }}<meta name="twitter:image" content="{{ . }}">{{ end }}
+<link rel="sitemap" type="application/xml" href='{{ "sitemap.xml" | absURL }}'>
+{{ $crumbs := slice (dict "@type" "ListItem" "position" 1 "name" "Home" "item" .Site.BaseURL) }}
+{{ range $i, $a := .Ancestors.Reverse }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" (add $i 2) "name" $a.Title "item" $a.Permalink) }}{{ end }}
+{{ if not .IsHome }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" (add (len .Ancestors) 2) "name" .Title "item" .Permalink) }}{{ end }}
+{{ $org := dict "@context" "https://schema.org" "@type" "Organization" "name" (.Site.Params.organization.name | default "FlexiRule") "url" (.Site.Params.organization.url | default .Site.BaseURL) }}
+{{ $search := dict "@context" "https://schema.org" "@type" "WebSite" "url" .Site.BaseURL "name" .Site.Title "potentialAction" (dict "@type" "SearchAction" "target" (printf "%s?search={search_term_string}" .Site.BaseURL) "query-input" "required name=search_term_string") }}
+{{ $breadcrumbs := dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $crumbs }}
+{{ $schemas := slice $org $search $breadcrumbs }}
+{{ if .IsPage }}
+  {{ $article := dict "@context" "https://schema.org" "@type" "TechArticle" "headline" .Title "description" $description "url" .Permalink "dateModified" (.Lastmod.Format "2006-01-02T15:04:05Z07:00") "datePublished" (.Date.Format "2006-01-02T15:04:05Z07:00") "author" (dict "@type" "Organization" "name" (.Site.Params.organization.name | default "FlexiRule")) "publisher" (dict "@type" "Organization" "name" (.Site.Params.organization.name | default "FlexiRule")) }}
+  {{ $schemas = $schemas | append $article }}
 {{ end }}
-
-<!-- Twitter -->
-<meta property="twitter:card" content="summary_large_image">
-<meta property="twitter:url" content="{{ .Permalink }}">
-<meta property="twitter:title" content="{{ $title }}">
-<meta property="twitter:description" content="{{ $description }}">
-{{ with .Site.Params.seo.twitter_handle }}
-<meta property="twitter:site" content="{{ . }}">
-{{ end }}
-{{ with .Params.images | default .Site.Params.images }}
-<meta property="twitter:image" content="{{ index . 0 | absURL }}">
-{{ end }}
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  "itemListElement": [
-    {
-      "@type": "ListItem",
-      "position": 1,
-      "name": "Home",
-      "item": "{{ .Site.BaseURL }}"
-    }
-    {{ range $index, $element := .Ancestors.Reverse }}
-    ,{
-      "@type": "ListItem",
-      "position": {{ add $index 2 }},
-      "name": "{{ .Title }}",
-      "item": "{{ .Permalink }}"
-    }
-    {{ end }}
-    ,{
-      "@type": "ListItem",
-      "position": {{ add (len .Ancestors) 2 }},
-      "name": "{{ .Title }}",
-      "item": "{{ .Permalink }}"
-    }
-  ]
-}
-</script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Article",
-  "headline": "{{ .Title }}",
-  "datePublished": "{{ .Date.Format "2006-01-02T15:04:05Z07:00" }}",
-  "dateModified": "{{ .Lastmod.Format "2006-01-02T15:04:05Z07:00" }}",
-  "author": {
-    "@type": "Organization",
-    "name": "FlexiRule"
-  },
-  "publisher": {
-    "@type": "Organization",
-    "name": "FlexiRule"
-  },
-  "description": "{{ $description }}"
-}
-</script>
-
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  "name": "FlexiRule",
-  "applicationCategory": "BusinessApplication",
-  "operatingSystem": "All",
-  "publisher": {
-    "@type": "Organization",
-    "name": "FlexiRule"
-  },
-  "offers": {
-    "@type": "Offer",
-    "price": "0",
-    "priceCurrency": "USD"
-  },
-  "description": "FlexiRule is an enterprise-grade rules engine and documentation portal."
-}
-</script>
+<script type="application/ld+json">{{ $schemas | jsonify (dict "indent" "  ") | safeJS }}</script>

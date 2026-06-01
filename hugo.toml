@@ -4,6 +4,8 @@ title = 'FlexiRule Documentation'
 
 defaultContentLanguage = 'en'
 enableRobotsTXT = true
+enableGitInfo = true
+summaryLength = 28
 
 [languages]
   [languages.en]
@@ -12,15 +14,55 @@ enableRobotsTXT = true
     weight = 1
 
 [params]
-  description = 'Production-ready Hugo documentation theme for FlexiRule.'
-  github_repo = 'https://github.com/Sendipad/flexirule'
+  description = 'Enterprise documentation for FlexiRule, a metadata-driven automation and rules orchestration platform for Frappe teams.'
+  github_app_repo = 'https://github.com/Sendipad/flexirule'
+  github_docs_repo = 'https://github.com/Sendipad/flexirule-docs'
   github_branch = 'develop'
+  version = 'v1.0'
+  plausible_domain = ''
+  umami_website_id = ''
+  umami_src = ''
+
+  [params.organization]
+    name = 'FlexiRule'
+    url = 'https://sendipad.github.io/flexirule-docs/'
 
   [params.seo]
     twitter_handle = '@flexirule'
     google_site_verification = ''
 
+[frontmatter]
+  lastmod = [':git', 'lastmod', 'date']
+
+[outputs]
+  home = ['HTML', 'RSS', 'LLMS', 'LLMSFULL']
+  section = ['HTML']
+  page = ['HTML']
+
+[mediaTypes]
+  [mediaTypes.'text/llms']
+    suffixes = ['txt']
+  [mediaTypes.'text/llms-full']
+    suffixes = ['txt']
+
+[outputFormats]
+  [outputFormats.LLMS]
+    mediaType = 'text/llms'
+    baseName = 'llms'
+    isPlainText = true
+    notAlternative = true
+  [outputFormats.LLMSFULL]
+    mediaType = 'text/llms-full'
+    baseName = 'llms-full'
+    isPlainText = true
+    notAlternative = true
+
 [markup]
+  [markup.highlight]
+    noClasses = false
+    lineNos = false
+    lineNumbersInTable = false
+    guessSyntax = true
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true

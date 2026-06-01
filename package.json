@@ -1,0 +1,13 @@
+{
+  "name": "flexirule-docs",
+  "private": true,
+  "scripts": {
+    "copy-fonts": "mkdir -p static/fonts && cp node_modules/@fontsource-variable/inter/files/inter-latin-wght-normal.woff2 static/fonts/InterVariable.woff2 && cp node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-400-normal.woff2 static/fonts/JetBrainsMono-Regular.woff2 && cp node_modules/@fontsource/jetbrains-mono/files/jetbrains-mono-latin-500-normal.woff2 static/fonts/JetBrainsMono-Medium.woff2",
+    "pagefind": "pagefind --site public"
+  },
+  "devDependencies": {
+    "@fontsource-variable/inter": "latest",
+    "@fontsource/jetbrains-mono": "latest",
+    "pagefind": "latest"
+  }
+}
