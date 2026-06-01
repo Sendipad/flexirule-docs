@@ -30,32 +30,30 @@ flowchart TD
 
 ## Common Issues
 
-{{< accordion >}}
-{{< accordion-item title="1. Rule Not Triggering" >}}
+{{< accordion title="1. Rule Not Triggering" >}}
 If a rule fails to trigger when expected, verify the following configuration points:
 - **Status**: Is the rule set to **Active**?
 - **Trigger Event**: Does the event match the action (e.g., using `Before Save` when the logic depends on values only available `After Save`)?
 - **Watched Fields**: If configured, did any of the specified fields actually change during the transaction?
 - **Role Permissions**: Is the user triggering the event assigned a role that is listed in **Skip for Roles**?
-{{< /accordion-item >}}
+{{< /accordion >}}
 
-{{< accordion-item title="2. Variable Resolution Fails" >}}
+{{< accordion title="2. Variable Resolution Fails" >}}
 Errors like `KeyError: 'my_var'` typically indicate the execution engine cannot find a referenced variable.
 - **Flow Logic**: Ensure the variable is defined by an **upstream** node in the current execution path.
 - **Naming**: Verify the spelling and case-sensitivity of the variable name.
 - **Data Model**: If referencing `doc.*`, ensure the field exists on the target DocType.
-{{< /accordion-item >}}
+{{< /accordion >}}
 
-{{< accordion-item title="3. Infinite Loops (Reentrancy)" >}}
+{{< accordion title="3. Infinite Loops (Reentrancy)" >}}
 **Symptom**: "Reentrancy guard blocked execution" error in logs.
 - **Cause**: A rule performs a mutation (like `doc.save()`) that triggers the same rule again, creating a loop.
 - **Solution**: Add a condition to the entry action to prevent execution if the document is already in the desired state (e.g., `doc.status != "Processed"`).
-{{< /accordion-item >}}
+{{< /accordion >}}
 
-{{< accordion-item title="4. Permission Denied" >}}
+{{< accordion title="4. Permission Denied" >}}
 **Error**: `frappe.exceptions.PermissionError`
 - **Solution**: Check if the action requires specific user permissions. You can enable **Ignore Permissions** on individual action nodes if necessary (this requires providing an audit reason).
-{{< /accordion-item >}}
 {{< /accordion >}}
 
 ## Debugging Tools

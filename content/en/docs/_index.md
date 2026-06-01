@@ -10,17 +10,17 @@ weight: 1
 
 FlexiRule provides a powerful visual interface for orchestrating complex business logic in Frappe and ERPNext. It moves logic from scattered code hooks into a centralized, observable, and auditable visual graph.
 
-{{< feature-grid >}}
-{{< card title="Centralized Logic" icon="layers" >}}
+{{< grid >}}
+{{< card title="Centralized Logic" href="builder/rule_builder/#centralized-logic" >}}
 Move rules out of scattered `.py` files into a single, auditable dashboard for better visibility.
 {{< /card >}}
-{{< card title="No-Code Configuration" icon="zap" >}}
+{{< card title="No-Code Configuration" href="builder/rule_builder/#no-code-configuration" >}}
 Custom UI controls allow complex logic setup without writing code, powered by JSON schemas.
 {{< /card >}}
-{{< card title="Explicit Execution" icon="activity" >}}
+{{< card title="Explicit Execution" href="builder/rule_builder/#explicit-execution" >}}
 Connections define deterministic paths, ensuring you always know exactly how your logic flows.
 {{< /card >}}
-{{< /feature-grid >}}
+{{< /grid >}}
 
 ## Why FlexiRule?
 
@@ -46,28 +46,31 @@ The code-backed reusable modules that perform the actual heavy lifting. Processe
 Get FlexiRule installed and running in your Frappe environment in just a few steps:
 
 {{< steps >}}
-### Download the App
+{{< step number="1" title="Download the App" >}}
 Fetch the FlexiRule repository using the Bench CLI.
 ```bash
 bench get-app flexirule https://github.com/Sendipad/flexirule.git
 ```
+{{< /step >}}
 
-### Install to Site
+{{< step number="2" title="Install to Site" >}}
 Install the application onto your specific Frappe site.
 ```bash
 bench --site [your-site] install-app flexirule
 ```
+{{< /step >}}
 
-### Build Assets
+{{< step number="3" title="Build Assets" >}}
 Compile the necessary frontend assets for the visual builder.
 ```bash
 bench build --app flexirule
 ```
+{{< /step >}}
 {{< /steps >}}
 
-{{< notice type="info" >}}
+{{< info >}}
 After installation, you can access the FlexiRule Dashboard from your Frappe Desk to begin building your first rule.
-{{< /notice >}}
+{{< /info >}}
 
 ## Visual Tour
 

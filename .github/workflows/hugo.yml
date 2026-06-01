@@ -72,7 +72,7 @@ jobs:
         run: |
           hugo \
             --minify \
-            --baseURL "${{ steps.pages.outputs.base_url }}/"
+            --baseURL "https://sendipad.github.io/flexirule-docs/"
 
       - name: Build Pagefind index
         run: npm run pagefind
