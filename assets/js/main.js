@@ -34,6 +34,22 @@ document.addEventListener('DOMContentLoaded', () => {
   overlay?.addEventListener('click', () => setSidebar(false));
   $$('[data-sidebar-close]').forEach((button) => button.addEventListener('click', () => setSidebar(false)));
 
+  const desktopSidebarToggle = $('#desktop-sidebar-toggle');
+  const sidebarCollapsedKey = 'flexirule:sidebar-collapsed';
+  const isSidebarCollapsed = localStorage.getItem(sidebarCollapsedKey) === 'true';
+
+  const setDesktopSidebar = (collapsed) => {
+    document.body.classList.toggle('sidebar-collapsed', collapsed);
+    localStorage.setItem(sidebarCollapsedKey, String(collapsed));
+  };
+
+  if (isSidebarCollapsed) {
+    document.body.classList.add('sidebar-collapsed');
+  }
+
+  desktopSidebarToggle?.addEventListener('click', () => {
+    setDesktopSidebar(!document.body.classList.contains('sidebar-collapsed'));
+  });
 
   const sidebar = $('#sidebar');
   if (sidebar) {
