@@ -148,7 +148,7 @@ document.addEventListener('DOMContentLoaded', () => {
     button.setAttribute('aria-label', 'Copy code');
     button.innerHTML = '<svg><use href="#icon-copy"></use></svg>';
     button.addEventListener('click', () => copyText(code.innerText, 'Code copied'));
-    pre.appendChild(button);
+    pre.prepend(button);
   });
 
   const progress = $('#reading-progress');
