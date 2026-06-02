@@ -125,7 +125,11 @@ kbd { border: 1px solid var(--color-border); border-bottom-width: 2px; border-ra
 .shell:has(.sidebar) { grid-template-columns: var(--sidebar-width) minmax(0, 1fr); }
 .content-area { min-width: 0; padding: var(--space-10) var(--space-5); }
 .docs-layout { display: grid; grid-template-columns: minmax(0, var(--content-width)) var(--toc-width); justify-content: center; gap: var(--space-12); }
-.docs-content { min-width: 0; }
+.docs-content {
+  min-width: 0;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 
 .sidebar { position: sticky; top: var(--header-height); height: calc(100vh - var(--header-height)); overflow: auto; padding: var(--space-5) var(--space-4); border-right: 1px solid var(--color-border); }
 .sidebar-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-4); color: var(--color-soft); font-size: .78rem; letter-spacing: .12em; text-transform: uppercase; font-weight: 900; }
@@ -244,9 +248,24 @@ h2:hover .heading-anchor, h3:hover .heading-anchor, .heading-anchor:focus { opac
 .card-desc { color: var(--color-muted); font-size: .94rem; line-height: 1.55; }
 .feature-icon { display: grid; place-items: center; width: 2.25rem; height: 2.25rem; border-radius: .7rem; background: var(--color-surface-2); color: var(--color-primary); font-weight: 900; }
 
-code { font-family: var(--font-mono); font-size: .9em; background: var(--color-code); padding: .15rem .35rem; border-radius: .35rem; }
+code {
+  font-family: var(--font-mono);
+  font-size: .9em;
+  background: var(--color-code);
+  padding: .15rem .35rem;
+  border-radius: .35rem;
+  white-space: normal;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+}
 pre { overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-code); padding: var(--space-5); position: relative; }
-pre code { padding: 0; background: transparent; }
+pre code {
+  padding: 0;
+  background: transparent;
+  white-space: pre;
+  word-break: normal;
+  overflow-wrap: normal;
+}
 table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; border: 1px solid var(--color-border); border-radius: var(--radius); }
 th, td { padding: .8rem .95rem; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
 th { background: var(--color-surface-2); font-size: .86rem; color: var(--color-text); }
