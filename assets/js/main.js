@@ -8,10 +8,19 @@ document.addEventListener('DOMContentLoaded', () => {
     toast.classList.add('show');
     window.setTimeout(() => toast.classList.remove('show'), 2200);
   };
-  const copyText = async (text, message) => {
+  const copyText = async (text, message, btn = null) => {
     try {
       await navigator.clipboard.writeText(text);
       showToast(message || 'Copied');
+      if (btn) {
+        const icon = btn.innerHTML;
+        btn.innerHTML = '<svg><use href="#icon-check"></use></svg>';
+        btn.classList.add('success');
+        setTimeout(() => {
+          btn.innerHTML = icon;
+          btn.classList.remove('success');
+        }, 2000);
+      }
     } catch (_) {
       showToast('Copy failed');
     }
@@ -129,14 +138,15 @@ document.addEventListener('DOMContentLoaded', () => {
   $('#btn-chatgpt')?.addEventListener('click', () => openAI('https://chatgpt.com/?q='));
   $('#btn-claude')?.addEventListener('click', () => openAI('https://claude.ai/new?q='));
 
-  $$('.doc-body h2[id], .doc-body h3[id]').forEach((heading) => {
-    if (heading.querySelector('.heading-anchor')) return;
-    const anchor = document.createElement('a');
-    anchor.className = 'heading-anchor';
-    anchor.href = `#${heading.id}`;
-    anchor.setAttribute('aria-label', `Link to ${heading.textContent}`);
-    anchor.textContent = '#';
-    heading.appendChild(anchor);
+  $$('.btn-feedback').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const isFirstAction = !$('.btn-feedback.active');
+      $$('.btn-feedback').forEach((b) => b.classList.remove('active'));
+      btn.classList.add('active');
+      if (isFirstAction) {
+        showToast('Thank you for your feedback!');
+      }
+    });
   });
 
   $$('pre').forEach((pre) => {
@@ -147,7 +157,7 @@ document.addEventListener('DOMContentLoaded', () => {
     button.type = 'button';
     button.setAttribute('aria-label', 'Copy code');
     button.innerHTML = '<svg><use href="#icon-copy"></use></svg>';
-    button.addEventListener('click', () => copyText(code.innerText, 'Code copied'));
+    button.addEventListener('click', () => copyText(code.innerText, 'Code copied', button));
     pre.prepend(button);
   });
 

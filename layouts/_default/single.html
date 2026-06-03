@@ -15,6 +15,17 @@
       {{ .Content }}
     </section>
     <script type="application/json" id="page-source">{{ dict "title" .Title "url" .Permalink "raw" .RawContent | jsonify }}</script>
+    <div class="doc-feedback">
+      <p>Was this page helpful?</p>
+      <div class="feedback-actions">
+        <button class="btn-feedback" data-feedback="yes" aria-label="Yes, this page was helpful">
+          <svg><use href="#icon-check"></use></svg> Yes
+        </button>
+        <button class="btn-feedback" data-feedback="no" aria-label="No, this page was not helpful">
+          <svg><use href="#icon-x"></use></svg> No
+        </button>
+      </div>
+    </div>
     {{ partial "page-meta.html" . }}
     {{ partial "pager.html" . }}
   </article>

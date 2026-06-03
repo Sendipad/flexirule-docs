@@ -1,1 +1,24 @@
-<figure class="screenshot-frame"><img src="{{ .Get "src" | safeURL }}" alt="{{ .Get "alt" }}" loading="lazy" decoding="async">{{ with .Get "caption" }}<figcaption>{{ . }}</figcaption>{{ end }}</figure>
+{{ $src := .Get "src" }}
+{{ $alt := .Get "alt" }}
+{{ $caption := .Get "caption" }}
+{{ $img := resources.Get (printf "images/%s" $src) }}
+
+<figure class="screenshot-frame">
+  {{ if $img }}
+    {{ $webp := $img.Resize "1200x webp" }}
+    {{ $fallback := $img.Resize "1200x" }}
+    <picture>
+      <source srcset="{{ $webp.RelPermalink }}" type="image/webp">
+      <img src="{{ $fallback.RelPermalink }}"
+           alt="{{ $alt }}"
+           width="{{ $img.Width }}"
+           height="{{ $img.Height }}"
+           loading="lazy"
+           decoding="async">
+    </picture>
+  {{ else }}
+    {{/* Fallback to static if resource not found */}}
+    <img src="{{ $src | relURL }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+  {{ end }}
+  {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
+</figure>
