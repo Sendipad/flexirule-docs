@@ -30,6 +30,10 @@ summaryLength = 28
   [params.seo]
     twitter_handle = '@flexirule'
     google_site_verification = ''
+    software_name = 'FlexiRule'
+    software_category = 'BusinessApplication'
+    software_os = 'Any'
+    software_description = 'Enterprise-Grade Rule Flow and Decision Automation Engine'
 
 [frontmatter]
   lastmod = [':git', 'lastmod', 'date']
@@ -66,6 +70,8 @@ summaryLength = 28
   [markup.goldmark]
     [markup.goldmark.renderer]
       unsafe = true
+    [markup.goldmark.parser.attribute]
+      block = true
   [markup.tableOfContents]
     endLevel = 3
     ordered = false
