@@ -538,6 +538,25 @@ mark { background: rgba(6, 182, 212, .22); color: inherit; border-radius: .2rem;
 
 .footer-brand {
   max-width: 32rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  column-gap: var(--space-4);
+}
+
+.footer-logo-link {
+  grid-row: 1 / 3;
+  align-self: start;
+  transition: transform .2s ease;
+}
+
+.footer-logo-link:hover {
+  transform: scale(1.05);
+}
+
+.footer-logo {
+  width: 2.5rem;
+  height: 2.5rem;
+  stroke: none !important;
 }
 
 .footer-copyright {
