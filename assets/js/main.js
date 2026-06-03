@@ -163,10 +163,27 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const toc = $('.toc');
   const tocToggle = $('#toc-toggle');
-  tocToggle?.addEventListener('click', () => {
-    const open = !toc?.classList.contains('mobile-open');
+  const setToc = (open) => {
     toc?.classList.toggle('mobile-open', open);
-    tocToggle.setAttribute('aria-expanded', String(open));
+    tocToggle?.setAttribute('aria-expanded', String(open));
+    if (open) {
+      const closeHandler = (e) => {
+        if (!toc?.contains(e.target) && !tocToggle?.contains(e.target)) {
+          setToc(false);
+          document.removeEventListener('click', closeHandler);
+        }
+      };
+      setTimeout(() => document.addEventListener('click', closeHandler), 10);
+    }
+  };
+  tocToggle?.addEventListener('click', () => setToc(!toc?.classList.contains('mobile-open')));
+
+  document.addEventListener('click', (e) => {
+    $$('.action-dropdown[open]').forEach((dropdown) => {
+      if (!dropdown.contains(e.target)) {
+        dropdown.removeAttribute('open');
+      }
+    });
   });
 
   const tocLinks = $$('[data-toc] a');

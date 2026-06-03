@@ -1,13 +1,45 @@
 {{ $contentPath := "" }}{{ if .File }}{{ $contentPath = printf "content/%s/%s" .Site.Language.Lang .File.Path }}{{ end }}
 <div class="action-bar" aria-label="Page actions">
-  <button class="action-btn" id="btn-copy-url" type="button" aria-label="Copy page URL"><svg><use href="#icon-link"/></svg><span>Copy link</span></button>
-  <button class="action-btn" id="btn-copy-md" type="button" aria-label="Copy page content as Markdown"><svg><use href="#icon-copy"/></svg><span>Copy Markdown</span></button>
-  <button class="action-btn" id="btn-download-pdf" type="button" aria-label="Download page as PDF"><svg><use href="#icon-download"/></svg><span>Download PDF</span></button>
-  <button class="action-btn" id="btn-chatgpt" type="button" aria-label="Open in ChatGPT"><svg><use href="#icon-sparkles"/></svg><span>Open in ChatGPT</span></button>
-  <button class="action-btn" id="btn-claude" type="button" aria-label="Open in Claude"><svg><use href="#icon-sparkles"/></svg><span>Open in Claude</span></button>
   {{ if .File }}
-    <a class="action-btn" href="{{ .Site.Params.github_docs_repo }}/edit/{{ .Site.Params.github_branch }}/{{ $contentPath }}" target="_blank" rel="noopener noreferrer" aria-label="Improve this page on GitHub"><svg><use href="#icon-edit"/></svg><span>Improve this page</span></a>
-    <a class="action-btn" href="{{ .Site.Params.github_docs_repo }}/blob/{{ .Site.Params.github_branch }}/{{ $contentPath }}" target="_blank" rel="noopener noreferrer" aria-label="View source on GitHub"><svg><use href="#icon-external"/></svg><span>View source</span></a>
+    <a class="action-btn" href="{{ .Site.Params.github_docs_repo }}/edit/{{ .Site.Params.github_branch }}/{{ $contentPath }}" target="_blank" rel="noopener noreferrer" aria-label="Improve this page on GitHub">
+      <svg><use href="#icon-edit"/></svg><span>Improve this page</span>
+    </a>
   {{ end }}
+
+  <details class="action-dropdown" id="dropdown-ai">
+    <summary class="action-btn">
+      <svg><use href="#icon-sparkles"/></svg><span>Ask AI</span><svg class="dropdown-caret"><use href="#icon-chevron-down"/></svg>
+    </summary>
+    <div class="dropdown-menu">
+      <button class="dropdown-item" id="btn-chatgpt" type="button">
+        <svg><use href="#icon-sparkles"/></svg><span>Open in ChatGPT</span>
+      </button>
+      <button class="dropdown-item" id="btn-claude" type="button">
+        <svg><use href="#icon-sparkles"/></svg><span>Open in Claude</span>
+      </button>
+    </div>
+  </details>
+
+  <details class="action-dropdown" id="dropdown-tools">
+    <summary class="action-btn">
+      <svg><use href="#icon-menu"/></svg><span>Page Tools</span><svg class="dropdown-caret"><use href="#icon-chevron-down"/></svg>
+    </summary>
+    <div class="dropdown-menu">
+      <button class="dropdown-item" id="btn-copy-url" type="button">
+        <svg><use href="#icon-link"/></svg><span>Copy link</span>
+      </button>
+      <button class="dropdown-item" id="btn-copy-md" type="button">
+        <svg><use href="#icon-copy"/></svg><span>Copy Markdown</span>
+      </button>
+      <button class="dropdown-item" id="btn-download-pdf" type="button">
+        <svg><use href="#icon-download"/></svg><span>Download PDF</span>
+      </button>
+      {{ if .File }}
+        <a class="dropdown-item" href="{{ .Site.Params.github_docs_repo }}/blob/{{ .Site.Params.github_branch }}/{{ $contentPath }}" target="_blank" rel="noopener noreferrer">
+          <svg><use href="#icon-external"/></svg><span>View source</span>
+        </a>
+      {{ end }}
+    </div>
+  </details>
 </div>
 <div id="toast" class="toast" role="status" aria-live="polite"></div>

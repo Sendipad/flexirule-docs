@@ -15,8 +15,8 @@
       {{ .Content }}
     </section>
     <script type="application/json" id="page-source">{{ dict "title" .Title "url" .Permalink "raw" .RawContent | jsonify }}</script>
-    {{ partial "pager.html" . }}
     {{ partial "page-meta.html" . }}
+    {{ partial "pager.html" . }}
   </article>
   {{ partial "toc.html" . }}
 </div>
