@@ -1,8 +1,15 @@
 <footer class="site-footer">
   <div class="footer-container">
     <div class="footer-brand">
-      <div class="footer-copyright">Copyright © {{ now.Year }} FlexiRule</div>
-      <p class="footer-tagline">An Open Source, Highly Optimized, Enterprise-Grade Rule Flow and Decision Automation Engine</p>
+      <a href="{{ "/" | relURL }}" class="footer-logo-link" aria-label="FlexiRule">
+        <svg class="footer-logo" aria-hidden="true">
+          <use xlink:href="#icon-flexirule"></use>
+        </svg>
+      </a>
+      <div class="footer-text">
+        <div class="footer-copyright">Copyright © {{ now.Year }} FlexiRule</div>
+        <p class="footer-tagline">An Open Source, Highly Optimized, Enterprise-Grade Rule Flow and Decision Automation Engine</p>
+      </div>
     </div>
 
     <nav class="footer-nav" aria-label="Footer links">
