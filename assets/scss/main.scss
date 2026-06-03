@@ -208,7 +208,17 @@ h2:hover .heading-anchor, h3:hover .heading-anchor, .heading-anchor:focus { opac
   width: .9rem;
   height: .9rem;
 }
-.action-bar { display: flex; flex-wrap: wrap; gap: var(--space-2); margin-bottom: var(--space-6); }
+.action-bar {
+  display: flex;
+  flex-wrap: nowrap;
+  overflow-x: auto;
+  gap: var(--space-2);
+  margin-bottom: var(--space-6);
+  padding-bottom: var(--space-1);
+  scrollbar-width: thin;
+}
+.action-bar::-webkit-scrollbar { height: 3px; }
+.action-bar::-webkit-scrollbar-thumb { background: var(--color-border); border-radius: 3px; }
 
 .action-dropdown {
   position: relative;
@@ -233,9 +243,10 @@ h2:hover .heading-anchor, h3:hover .heading-anchor, .heading-anchor:focus { opac
 .dropdown-menu {
   position: absolute;
   top: calc(100% + var(--space-2));
-  right: 0;
+  left: 0;
   z-index: 100;
   min-width: 14rem;
+  max-width: calc(100vw - 2rem);
   padding: var(--space-2);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
@@ -272,6 +283,11 @@ h2:hover .heading-anchor, h3:hover .heading-anchor, .heading-anchor:focus { opac
   width: 1.1rem;
   height: 1.1rem;
   color: var(--color-soft);
+}
+
+.action-dropdown:last-child .dropdown-menu {
+  left: auto;
+  right: 0;
 }
 
 .page-meta {
