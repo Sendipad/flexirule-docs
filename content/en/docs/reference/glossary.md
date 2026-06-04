@@ -2,6 +2,8 @@
 title: "Glossary"
 description: "Common terminology used in FlexiRule."
 weight: 100
+aliases:
+  - /docs/reference/glossary/
 ---
 
 # Glossary
@@ -44,6 +46,6 @@ Common terminology and core concepts used throughout the FlexiRule documentation
 
 ## Related Topics
 
-- [System Architecture](../../architecture/)
-- [Execution Engine](../../engine/execution_engine/)
-- [Rule Building](../../builder/rule_builder/)
+- [System Architecture]({{< relref "docs/architecture/" >}})
+- [Execution Engine]({{< relref "docs/architecture/engine/execution-engine.md" >}})
+- [Rule Building]({{< relref "docs/user-guide/rule-builder.md" >}})
