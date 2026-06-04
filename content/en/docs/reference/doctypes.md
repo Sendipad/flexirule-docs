@@ -2,6 +2,8 @@
 title: "DocTypes"
 description: "Reference for all DocTypes used in FlexiRule."
 weight: 30
+aliases:
+  - /docs/reference/doctypes/
 ---
 
 # DocType Reference
@@ -52,7 +54,7 @@ The primary container for an automation flow. It defines **when** logic starts a
 Represents a single executable node (Step) within a Rule's graph.
 
 ### When to Use
-- Rule Actions are managed via the [Rule Builder](../../builder/rule_builder/), which handles the creation of these child records automatically.
+- Rule Actions are managed via the [Rule Builder]({{< relref "docs/user-guide/rule-builder.md" >}}), which handles the creation of these child records automatically.
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
@@ -91,6 +93,6 @@ Audit trail for every rule execution.
 
 ## Related Topics
 
-- [Execution Engine](../../engine/execution_engine/)
-- [Rule Builder](../../builder/rule_builder/)
-- [API Reference](../api/)
+- [Execution Engine]({{< relref "docs/architecture/engine/execution-engine.md" >}})
+- [Rule Builder]({{< relref "docs/user-guide/rule-builder.md" >}})
+- [API Reference]({{< relref "docs/developer-guide/api/" >}})
