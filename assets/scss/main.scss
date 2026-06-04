@@ -371,10 +371,22 @@ pre code {
   overflow-wrap: normal;
 }
 table { display: block; width: 100%; overflow-x: auto; border-collapse: collapse; border: 1px solid var(--color-border); border-radius: var(--radius); }
-th, td { padding: .8rem .95rem; border-bottom: 1px solid var(--color-border); text-align: left; vertical-align: top; }
+th, td {
+  padding: .8rem .95rem;
+  border-bottom: 1px solid var(--color-border);
+  text-align: left;
+  vertical-align: top;
+  overflow-wrap: normal;
+  word-break: normal;
+}
+table code {
+  white-space: normal;
+  overflow-wrap: normal;
+  word-break: normal;
+}
 th { background: var(--color-surface-2); font-size: .86rem; color: var(--color-text); white-space: nowrap; }
 td:first-child { white-space: nowrap; }
-table code { white-space: nowrap; }
+th code, td:first-child code { white-space: nowrap; }
 blockquote { border-left: 3px solid var(--color-primary); padding: var(--space-2) var(--space-5); margin-left: 0; background: var(--color-surface); color: var(--color-muted); border-radius: 0 var(--radius) var(--radius) 0; }
 figure { margin: var(--space-8) 0; }
 .docs-content img { max-width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); }
