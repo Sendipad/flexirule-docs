@@ -151,14 +151,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
   $$('pre').forEach((pre) => {
     const code = $('code', pre);
-    if (!code || pre.querySelector('.copy-code')) return;
+    if (!code) return;
+    const container = pre.parentElement.classList.contains('highlight') ? pre.parentElement : pre;
+    if (container.querySelector('.copy-code')) return;
     const button = document.createElement('button');
     button.className = 'copy-code icon-button';
     button.type = 'button';
     button.setAttribute('aria-label', 'Copy code');
     button.innerHTML = '<svg><use href="#icon-copy"></use></svg>';
     button.addEventListener('click', () => copyText(code.innerText, 'Code copied', button));
-    pre.prepend(button);
+    container.prepend(button);
   });
 
   const progress = $('#reading-progress');

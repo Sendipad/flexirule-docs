@@ -370,7 +370,8 @@ code {
   overflow-wrap: anywhere;
   word-break: break-word;
 }
-pre { overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-code); padding: var(--space-5); padding-right: 3.25rem !important; position: relative; }
+.highlight, div.highlight { position: relative; width: 100%; display: block; overflow: visible; }
+pre { overflow-x: auto !important; width: 100%; display: block; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-code); padding: var(--space-5); padding-right: 3.25rem !important; position: relative; box-sizing: border-box; }
 pre code {
   padding: 0;
   background: transparent;
@@ -400,12 +401,10 @@ figure { margin: var(--space-8) 0; }
 .docs-content img { max-width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); }
 figcaption { color: var(--color-soft); text-align: center; font-size: .9rem; margin-top: var(--space-2); }
 .copy-code {
-  position: sticky !important;
+  position: absolute !important;
   top: 0.6rem;
   right: 0.6rem;
-  margin-left: auto;
-  float: right;
-  z-index: 20 !important;
+  z-index: 30 !important;
   display: flex !important;
   align-items: center;
   justify-content: center;
@@ -416,6 +415,11 @@ figcaption { color: var(--color-soft); text-align: center; font-size: .9rem; mar
   backdrop-filter: blur(4px);
   border-radius: 6px;
   opacity: 0.8;
+}
+pre .copy-code {
+  position: sticky !important;
+  margin-left: auto;
+  float: right;
 }
 .copy-code.success { color: var(--color-success); border-color: var(--color-success); opacity: 1; }
 
