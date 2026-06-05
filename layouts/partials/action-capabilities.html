@@ -10,7 +10,7 @@
     {{ range $dim_id, $dim := $all_caps.dimensions }}
       {{ $val_id := index $caps $dim_id }}
       {{ if $val_id }}
-        {{ if kindOf $val_id | eq "slice" }}
+        {{ if reflect.IsSlice $val_id }}
           {{ range $v := $val_id }}
             {{ partial "action-capability-item.html" (dict "dim_id" $dim_id "dim" $dim "val_id" $v "all_caps" $all_caps "Page" $) }}
           {{ end }}
