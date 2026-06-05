@@ -4,6 +4,20 @@ description: "Sending alerts and communications to users."
 weight: 60
 aliases:
   - /docs/actions/notify/
+capabilities:
+  category: notification
+  mutation: read-only
+  targets:
+    - external-system
+  triggers:
+    - any
+  flow: linear
+  transaction:
+    - async
+badges:
+  - core
+  - external
+  - async
 ---
 
 # Notify Action

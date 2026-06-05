@@ -1,0 +1,136 @@
+dimensions:
+  category:
+    label: Category
+    values:
+      flow-control:
+        label: Flow Control
+        icon: icon-flow-control
+        description: Controls execution flow and branching.
+      data:
+        label: Data
+        icon: icon-data
+        description: Performs data manipulation or retrieval.
+      process:
+        label: Process
+        icon: icon-process
+        description: Executes a business process or sub-rule.
+      notification:
+        label: Notification
+        icon: icon-notification
+        description: Sends alerts or messages to users or systems.
+      integration:
+        label: Integration
+        icon: icon-integration
+        description: Communicates with external systems or APIs.
+      human-review:
+        label: Human Review
+        icon: icon-human-review
+        description: Requires manual intervention or approval.
+      document:
+        label: Document
+        icon: icon-document
+        description: Manipulates or generates documents.
+
+  mutation:
+    label: Mutation
+    values:
+      read-only:
+        label: Read Only
+        icon: icon-read-only
+        description: Reads data without modifying state.
+      read-write:
+        label: Read/Write
+        icon: icon-read-write
+        description: Modifies existing data or state.
+      destructive:
+        label: Destructive
+        icon: icon-destructive
+        description: Permanently removes data or state.
+
+  targets:
+    label: Targets
+    values:
+      context:
+        label: Context Variables
+        icon: icon-target-context
+        description: Affects variables in the current execution context.
+      document:
+        label: Current Document
+        icon: icon-target-document
+        description: Affects the document currently being processed.
+      database:
+        label: Database
+        icon: icon-target-database
+        description: Affects records in a database.
+      external-document:
+        label: External Documents
+        icon: icon-target-ext-doc
+        description: Affects files or documents outside the current context.
+      external-system:
+        label: External Systems
+        icon: icon-target-ext-sys
+        description: Affects data in connected external platforms.
+
+  triggers:
+    label: Triggers
+    values:
+      before:
+        label: Before Events
+        icon: icon-trigger-before
+        description: Compatible with "Before" execution events.
+      after:
+        label: After Events
+        icon: icon-trigger-after
+        description: Compatible with "After" execution events.
+      scheduler:
+        label: Scheduler
+        icon: icon-trigger-scheduler
+        description: Can be executed on a timed schedule.
+      callable:
+        label: Callable
+        icon: icon-trigger-callable
+        description: Can be called directly from other rules.
+      any:
+        label: Any Trigger
+        icon: icon-trigger-any
+        description: Compatible with all trigger types.
+
+  flow:
+    label: Flow Behavior
+    values:
+      linear:
+        label: Linear
+        icon: icon-flow-linear
+        description: Follows a single sequential path.
+      branching:
+        label: Branching
+        icon: icon-flow-branching
+        description: Can take multiple paths based on conditions.
+      loop:
+        label: Loop
+        icon: icon-flow-loop
+        description: May execute child actions multiple times.
+      terminal:
+        label: Terminal
+        icon: icon-flow-terminal
+        description: Ends the current execution path.
+      sub-rule:
+        label: Sub-Rule
+        icon: icon-flow-subrule
+        description: Invokes another rule or process.
+
+  transaction:
+    label: Transaction
+    values:
+      transactional:
+        label: Transactional
+        icon: icon-trans-yes
+        description: Executes within a database transaction.
+      rollback:
+        label: Rollback Supported
+        icon: icon-trans-rollback
+        description: Changes can be reverted on failure.
+      async:
+        label: Async
+        icon: icon-trans-async
+        description: Executes in the background without blocking.
