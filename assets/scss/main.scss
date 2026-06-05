@@ -399,7 +399,17 @@ blockquote { border-left: 3px solid var(--color-primary); padding: var(--space-2
 figure { margin: var(--space-8) 0; }
 .docs-content img { max-width: 100%; height: auto; border-radius: var(--radius); border: 1px solid var(--color-border); box-shadow: var(--shadow-sm); }
 figcaption { color: var(--color-soft); text-align: center; font-size: .9rem; margin-top: var(--space-2); }
-.copy-code { position: sticky; top: var(--space-3); right: var(--space-3); float: right; margin-right: calc(-1 * var(--space-2)); margin-top: calc(-1 * var(--space-2)); z-index: 10; opacity: .8; }
+.copy-code {
+  position: sticky !important;
+  top: 0.5rem;
+  left: 100%;
+  margin-left: auto;
+  float: right;
+  z-index: 10;
+  opacity: 0.8;
+  margin-right: -0.5rem;
+  margin-top: -0.5rem;
+}
 .copy-code.success { color: var(--color-success); border-color: var(--color-success); opacity: 1; }
 
 .search-dialog { width: calc(100vw - 2rem); max-width: 48rem; border: 1px solid var(--color-border); border-radius: 1.1rem; padding: 0; background: var(--color-surface); color: var(--color-text); box-shadow: var(--shadow-lg); }
