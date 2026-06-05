@@ -11,6 +11,9 @@
       {{ with $summary }}<p class="lead">{{ . | plainify }}</p>{{ end }}
     </header>
     {{ partial "action-bar.html" . }}
+    {{ if and (hasPrefix .File.Path "en/docs/actions/") (not (eq .File.LogicalName "_index.md")) }}
+      {{ partial "action-capabilities.html" . }}
+    {{ end }}
     <section class="doc-body">
       {{ .Content }}
     </section>

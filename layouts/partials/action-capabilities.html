@@ -1,0 +1,43 @@
+{{ $caps := .Params.capabilities }}
+{{ $badges := .Params.badges }}
+{{ $all_caps := .Site.Data.action_capabilities }}
+{{ $all_badges := .Site.Data.action_badges }}
+
+{{ if or $caps $badges }}
+<div class="action-meta-container">
+  {{ if $caps }}
+  <div class="capability-bar">
+    {{ range $dim_id, $dim := $all_caps.dimensions }}
+      {{ $val_id := index $caps $dim_id }}
+      {{ if $val_id }}
+        {{ if kindOf $val_id | eq "slice" }}
+          {{ range $v := $val_id }}
+            {{ partial "action-capability-item.html" (dict "dim_id" $dim_id "dim" $dim "val_id" $v "all_caps" $all_caps "Page" $) }}
+          {{ end }}
+        {{ else }}
+          {{ partial "action-capability-item.html" (dict "dim_id" $dim_id "dim" $dim "val_id" $val_id "all_caps" $all_caps "Page" $) }}
+        {{ end }}
+      {{ end }}
+    {{ end }}
+  </div>
+  {{ end }}
+
+  {{ if $badges }}
+  <div class="badge-container">
+    {{ range $badge_id := $badges }}
+      {{ $badge := index $all_badges $badge_id }}
+      {{ if $badge }}
+        <span class="badge {{ $badge.class }}" data-tooltip="{{ $badge.description }}">
+          {{ $badge.label }}
+        </span>
+      {{ else }}
+        {{ warnf "Unknown badge: %s on page %s" $badge_id $.Page.File.Path }}
+        <span class="badge badge-muted" data-tooltip="Unknown badge: {{ $badge_id }}">
+          {{ $badge_id }}
+        </span>
+      {{ end }}
+    {{ end }}
+  </div>
+  {{ end }}
+</div>
+{{ end }}

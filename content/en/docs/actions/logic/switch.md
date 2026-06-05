@@ -4,6 +4,18 @@ description: "Multi-path branching based on expression values."
 weight: 90
 aliases:
   - /docs/actions/switch/
+capabilities:
+  category: flow-control
+  mutation: read-only
+  targets:
+    - context
+  triggers:
+    - any
+  flow: branching
+  transaction:
+    - transactional
+badges:
+  - core
 ---
 
 # Switch Action

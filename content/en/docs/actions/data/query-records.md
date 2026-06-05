@@ -4,6 +4,19 @@ description: "Retrieving and aggregating data from the database."
 weight: 80
 aliases:
   - /docs/actions/query_records/
+capabilities:
+  category: data
+  mutation: read-only
+  targets:
+    - database
+  triggers:
+    - any
+  flow: linear
+  transaction:
+    - transactional
+badges:
+  - core
+  - external
 ---
 
 # Query Records Action

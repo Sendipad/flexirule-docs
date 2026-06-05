@@ -5,6 +5,22 @@ weight: 70
 parent: "advanced"
 aliases:
   - /docs/actions/process/
+capabilities:
+  category: process
+  mutation: read-write
+  targets:
+    - external-system
+    - database
+    - context
+  triggers:
+    - any
+  flow: linear
+  transaction:
+    - async
+    - transactional
+badges:
+  - process
+  - external
 ---
 
 # Process Action

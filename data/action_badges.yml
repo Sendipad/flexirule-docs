@@ -1,0 +1,32 @@
+core:
+  label: Core
+  description: Built into FlexiRule and supported by the core platform.
+  class: badge-core
+process:
+  label: Process
+  description: Related to business process management and orchestration.
+  class: badge-process
+external:
+  label: External
+  description: Communicates with systems outside FlexiRule.
+  class: badge-external
+experimental:
+  label: Experimental
+  description: This feature is new and may change in future versions.
+  class: badge-warning
+deprecated:
+  label: Deprecated
+  description: This feature is obsolete and will be removed in the future.
+  class: badge-muted
+high-impact:
+  label: High Impact
+  description: Can affect multiple records or produce significant data changes.
+  class: badge-danger
+enterprise:
+  label: Enterprise
+  description: Requires an Enterprise license.
+  class: badge-primary
+async:
+  label: Async
+  description: Executes asynchronously in the background.
+  class: badge-info

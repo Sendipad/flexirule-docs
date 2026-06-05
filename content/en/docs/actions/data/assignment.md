@@ -4,6 +4,19 @@ description: "Mutating document state and context variables."
 weight: 20
 aliases:
   - /docs/actions/assignment/
+capabilities:
+  category: data
+  mutation: read-write
+  targets:
+    - document
+    - context
+  triggers:
+    - any
+  flow: linear
+  transaction:
+    - transactional
+badges:
+  - core
 ---
 
 # Assignment Action
