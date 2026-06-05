@@ -4,6 +4,18 @@ description: "Branching logic based on evaluation of expressions."
 weight: 30
 aliases:
   - /docs/actions/condition/
+capabilities:
+  category: flow-control
+  mutation: read-only
+  targets:
+    - context
+  triggers:
+    - any
+  flow: branching
+  transaction:
+    - transactional
+badges:
+  - core
 ---
 
 # Condition Action

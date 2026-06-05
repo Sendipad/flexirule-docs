@@ -4,6 +4,18 @@ description: "Iterative processing of collections and child tables."
 weight: 50
 aliases:
   - /docs/actions/loop/
+capabilities:
+  category: flow-control
+  mutation: read-only
+  targets:
+    - context
+  triggers:
+    - any
+  flow: loop
+  transaction:
+    - transactional
+badges:
+  - core
 ---
 
 # Loop Action

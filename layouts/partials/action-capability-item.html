@@ -1,0 +1,18 @@
+{{ $dim_id := .dim_id }}
+{{ $dim := .dim }}
+{{ $val_id := .val_id }}
+{{ $all_caps := .all_caps }}
+
+{{ $val := index $dim.values $val_id }}
+{{ if $val }}
+  <div class="capability-item" data-tooltip="{{ $val.label }}: {{ $val.description }}">
+    <svg class="capability-icon"><use href="#{{ $val.icon | default "icon-help" }}"></use></svg>
+    <span class="capability-label">{{ $val.label }}</span>
+  </div>
+{{ else }}
+  {{ warnf "Unknown value '%s' for dimension '%s' on page %s" $val_id $dim_id .Page.File.Path }}
+  <div class="capability-item" data-tooltip="Unknown {{ $dim.label }}: {{ $val_id }}">
+    <svg class="capability-icon"><use href="#icon-help"></use></svg>
+    <span class="capability-label">{{ $val_id }}</span>
+  </div>
+{{ end }}

@@ -3,6 +3,19 @@ title: "Document Action"
 weight: 40
 aliases:
   - /docs/actions/document_action/
+capabilities:
+  category: document
+  mutation: read-write
+  targets:
+    - external-document
+    - database
+  triggers:
+    - any
+  flow: linear
+  transaction:
+    - transactional
+badges:
+  - core
 ---
 
 # Document Action

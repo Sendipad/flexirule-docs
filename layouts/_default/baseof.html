@@ -27,6 +27,8 @@
   {{ partial "footer.html" . }}
   {{ $mainJs := resources.Get "js/main.js" | minify | fingerprint }}
   <script src="{{ $mainJs.RelPermalink }}" integrity="{{ $mainJs.Data.Integrity }}" defer></script>
+  {{ $tooltipsJs := resources.Get "js/tooltips.js" | minify | fingerprint }}
+  <script src="{{ $tooltipsJs.RelPermalink }}" integrity="{{ $tooltipsJs.Data.Integrity }}" defer></script>
   {{ if and .Site.Params.plausible_domain hugo.IsProduction }}<script defer data-domain="{{ .Site.Params.plausible_domain }}" src="https://plausible.io/js/script.js"></script>{{ end }}
   {{ if and .Site.Params.umami_website_id .Site.Params.umami_src hugo.IsProduction }}<script defer src="{{ .Site.Params.umami_src }}" data-website-id="{{ .Site.Params.umami_website_id }}"></script>{{ end }}
 </body>
