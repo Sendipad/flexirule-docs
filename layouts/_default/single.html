@@ -11,7 +11,7 @@
       {{ with $summary }}<p class="lead">{{ . | plainify }}</p>{{ end }}
     </header>
     {{ partial "action-bar.html" . }}
-    {{ if and (hasPrefix .File.Path "en/docs/actions/") (not (eq .File.LogicalName "_index.md")) }}
+    {{ if or .Params.capabilities .Params.badges }}
       {{ partial "action-capabilities.html" . }}
     {{ end }}
     <section class="doc-body">
