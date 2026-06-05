@@ -370,7 +370,7 @@ code {
   overflow-wrap: anywhere;
   word-break: break-word;
 }
-pre { overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-code); padding: var(--space-5); position: relative; }
+pre { overflow: auto; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-code); padding: var(--space-5); padding-right: 3.25rem !important; position: relative; }
 pre code {
   padding: 0;
   background: transparent;
@@ -401,14 +401,21 @@ figure { margin: var(--space-8) 0; }
 figcaption { color: var(--color-soft); text-align: center; font-size: .9rem; margin-top: var(--space-2); }
 .copy-code {
   position: sticky !important;
-  top: 0.5rem;
-  left: 100%;
+  top: 0.6rem;
+  right: 0.6rem;
   margin-left: auto;
   float: right;
-  z-index: 10;
+  z-index: 20 !important;
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  width: 2rem !important;
+  height: 2rem !important;
+  flex-shrink: 0 !important;
+  background: var(--color-surface);
+  backdrop-filter: blur(4px);
+  border-radius: 6px;
   opacity: 0.8;
-  margin-right: -0.5rem;
-  margin-top: -0.5rem;
 }
 .copy-code.success { color: var(--color-success); border-color: var(--color-success); opacity: 1; }
 
