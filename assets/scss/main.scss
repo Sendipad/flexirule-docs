@@ -155,11 +155,17 @@ body.sidebar-collapsed .shell:has(.sidebar) { grid-template-columns: 0 minmax(0,
 .doc-hero { padding: 1.75rem 0 0.75rem; border-bottom: 1px solid var(--color-border); margin-bottom: 1rem; }
 .eyebrow { margin: 0; color: var(--color-primary); font-size: .8rem; font-weight: 800; letter-spacing: .1em; text-transform: uppercase; }
 .lead { font-size: 1.25rem; line-height: 1.6; color: var(--color-muted); max-width: 48rem; margin: 0.5rem 0 0; }
-h1, h2, h3, h4 { letter-spacing: -0.04em; line-height: 1.2; color: var(--color-text); scroll-margin-top: calc(var(--header-height) + 2rem); }
-h1 { font-size: clamp(2.5rem, #{"calc(8vw)"}, 3.5rem); font-weight: 850; margin: 0.25rem 0 0.5rem; line-height: 1.15; }
-h2 { font-size: clamp(1.75rem, #{"calc(5vw)"}, 2rem); font-weight: 800; margin: var(--space-10) 0 0.5rem; border-bottom: 0; line-height: 1.2; }
-h3 { font-size: clamp(1.25rem, #{"calc(4vw)"}, 1.5rem); font-weight: 750; margin: var(--space-8) 0 0.5rem; }
+h1, h2, h3, h4 { letter-spacing: -0.04em; color: var(--color-text); scroll-margin-top: calc(var(--header-height) + 2rem); }
+h1 { font-size: clamp(1.65rem, #{"calc(2vw + 1rem)"}, 2.25rem); font-weight: 850; margin: 0.25rem 0 0.5rem; line-height: 1.15; }
+h2 { font-size: clamp(1.45rem, #{"calc(1.5vw + 1rem)"}, 1.85rem); font-weight: 800; margin: var(--space-10) 0 0.5rem; border-bottom: 0; line-height: 1.2; }
+h3 { font-size: clamp(1.2rem, #{"calc(1vw + 1rem)"}, 1.45rem); font-weight: 750; margin: var(--space-8) 0 0.5rem; line-height: 1.25; }
+
+p, .doc-body p { line-height: 1.52; margin-top: 0; margin-bottom: 0.85rem; }
 .doc-body p, .doc-body ul, .doc-body ol { color: var(--color-muted); margin-bottom: 0.85rem; }
+
+h1 + p, h2 + p, h3 + p, h4 + p {
+  margin-top: 0.15rem !important;
+}
 .doc-body li { color: var(--color-muted); margin-bottom: 0.4rem; line-height: 1.4; }
 .doc-body li > :last-child { margin-bottom: 0; }
 .doc-body ul, .doc-body ol { padding-left: 1.4rem; }
