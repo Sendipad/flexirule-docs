@@ -5,6 +5,17 @@
 <div class="docs-layout">
   <article class="docs-content" data-pagefind-body data-ai-summary="{{ $summary | plainify }}" data-ai-concepts="{{ $concepts }}" data-ai-related="{{ $related }}">
     {{ partial "breadcrumbs.html" . }}
+    {{ if .TableOfContents }}
+    <details class="mobile-toc-accordion">
+      <summary>
+        <span class="mobile-toc-label">On this page</span>
+        <svg class="dropdown-caret"><use href="#icon-chevron-down"></use></svg>
+      </summary>
+      <div class="mobile-toc-content" data-toc>
+        {{ .TableOfContents }}
+      </div>
+    </details>
+    {{ end }}
     <header class="doc-hero">
       <p class="eyebrow">FlexiRule Docs</p>
       <h1>{{ .Title }}</h1>
