@@ -42,8 +42,8 @@ The **Process** action is the primary way to extend FlexiRule with custom Python
 - Use this to encapsulate common business logic that needs to be reused across many different rules.
 
 ### Do Not Use
-- Do not use this for simple field updates that can be handled by an [Assignment]({{< relref "docs/actions/data/assignment.md" >}}) action.
-- Do not use this for basic branching logic (use [Condition]({{< relref "docs/actions/logic/condition.md" >}}) or [Switch]({{< relref "docs/actions/logic/switch.md" >}}) instead).
+- Do not use this for simple field updates that can be handled by an [Assignment]({{< relref "docs/actions/assignment" >}}) action.
+- Do not use this for basic branching logic (use [Condition]({{< relref "docs/actions/condition" >}}) or [Switch]({{< relref "docs/actions/switch" >}}) instead).
 
 ---
 
@@ -111,7 +111,7 @@ After the Process executes, the Rule Engine applies the result based on the sele
 - Config: `customer_id: doc.customer`
 - Mutation Mode: `Set Context Variable` (target: `vars.credit_score`)
 **Execution**: An API call is made to the external bureau.
-**Result**: The credit score is available for subsequent [Condition]({{< relref "docs/actions/logic/condition.md" >}}) nodes.
+**Result**: The credit score is available for subsequent [Condition]({{< relref "docs/actions/condition" >}}) nodes.
 
 ---
 
@@ -125,6 +125,6 @@ After the Process executes, the Rule Engine applies the result based on the sele
 
 ## Related Topics
 
-- [Process Adapter Standards](./standards.md)
+- [Process Adapter Standards]({{< relref "docs/developer-guide/custom-actions/standards" >}})
 - [Execution Engine]({{< relref "docs/architecture/engine/execution-engine.md" >}})
-- [Assignment Action]({{< relref "docs/actions/data/assignment.md" >}})
+- [Assignment Action]({{< relref "docs/actions/assignment" >}})

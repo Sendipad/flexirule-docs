@@ -94,5 +94,5 @@ sequenceDiagram
 ## Related Topics
 
 - [Execution Engine]({{< relref "docs/architecture/engine/execution-engine.md" >}})
-- [Variables]({{< relref "docs/actions/data/assignment.md#context-variables-vars" >}})
+- [Variables]({{< relref "docs/actions/assignment#context-variables-vars" >}})
 - [Condition Builder]({{< relref "docs/user-guide/condition-builder.md" >}})

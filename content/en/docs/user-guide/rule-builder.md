@@ -39,8 +39,8 @@ The Rule Builder is a Vue 3-based visual workspace for designing business logic 
 Each node in the graph represents a **Rule Action**.
 
 - **Entry Action**: The starting point of the graph.
-- **Functional Nodes**: Perform work (e.g., [Process]({{< relref "docs/actions/extensibility/process.md" >}}), [Assignment]({{< relref "docs/actions/data/assignment.md" >}})).
-- **Control Nodes**: Manage flow (e.g., [Condition]({{< relref "docs/actions/logic/condition.md" >}}), [Loop]({{< relref "docs/actions/logic/loop.md" >}})).
+- **Functional Nodes**: Perform work (e.g., [Process]({{< relref "docs/actions/process" >}}), [Assignment]({{< relref "docs/actions/assignment" >}})).
+- **Control Nodes**: Manage flow (e.g., [Condition]({{< relref "docs/actions/condition" >}}), [Loop]({{< relref "docs/actions/loop" >}})).
 
 ---
 

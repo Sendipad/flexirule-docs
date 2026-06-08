@@ -38,8 +38,8 @@ The **Assignment** action is a powerful tool for performing batch state mutation
 - Use this for basic mathematical transformations or list operations.
 
 ### Do Not Use
-- Do not use this to create *new* documents (use [Document Action]({{< relref "docs/actions/data/document-action.md" >}}) instead).
-- Do not use this for complex business logic that requires database lookups or external API calls (use [Process]({{< relref "docs/actions/extensibility/process.md" >}}) instead).
+- Do not use this to create *new* documents (use [Document Action]({{< relref "docs/actions/document-action" >}}) instead).
+- Do not use this for complex business logic that requires database lookups or external API calls (use [Process]({{< relref "docs/actions/process" >}}) instead).
 
 ---
 
@@ -128,6 +128,6 @@ A rich-text interface for:
 
 ## Related Topics
 
-- [Variables Reference]({{< relref "docs/actions/data/assignment.md#context-variables-vars" >}})
+- [Variables Reference]({{< relref "docs/actions/assignment#context-variables-vars" >}})
 - [Formula Resolver]({{< relref "docs/architecture/ui/action-config-panels.md#1-valueresolvercontrol" >}})
 - [Execution Lifecycle]({{< relref "docs/architecture/engine/execution-engine.md" >}})

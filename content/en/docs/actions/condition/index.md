@@ -37,8 +37,8 @@ The **Condition** action is the primary mechanism for decision-making within a F
 - Use this to check for the existence of specific data in child tables.
 
 ### Do Not Use
-- Do not use this for simple field mutations (use [Assignment]({{< relref "docs/actions/data/assignment.md" >}}) instead).
-- Do not use this for complex external data lookups (use [Query Records]({{< relref "docs/actions/data/query-records.md" >}}) or [Process]({{< relref "docs/actions/extensibility/process.md" >}}) instead).
+- Do not use this for simple field mutations (use [Assignment]({{< relref "docs/actions/assignment" >}}) instead).
+- Do not use this for complex external data lookups (use [Query Records]({{< relref "docs/actions/query-records" >}}) or [Process]({{< relref "docs/actions/process" >}}) instead).
 
 ---
 
@@ -163,5 +163,5 @@ Each operator evaluates the **Left** value against the **Right** value.
 ## Related Topics
 
 - [Condition Builder]({{< relref "docs/user-guide/condition-builder.md" >}})
-- [Variables]({{< relref "docs/actions/data/assignment.md#context-variables-vars" >}})
-- [Switch Action]({{< relref "docs/actions/logic/switch.md" >}})
+- [Variables]({{< relref "docs/actions/assignment#context-variables-vars" >}})
+- [Switch Action]({{< relref "docs/actions/switch" >}})
