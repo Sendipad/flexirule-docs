@@ -21,7 +21,7 @@ badges:
 
 # Assignment
 
-Keywords: assignment, change value, variables, update field, increment, batch update
+Keywords: assignment, change value, variables, update field, increment, batch update, enrichment, naming
 
 ## Overview
 
@@ -31,9 +31,13 @@ The **Assignment** action is used to change data during rule execution. Use this
 - **Store temporary values** for use later in the rule.
 - **Perform calculations** or increment counters.
 - **Build collections** or add items to a list.
+- **Enrich document data** before validation, submission, naming, or downstream processing.
+- **Prepare naming values** that contribute to document identifiers or codes.
 
 ### Batch Updates
-An Assignment action can contain multiple changes. This allows related updates to be grouped together in a single node instead of creating separate actions for every field update, keeping your rule graph clean and organized.
+An Assignment action can contain multiple changes. This allows related updates to be grouped together in a single node instead of creating separate actions for every field update.
+
+**Guideline**: Group updates that belong to the same business decision. For example, when an order is approved, you should group the status update, approval date, and approver name into one Assignment action.
 
 {{< info >}}
 **Migration Note:** The "Assignment" action type replaces the legacy **Set Value** node. Existing "Set Value" nodes will automatically work as `Set` assignments.
@@ -43,7 +47,7 @@ An Assignment action can contain multiple changes. This allows related updates t
 
 ## Assignment Targets
 
-The Assignment action can modify two types of data:
+Only document fields (`doc.*`) and variables (`vars.*`) can be modified by an Assignment action.
 
 ### Document Fields (`doc`)
 Updates fields on the current document being processed.
@@ -82,11 +86,11 @@ Each change row in an Assignment action includes:
 
 The value used in an assignment can come from multiple sources:
 
-- **Fixed values**: Numbers (e.g., `10`), strings (e.g., `"Paid"`), or booleans.
+- **Fixed values**: Numbers (e.g., `10`), text (e.g., `"Paid"`), or checkboxes.
 - **Document fields**: Another field from the document (e.g., `doc.posting_date`).
 - **Variables**: A previously stored variable (e.g., `vars.current_total`).
 - **Formulas**: Mathematical or date transformations (e.g., `doc.total * 0.1`).
-- **Template expressions**: Dynamic strings using Jinja (e.g., `"Welcome {{ doc.customer_name }}"`).
+- **Template expressions**: Dynamic text generated from document fields and variables (e.g., `"Welcome {{ doc.customer_name }}"`).
 
 ---
 
@@ -95,7 +99,7 @@ The value used in an assignment can come from multiple sources:
 | Operator | Purpose |
 | :--- | :--- |
 | **Set** | Replaces the current value with the new one. |
-| **Clear** | Resets the value to empty (None, 0, "", [], or {}). |
+| **Clear** | Removes the current value and resets the target according to its type. |
 | **Increment** | Adds a number to the current value. |
 | **Decrement** | Subtracts a number from the current value. |
 | **Append** | Adds an item to a list or table. |
@@ -108,30 +112,29 @@ The value used in an assignment can come from multiple sources:
 
 Changes within a single Assignment action are executed from **top to bottom**.
 
-A later row can use values produced by an earlier row in the same action. For example, you can calculate a tax amount in one row and then use that variable to update a total in the next.
+A later row can use values produced by an earlier row in the same action. This allows you to perform multi-step calculations efficiently.
+
+**Example**:
+1. **Row 1**: `vars.tax_amount = doc.total * 0.1`
+2. **Row 2**: `doc.total_with_tax = doc.total + vars.tax_amount`
 
 ---
 
-## Examples
+## Use Cases
 
-### 1. Simple Status Update
-**Goal**: Mark an order as "Approved".
-- **Target**: `doc.status`
-- **Operator**: `Set`
-- **Value**: `Approved`
+### 1. Document Enrichment
+Populate a customer category, risk score, territory, or derived business field before the document continues through the workflow. This ensures that downstream actions always have complete and standardized data.
 
-### 2. Increment a Counter
-**Goal**: Count how many high-value items are found.
-- **Target**: `vars.high_value_count`
-- **Operator**: `Increment`
-- **Value**: `1`
+### 2. Naming Strategies
+Prepare values that contribute to document names or identifiers.
+- Generate a customer code from customer attributes.
+- Build a document naming prefix.
+- Populate fields used by naming rules before a "Before Naming" trigger executes.
 
-### 3. Conditional Discount
-**Goal**: Give a 10% discount only if the total is over 5,000.
-- **Target**: `doc.discount_percentage`
-- **Operator**: `Set`
-- **Value**: `10`
-- **Run If**: `doc.grand_total > 5000`
+### 3. Status & State Management
+- Mark an order as "Approved".
+- Toggle an internal "Review Required" flag.
+- Reset the approval state when a document is modified.
 
 ---
 
@@ -140,7 +143,7 @@ A later row can use values produced by an earlier row in the same action. For ex
 - **Prefer document fields for business outcomes**: Use `doc.*` for data that needs to be visible to users or stored permanently.
 - **Prefer variables for intermediate calculations**: Use `vars.*` for temporary scores, flags, or counters.
 - **Initialize counters**: Ensure a variable is initialized (e.g., set to `0`) before using the `Increment` operator.
-- **Keep related updates together**: Group assignments that fulfill a single business intent into one action node.
+- **Keep related updates together**: Group assignments that fulfill a single business decision into one action node.
 - **Use descriptive names**: Give your variables names that clearly describe what they store.
 
 ---
@@ -158,4 +161,3 @@ A later row can use values produced by an earlier row in the same action. For ex
 - [Value Resolver]({{< relref "docs/architecture/ui/action-config-panels.md#1-valueresolvercontrol" >}})
 - [Condition Action]({{< relref "docs/actions/condition/index.md" >}})
 - [Loop Action]({{< relref "docs/actions/loop/index.md" >}})
-- [Implementation Details]({{< relref "docs/architecture/engine/action-implementation.md" >}})
