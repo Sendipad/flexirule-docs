@@ -39,7 +39,7 @@ The **Query Records** action retrieves data from any DocType in the system. It a
 
 ### Do Not Use
 - Do not use this if the data is already available on the current `doc` or its child tables.
-- Do not use this for extremely complex SQL joins (consider a [Process]({{< relref "docs/actions/extensibility/process.md" >}}) action with a custom SQL query instead).
+- Do not use this for extremely complex SQL joins (consider a [Process]({{< relref "docs/actions/process" >}}) action with a custom SQL query instead).
 
 ---
 
@@ -102,7 +102,7 @@ Need to check if data exists?
     - `status == "Overdue"`
 - Mutation: `Set Context Variable` (target: `vars.overdue_count`)
 **Execution**: The engine runs a `COUNT` query on the Sales Invoice table.
-**Result**: `vars.overdue_count` is compared in a subsequent [Condition]({{< relref "docs/actions/logic/condition.md" >}}) node.
+**Result**: `vars.overdue_count` is compared in a subsequent [Condition]({{< relref "docs/actions/condition" >}}) node.
 
 ---
 
@@ -117,5 +117,5 @@ Need to check if data exists?
 ## Related Topics
 
 - [Filter Group UI]({{< relref "docs/architecture/ui/action-config-panels.md#8-filtergroup" >}})
-- [Loop Action]({{< relref "docs/actions/logic/loop.md" >}})
-- [Condition Action]({{< relref "docs/actions/logic/condition.md" >}})
+- [Loop Action]({{< relref "docs/actions/loop" >}})
+- [Condition Action]({{< relref "docs/actions/condition" >}})

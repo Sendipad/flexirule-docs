@@ -33,10 +33,10 @@ The **Switch** action enables multi-path branching based on the value of an expr
 
 ### When to Use
 - Use this when you have more than two possible paths based on a single field (e.g., "Status" can be New, Open, Closed, or Pending).
-- Use this to simplify logic that would otherwise require multiple nested [Condition]({{< relref "docs/actions/logic/condition.md" >}}) nodes.
+- Use this to simplify logic that would otherwise require multiple nested [Condition]({{< relref "docs/actions/condition" >}}) nodes.
 
 ### Do Not Use
-- Do not use this if you need complex boolean logic (use [Condition]({{< relref "docs/actions/logic/condition.md" >}}) instead).
+- Do not use this if you need complex boolean logic (use [Condition]({{< relref "docs/actions/condition" >}}) instead).
 - Do not use this if you only have two paths (True/False).
 
 ---
@@ -78,7 +78,7 @@ graph TD
 - Expression: `vars.customer_tier`
 - Cases: `Bronze`, `Silver`, `Gold`, `Platinum`
 **Execution**: The tier (retrieved earlier in the rule) determines which path is taken.
-**Result**: Each tier follows its own specific [Assignment]({{< relref "docs/actions/data/assignment.md" >}}) logic for discounts.
+**Result**: Each tier follows its own specific [Assignment]({{< relref "docs/actions/assignment" >}}) logic for discounts.
 
 ---
 
@@ -92,6 +92,6 @@ graph TD
 
 ## Related Topics
 
-- [Condition Action]({{< relref "docs/actions/logic/condition.md" >}})
+- [Condition Action]({{< relref "docs/actions/condition" >}})
 - [Rule Building]({{< relref "docs/user-guide/rule-builder.md" >}})
 - [Variables Reference]({{< relref "docs/architecture/resolver/" >}})

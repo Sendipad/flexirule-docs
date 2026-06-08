@@ -39,8 +39,8 @@ The **Notify** action sends alerts and communications to users or external syste
 - Use this for real-time feedback in the UI using Toast notifications.
 
 ### Do Not Use
-- Do not use this for critical data mutation logic (use [Assignment]({{< relref "docs/actions/data/assignment.md" >}}) or [Process]({{< relref "docs/actions/extensibility/process.md" >}}) instead).
-- Do not use this for high-frequency internal logging (use a custom [Process]({{< relref "docs/actions/extensibility/process.md" >}}) or the built-in Rule Logs).
+- Do not use this for critical data mutation logic (use [Assignment]({{< relref "docs/actions/assignment" >}}) or [Process]({{< relref "docs/actions/process" >}}) instead).
+- Do not use this for high-frequency internal logging (use a custom [Process]({{< relref "docs/actions/process" >}}) or the built-in Rule Logs).
 
 ---
 
@@ -102,6 +102,6 @@ All fields (Subject, Message, Recipients) support **Jinja templates**, allowing 
 
 ## Related Topics
 
-- [Assignment Action]({{< relref "docs/actions/data/assignment.md" >}})
+- [Assignment Action]({{< relref "docs/actions/assignment" >}})
 - [Jinja Templating Reference](https://jinja.palletsprojects.com/)
 - [Rule Logs]({{< relref "docs/architecture/engine/execution-engine.md" >}})

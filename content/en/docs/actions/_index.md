@@ -9,18 +9,18 @@ The complete library of available action nodes.
 
 ## Categories
 
-### [Control Flow]({{< relref "logic/" >}})
-- **Condition**: Branch logic.
-- **Loop**: Iterate over collections.
-- **Switch**: Multi-path branching.
+### Control Flow
+- [**Condition**]({{< relref "condition" >}}): Branch logic.
+- [**Loop**]({{< relref "loop" >}}): Iterate over collections.
+- [**Switch**]({{< relref "switch" >}}): Multi-path branching.
 
-### [Data Operations]({{< relref "data/" >}})
-- **Assignment**: Update fields and variables.
-- **Query Records**: Retrieve system data.
-- **Document Action**: Perform CRUD operations.
+### Data Operations
+- [**Assignment**]({{< relref "assignment" >}}): Update fields and variables.
+- [**Query Records**]({{< relref "query-records" >}}): Retrieve system data.
+- [**Document Action**]({{< relref "document-action" >}}): Perform CRUD operations.
 
-### [Communication]({{< relref "communication/" >}})
-- **Notify**: Send alerts and emails.
+### Communication
+- [**Notify**]({{< relref "notify" >}}): Send alerts and emails.
 
-### [Extensibility]({{< relref "extensibility/" >}})
-- **Process**: Execute custom Python logic.
+### Extensibility
+- [**Process**]({{< relref "process" >}}): Execute custom Python logic.

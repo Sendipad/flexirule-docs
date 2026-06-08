@@ -29,7 +29,7 @@ Keywords: loop, iterate, for-each, collection, child table
 
 ## Overview
 
-The **Loop** action enables iterative processing of collections, such as child tables or results from a [Query Records]({{< relref "docs/actions/data/query-records.md" >}}) action. It allows you to perform a sequence of actions for every item in a list.
+The **Loop** action enables iterative processing of collections, such as child tables or results from a [Query Records]({{< relref "docs/actions/query-records" >}}) action. It allows you to perform a sequence of actions for every item in a list.
 
 ### When to Use
 - Use this when you need to perform an action for every row in a child table (e.g., validating every item in a Sales Order).
@@ -37,7 +37,7 @@ The **Loop** action enables iterative processing of collections, such as child t
 - Use this to aggregate values manually when the Formula Resolver isn't sufficient.
 
 ### Do Not Use
-- Do not use this for simple aggregations (like Sum or Count) on child tables if you can use the [Formula Resolver]({{< relref "docs/architecture/ui/action-config-panels.md#1-valueresolvercontrol" >}}) in an [Assignment]({{< relref "docs/actions/data/assignment.md" >}}) action.
+- Do not use this for simple aggregations (like Sum or Count) on child tables if you can use the [Formula Resolver]({{< relref "docs/architecture/ui/action-config-panels.md#1-valueresolvercontrol" >}}) in an [Assignment]({{< relref "docs/actions/assignment" >}}) action.
 - Avoid deeply nested loops for large datasets as they can significantly impact performance.
 
 ---
@@ -87,7 +87,7 @@ Inside a loop, the engine provides automatic metadata within the `vars.loop` con
 **Configuration**:
 - Iterator: `doc.items`
 - Item Alias: `row`
-- Loop Body: [Assignment]({{< relref "docs/actions/data/assignment.md" >}}) node setting `row.status = "Processed"`.
+- Loop Body: [Assignment]({{< relref "docs/actions/assignment" >}}) node setting `row.status = "Processed"`.
 **Execution**: The engine iterates through `doc.items`, setting `row` to each item in turn.
 **Result**: Every item in the child table has its status updated.
 
@@ -96,7 +96,7 @@ Inside a loop, the engine provides automatic metadata within the `vars.loop` con
 **Configuration**:
 - Loop over `doc.items`.
 - In the **For Each** path: Perform item validation.
-- In the **After Last** path: [Notify]({{< relref "docs/actions/communication/notify.md" >}}) action to send the email.
+- In the **After Last** path: [Notify]({{< relref "docs/actions/notify" >}}) action to send the email.
 **Execution**: The engine validates all items, then proceeds to the final notification.
 **Result**: One email is sent only after all items are processed.
 
@@ -106,12 +106,12 @@ Inside a loop, the engine provides automatic metadata within the `vars.loop` con
 
 - **Variable Collision**: Using the same `Item Alias` in nested loops. Always use unique aliases for nested contexts (e.g., `parent_item`, `child_item`).
 - **Infinite Loops**: Modifying the collection being iterated over (e.g., appending items to `doc.items` while looping over it).
-- **Complexity**: Putting too much logic inside the loop body. Consider moving complex loop logic into a [Sub-Rule]({{< relref "docs/triggers/callable-triggers.md" >}}) or [Process]({{< relref "docs/actions/extensibility/process.md" >}}).
+- **Complexity**: Putting too much logic inside the loop body. Consider moving complex loop logic into a [Sub-Rule]({{< relref "docs/triggers/callable-triggers.md" >}}) or [Process]({{< relref "docs/actions/process" >}}).
 
 ---
 
 ## Related Topics
 
-- [Query Records]({{< relref "docs/actions/data/query-records.md" >}})
-- [Assignment Action]({{< relref "docs/actions/data/assignment.md" >}})
+- [Query Records]({{< relref "docs/actions/query-records" >}})
+- [Assignment Action]({{< relref "docs/actions/assignment" >}})
 - [Variable Resolution]({{< relref "docs/architecture/resolver/" >}})
