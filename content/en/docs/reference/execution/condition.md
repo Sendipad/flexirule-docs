@@ -30,8 +30,8 @@ The **Condition** action provides deterministic, side-effect-free logic evaluati
     - If `False`, the engine resolves `next_step_if_false`.
 
 ## Context Visibility
-- **Read Access**: The action has full read access to the execution context (`doc`, `vars`, `meta`) and the database (via restricted `frappe` API).
-- **Write Access**: The action has **Zero** write access. It cannot mutate the document, set variables, or perform database writes.
+- **Read Access**: The action has full read access to the execution context (`doc`, `vars`, `meta`) and the database (via restricted `frappe` API). `old_doc` is available for change detection in supported events.
+- **Write Access**: The action has **Zero** write access. It cannot mutate the document, set variables, or perform database writes. Any attempt to use write-capable methods on the restricted `frappe` object will raise a `PermissionError`.
 
 ## Transaction Behavior
 - **Atomicity**: The evaluation itself is atomic and does not interact with the database transaction manager (except for read-only queries).
@@ -40,7 +40,8 @@ The **Condition** action provides deterministic, side-effect-free logic evaluati
 
 ## Failure Behavior
 - **Evaluation Errors**: If the Python expression raises an exception (e.g., `ZeroDivisionError`), the engine logs the failure to the **Error Log** and defaults the result to `False`.
-- **NameError**: Unlike other exceptions, a `NameError` (referencing an undefined variable or function) is **re-raised** to the engine. This is treated as a configuration bug and will stop rule execution unless an `on_error: Continue` policy is set on the node.
+- **Missing Fields**: Accessing a missing field on a valid object (e.g., `doc.non_existent_field`) resolves to `None` and evaluates as `False`.
+- **NameError**: Unlike other exceptions, a `NameError` (referencing an undefined top-level scope like `vars` or a missing helper function) is **re-raised** to the engine. This is treated as a configuration bug and will stop rule execution unless an `on_error: Continue` policy is set on the node.
 - **Missing Compilation**: If a rule is executed without being compiled, it raises a hard `ValueError`.
 
 ## Idempotency

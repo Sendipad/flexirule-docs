@@ -25,12 +25,12 @@ The **Condition** action is implemented as a bridge between a visual logic tree 
 
 1.  **Engine Dispatch**: The `RuleEngine` identifies the action type and retrieves the `ConditionHandler` from the `HandlerRegistry`.
 2.  **Handler Execution**: `ConditionHandler.execute()` is called.
-3.  **Compilation Check**: The handler checks for `action.compiled_expression`.
+3.  **Compilation Check**: The handler checks for `action.compiled_expression`. If missing, it raises a `ValueError`.
 4.  **Runtime Eval**:
     - `engine._evaluate_python_condition()` is invoked.
     - It calls `eval_condition_bool()` from `flexirule.ruleflow.core.runtime_eval`.
-    - The expression is evaluated within a restricted scope.
-5.  **Coercion**: The result is passed through `bool()`.
+    - The expression is evaluated using `frappe.safe_eval` within a restricted scope.
+5.  **Coercion**: The result is passed through `bool()`, ensuring truthiness-based branching.
 6.  **Navigation**: The handler returns `(result, next_id)`.
 
 ## Context Mutation Model
@@ -60,10 +60,12 @@ New operators can be added to the frontend `SimpleCondition.vue` component. Sinc
 ## Source Files
 
 - **Backend Handler**: `flexirule/ruleflow/core/action_handlers/condition.py`
+- **Compiler**: `flexirule/ruleflow/core/compiler.py` (Translates JSON AST to Python string)
 - **Frontend Builder**: `flexirule/public/js/flexirule/rule_builder/components/condition_builder/ConditionBuilder.vue`
 - **Runtime Evaluator**: `flexirule/ruleflow/core/runtime_eval.py`
 - **Payload Utilities**: `flexirule/ruleflow/core/condition_payload.py`
 - **Safe API Proxy**: `flexirule/ruleflow/core/engine.py` (see `SafeFrappeAPI`)
+- **Field Resolver**: `flexirule/ruleflow/utils/field_resolver.py` (Handles nested dot-notation)
 
 ## Related Topics
 - [Action Documentation]({{< relref "docs/actions/condition/index.md" >}})
