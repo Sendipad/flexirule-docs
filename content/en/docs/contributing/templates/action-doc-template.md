@@ -5,23 +5,23 @@ weight: 100
 # aliases: [/docs/actions/old-slug/]
 
 capabilities:
-  category: # [flow-control, data, process, notification, integration, human-review, document]
-  mutation: # [read-only, read-write, destructive]
+  category: data
+  mutation: read-only
   targets:
-    - # [context, document, database, external-document, external-system]
+    - context
   triggers:
-    - # [before, after, scheduler, callable, any]
-  flow: # [linear, branching, loop, terminal, sub-rule]
+    - any
+  flow: linear
   transaction:
-    - # [transactional, rollback, async]
+    - transactional
 
 badges:
-  - # [core, experimental, external, deprecated]
+  - core
 ---
 
 # Action Name
 
-Keywords: # [comma, separated, search, terms]
+Keywords: [comma, separated, search, terms]
 
 ## Overview
 <!--
@@ -103,5 +103,5 @@ Technical or functional boundaries of the action.
 <!--
 Links to other layers or related actions using relref.
 -->
-- [Execution Semantics]({{< relref "docs/reference/execution/action-name.md" >}})
-- [Architecture Reference]({{< relref "docs/architecture/actions/action-name.md" >}})
+- [Execution Semantics]({{</* relref "docs/reference/execution/action-name.md" */>}})
+- [Architecture Reference]({{</* relref "docs/architecture/actions/action-name.md" */>}})
