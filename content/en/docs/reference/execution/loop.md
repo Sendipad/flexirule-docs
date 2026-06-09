@@ -19,6 +19,7 @@ The Loop action is processed as a recurring node in the execution graph:
 4.  **Context Binding**:
     - **Item Binding**: The item at `collection[index]` is bound to `vars[alias]`. Precedence for the alias name is: `action.return_variable` > `config.alias` > `"item"`.
     - **Metadata Binding**: The `vars.loop` dictionary is updated with `index`, `first`, `last`, and `length`.
+- **Empty Collections**: If the iterator resolves to an empty list or `None`, the engine returns `(False, next_step_if_false)` without binding iteration variables.
 5.  **Path Selection**:
     - **Continue**: If items remain, the engine returns `(True, next_step_if_true)`.
     - **Terminate**: If the index is out of bounds, the engine cleans up the internal state and returns `(False, next_step_if_false)`.
