@@ -41,4 +41,4 @@ If the report is stored in a variable named `vars.my_report`, you can access the
 - **Metadata**: `vars.my_report.columns` (the list of column definitions).
 
 ## Performance Notes
-Running a report can be a resource-intensive operation depending on the report's complexity. If a report takes a long time to run in the standard UI, it will also take a long time to run within a rule flow. Consider using a specific [**Query List**]({{< relref "docs/actions/query-records/query-list/index.md" >}}) if you only need basic data.
+Running a report can be a resource-intensive operation depending on the report's complexity. If a report takes a long time to run in the standard UI, it will also take a long time to run within a rule flow. Consider using a specific [**Query List**]({{< relref "docs/actions/query-records/query-list" >}}) if you only need basic data.

@@ -34,4 +34,4 @@ Returns a single object containing all fields of the DocType.
 
 ## Performance Notes
 - Query Doc is a "heavy" operation as it performs a full `frappe.get_doc`, which includes loading child tables and running document controller logic.
-- If you only need one or two fields, consider using [**Query List**]({{< relref "docs/actions/query-records/query-list/index.md" >}}) with a limit of `1` instead for better performance.
+- If you only need one or two fields, consider using [**Query List**]({{< relref "docs/actions/query-records/query-list" >}}) with a limit of `1` instead for better performance.
