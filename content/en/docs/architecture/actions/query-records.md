@@ -30,33 +30,25 @@ The **Query Records** action is implemented as a core Action Handler within the 
 
 ## 2. Filter Normalization Logic
 
-The handler translates UI-level filter definitions into the tuple format expected by `frappe.get_list`.
+The handler translates UI-level filter definitions into the tuple format expected by `frappe.get_list`. Detailed operator mappings and natural language keyword resolution are shared across the system.
 
-### Translation Table
-
-| UI Operator | Backend Operator | Transformation |
-| :--- | :--- | :--- |
-| `starts with` | `like` | `value%` |
-| `ends with` | `like` | `%value` |
-| `Between` | `between` | `[start, end]` |
-| `Timespan` | `between` | Resolved via `_resolve_timespan_range()` |
+- **Operator Mappings**: See [Query Filters Reference]({{< relref "docs/reference/query-filters.md" >}}).
+- **Timespan Resolution**: Handled via `_resolve_timespan_range()`, using the logic defined in [Timespan Keywords]({{< relref "docs/reference/timespan-keywords.md" >}}).
 
 ### Nested Field Support
-The architecture supports "dot-notation" for filtering on child table fields. The `_doctype_has_field` method recursively validates these references against the DocType metadata to ensure safety.
+The architecture supports "dot-notation" for filtering on child table fields and linked documents. The `_doctype_has_field` method recursively validates these references against the DocType metadata at validation time.
 
 ---
 
-## 3. Execution Pipeline (Detailed)
+## 3. Mode-Specific Dispatching
 
-1.  **Configuration Parsing**: The `action.config` JSON string is parsed into a dictionary.
-2.  **Input Mapping Application**: `apply_input_mapping` merges runtime context values into the configuration dictionary.
-3.  **Mode-Specific Dispatch**:
-    - **Query List/Doc**: Dispatched to `_query_list` or `_query_doc`.
-    - **Aggregations**: Handled by `_aggregate` or `_count_records` using `frappe.get_all` with SQL aggregation functions.
-    - **Report**: Handled by `_query_report`, which wraps `frappe.desk.query_report.run`.
-4.  **Result Shaping**:
-    - For `Query Report`, the handler performs post-processing to transform mixed-type results (lists of lists) into a consistent list of dictionaries based on column definitions.
-5.  **Context Injection**: The engine core receives the return value and updates the `context.vars` or `context.doc` based on the node's `target` configuration (handled outside the specific handler).
+1.  **Configuration Parsing**: `action.config` is parsed into a dictionary.
+2.  **Input Mapping Application**: `apply_input_mapping` is used to allow runtime context variables to override configuration keys.
+3.  **Dispatch Table**:
+    - **List/Doc**: `_query_list`, `_query_doc`.
+    - **Aggregations**: `_aggregate` or `_count_records` using SQL-level `sum`, `avg`, etc.
+    - **Report**: `_query_report`, wrapping `frappe.desk.query_report.run`.
+4.  **Result Shaping**: `Query Report` results are post-processed to convert list-of-lists into list-of-dicts based on column definitions.
 
 ---
 
@@ -66,12 +58,12 @@ The architecture supports "dot-notation" for filtering on child table fields. Th
 - **Path**: `flexirule/public/js/flexirule/rule_builder/components/rule_config/types/QueryRecordsConfig.vue`
 - **Key Responsibilities**:
     - Reactive configuration state management.
-    - Dynamic filter group rendering via `FilterGroup.vue`.
-    - Real-time schema detection via `test_action_query` API.
-    - Report filter extraction from `frappe.desk.query_report.get_script`.
+    - Dynamic filter group rendering.
+    - Real-time schema detection via the `test_action_query` API.
+    - Extraction of Report filters via `frappe.desk.query_report.get_script`.
 
 ### Schema Detection API
-The "Refresh Schema" button triggers the `flexirule.ruleflow.api.test_action_query` method. This server-side helper executes the query in a dry-run environment and returns the resulting column types, which are then saved to `node.data.resolved_output_schema`.
+The "Refresh Schema" button calls `flexirule.ruleflow.api.test_action_query`. This server-side helper executes a dry-run and returns column metadata, which is saved to `node.data.resolved_output_schema`.
 
 ---
 
