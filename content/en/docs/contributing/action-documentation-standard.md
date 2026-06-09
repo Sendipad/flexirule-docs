@@ -79,6 +79,9 @@ FlexiRule uses a 3-layer architecture for action documentation:
 
 ### Frontmatter Requirements
 Every Layer 1 action page must include:
+-   `kind`: The entity classification.
+    -   `action`: For the main action landing page (e.g., `docs/actions/document-action/_index.md`).
+    -   `action_operation`: For specific operation pages within an action (e.g., `docs/actions/document-action/create-new.md`).
 -   `capabilities`: Metadata describing what the action can do (Category, Mutation, Targets, etc.).
 -   `badges`: Status indicators (Core, Experimental, External).
 -   `description`: A concise, one-sentence summary of the action.
