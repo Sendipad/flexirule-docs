@@ -1,10 +1,10 @@
 ---
 title: "Create New"
 description: "Generate new records in any DocType using data from the current context."
-kind: action_operation
+entity_kind: action_operation
 capabilities:
   category: document
-  mutation: write
+  mutation: read-write
   targets:
     - database
 ---
