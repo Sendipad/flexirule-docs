@@ -44,13 +44,13 @@ The Loop action is configured via the properties panel in the Rule Builder.
 | Field | Description |
 | :--- | :--- |
 | **Iterator** | An expression resolving to a list or tuple (e.g., `doc.items` or `vars.search_results`). |
-| **Item Alias** | The variable name used to access the current item inside the loop body (defaults to `item`). |
-| **Return Variable** | A standard action field that can be used as an alternative for the Item Alias. |
+| **Item Alias** | The variable name used to access the current item inside the loop body (defaults to `item`). Note: If the standard **Return Variable** is set, it will take precedence over this field. |
+| **Return Variable** | A standard action field that, if configured, serves as the primary iteration variable name. |
 
 ### Path Branching
 The Loop node features two distinct exit ports:
 1.  **For Each**: The execution path followed for every item in the collection.
-2.  **After Last**: The execution path followed once the collection has been fully traversed.
+2.  **After Last**: The execution path followed once the collection has been fully traversed or if the collection is empty.
 
 ## Supported Inputs
 
@@ -72,6 +72,15 @@ Inside the loop body, the following variables are automatically managed:
 | `vars.loop.first` | Boolean | `True` during the first iteration. |
 | `vars.loop.last` | Boolean | `True` during the final iteration. |
 
+## Empty Collection Behavior
+
+When the **Iterator** resolves to an empty list or `None`:
+- No iteration variables are created.
+- The **For Each** branch is skipped.
+- Execution continues immediately through the **After Last** branch.
+
+This allows post-processing logic (like summary notifications) to run even when no items are available for processing.
+
 ## Execution Behavior
 
 The Loop action operates as a stateful node within the execution graph.
@@ -86,10 +95,10 @@ graph TD
     Check -- No --> AfterLast[Execute 'After Last' Path]
 ```
 
-1.  **State Initialization**: Upon first entry, the engine creates an internal tracker for the current index.
+1.  **State Initialization**: The engine initializes internal loop state used to track iteration progress.
 2.  **Collection Resolution**: The **Iterator** expression is evaluated against the current context.
 3.  **Iteration**: The engine binds the current item and metadata to the context and follows the **For Each** path.
-4.  **Completion**: When no items remain, the internal state is cleaned up, and execution follows the **After Last** path.
+4.  **Completion**: When no items remain, internal bookkeeping is cleaned up, and execution follows the **After Last** path.
 
 ## Examples
 
@@ -118,7 +127,8 @@ graph TD
 
 - **Unique Aliases**: When using nested loops, always provide unique **Item Aliases** (e.g., `parent_item`, `child_item`) to avoid variable collision.
 - **Minimal Logic**: Keep the logic inside the **For Each** path as lean as possible. If the processing logic is complex, consider moving it into a [Sub-Rule]({{< relref "docs/triggers/callable-triggers.md" >}}).
-- **Post-Loop Access**: The variables `vars.loop` and the item alias persist after the loop finishes, holding the values from the final iteration. Use this for summary logic if needed.
+- **Post-Loop Access**: After completion, internal loop bookkeeping is cleaned up, but user-facing variables such as `vars.loop` and the item alias remain available and contain values from the final iteration.
+- **Nested Loops**: Each Loop node maintains independent state, allowing parent-child iteration scenarios such as Orders → Items.
 
 ## Common Mistakes
 
@@ -127,8 +137,7 @@ graph TD
 
 ## Limitations
 
-- **Savepoints**: The Loop does not create a database savepoint for every iteration. If an error occurs in the 10th iteration, the mutations from iterations 1-9 remain in memory unless the parent rule rolls back the entire transaction.
-- **Concurrency**: Loops are executed sequentially. Parallel iteration is not currently supported.
+- **Savepoints**: Loop iterations do not create independent transaction boundaries. Transaction behavior is governed by the parent rule and any nested actions. For details, see [Execution Semantics]({{< relref "docs/reference/execution/loop.md" >}}).
 
 ## Related Topics
 - [Execution Semantics]({{< relref "docs/reference/execution/loop.md" >}})
