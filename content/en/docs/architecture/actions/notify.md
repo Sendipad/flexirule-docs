@@ -84,6 +84,10 @@ The Notify action is strictly **Read-Only** regarding the Rule Context. It does 
 -   **Frontend Component**: `flexirule/public/js/flexirule/rule_builder/components/rule_config/types/NotifyConfig.vue`
 -   **Action Metadata**: `flexirule/ruleflow/core/contracts.py`
 
+## Related Topics
+- [Action Documentation]({{< relref "docs/actions/notify/_index.md" >}})
+- [Execution Semantics]({{< relref "docs/reference/execution/notify.md" >}})
+
 ## Performance Considerations
 -   **Synchronous vs. Asynchronous**: While the rule engine executes synchronously, modes like `Email` are effectively asynchronous as they rely on the Frappe Email Queue.
 -   **Provider Latency**: Custom providers that make synchronous external API calls (like the Slack example above) will block the rule execution until the API responds. It is recommended to use `frappe.enqueue` within custom providers for high-latency operations.
