@@ -1,10 +1,10 @@
 ---
 title: "Add Comment"
 description: "Post an automated message to a document's timeline."
-kind: action_operation
+entity_kind: action_operation
 capabilities:
   category: document
-  mutation: write
+  mutation: read-write
   targets:
     - database
 ---

@@ -2,7 +2,7 @@
 title: "Document Action"
 description: "Manage the lifecycle of records across any DocType, including creation, updates, and social interactions."
 weight: 40
-kind: action
+entity_kind: action
 aliases:
   - /docs/actions/document_action/
 capabilities:
