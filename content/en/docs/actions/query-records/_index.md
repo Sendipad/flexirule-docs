@@ -51,12 +51,12 @@ Query Records is a versatile action that supports several execution modes. Choos
 
 | Mode | Returns | Best For |
 | :--- | :--- | :--- |
-| [**Query List**]({{< relref "docs/actions/query-records/query-list/index.md" >}}) | List of Objects | Finding multiple records to loop over. |
-| [**Query Doc**]({{< relref "docs/actions/query-records/query-doc/index.md" >}}) | Single Object | Fetching detailed info from a specific record. |
-| [**Exist Record**]({{< relref "docs/actions/query-records/exist-record/index.md" >}}) | Boolean | Simple validation and existence checks. |
-| [**Aggregations**]({{< relref "docs/actions/query-records/aggregations/index.md" >}}) | Number | Totals, counts, and averages (Sum, Min, Max). |
-| [**Group By**]({{< relref "docs/actions/query-records/group-by/index.md" >}}) | List of Objects | Analytical summaries and bucketed data. |
-| [**Query Report**]({{< relref "docs/actions/query-records/query-report/index.md" >}}) | Complex Object | Reusing existing system reports. |
+| [**Query List**]({{< relref "docs/actions/query-records/query-list" >}}) | List of Objects | Finding multiple records to loop over. |
+| [**Query Doc**]({{< relref "docs/actions/query-records/query-doc" >}}) | Single Object | Fetching detailed info from a specific record. |
+| [**Exist Record**]({{< relref "docs/actions/query-records/exist-record" >}}) | Boolean | Simple validation and existence checks. |
+| [**Aggregations**]({{< relref "docs/actions/query-records/aggregations" >}}) | Number | Totals, counts, and averages (Sum, Min, Max). |
+| [**Group By**]({{< relref "docs/actions/query-records/group-by" >}}) | List of Objects | Analytical summaries and bucketed data. |
+| [**Query Report**]({{< relref "docs/actions/query-records/query-report" >}}) | Complex Object | Reusing existing system reports. |
 
 ---
 
@@ -80,7 +80,7 @@ Query Records is a versatile action that supports several execution modes. Choos
 
 ## Related Topics
 
-- [Query Filter Reference]({{< relref "docs/reference/query-filters.md" >}}) - Exhaustive guide to operators and filter logic.
-- [Timespan Keywords]({{< relref "docs/reference/timespan-keywords.md" >}}) - Natural language date filtering.
+- [Query Filter Reference]({{< relref "docs/reference/query-filters" >}}) - Exhaustive guide to operators and filter logic.
+- [Timespan Keywords]({{< relref "docs/reference/timespan-keywords" >}}) - Natural language date filtering.
 - [Loop Action]({{< relref "docs/actions/loop" >}}) - Processing results from a `Query List`.
 - [Value Resolver]({{< relref "docs/architecture/resolver/_index.md" >}}) - How filters resolve dynamic values.

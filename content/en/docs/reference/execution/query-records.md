@@ -21,7 +21,7 @@ When a Query Records action is executed, the engine follows this strict sequence
 3.  **Filter Resolution**:
     - Configuration filters are recursively traversed.
     - Expressions (e.g., `{{doc.name}}`) are resolved via the `ValueResolver`.
-    - Natural language date keywords are resolved into static date ranges (See [Timespan Keywords]({{< relref "docs/reference/timespan-keywords.md" >}})).
+    - Natural language date keywords are resolved into static date ranges (See [Timespan Keywords]({{< relref "docs/reference/timespan-keywords" >}})).
 4.  **Database Dispatch**: The query is dispatched to the database layer based on the selected **Mode**.
 5.  **Output Mutation**: The results are injected into the specified context variable (e.g., `vars.result`).
 
@@ -48,7 +48,7 @@ Modes like **Count**, **Sum**, **Avg**, **Min**, and **Max** return a primitive 
 
 ### Complex Outputs
 - **Group By**: Returns a list of dictionaries with the keys `[group_field, "value"]`.
-- **Query Report**: Returns an object containing `columns` and `result`. See the [Query Report Detail]({{< relref "docs/actions/query-records/query-report/index.md" >}}) for usage examples.
+- **Query Report**: Returns an object containing `columns` and `result`. See the [Query Report Detail]({{< relref "docs/actions/query-records/query-report" >}}) for usage examples.
 
 ---
 

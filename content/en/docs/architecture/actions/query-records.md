@@ -32,8 +32,8 @@ The **Query Records** action is implemented as a core Action Handler within the 
 
 The handler translates UI-level filter definitions into the tuple format expected by `frappe.get_list`. Detailed operator mappings and natural language keyword resolution are shared across the system.
 
-- **Operator Mappings**: See [Query Filters Reference]({{< relref "docs/reference/query-filters.md" >}}).
-- **Timespan Resolution**: Handled via `_resolve_timespan_range()`, using the logic defined in [Timespan Keywords]({{< relref "docs/reference/timespan-keywords.md" >}}).
+- **Operator Mappings**: See [Query Filters Reference]({{< relref "docs/reference/query-filters" >}}).
+- **Timespan Resolution**: Handled via `_resolve_timespan_range()`, using the logic defined in [Timespan Keywords]({{< relref "docs/reference/timespan-keywords" >}}).
 
 ### Nested Field Support
 The architecture supports "dot-notation" for filtering on child table fields and linked documents. The `_doctype_has_field` method recursively validates these references against the DocType metadata at validation time.
