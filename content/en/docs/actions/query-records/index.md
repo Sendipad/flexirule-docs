@@ -174,4 +174,4 @@ When filtering by dates, you can use natural language keywords instead of calcul
 
 - [Loop Action]({{< relref "docs/actions/loop" >}}) - Used to process results from a `Query List`.
 - [Condition Action]({{< relref "docs/actions/condition" >}}) - Used to branch logic based on `Exist Record` or `Count`.
-- [Variable Resolver]({{< relref "docs/architecture/engine/value-resolver.md" >}}) - How filters resolve dynamic values.
+- [Value Resolver]({{< relref "docs/architecture/resolver/_index.md" >}}) - How filters resolve dynamic values.
