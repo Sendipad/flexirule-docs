@@ -50,6 +50,10 @@ The Notify action interacts with transactions differently depending on the mode:
 ## Idempotency
 The Notify action is **not idempotent**. Executing the same Notify action multiple times will result in multiple emails being sent or multiple notifications being created. Use conditional logic (`Run If`) to prevent redundant notifications in re-entrant rules.
 
+## Related Topics
+- [Action Documentation]({{< relref "docs/actions/notify/_index.md" >}})
+- [Architecture Reference]({{< relref "docs/architecture/actions/notify.md" >}})
+
 ## Performance Notes
 -   **Email Overhead**: While `frappe.sendmail` is generally fast (queuing), generating complex PDF attachments can be resource-intensive.
 -   **Template Complexity**: Large Jinja templates or templates that perform complex logic can impact execution time.
