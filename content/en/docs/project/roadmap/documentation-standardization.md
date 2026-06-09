@@ -54,7 +54,8 @@ As of the implementation of the documentation framework:
 ## Estimated Effort
 
 -   **Phase 1 (Foundation)**: 1 day (Done).
--   **Phase 2 (Assignment Split)**: 2 days.
+-   **Phase 2 (Agent Enforcement)**: 0.5 days (Done). Updated `agents.md` to ensure future agents follow the framework.
+-   **Phase 3 (Assignment Split)**: 2 days.
 -   **Phase 3 (Metadata & Catalog Audit)**: 1 day.
 -   **Phase 4 (Remaining Actions)**: 3-5 days.
 

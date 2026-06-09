@@ -119,6 +119,27 @@ Prefer small reusable partials.
 
 ---
 
+Documentation Standards
+When creating or modifying action documentation, agents must follow the FlexiRule Documentation Framework.
+
+**Reference Documents:**
+- `content/en/docs/contributing/action-documentation-standard.md`
+- `content/en/docs/contributing/templates/action-doc-template.md`
+- `content/en/docs/contributing/templates/execution-semantics-template.md`
+- `content/en/docs/contributing/templates/action-architecture-template.md`
+
+**Documentation Model (3 Layers):**
+- **Layer 1: Action Documentation** (`/docs/actions/`): "What it does and how to use it". Focused on business intent and configuration.
+- **Layer 2: Execution Semantics** (`/docs/reference/execution/`): "Exactly how it behaves". Focused on runtime guarantees, transaction models, and failure behavior.
+- **Layer 3: Architecture Reference** (`/docs/architecture/actions/`): "How it is implemented". Focused on class structure, source files, and extension points.
+
+**Workflow Requirements:**
+- **For New Actions**: Create all three documentation layers using standard templates, populate frontmatter/capabilities, and use `relref` for cross-linking.
+- **For Existing Actions**: Preserve content while refactoring into the correct layer. Avoid duplication and follow the standard section ordering.
+- **Content Quality**: Explain **business intent first**. Prefer realistic **ERPNext/Frappe examples** (e.g., Sales Order, Support Ticket). Prioritize consistency over stylistic variation. Distinguish behavior from implementation.
+
+---
+
 Agent Workflow
 Before making significant architectural changes:
 1. Check AGENTS.md
