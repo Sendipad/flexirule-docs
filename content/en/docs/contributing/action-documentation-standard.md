@@ -70,7 +70,7 @@ FlexiRule uses a 3-layer architecture for action documentation:
 
 ### Cross-Linking Convention
 -   **Hugo `relref`**: All internal links must use the `relref` shortcode pointing to the `.md` file path.
--   **Format**: `{{< relref "docs/actions/assignment/index.md" >}}`
+-   **Format**: `{{</* relref "docs/actions/assignment/index.md" */>}}`
 -   **Why**: This ensures link stability across refactors and URL changes.
 
 ---
