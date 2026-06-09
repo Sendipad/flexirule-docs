@@ -63,9 +63,9 @@ Conditions are managed through the **Condition Builder (V2)**. This visual works
 The Condition action can evaluate any data available in the current execution context:
 
 -   **`doc`**: Fields of the document currently being processed.
--   **`old_doc`**: The document's state before the current transaction (useful for change detection).
+-   **`old_doc`**: The document's state before the current transaction. Available in `Before Save`, `Validate`, and `After Save` events; `null` for new documents.
 -   **`vars`**: Context variables set by previous actions (e.g., `vars.total_discount`).
--   **`frappe`**: Read-only access to the database via `frappe.get_value` or `frappe.db_exists`.
+-   **`frappe`**: Restricted, read-only access to the database. Supported methods include `get_value`, `get_all`, `db_exists`, `get_meta`, and `format_value`.
 
 ## Supported Outputs
 
@@ -89,12 +89,12 @@ The engine follows standard Python short-circuit logic:
 
 | Operator | Usage | Notes |
 | :--- | :--- | :--- |
-| **Equals (==)** | `left == right` | Standard equality. Note: `0 == False` in Python. |
+| **Equals (==)** | `left == right` | Standard equality. Note: `0 == False` and `"" == None` is `False`. |
 | **Not Equals (!=)** | `left != right` | Inequality check. |
-| **Contains** | `right in left` | Checks if a value exists in a string, list, or table. |
+| **Contains** | `right in left` | Case-sensitive search. Works on strings and lists. |
 | **In / Not In** | `left in [...]` | Checks if the field value exists within a provided list. |
-| **Starts With** | `left.startswith(right)` | String prefix check. |
-| **Regex Match** | `re.search(right, left)` | Evaluates a regular expression. Use sparingly for performance. |
+| **Starts With** | `left.startswith(right)` | Case-sensitive string prefix check. |
+| **Is Set / Not Set** | — | Checks if a field has a value (not null and not empty string). |
 
 ## Examples
 
