@@ -6,69 +6,45 @@ weight: 110
 
 # Deployment Guide
 
-FlexiRule documentation is built using Hugo and deployed via GitHub Actions. The deployment process is configurable, allowing you to publish the site to the current repository or an external repository (like the main FlexiRule repository).
+FlexiRule documentation is built using Hugo and deployed via GitHub Actions. There are two main workflows for deployment: local and external.
 
-## Configuration Variables
+## 1. Local Deployment (Current Repository)
 
-The deployment workflow uses GitHub Actions **Variables** and **Secrets** to determine the deployment target.
+The **Deploy Hugo site to Pages** workflow handles deployment to the current repository's GitHub Pages.
 
-### Variables
+- **Triggers**:
+  - Automatically on push to the `develop` branch.
+  - Manually via `workflow_dispatch`.
+- **Requirements**:
+  - GitHub Pages must be enabled for the repository.
+  - **Settings > Pages > Build and deployment > Source** must be set to **GitHub Actions**.
 
-Go to **Settings > Secrets and variables > Actions > Variables** in your GitHub repository to configure these:
+## 2. External Deployment (Manual)
 
-| Variable | Description | Default Value |
-| :--- | :--- | :--- |
-| `DEPLOY_REPOSITORY` | The target repository in `owner/repo` format. | Current repository |
-| `DEPLOY_BRANCH` | The target branch for deployment. | `gh-pages` |
-| `HUGO_BASEURL` | The base URL for the generated site. | `https://sendipad.github.io/flexirule-docs/` |
+The **Deploy Hugo site to External Repository** workflow allows you to publish the documentation to a different repository (e.g., the main FlexiRule repository).
 
-### Secrets
+- **Trigger**: Manually via `workflow_dispatch`.
+- **Inputs**:
+  - `repository`: The target repository in `owner/repo` format (Default: `Sendipad/flexirule`).
+  - `branch`: The target branch for deployment (Default: `gh-pages`).
+  - `base_url`: The base URL for the generated site (Default: `https://sendipad.github.io/flexirule/`).
 
-Go to **Settings > Secrets and variables > Actions > Secrets** to configure these:
+### Setup for External Deployment
 
-| Secret | Description | Required For |
-| :--- | :--- | :--- |
-| `DEPLOY_TOKEN` | A Fine-Grained Personal Access Token (PAT). | External repository deployment |
+To use the external deployment workflow, you must configure a secret in the documentation repository:
 
-#### DEPLOY_TOKEN Permissions
-The PAT requires the following permissions on the **target** repository:
-- **Contents**: Read and Write
-- **Metadata**: Read
+1. **Create a Fine-Grained PAT**:
+   - Create a Personal Access Token with the following permissions on the **target** repository:
+     - **Contents**: Read and Write
+     - **Metadata**: Read
+2. **Add Secret**:
+   - Go to **Settings > Secrets and variables > Actions > Secrets** in the documentation repository.
+   - Add a new secret named `DEPLOY_TOKEN` with your PAT as the value.
 
----
+### Running External Deployment
 
-## Deployment Scenarios
-
-### 1. Deploying to the Current Repository (`flexirule-docs`)
-
-This is the default behavior if no variables are configured.
-
-1. Ensure GitHub Pages is enabled for your repository.
-2. Go to **Settings > Pages**.
-3. Under **Build and deployment > Source**, select **GitHub Actions**.
-4. Pushing to the `develop` branch will automatically build and deploy the site.
-
-### 2. Deploying to an External Repository (e.g., `Sendipad/flexirule`)
-
-To deploy the documentation from `flexirule-docs` to the `gh-pages` branch of the `flexirule` repository:
-
-1. **Configure Variables** in `flexirule-docs`:
-   - `DEPLOY_REPOSITORY`: `Sendipad/flexirule`
-   - `DEPLOY_BRANCH`: `gh-pages`
-   - `HUGO_BASEURL`: `https://sendipad.github.io/flexirule/`
-
-2. **Configure Secret** in `flexirule-docs`:
-   - `DEPLOY_TOKEN`: [Your Fine-Grained PAT]
-
-3. **Trigger Deployment**:
-   - Push a change to the `develop` branch.
-   - Or, manually trigger the workflow from the **Actions** tab by selecting **Deploy Hugo site to Pages** and clicking **Run workflow**.
-
----
-
-## Technical Details
-
-The deployment is handled by the `.github/workflows/hugo.yml` workflow.
-
-- **Local Deployment**: Uses `actions/deploy-pages@v5`. This is used when `DEPLOY_REPOSITORY` is empty or matches the current repository.
-- **External Deployment**: Uses `peaceiris/actions-gh-pages@v4`. This is used when `DEPLOY_REPOSITORY` is set to a different repository. It requires `DEPLOY_TOKEN` to authenticate and push to the external target.
+1. Go to the **Actions** tab in the documentation repository.
+2. Select the **Deploy Hugo site to External Repository** workflow.
+3. Click **Run workflow**.
+4. (Optional) Adjust the `repository`, `branch`, and `base_url` inputs if needed.
+5. Click **Run workflow** again to start the build and deployment process.

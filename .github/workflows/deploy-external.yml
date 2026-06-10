@@ -1,0 +1,68 @@
+name: Deploy Hugo site to External Repository
+
+on:
+  workflow_dispatch:
+    inputs:
+      repository:
+        description: "Target repository (owner/repo)"
+        required: true
+        default: "Sendipad/flexirule"
+      branch:
+        description: "Target branch"
+        required: true
+        default: "gh-pages"
+      base_url:
+        description: "Base URL for the site"
+        required: true
+        default: "https://sendipad.github.io/flexirule/"
+
+permissions:
+  contents: write
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          submodules: recursive
+          fetch-depth: 0
+
+      - name: Setup Hugo
+        uses: peaceiris/actions-hugo@v3
+        with:
+          hugo-version: '0.162.1'
+          extended: true
+
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Install static asset tooling
+        run: npm install
+
+      - name: Copy self-hosted fonts
+        run: npm run copy-fonts
+
+      - name: Build with Hugo
+        env:
+          HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
+          HUGO_ENVIRONMENT: production
+        run: |
+          hugo \
+            --minify \
+            --baseURL "${{ github.event.inputs.base_url }}"
+
+      - name: Build Pagefind index
+        run: npm run pagefind
+
+      - name: Deploy to External Repository
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.DEPLOY_TOKEN }}
+          external_repository: ${{ github.event.inputs.repository }}
+          publish_branch: ${{ github.event.inputs.branch }}
+          publish_dir: ./public
+          commit_message: "docs: deploy from ${{ github.repository }} [skip ci]"
