@@ -18,7 +18,7 @@ on:
 
 # Sets permissions of the GITHUB_TOKEN to allow deployment to GitHub Pages
 permissions:
-  contents: read
+  contents: write
   pages: write
   id-token: write
 
@@ -69,10 +69,11 @@ jobs:
         env:
           HUGO_CACHEDIR: ${{ runner.temp }}/hugo_cache
           HUGO_ENVIRONMENT: production
+          HUGO_BASEURL: ${{ vars.HUGO_BASEURL || 'https://sendipad.github.io/flexirule-docs/' }}
         run: |
           hugo \
             --minify \
-            --baseURL "https://sendipad.github.io/flexirule-docs/"
+            --baseURL "${{ env.HUGO_BASEURL }}"
 
       - name: Build Pagefind index
         run: npm run pagefind
@@ -94,8 +95,32 @@ jobs:
        github.ref == 'refs/heads/develop') ||
       (github.event_name == 'workflow_dispatch' &&
        inputs.deploy == true)
-  
+
     steps:
-      - name: Deploy to GitHub Pages
+      - name: Deploy to Local GitHub Pages
+        if: "${{ vars.DEPLOY_REPOSITORY == '' || vars.DEPLOY_REPOSITORY == github.repository }}"
         id: deployment
         uses: actions/deploy-pages@v5
+
+      - name: Download Artifact for External Deploy
+        if: "${{ vars.DEPLOY_REPOSITORY != '' && vars.DEPLOY_REPOSITORY != github.repository }}"
+        uses: actions/download-artifact@v4
+        with:
+          name: github-pages
+          path: ./public_extracted
+
+      - name: Extract Artifact
+        if: "${{ vars.DEPLOY_REPOSITORY != '' && vars.DEPLOY_REPOSITORY != github.repository }}"
+        run: |
+          mkdir -p ./public
+          tar -xvf ./public_extracted/artifact.tar -C ./public
+
+      - name: Deploy to External Repository
+        if: "${{ vars.DEPLOY_REPOSITORY != '' && vars.DEPLOY_REPOSITORY != github.repository }}"
+        uses: peaceiris/actions-gh-pages@v4
+        with:
+          personal_token: ${{ secrets.DEPLOY_TOKEN }}
+          external_repository: ${{ vars.DEPLOY_REPOSITORY }}
+          publish_branch: ${{ vars.DEPLOY_BRANCH || 'gh-pages' }}
+          publish_dir: ./public
+          commit_message: "docs: deploy to ${{ vars.DEPLOY_REPOSITORY }} [skip ci]"

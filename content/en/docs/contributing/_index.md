@@ -19,4 +19,5 @@ Our documentation is organized into a three-layer model to ensure that informati
 ## Governance Assets
 
 -   **[Action Documentation Standard]({{< relref "action-documentation-standard.md" >}})**: The authoritative specification for documenting any FlexiRule action.
+-   **[Deployment Guide]({{< relref "deployment-guide.md" >}})**: Instructions for deploying the documentation to different targets.
 -   **[Templates]({{< relref "templates/" >}})**: Reusable starting points for new documentation pages.
