@@ -456,7 +456,7 @@ code {
 }
 .highlight, div.highlight { position: relative; width: 100%; display: block; overflow: visible; }
 pre { overflow-x: auto !important; width: 100%; display: block; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-code); padding: var(--space-5); padding-right: 3.25rem !important; position: relative; box-sizing: border-box; }
-pre.mermaid { background: transparent; border: none; padding: 0; overflow: visible; }
+pre.mermaid { background: transparent; border: none; padding: 0 !important; overflow: visible !important; }
 pre.mermaid svg { max-width: 100%; height: auto !important; }
 pre code {
   padding: 0;
