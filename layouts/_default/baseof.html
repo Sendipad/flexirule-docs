@@ -40,15 +40,22 @@
           const getTheme = () => document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default';
 
           mermaid.initialize({
-            startOnLoad: true,
+            startOnLoad: false,
             theme: getTheme(),
             securityLevel: 'loose',
             fontFamily: 'Inter, system-ui, sans-serif',
           });
 
+          mermaid.run({
+            querySelector: '.mermaid',
+          });
+
           window.addEventListener('themechange', () => {
-            // Re-render mermaid diagrams on theme change
-            // Simplest way is to reload, but we could also re-initialize and re-run
+            const theme = getTheme();
+            mermaid.initialize({ theme });
+            // For Mermaid v10, we can re-run on the original selectors
+            // But Mermaid often replaces the content.
+            // To be safe and simple, reload is okay, but let's try to be better.
             location.reload();
           });
         };
