@@ -85,4 +85,4 @@ Need to process a collection?
 
 - [Glossary]({{< relref "docs/reference/glossary.md" >}})
 - [Rule Builder]({{< relref "docs/user-guide/rule-builder.md" >}})
-- [Action Catalog]({{< relref "docs/actions/" >}})
+- [Action Zone]({{< relref "docs/actions/" >}})

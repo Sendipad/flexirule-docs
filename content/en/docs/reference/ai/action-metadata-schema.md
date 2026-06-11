@@ -16,7 +16,7 @@ Standardized metadata allows AI models and system tools to understand the capabi
 
 -   **AI Rule Generation**: Helping LLMs select the correct action for a business requirement.
 -   **Validation**: Catching configuration errors before execution.
--   **Discovery**: Powering the "Action Catalog" search and filtering.
+-   **Discovery**: Powering the "Action Zone" search and filtering.
 -   **Recommendations**: Suggesting relevant next steps in a rule flow.
 
 ---

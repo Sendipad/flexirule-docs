@@ -75,4 +75,4 @@ in a single command.
 Develop a script to validate `index.md` frontmatter against the `action-metadata-schema.md` to ensure data integrity for the AI Copilot.
 
 ### Capability Comparison Matrix
-Generate a dynamic table in the Action Catalog that compares actions based on their `capabilities` metadata (e.g., Which actions are Transactional? Which can mutate the Document?).
+Generate a dynamic table in the Action Zone that compares actions based on their `capabilities` metadata (e.g., Which actions are Transactional? Which can mutate the Document?).
