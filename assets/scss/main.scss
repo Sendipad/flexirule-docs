@@ -83,7 +83,7 @@ body.sidebar-open { overflow: hidden; }
 a { color: var(--color-primary); text-decoration: none; }
 a:hover { text-decoration: underline; }
 button, input, select { font: inherit; }
-svg { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+svg:not([id^="mermaid-"]) { width: 1.15rem; height: 1.15rem; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .sr-only { position: absolute; width: 1px; height: 1px; margin: -1px; overflow: hidden; clip: rect(0, 0, 0, 0); }
 .skip-link { position: fixed; left: var(--space-4); top: var(--space-4); z-index: 9999; transform: translateY(-150%); background: var(--color-primary); color: #fff; padding: var(--space-2) var(--space-4); border-radius: .5rem; }
 .skip-link:focus { transform: none; }
@@ -456,6 +456,8 @@ code {
 }
 .highlight, div.highlight { position: relative; width: 100%; display: block; overflow: visible; }
 pre { overflow-x: auto !important; width: 100%; display: block; border: 1px solid var(--color-border); border-radius: var(--radius); background: var(--color-code); padding: var(--space-5); padding-right: 3.25rem !important; position: relative; box-sizing: border-box; }
+pre.mermaid { background: transparent; border: none; padding: 0; overflow: visible; }
+pre.mermaid svg { max-width: 100%; height: auto !important; }
 pre code {
   padding: 0;
   background: transparent;
