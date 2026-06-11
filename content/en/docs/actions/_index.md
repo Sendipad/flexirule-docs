@@ -1,9 +1,9 @@
 ---
-title: "Action Catalog"
+title: "Action Zone"
 weight: 40
 ---
 
-# Action Catalog
+# Action Zone
 
 The complete library of available action nodes.
 

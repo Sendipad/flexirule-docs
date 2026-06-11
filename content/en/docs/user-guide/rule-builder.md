@@ -97,4 +97,4 @@ stateDiagram-v2
 
 - [Condition Builder]({{< relref "docs/user-guide/condition-builder.md" >}})
 - [Execution Engine]({{< relref "docs/architecture/engine/execution-engine.md" >}})
-- [Action Catalog]({{< relref "docs/actions/" >}})
+- [Action Zone]({{< relref "docs/actions/" >}})
