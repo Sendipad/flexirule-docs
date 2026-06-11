@@ -5,7 +5,7 @@ weight: 30
 entity_kind: action_operation
 
 capabilities:
-  category: Notifications
+  category: notification
   mutation: read-write
   targets:
     - database

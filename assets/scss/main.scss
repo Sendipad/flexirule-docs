@@ -888,6 +888,8 @@ mark { background: rgba(6, 182, 212, .22); color: inherit; border-radius: .2rem;
   .home-hero__visual { min-height: 22rem; }
   .split-heading { display: grid; }
 }
+@import "components/action-zone";
+
 @media (max-width: 40rem) {
   .card-grid, .step-grid, .feature-grid { grid-template-columns: 1fr; }
   .pager { grid-template-columns: 1fr; }

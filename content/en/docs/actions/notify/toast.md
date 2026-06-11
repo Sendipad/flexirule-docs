@@ -5,10 +5,10 @@ weight: 10
 entity_kind: action_operation
 
 capabilities:
-  category: Notifications
+  category: notification
   mutation: read-only
   targets:
-    - user-interface
+    - context
   triggers:
     - any
   flow: linear

@@ -1,26 +1,26 @@
 ---
 title: "Action Zone"
 weight: 40
+description: "The complete library of available action nodes."
+action_categories:
+  control-flow:
+    title: "Control Flow"
+    description: "Core logic structures that control the execution path of your rule."
+    weight: 10
+  data-operations:
+    title: "Data Operations"
+    description: "Actions for retrieving, updating, and managing system records and variables."
+    weight: 20
+  communication:
+    title: "Communication"
+    description: "Channels for sending notifications, alerts, and external messages."
+    weight: 30
+  extensibility:
+    title: "Extensibility"
+    description: "Framework for executing custom logic and extending system behavior."
+    weight: 40
 ---
 
 # Action Zone
 
-The complete library of available action nodes.
-
-## Categories
-
-### Control Flow
-- [**Condition**]({{< relref "condition" >}}): Branch logic.
-- [**Loop**]({{< relref "loop" >}}): Iterate over collections.
-- [**Switch**]({{< relref "switch" >}}): Multi-path branching.
-
-### Data Operations
-- [**Assignment**]({{< relref "assignment" >}}): Update fields and variables.
-- [**Query Records**]({{< relref "query-records" >}}): Retrieve system data.
-- [**Document Action**]({{< relref "document-action" >}}): Perform CRUD operations.
-
-### Communication
-- [**Notify**]({{< relref "notify" >}}): Send alerts and emails.
-
-### Extensibility
-- [**Process**]({{< relref "process" >}}): Execute custom Python logic.
+FlexiRule provides a versatile library of action nodes, organized by their functional role. Each node represents a discrete unit of work within your rule flow.

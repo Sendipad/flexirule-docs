@@ -5,7 +5,7 @@ weight: 40
 entity_kind: action_operation
 
 capabilities:
-  category: Notifications
+  category: notification
   mutation: read-only
   targets:
     - external-system

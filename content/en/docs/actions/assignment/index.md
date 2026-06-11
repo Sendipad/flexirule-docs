@@ -1,6 +1,8 @@
 ---
 title: "Assignment"
-description: "Change values of document fields and variables."
+entity_kind: action
+category: data-operations
+description: "Updates document fields or context variables with new values."
 weight: 20
 aliases:
   - /docs/actions/assignment/
