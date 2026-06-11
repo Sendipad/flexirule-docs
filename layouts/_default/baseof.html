@@ -31,5 +31,30 @@
   <script src="{{ $tooltipsJs.RelPermalink }}" integrity="{{ $tooltipsJs.Data.Integrity }}" defer></script>
   {{ if and .Site.Params.plausible_domain hugo.IsProduction }}<script defer data-domain="{{ .Site.Params.plausible_domain }}" src="https://plausible.io/js/script.js"></script>{{ end }}
   {{ if and .Site.Params.umami_website_id .Site.Params.umami_src hugo.IsProduction }}<script defer src="{{ .Site.Params.umami_src }}" data-website-id="{{ .Site.Params.umami_website_id }}"></script>{{ end }}
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (document.querySelector('.mermaid')) {
+        const script = document.createElement('script');
+        script.src = 'https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js';
+        script.onload = () => {
+          const getTheme = () => document.documentElement.getAttribute('data-theme') === 'dark' ? 'dark' : 'default';
+
+          mermaid.initialize({
+            startOnLoad: true,
+            theme: getTheme(),
+            securityLevel: 'loose',
+            fontFamily: 'Inter, system-ui, sans-serif',
+          });
+
+          window.addEventListener('themechange', () => {
+            // Re-render mermaid diagrams on theme change
+            // Simplest way is to reload, but we could also re-initialize and re-run
+            location.reload();
+          });
+        };
+        document.head.appendChild(script);
+      }
+    });
+  </script>
 </body>
 </html>
