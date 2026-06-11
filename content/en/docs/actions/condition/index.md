@@ -1,6 +1,8 @@
 ---
 title: "Condition"
-description: "Branching logic based on evaluation of expressions."
+entity_kind: action
+category: control-flow
+description: "Evaluates a boolean expression to branch execution paths."
 weight: 30
 aliases:
   - /docs/actions/condition/

@@ -1,13 +1,14 @@
 ---
 title: "Notify"
-description: "Send alerts and communications via various channels like Email, Toast, and System Notifications."
+entity_kind: action
+category: communication
+description: "Sends notifications via email, system alerts, or external providers."
 weight: 60
 aliases:
   - /docs/actions/notify/
-entity_kind: action
 
 capabilities:
-  category: Notifications
+  category: notification
   mutation: read-only
   targets:
     - external-system

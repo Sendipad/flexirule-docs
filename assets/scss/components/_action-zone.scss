@@ -1,0 +1,24 @@
+.action-zone-categories {
+  margin-top: var(--space-8);
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-12);
+
+  .category-block {
+    scroll-margin-top: var(--space-20);
+  }
+
+  .category-title {
+    font-size: var(--text-2xl);
+    font-weight: 700;
+    margin-bottom: var(--space-2);
+    color: var(--color-text-primary);
+  }
+
+  .category-desc {
+    font-size: var(--text-lg);
+    color: var(--color-text-secondary);
+    margin-bottom: var(--space-6);
+    max-width: 60ch;
+  }
+}

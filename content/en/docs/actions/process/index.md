@@ -1,6 +1,8 @@
 ---
 title: "Process"
-description: "Executing reusable, code-backed business logic."
+entity_kind: action
+category: extensibility
+description: "Executes custom Python logic and predefined business processes."
 weight: 70
 parent: "advanced"
 aliases:

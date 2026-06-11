@@ -1,6 +1,8 @@
 ---
 title: "Entry Action"
-description: "The starting point of every rule flow that anchors the trigger context."
+entity_kind: action
+category: control-flow
+description: "Serves as the mandatory starting point of every rule flow."
 weight: 1
 
 capabilities:

@@ -1,6 +1,8 @@
 ---
 title: "Switch"
-description: "Multi-path branching based on expression values."
+entity_kind: action
+category: control-flow
+description: "Directs execution to one of multiple paths based on a value."
 weight: 90
 aliases:
   - /docs/actions/switch/

@@ -1,6 +1,8 @@
 ---
 title: "Query Records"
-description: "Fetch and aggregate data from across your system to drive dynamic logic."
+entity_kind: action
+category: data-operations
+description: "Retrieves document data from the system database using filters."
 weight: 80
 aliases:
   - /docs/actions/query_records/

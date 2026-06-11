@@ -1,14 +1,15 @@
 ---
 title: "Stop"
-description: "Terminate the rule execution flow."
-weight: 90
 entity_kind: action
+category: control-flow
+description: "Terminates rule execution with a success or error status."
+weight: 90
 
 capabilities:
-  category: Control Flow
+  category: flow-control
   mutation: read-only
   targets:
-    - flow
+    - context
   triggers:
     - any
   flow: terminal

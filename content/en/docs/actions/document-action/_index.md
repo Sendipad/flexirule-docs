@@ -1,8 +1,9 @@
 ---
 title: "Document Action"
-description: "Manage the lifecycle of records across any DocType, including creation, updates, and social interactions."
-weight: 40
 entity_kind: action
+category: data-operations
+description: "Performs CRUD operations on Frappe documents."
+weight: 40
 aliases:
   - /docs/actions/document_action/
 capabilities:

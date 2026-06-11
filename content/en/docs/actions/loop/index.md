@@ -1,6 +1,8 @@
 ---
 title: "Loop"
-description: "Iterate over collections and child tables to perform batch processing."
+entity_kind: action
+category: control-flow
+description: "Iterates over a collection and executes child nodes for each item."
 weight: 50
 aliases:
   - /docs/actions/loop/
