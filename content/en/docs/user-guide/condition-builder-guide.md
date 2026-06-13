@@ -78,6 +78,17 @@ One of the most powerful uses for conditions is detecting changes.
 
 ---
 
+## 6. Advanced Formulas and Expressions
+
+FlexiRule provides a guided UI for creating complex logic without writing raw code. This is especially useful for temporal logic.
+
+### Date Formulas
+You can easily calculate dates (e.g., "10 days from now" or "Last day of current month") using the formula builder.
+
+![Date Formula Configuration](/flexirule-docs/images/date-formula-configuration.png)
+
+---
+
 ## Best Practices
 
 -   **Keep it Simple**: If a condition group gets too deep (more than 3 levels), consider splitting the logic into multiple rules or sub-rules.
