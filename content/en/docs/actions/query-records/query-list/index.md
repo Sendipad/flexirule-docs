@@ -11,6 +11,8 @@ The **Query List** mode is used to retrieve a collection of records from a DocTy
 ## Purpose
 Use Query List when you need to find multiple documents to process, such as "all draft invoices" or "all items in a specific warehouse."
 
+<video src="/images/query-records-query-list-features.webm" controls></video>
+
 ## Configuration
 
 ### Parameters

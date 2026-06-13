@@ -31,6 +31,9 @@ The Rule Builder is a Vue 3-based visual workspace for designing business logic 
 
 ![Rule Builder Overview](/flexirule-docs/landing-page/rule_builder.png)
 
+### Dark Theme Support
+![Rule Builder Canvas Dark Theme](/images/rule-builder-canvas-dark-theme.png)
+
 ---
 
 ## Key Concepts
@@ -46,6 +49,8 @@ Each node in the graph represents a **Rule Action**.
 
 ## No-Code & Error Prevention
 
+<video src="/images/add-action-from-action-zone.webm" controls></video>
+
 ### Temporal Context Visibility
 The builder ensures that an action can only access variables that are logically available at its point in the execution flow.
 
@@ -55,6 +60,11 @@ The builder ensures that an action can only access variables that are logically 
 ### Reactive & Type-Aware Controls
 - **Intelligent Filter Builder**: Adapts operators based on field types.
 - **Magic Formula Builder**: Guided UI for complex logic (Date math, Aggregations).
+
+### Canvas Features
+<video src="/images/remove-a-node-will-dynamically-reconnet-nodes.webm" controls></video>
+
+<video src="/images/shift-click-nodes-to-copy.webm" controls></video>
 
 ---
 
@@ -90,6 +100,14 @@ stateDiagram-v2
 3. **True Path**: Send **Email** to Manager and set `doc.workflow_state = "Pending Manager"`.
 4. **False Path**: Set `doc.workflow_state = "Approved"`.
 **Result**: Automated routing based on order value.
+
+---
+
+## Testing and Debugging
+
+The Rule Builder includes built-in tools to test and debug your rules in real-time.
+
+![Rule Builder Run and Debug Test](/images/rule-builder-run-debug-test.png)
 
 ---
 
