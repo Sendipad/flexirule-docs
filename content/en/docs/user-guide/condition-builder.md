@@ -9,7 +9,7 @@ aliases:
 
 The Condition Builder is a specialized Vue 3 workspace designed to let users author complex business logic through a structured, visual interface.
 
-<video src="/images/demo-condition-and-query.webm" controls></video>
+<video src="/flexirule-docs/images/demo-condition-and-query.webm" controls></video>
 
 Looking for how to use it? See the [Condition Builder User Guide](user_guide_conditions.md).
 
