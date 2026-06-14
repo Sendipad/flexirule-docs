@@ -1,5 +1,6 @@
 ---
-title: "Getting Started"
+title: Getting Started
+description: Documentation for FlexiRule technical components and user guides.
 weight: 10
 ---
 

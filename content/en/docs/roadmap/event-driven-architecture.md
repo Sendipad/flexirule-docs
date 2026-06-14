@@ -1,6 +1,10 @@
 ---
+title: Event Driven Architecture
+description: While FlexiRule currently excels at document-level automation, its architecture
+  is perfectly positioned to become a **Global Event Orchestrator**.
+weight: 40
 aliases:
-  - /docs/future/event_driven_architecture/
+- /docs/future/event_driven_architecture/
 ---
 
 # Future: Event-Driven Architecture

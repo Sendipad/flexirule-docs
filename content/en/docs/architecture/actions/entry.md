@@ -1,6 +1,8 @@
 ---
-title: "Entry Action: Architecture Reference"
-description: "Internal implementation details and developer reference for the Entry Action."
+title: 'Entry Action: Architecture Reference'
+description: Internal implementation details and developer reference for the Entry
+  Action.
+weight: 40
 ---
 
 # Entry Action: Architecture Reference

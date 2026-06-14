@@ -1,10 +1,10 @@
 ---
-title: "Rule Builder"
-description: "Visual workspace for designing business logic graphs."
-weight: 10
-parent: "rule-building"
+title: Rule Builder
+description: Visual workspace for designing business logic graphs.
+weight: 60
+parent: rule-building
 aliases:
-  - /docs/builder/rule_builder/
+- /docs/builder/rule_builder/
 ---
 
 # Visual Rule Builder

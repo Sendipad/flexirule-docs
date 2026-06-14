@@ -1,6 +1,8 @@
 ---
-title: "Development Standards"
-weight: 40
+title: Development Standards
+description: This section outlines the standards and expectations for developing FlexiRule
+  components and contributing to the project.
+weight: 10
 ---
 
 This section outlines the standards and expectations for developing FlexiRule components and contributing to the project.

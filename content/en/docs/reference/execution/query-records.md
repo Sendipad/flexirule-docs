@@ -1,6 +1,8 @@
 ---
-title: "Query Records Execution Semantics"
-description: "Detailed runtime behavior, filter resolution, and permission guarantees for Query Records."
+title: Query Records Execution Semantics
+description: Detailed runtime behavior, filter resolution, and permission guarantees
+  for Query Records.
+weight: 70
 type: docs
 ---
 

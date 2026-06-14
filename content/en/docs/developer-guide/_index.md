@@ -1,6 +1,7 @@
 ---
-title: "Developer Guide"
-weight: 60
+title: Developer Guide
+description: Extend and customize FlexiRule.
+weight: 80
 ---
 
 # Developer Guide

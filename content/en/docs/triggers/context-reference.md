@@ -1,6 +1,8 @@
 ---
-title: "Execution Context Reference"
-weight: 40
+title: Execution Context Reference
+description: This reference describes the variables available to the engine at the
+  moment of triggering.
+weight: 30
 ---
 
 # Execution Context Reference

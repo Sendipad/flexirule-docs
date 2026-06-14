@@ -1,9 +1,9 @@
 ---
-title: "DocTypes"
-description: "Reference for all DocTypes used in FlexiRule."
-weight: 30
+title: DocTypes
+description: Reference for all DocTypes used in FlexiRule.
+weight: 20
 aliases:
-  - /docs/reference/doctypes/
+- /docs/reference/doctypes/
 ---
 
 # DocType Reference

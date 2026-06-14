@@ -1,22 +1,20 @@
 ---
-title: "System Notification"
-description: "Create persistent in-app notifications for system users."
-weight: 30
+title: System Notification
+description: Create persistent in-app notifications for system users.
+weight: 40
 entity_kind: action_operation
-
 capabilities:
   category: notification
   mutation: read-write
   targets:
-    - database
+  - database
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - transactional
-
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # System Notification

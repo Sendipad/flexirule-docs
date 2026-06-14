@@ -1,6 +1,7 @@
 ---
-title: "Entry Action: Execution Semantics"
-description: "Technical runtime behavior and engine guarantees for the Entry Action."
+title: 'Entry Action: Execution Semantics'
+description: Technical runtime behavior and engine guarantees for the Entry Action.
+weight: 40
 ---
 
 # Entry Action: Execution Semantics

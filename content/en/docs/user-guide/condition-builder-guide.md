@@ -1,8 +1,10 @@
 ---
-title: "User Guide (Conditions)"
+title: User Guide (Conditions)
+description: The Condition Builder is your primary tool for defining "When" logic
+  in FlexiRule. Whether you are deciding if a rule should run at all or branchin...
 weight: 30
 aliases:
-  - /docs/builder/user_guide_conditions/
+- /docs/builder/user_guide_conditions/
 ---
 
 # User Guide: Building Logic with the Condition Builder

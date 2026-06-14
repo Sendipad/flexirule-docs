@@ -1,12 +1,13 @@
 ---
-title: "Delete Record"
-description: "Permanently remove a record from the database."
+title: Delete Record
+description: Permanently remove a record from the database.
+weight: 50
 entity_kind: action_operation
 capabilities:
   category: document
   mutation: read-write
   targets:
-    - database
+  - database
 ---
 
 # Delete Record

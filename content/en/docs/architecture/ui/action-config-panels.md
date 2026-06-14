@@ -1,6 +1,10 @@
 ---
+title: Action Config Panels
+description: The Rule Builder uses a modular approach to action configuration. Instead
+  of one massive form, it uses **Config Panels** that correspond to specifi...
+weight: 20
 aliases:
-  - /docs/ui/action_config_panels/
+- /docs/ui/action_config_panels/
 ---
 
 # UI: Action Config Panels

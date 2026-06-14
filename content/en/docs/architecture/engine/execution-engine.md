@@ -1,9 +1,9 @@
 ---
-title: "Execution Engine"
-description: "Deep dive into the FlexiRule deterministic graph executor."
-weight: 10
+title: Execution Engine
+description: Deep dive into the FlexiRule deterministic graph executor.
+weight: 40
 aliases:
-  - /docs/engine/execution_engine/
+- /docs/engine/execution_engine/
 ---
 
 # Execution Engine Deep Dive

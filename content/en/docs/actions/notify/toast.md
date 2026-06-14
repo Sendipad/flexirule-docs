@@ -1,22 +1,20 @@
 ---
-title: "Toast Notification"
-description: "Display immediate browser alerts to the active user."
-weight: 10
+title: Toast Notification
+description: Display immediate browser alerts to the active user.
+weight: 50
 entity_kind: action_operation
-
 capabilities:
   category: notification
   mutation: read-only
   targets:
-    - context
+  - context
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - transactional
-
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # Toast Notification

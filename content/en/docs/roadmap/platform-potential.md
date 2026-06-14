@@ -1,6 +1,10 @@
 ---
+title: Platform Potential
+description: The FlexiRule architecture is a **foundation for an enterprise orchestration
+  platform**. It contains all the necessary primitives to evolve into a ...
+weight: 50
 aliases:
-  - /docs/future/low_code_platform_potential/
+- /docs/future/low_code_platform_potential/
 ---
 
 # Future: Low-Code Platform Potential

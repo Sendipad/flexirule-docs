@@ -1,10 +1,10 @@
 ---
-title: "Troubleshooting"
-description: "Identifying and resolving common issues in FlexiRule."
-weight: 50
-parent: "advanced"
+title: Troubleshooting
+description: Identifying and resolving common issues in FlexiRule.
+weight: 30
+parent: advanced
 aliases:
-  - /docs/reference/troubleshooting/
+- /docs/reference/troubleshooting/
 ---
 
 # Troubleshooting

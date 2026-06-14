@@ -1,26 +1,24 @@
 ---
-title: "Notify"
+title: Notify
+description: Sends notifications via email, system alerts, or external providers.
+weight: 60
 entity_kind: action
 category: communication
-description: "Sends notifications via email, system alerts, or external providers."
-weight: 60
 aliases:
-  - /docs/actions/notify/
-
+- /docs/actions/notify/
 capabilities:
   category: notification
   mutation: read-only
   targets:
-    - external-system
-    - user-interface
+  - external-system
+  - user-interface
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - async
-
+  - async
 badges:
-  - core
+- core
 ---
 
 # Notify

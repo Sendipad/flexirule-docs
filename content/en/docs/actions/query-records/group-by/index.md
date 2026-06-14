@@ -1,6 +1,7 @@
 ---
-title: "Group By"
-description: "Aggregating data into bucketed categories."
+title: Group By
+description: Aggregating data into bucketed categories.
+weight: 10
 type: docs
 ---
 

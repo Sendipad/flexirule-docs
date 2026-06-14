@@ -1,6 +1,8 @@
 ---
-title: "Extension Points"
-weight: 50
+title: Extension Points
+description: FlexiRule is designed to be highly extensible. This page details the
+  various ways you can customize and extend its functionality.
+weight: 10
 ---
 
 FlexiRule is designed to be highly extensible. This page details the various ways you can customize and extend its functionality.

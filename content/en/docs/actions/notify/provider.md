@@ -1,23 +1,21 @@
 ---
-title: "Provider Notification"
-description: "Dispatch notifications through custom third-party services."
-weight: 40
+title: Provider Notification
+description: Dispatch notifications through custom third-party services.
+weight: 30
 entity_kind: action_operation
-
 capabilities:
   category: notification
   mutation: read-only
   targets:
-    - external-system
+  - external-system
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - transactional
-
+  - transactional
 badges:
-  - core
-  - external
+- core
+- external
 ---
 
 # Provider Notification

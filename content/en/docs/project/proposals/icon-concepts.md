@@ -1,3 +1,9 @@
+---
+title: Icon Concepts
+description: To improve visual discoverability and distinguish between a high-level
+  action category and its specific operational modes, we propose a two-tier ic...
+weight: 30
+---
 # Icon Concept Proposal: Action vs. Action Operation
 
 To improve visual discoverability and distinguish between a high-level action category and its specific operational modes, we propose a two-tier icon system.

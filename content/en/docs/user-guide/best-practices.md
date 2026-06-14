@@ -1,6 +1,10 @@
 ---
+title: Best Practices
+description: Business automation emerges not from single actions, but from the **composition**
+  of action patterns.
+weight: 20
 aliases:
-  - /docs/actions/action_patterns/
+- /docs/actions/action_patterns/
 ---
 
 # Actions: Action Patterns

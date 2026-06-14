@@ -1,6 +1,7 @@
 ---
-title: "Loop: Execution Semantics"
-description: "Technical runtime behavior and engine guarantees for the Loop action."
+title: 'Loop: Execution Semantics'
+description: Technical runtime behavior and engine guarantees for the Loop action.
+weight: 50
 ---
 
 # Loop: Execution Semantics

@@ -1,6 +1,7 @@
 ---
-title: "Query List"
-description: "Fetching multiple records matching specific criteria."
+title: Query List
+description: Fetching multiple records matching specific criteria.
+weight: 10
 type: docs
 ---
 

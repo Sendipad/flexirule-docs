@@ -1,24 +1,24 @@
 ---
-title: "Query Records"
+title: Query Records
+description: Retrieves document data from the system database using filters.
+weight: 40
 entity_kind: action
 category: data-operations
-description: "Retrieves document data from the system database using filters."
-weight: 80
 aliases:
-  - /docs/actions/query_records/
+- /docs/actions/query_records/
 capabilities:
   category: data
   mutation: read-only
   targets:
-    - database
+  - database
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - transactional
+  - transactional
 badges:
-  - core
-  - external
+- core
+- external
 ---
 
 # Query Records Action

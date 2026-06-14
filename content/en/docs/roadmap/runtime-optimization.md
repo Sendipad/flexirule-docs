@@ -1,6 +1,10 @@
 ---
+title: Runtime Optimization
+description: As FlexiRule deployments grow to thousands of rules and millions of executions,
+  performance becomes the primary architectural challenge.
+weight: 60
 aliases:
-  - /docs/future/runtime_optimization/
+- /docs/future/runtime_optimization/
 ---
 
 # Future: Runtime Optimization

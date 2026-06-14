@@ -1,8 +1,15 @@
 ---
-title: "System Overview (AR)"
-weight: 30
+title: System Overview (AR)
+description: "\u064A\u064F\u0637\u0644\u0642 \u0639\u0644\u0649 FlexiRule \u0641\u064A\
+  \ \u0628\u0646\u064A\u062A\u0647 \u0627\u0644\u062D\u0627\u0644\u064A\u0629 \u0627\
+  \u0633\u0645 **\"\u0645\u062D\u0631\u0643 \u062A\u0646\u0633\u064A\u0642 \u0627\u0644\
+  \u0642\u0648\u0627\u0639\u062F \u0627\u0644\u0628\u0635\u0631\u064A\" (Visual Rule\
+  \ Orchestration Engine)**. \u0648\u0647\u0648 \u0639\u0628\u0627\u0631\u0629 \u0639\
+  \u0646 \u0645\u0646\u0635\u0629 \u0645\u062A\u0642\u062F\u0645\u0629 \u0645\u0628\
+  \u0646\u064A\u0629 \u062E\u0635\u064A\u0635\u0627\u064B ..."
+weight: 20
 aliases:
-  - /docs/system_overview_ar/
+- /docs/system_overview_ar/
 ---
 
 # نظرة عامة على نظام FlexiRule

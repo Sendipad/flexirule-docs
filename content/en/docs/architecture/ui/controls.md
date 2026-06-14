@@ -1,8 +1,10 @@
 ---
-title: "Controls"
+title: Controls
+description: This document details the smart and innovative Vue components used throughout
+  the FlexiRule UI. These controls are designed for high reusability, p...
 weight: 40
 aliases:
-  - /docs/CONTROLS/
+- /docs/CONTROLS/
 ---
 
 # Reusable Vue Controls & Widgets

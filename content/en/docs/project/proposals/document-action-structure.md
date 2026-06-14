@@ -1,3 +1,9 @@
+---
+title: Document Action Structure
+description: To improve discoverability and reduce cognitive load, the Document Action
+  documentation will be refactored into a Branch Bundle structure.
+weight: 20
+---
 # Proposed Documentation Hierarchy: Document Action
 
 To improve discoverability and reduce cognitive load, the Document Action documentation will be refactored into a Branch Bundle structure.

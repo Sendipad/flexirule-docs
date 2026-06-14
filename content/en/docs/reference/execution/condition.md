@@ -1,6 +1,7 @@
 ---
-title: "Condition: Execution Semantics"
-description: "Technical runtime behavior and engine guarantees for the Condition action."
+title: 'Condition: Execution Semantics'
+description: Technical runtime behavior and engine guarantees for the Condition action.
+weight: 20
 ---
 
 # Condition: Execution Semantics

@@ -1,7 +1,7 @@
 ---
-title: "Action Documentation Standard"
-description: "The authoritative specification for documenting any FlexiRule action."
-weight: 10
+title: Action Documentation Standard
+description: The authoritative specification for documenting any FlexiRule action.
+weight: 20
 ---
 
 # Action Documentation Standard

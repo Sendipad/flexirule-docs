@@ -1,6 +1,10 @@
 ---
+title: Overview
+description: The `RuleEngine` is the heart of FlexiRule. It doesn't just run code;
+  it manages a **Stateful Execution Pipeline**.
+weight: 40
 aliases:
-  - /docs/architecture/action_runtime/
+- /docs/architecture/action_runtime/
 ---
 
 # Architecture: Action Runtime

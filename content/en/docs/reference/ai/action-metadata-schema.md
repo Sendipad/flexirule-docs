@@ -1,7 +1,8 @@
 ---
-title: "Action Metadata Schema"
-description: "Reference specification for action metadata used by AI and programmatic tools."
-weight: 10
+title: Action Metadata Schema
+description: Reference specification for action metadata used by AI and programmatic
+  tools.
+weight: 20
 ---
 
 # Action Metadata Schema

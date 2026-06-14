@@ -1,6 +1,7 @@
 ---
-title: "Stop: Execution Semantics"
-description: "Technical runtime behavior and engine guarantees for the Stop action."
+title: 'Stop: Execution Semantics'
+description: Technical runtime behavior and engine guarantees for the Stop action.
+weight: 80
 ---
 
 # Stop: Execution Semantics

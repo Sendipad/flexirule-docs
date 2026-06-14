@@ -1,8 +1,10 @@
 ---
-title: "Condition System"
-weight: 20
+title: Condition System
+description: FlexiRule employs a sophisticated, high-performance condition system
+  that allows users to build complex logic visually while executing it with the ...
+weight: 30
 aliases:
-  - /docs/engine/condition_system/
+- /docs/engine/condition_system/
 ---
 
 # Condition System Architecture

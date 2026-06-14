@@ -1,10 +1,10 @@
 ---
-title: "FAQ"
-description: "Frequently asked questions about FlexiRule."
-weight: 60
-parent: "advanced"
+title: FAQ
+description: Frequently asked questions about FlexiRule.
+weight: 20
+parent: advanced
 aliases:
-  - /docs/reference/faq/
+- /docs/reference/faq/
 ---
 
 # Frequently Asked Questions

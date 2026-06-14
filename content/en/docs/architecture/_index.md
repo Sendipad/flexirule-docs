@@ -1,6 +1,8 @@
 ---
-title: "Architecture"
-weight: 50
+title: Architecture
+description: Deep dive into the internal system design and deterministic execution
+  engine of FlexiRule.
+weight: 60
 ---
 
 # Architecture Overview

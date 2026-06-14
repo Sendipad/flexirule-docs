@@ -1,12 +1,13 @@
 ---
-title: "Update Existing"
-description: "Modify fields on a specific record in the database."
+title: Update Existing
+description: Modify fields on a specific record in the database.
+weight: 60
 entity_kind: action_operation
 capabilities:
   category: document
   mutation: read-write
   targets:
-    - database
+  - database
 ---
 
 # Update Existing

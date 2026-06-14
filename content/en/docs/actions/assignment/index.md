@@ -1,24 +1,24 @@
 ---
-title: "Assignment"
+title: Assignment
+description: Updates document fields or context variables with new values.
+weight: 50
 entity_kind: action
 category: data-operations
-description: "Updates document fields or context variables with new values."
-weight: 20
 aliases:
-  - /docs/actions/assignment/
+- /docs/actions/assignment/
 capabilities:
   category: data
   mutation: read-write
   targets:
-    - document
-    - context
+  - document
+  - context
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - transactional
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # Assignment
