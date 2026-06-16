@@ -1,5 +1,5 @@
 ---
-title: "Action Zone"
+title: "Actions"
 weight: 40
 description: "The complete library of available action nodes."
 action_categories:

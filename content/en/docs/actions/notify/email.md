@@ -33,12 +33,14 @@ The **Email** mode allows rules to send formal communications to internal users 
 
 ## Configuration
 
+The Email configuration is organized within a streamlined setup panel:
+
 | Field | Description |
 | :--- | :--- |
-| **Notification Type** | Set to `Email`. |
-| **Subject** | The subject line of the email. Supports Jinja templates. |
-| **Recipients** | Destination email addresses. Can be a literal list, a field path (e.g., `doc.contact_email`), or a Jinja template. |
-| **Message Builder** | The body of the email. Supports HTML and Jinja templates. |
+| **Notification Type** | Set to `Email` in the Setup panel. |
+| **Subject** | The subject line of the email. Supports Jinja templates and dynamic variables. |
+| **Recipients** | Destination email addresses. Supports one email per line, comma-separated values, or a Jinja template (e.g., `{{ doc.owner }}`). |
+| **Message Builder** | A specialized visual editor for composing the email body. You can combine static text with dynamic segments (fields and variables). |
 | **Attach Document PDF** | If enabled, automatically generates a PDF of the current document using its default print format and attaches it to the email. |
 
 ## Supported Inputs
