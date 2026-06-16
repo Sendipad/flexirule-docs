@@ -1,5 +1,7 @@
 ---
-title: "UI Architecture"
+title: UI Architecture
+description: The design of the visual builder and component system.
+weight: 10
 ---
 
 # UI Architecture

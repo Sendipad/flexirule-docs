@@ -1,7 +1,8 @@
 ---
-title: "Documentation Standardization Roadmap"
-description: "Plan for migrating and standardizing FlexiRule action documentation to the 3-layer framework."
-weight: 50
+title: Documentation Standardization Roadmap
+description: Plan for migrating and standardizing FlexiRule action documentation to
+  the 3-layer framework.
+weight: 30
 ---
 
 # Documentation Standardization Roadmap

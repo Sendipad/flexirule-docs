@@ -1,6 +1,10 @@
 ---
+title: System Philosophy
+description: FlexiRule is a **declarative automation orchestration platform** built
+  for the Frappe ecosystem. It bridges the gap between hardcoded Python hooks ...
+weight: 50
 aliases:
-  - /docs/architecture/system_philosophy/
+- /docs/architecture/system_philosophy/
 ---
 
 # Architecture: System Philosophy

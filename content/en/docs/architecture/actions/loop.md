@@ -1,6 +1,8 @@
 ---
-title: "Loop: Architecture Reference"
-description: "Internal implementation details and developer reference for the Loop action."
+title: 'Loop: Architecture Reference'
+description: Internal implementation details and developer reference for the Loop
+  action.
+weight: 50
 ---
 
 # Loop: Architecture Reference

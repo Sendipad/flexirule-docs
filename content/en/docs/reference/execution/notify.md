@@ -1,6 +1,7 @@
 ---
-title: "Notify: Execution Semantics"
-description: "Technical runtime behavior and engine guarantees for the Notify action."
+title: 'Notify: Execution Semantics'
+description: Technical runtime behavior and engine guarantees for the Notify action.
+weight: 60
 ---
 
 # Notify: Execution Semantics

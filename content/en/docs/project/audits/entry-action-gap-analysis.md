@@ -1,3 +1,9 @@
+---
+title: Entry Action Gap Analysis
+description: The "Entry Action" is mentioned in several high-level overview pages
+  but lacks formal documentation within the FlexiRule 3-layer framework.
+weight: 30
+---
 # Gap Analysis: Entry Action Documentation
 
 ## 1. Current State

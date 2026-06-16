@@ -1,7 +1,7 @@
 ---
-title: "Assignment Action Improvements"
-description: "Strategic roadmap for enhancing the core Assignment mechanism."
-weight: 10
+title: Assignment Action Improvements
+description: Strategic roadmap for enhancing the core Assignment mechanism.
+weight: 20
 ---
 
 # Assignment Action Roadmap

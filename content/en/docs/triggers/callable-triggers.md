@@ -1,6 +1,8 @@
 ---
-title: "Callable Triggers"
-weight: 30
+title: Callable Triggers
+description: Callable triggers (also known as Sub-Rules) are designed to be invoked
+  manually or as part of another rule's execution flow.
+weight: 20
 ---
 
 # Callable Triggers (Sub-Rules)

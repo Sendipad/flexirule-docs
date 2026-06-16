@@ -1,23 +1,21 @@
 ---
-title: "Stop"
+title: Stop
+description: Terminates rule execution with a success or error status.
+weight: 130
 entity_kind: action
 category: control-flow
-description: "Terminates rule execution with a success or error status."
-weight: 90
-
 capabilities:
   category: flow-control
   mutation: read-only
   targets:
-    - context
+  - context
   triggers:
-    - any
+  - any
   flow: terminal
   transaction:
-    - transactional
-
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # Stop

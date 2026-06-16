@@ -1,8 +1,10 @@
 ---
-title: "Orchestration"
-weight: 40
+title: Orchestration
+description: FlexiRule is more than a simple automation engine; it is a **Visual Orchestration
+  Layer** that allows for the coordination of complex business proc...
+weight: 50
 aliases:
-  - /docs/engine/orchestration/
+- /docs/engine/orchestration/
 ---
 
 # Orchestration Capabilities

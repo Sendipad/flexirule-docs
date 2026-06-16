@@ -1,28 +1,28 @@
 ---
-title: "Process"
+title: Process
+description: Executes custom Python logic and predefined business processes.
+weight: 70
 entity_kind: action
 category: extensibility
-description: "Executes custom Python logic and predefined business processes."
-weight: 70
-parent: "advanced"
+parent: advanced
 aliases:
-  - /docs/actions/process/
+- /docs/actions/process/
 capabilities:
   category: process
   mutation: read-write
   targets:
-    - external-system
-    - database
-    - context
+  - external-system
+  - database
+  - context
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - async
-    - transactional
+  - async
+  - transactional
 badges:
-  - process
-  - external
+- process
+- external
 ---
 
 # Process Action

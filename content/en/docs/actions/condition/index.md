@@ -1,23 +1,23 @@
 ---
-title: "Condition"
+title: Condition
+description: Evaluates a boolean expression to branch execution paths.
+weight: 20
 entity_kind: action
 category: control-flow
-description: "Evaluates a boolean expression to branch execution paths."
-weight: 30
 aliases:
-  - /docs/actions/condition/
+- /docs/actions/condition/
 capabilities:
   category: flow-control
   mutation: read-only
   targets:
-    - context
+  - context
   triggers:
-    - any
+  - any
   flow: branching
   transaction:
-    - transactional
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # Condition Action

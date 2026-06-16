@@ -1,9 +1,9 @@
 ---
-title: "Decision Trees"
-description: "Guidance on choosing the right FlexiRule features."
-weight: 15
+title: Decision Trees
+description: Guidance on choosing the right FlexiRule features.
+weight: 30
 aliases:
-  - /docs/reference/decision_trees/
+- /docs/reference/decision_trees/
 ---
 
 # Decision Trees

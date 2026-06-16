@@ -1,6 +1,7 @@
 ---
-title: "Query List"
-description: "Fetching multiple records matching specific criteria."
+title: Query List
+description: Fetching multiple records matching specific criteria.
+weight: 10
 type: docs
 ---
 
@@ -30,6 +31,21 @@ Use Query List when you need to find multiple documents to process, such as "all
 
 ## Debugging and Schema
 Use the **Refresh Schema (Debug Query)** button to validate your query configuration against the database. This will also update the available output schema for downstream actions.
+
+## Filters
+Filters are the most critical part of a Query List. They define which records are retrieved.
+
+### Dynamic Date Formulas
+FlexiRule allows you to filter datasets dynamically based on rolling time windows using the formula builder. This is especially useful for fetching records relative to the current date without hardcoding specific dates.
+
+For example, you might want to find "all Sales Invoices created in the last 7 days" or "all Tasks due by the end of next month." Instead of writing complex SQL or code, you can use the guided UI to create these calculations.
+
+![Date Formula Configuration](/flexirule-docs/images/date-formula-configuration.png)
+
+Common calculations include:
+- **Rolling Windows**: "10 days from now" or "30 days ago."
+- **Calendar Bounds**: "Last day of current month" or "Start of next quarter."
+- **Reference Dates**: Calculating dates relative to a field value (e.g., `doc.posting_date + 15 days`).
 
 ## Output Structure
 Returns a list of objects.

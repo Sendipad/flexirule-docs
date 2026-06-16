@@ -1,8 +1,10 @@
 ---
-title: "User Guide (Conditions)"
+title: User Guide (Conditions)
+description: The Condition Builder is your primary tool for defining "When" logic
+  in FlexiRule. Whether you are deciding if a rule should run at all or branchin...
 weight: 30
 aliases:
-  - /docs/builder/user_guide_conditions/
+- /docs/builder/user_guide_conditions/
 ---
 
 # User Guide: Building Logic with the Condition Builder
@@ -75,6 +77,14 @@ One of the most powerful uses for conditions is detecting changes.
 
 -   **Trigger Level**: Use `doc.status != old_doc.status` to make a rule run ONLY when the status field is actually modified.
 -   **Previous Value**: Check if a value _was_ something specific: `old_doc.status == "Draft"`.
+
+---
+
+## 6. Date Formulas
+
+FlexiRule provides a guided UI for creating complex logic without writing raw code. This is especially useful for temporal logic. You can easily calculate dates (e.g., "10 days from now" or "Last day of current month") using the formula builder.
+
+![Date Formula Configuration](/flexirule-docs/images/date-formula-configuration.png)
 
 ---
 

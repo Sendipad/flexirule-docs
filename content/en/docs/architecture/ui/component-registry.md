@@ -1,6 +1,10 @@
 ---
+title: Component Registry
+description: '`FlexiGrid.vue` is one of the most sophisticated components in FlexiRule.
+  It is a **recursive, schema-aware collection editor** that mimics the pow...'
+weight: 30
 aliases:
-  - /docs/ui/flexigrid_architecture/
+- /docs/ui/flexigrid_architecture/
 ---
 
 # UI: FlexiGrid Architecture

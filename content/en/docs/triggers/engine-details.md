@@ -1,8 +1,10 @@
 ---
-title: "Trigger System"
-weight: 30
+title: Trigger System
+description: The FlexiRule Trigger System determines when a rule should begin its
+  execution. It is managed by the `RuleCoordinator`, which acts as a high-perfor...
+weight: 40
 aliases:
-  - /docs/engine/trigger_system/
+- /docs/engine/trigger_system/
 ---
 
 # Trigger System

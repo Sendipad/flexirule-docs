@@ -1,6 +1,10 @@
 ---
+title: Dynamic Forms
+description: FlexiRule uses a **Schema-Driven Rendering** approach. The frontend does
+  not "know" what an action's configuration looks like; it asks the backend ...
+weight: 50
 aliases:
-  - /docs/ui/schema_driven_ui/
+- /docs/ui/schema_driven_ui/
 ---
 
 # UI: Schema-Driven UI

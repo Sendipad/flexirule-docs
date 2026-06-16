@@ -1,6 +1,7 @@
 ---
-title: "Timespan Keywords"
-description: "Reference for natural language date keywords in FlexiRule."
+title: Timespan Keywords
+description: Reference for natural language date keywords in FlexiRule.
+weight: 10
 type: docs
 ---
 

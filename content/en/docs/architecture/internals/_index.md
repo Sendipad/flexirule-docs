@@ -1,8 +1,9 @@
 ---
-title: "Internals"
-weight: 20
+title: Internals
+description: This document covers the low-level management of the FlexiRule engine.
+weight: 10
 aliases:
-  - /docs/reference/internals/
+- /docs/reference/internals/
 ---
 
 # Core Engine Internals

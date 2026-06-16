@@ -1,6 +1,7 @@
 ---
-title: "Query Report"
-description: "Executing existing system reports and retrieving their results."
+title: Query Report
+description: Executing existing system reports and retrieving their results.
+weight: 10
 type: docs
 ---
 

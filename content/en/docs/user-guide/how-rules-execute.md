@@ -1,6 +1,7 @@
 ---
-title: "How Rules Execute"
-weight: 5
+title: How Rules Execute
+description: A high-level overview of the rule execution lifecycle for users and designers.
+weight: 50
 ---
 
 # How Rules Execute

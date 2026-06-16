@@ -1,6 +1,7 @@
 ---
-title: "Query Records Architecture"
-description: "Internal implementation details of the Query Records action handler."
+title: Query Records Architecture
+description: Internal implementation details of the Query Records action handler.
+weight: 70
 type: docs
 ---
 

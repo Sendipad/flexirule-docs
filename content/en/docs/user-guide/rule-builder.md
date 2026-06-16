@@ -1,10 +1,10 @@
 ---
-title: "Rule Builder"
-description: "Visual workspace for designing business logic graphs."
-weight: 10
-parent: "rule-building"
+title: Rule Builder
+description: Visual workspace for designing business logic graphs.
+weight: 60
+parent: rule-building
 aliases:
-  - /docs/builder/rule_builder/
+- /docs/builder/rule_builder/
 ---
 
 # Visual Rule Builder
@@ -75,9 +75,19 @@ The builder ensures that an action can only access variables that are logically 
 - **Magic Formula Builder**: Guided UI for complex logic (Date math, Aggregations).
 
 ### Canvas Features
+
+#### Node Interaction & Editing
+<video src="/flexirule-docs/images/action-label-edit.webm" controls></video>
+
+#### Intelligent Reconnection
 <video src="/flexirule-docs/images/remove-a-node-will-dynamically-reconnet-nodes.webm" controls></video>
 
+#### Bulk Actions
 <video src="/flexirule-docs/images/shift-click-nodes-to-copy.webm" controls></video>
+
+#### Layout Options
+The canvas supports multiple layout orientations to suit different rule complexities.
+![Top to Bottom Layout](/flexirule-docs/images/top-to-bottom-layout.png)
 
 ---
 
@@ -116,9 +126,24 @@ stateDiagram-v2
 
 ---
 
-## Testing and Debugging
+## Debugging and Testing
 
 The Rule Builder includes built-in tools to test and debug your rules in real-time.
+
+### Interactive Debugging
+The debugger allows you to select a sample document and simulate execution.
+
+![Debug Run Dialog](/flexirule-docs/images/Debug-run-dialog.png)
+
+### Visual Execution Path
+Once a test is run, the builder highlights the exact path taken during execution, providing immediate feedback on which nodes were visited.
+
+<video src="/flexirule-docs/images/debug-rule-view-execution-path.webm" controls></video>
+
+### Real-Time Results
+You can inspect the result of each node, including return values and modified variables, directly on the canvas.
+
+![Debug View Return Result](/flexirule-docs/images/debug-view-return-result.png)
 
 ![Rule Builder Run and Debug Test](/flexirule-docs/images/rule-builder-run-debug-test.png)
 

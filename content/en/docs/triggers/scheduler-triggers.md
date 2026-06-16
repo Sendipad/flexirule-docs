@@ -1,6 +1,8 @@
 ---
-title: "Scheduler Triggers"
-weight: 20
+title: Scheduler Triggers
+description: Scheduler triggers are used for background automation and periodic tasks
+  that are not tied to a specific user action or document event.
+weight: 60
 ---
 
 # Scheduler Triggers

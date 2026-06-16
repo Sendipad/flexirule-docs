@@ -1,9 +1,9 @@
 ---
-title: "Glossary"
-description: "Common terminology used in FlexiRule."
-weight: 100
+title: Glossary
+description: Common terminology used in FlexiRule.
+weight: 30
 aliases:
-  - /docs/reference/glossary/
+- /docs/reference/glossary/
 ---
 
 # Glossary

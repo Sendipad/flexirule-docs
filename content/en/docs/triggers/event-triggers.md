@@ -1,6 +1,8 @@
 ---
-title: "Event Triggers"
-weight: 10
+title: Event Triggers
+description: Event triggers react directly to state changes within the Frappe DocType
+  lifecycle.
+weight: 50
 ---
 
 # Event Triggers

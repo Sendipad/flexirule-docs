@@ -1,11 +1,12 @@
 ---
-title: "Introduction"
-description: "Advanced Visual Rule Engine & Orchestration for Frappe and ERPNext."
-lead: "FlexiRule is a high-performance visual logic layer that transforms how you build and manage business processes in Frappe applications."
-date: 2024-03-20T00:00:00+00:00
-lastmod: 2024-03-20T00:00:00+00:00
+title: Introduction
+description: Advanced Visual Rule Engine & Orchestration for Frappe and ERPNext.
+weight: 10
+lead: FlexiRule is a high-performance visual logic layer that transforms how you build
+  and manage business processes in Frappe applications.
+date: 2024-03-20 00:00:00+00:00
+lastmod: 2024-03-20 00:00:00+00:00
 draft: false
-weight: 1
 ---
 
 FlexiRule provides a powerful visual interface for orchestrating complex business logic in Frappe and ERPNext. It moves logic from scattered code hooks into a centralized, observable, and auditable visual graph.

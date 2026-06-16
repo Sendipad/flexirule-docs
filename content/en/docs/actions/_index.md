@@ -1,24 +1,25 @@
 ---
-title: "Actions"
-weight: 40
-description: "The complete library of available action nodes."
+title: Action Zone
+description: The complete library of available action nodes.
+weight: 50
 action_categories:
   control-flow:
-    title: "Control Flow"
-    description: "Core logic structures that control the execution path of your rule."
-    weight: 10
+    title: Control Flow
+    description: Core logic structures that control the execution path of your rule.
+    weight: 50
   data-operations:
-    title: "Data Operations"
-    description: "Actions for retrieving, updating, and managing system records and variables."
-    weight: 20
+    title: Data Operations
+    description: Actions for retrieving, updating, and managing system records and
+      variables.
+    weight: 50
   communication:
-    title: "Communication"
-    description: "Channels for sending notifications, alerts, and external messages."
-    weight: 30
+    title: Communication
+    description: Channels for sending notifications, alerts, and external messages.
+    weight: 50
   extensibility:
-    title: "Extensibility"
-    description: "Framework for executing custom logic and extending system behavior."
-    weight: 40
+    title: Extensibility
+    description: Framework for executing custom logic and extending system behavior.
+    weight: 50
 ---
 
 # Action Zone

@@ -1,6 +1,10 @@
 ---
+title: Resolver
+description: 'Resolvers are the "Data Glue" of FlexiRule. They solve a fundamental
+  problem: **How do we get dynamic data into an action without writing Python?**'
+weight: 10
 aliases:
-  - /docs/resolver/resolver_engine/
+- /docs/resolver/resolver_engine/
 ---
 
 # Resolver: Resolver Engine
