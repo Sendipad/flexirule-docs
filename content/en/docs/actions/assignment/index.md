@@ -73,14 +73,14 @@ Stores temporary data that exists only while the rule is running. Variables are 
 
 ## Configuration
 
-Each change row in an Assignment action includes:
+The Assignment action uses a **Batch Assignments** interface to define sequential mutations.
 
 | Field | Description |
 | :--- | :--- |
-| **Target** | The field (`doc.`) or variable (`vars.`) to update. |
-| **Operator** | How the value should be applied (e.g., Set, Increment). |
-| **Value** | The new data to apply. |
-| **Run If** | (Optional) A condition that determines if this specific change should happen. |
+| **Run If** | A condition that determines if this specific assignment row should execute. If not set, it defaults to **Always Run**. |
+| **Target Field** | The field (`doc.`) or variable (`vars.`) to update. Uses an intelligent Field Picker. |
+| **Operator** | How the value should be applied (e.g., Set, Increment, Toggle). The list of operators is filtered based on the target field type. |
+| **Value Expression** | The new data or expression to apply. This utilizes the [Flex Value Control]({{< relref "docs/architecture/ui/controls.md" >}}), which supports static values, formulas, and the [Normalization Value Resolver]({{< relref "docs/concepts/data-manipulation/normalization-value-resolver.md" >}}). |
 
 ---
 
@@ -159,6 +159,7 @@ Prepare values that contribute to document names or identifiers.
 ---
 
 ## Related Topics
+- [Normalization Value Resolver]({{< relref "docs/concepts/data-manipulation/normalization-value-resolver.md" >}})
 - [Variables Reference]({{< relref "docs/reference/glossary.md" >}})
 - [Value Resolver]({{< relref "docs/architecture/ui/action-config-panels.md#1-valueresolvercontrol" >}})
 - [Condition Action]({{< relref "docs/actions/condition/index.md" >}})

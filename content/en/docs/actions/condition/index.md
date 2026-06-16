@@ -150,6 +150,7 @@ The engine follows standard Python short-circuit logic:
 
 ## Related Topics
 
+- [Normalization Value Resolver]({{< relref "docs/concepts/data-manipulation/normalization-value-resolver.md" >}}) — Advanced data cleaning within conditions.
 - [Execution Semantics]({{< relref "docs/reference/execution/condition.md" >}}) — Technical runtime guarantees and security model.
 - [Architecture Reference]({{< relref "docs/architecture/actions/condition.md" >}}) — Internal implementation and source code mapping.
 - [Condition Builder Guide]({{< relref "docs/user-guide/condition-builder-guide.md" >}}) — Deep dive into the visual builder interface.
