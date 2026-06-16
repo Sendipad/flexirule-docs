@@ -1,7 +1,10 @@
 ---
 title: "Query Doc"
-description: "Fetching a single, complete document by name or expression."
-type: docs
+description: "Fetching a single, complete document by name, expression, or latest criteria."
+entity_kind: action_operation
+category: data-operations
+mutation: false
+targets: ["Frappe DocType"]
 ---
 
 # Query Doc Mode
@@ -9,15 +12,27 @@ type: docs
 The **Query Doc** mode retrieves a single, complete document from the database and makes all of its fields available to the rule flow.
 
 ## Purpose
-Use Query Doc when you know the specific ID (name) of a document and need to access multiple fields from it that aren't available on your current context.
+Use Query Doc when you need to access a full record to retrieve multiple fields, child table data, or perform complex validations that require the entire document object.
 
 ## Configuration
 
-### Target Resolution
-- **Fixed Docname**: Manually enter the name of the document (e.g., `CUST-0001`).
-- **Docname Expression**: Use a Python expression to resolve the name dynamically at runtime.
-    - `doc.customer`: Fetches the customer linked to the current document.
-    - `vars.selected_id`: Fetches a document whose name was stored in a previous step.
+### Execution Permission
+- **Skip Permissions**: Bypass read permissions for this action. This requires providing a **Permission Audit Reason**.
+
+### Target Document
+The Query Doc mode supports multiple strategies for identifying which document to fetch:
+
+| Fetch Strategy | Description |
+| :--- | :--- |
+| **Get doc** | The standard method. Fetches a document by its unique Name (ID). |
+| **Get Doc from Cache** | Attempts to retrieve the document from the system cache first, falling back to the database if not found. |
+| **Get Single DocType** | Specialized strategy for Single DocTypes (like "System Settings") where only one record exists. |
+| **Get latest Doc** | Fetches the most recently modified document matching a set of filters. |
+
+### Parameters
+- **DocType Name**: The type of document to fetch. Supports static selection or dynamic resolution via variables/expressions.
+- **Document Name (ID)**: (Required for most strategies) The unique identifier of the document. This utilizes a Flex Value Control, allowing for static links, variable mapping, or Jinja templates.
+- **Filters**: (Required for "Get latest Doc") A standard filter builder to define the criteria for finding the most recent matching record.
 
 ## Output Structure
 Returns a single object containing all fields of the DocType.
