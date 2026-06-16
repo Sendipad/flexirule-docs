@@ -16,14 +16,21 @@ Use Query List when you need to find multiple documents to process, such as "all
 
 ## Configuration
 
+### Execution Permission
+- **Skip Permissions**: Bypass read permissions for this action. This requires providing a **Permission Audit Reason**.
+
 ### Parameters
-- **Fields**: Select which fields to retrieve for each record. Selecting only necessary fields improves performance.
-- **Order By**: Define the sorting of the results (e.g., `creation desc`).
-- **Limit**:
-    - **First Record**: Returns only the most relevant record.
-    - **Custom Limit**: Defaults to 20.
-    - **All**: Fetches all matching records (use with caution).
-- **Group By**: (Optional) Groups the underlying SQL query by a specific field.
+- **Fields**: Select which fields to retrieve for each record using the multi-select picker. Selecting only necessary fields improves performance.
+- **Order By**: Define multiple sorting criteria. For each criterion, select a field and the direction (ASC/DESC).
+- **Retrieval Settings**:
+    - **Result Limit**:
+        - **First Record**: Returns only the most relevant record.
+        - **Custom Limit**: Max rows to return (default is 20).
+        - **All**: Fetches all matching records (use with caution).
+    - **Group By**: (Optional) Groups the results by a specific field.
+
+## Debugging and Schema
+Use the **Refresh Schema (Debug Query)** button to validate your query configuration against the database. This will also update the available output schema for downstream actions.
 
 ## Filters
 Filters are the most critical part of a Query List. They define which records are retrieved.

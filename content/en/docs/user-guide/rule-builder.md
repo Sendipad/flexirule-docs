@@ -29,7 +29,7 @@ The Rule Builder is a Vue 3-based visual workspace for designing business logic 
 
 ## Visual Example
 
-![Rule Builder Overview](/flexirule-docs/landing-page/rule_builder.png)
+![Rule Builder Overview](/flexirule-docs/images/flexirule-canvas-view.png)
 
 ### Dark Theme Support
 ![Rule Builder Canvas Dark Theme](/flexirule-docs/images/rule-builder-canvas-dark-theme.png)
@@ -47,9 +47,22 @@ Each node in the graph represents a **Rule Action**.
 
 ---
 
-## No-Code & Error Prevention
+## The Action Zone
 
-<video src="/flexirule-docs/images/add-action-from-action-zone.webm" controls></video>
+The **Action Zone** is the primary interface for adding new logic to your rule canvas. It provides a streamlined, searchable menu of all available actions, categorized by their function.
+
+<video src="/flexirule-docs/images/add-action-from-action-zone.webm" controls autoplay loop muted></video>
+
+### How it works
+1. **Trigger**: Hover over any connection point or empty space on the canvas.
+2. **Select**: Choose from categorized groups like Data Operations, Control Flow, or Notifications.
+3. **Insert**: The new node is automatically inserted and connected, maintaining the logical flow of your rule.
+
+This new UI entry point simplifies the workflow creation process by reducing the number of clicks required to build complex logic chains.
+
+---
+
+## No-Code & Error Prevention
 
 ### Temporal Context Visibility
 The builder ensures that an action can only access variables that are logically available at its point in the execution flow.
@@ -133,6 +146,19 @@ You can inspect the result of each node, including return values and modified va
 ![Debug View Return Result](/flexirule-docs/images/debug-view-return-result.png)
 
 ![Rule Builder Run and Debug Test](/flexirule-docs/images/rule-builder-run-debug-test.png)
+
+---
+
+## Mobile Responsiveness
+
+FlexiRule is designed with a "mobile-first" mindset for rule management. Users can seamlessly review and edit rules on the go using their mobile devices.
+
+![Mobile Action Label Edit](/flexirule-docs/images/mobile-action-label-edit.png.jpg)
+
+### Key Mobile Features
+- **Adaptive UI**: The Rule Builder canvas and configuration panels adjust to smaller screen sizes.
+- **On-the-go Editing**: Quickly edit action labels, review conditions, and make urgent tweaks to logic from your smartphone or tablet.
+- **Touch-Friendly Controls**: Large, accessible buttons and touch-optimized drag-and-drop interactions.
 
 ---
 
