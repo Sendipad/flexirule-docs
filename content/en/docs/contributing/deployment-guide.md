@@ -1,7 +1,8 @@
 ---
-title: "Deployment Guide"
-description: "Instructions for deploying FlexiRule documentation to different repositories and branches."
-weight: 110
+title: Deployment Guide
+description: Instructions for deploying FlexiRule documentation to different repositories
+  and branches.
+weight: 30
 ---
 
 # Deployment Guide

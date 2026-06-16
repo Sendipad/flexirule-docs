@@ -1,6 +1,8 @@
 ---
-title: "Document Action: Execution Semantics"
-description: "Technical runtime behavior, transaction models, and permission escalation for the Document Action."
+title: 'Document Action: Execution Semantics'
+description: Technical runtime behavior, transaction models, and permission escalation
+  for the Document Action.
+weight: 30
 ---
 
 # Document Action: Execution Semantics

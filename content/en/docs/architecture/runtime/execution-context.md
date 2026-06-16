@@ -1,6 +1,10 @@
 ---
+title: Execution Context
+description: The `ExecutionContext` is the "Brain" of a rule execution. It travels
+  through every node, carrying state and providing environmental awareness.
+weight: 20
 aliases:
-  - /docs/architecture/execution_context/
+- /docs/architecture/execution_context/
 ---
 
 # Architecture: Execution Context

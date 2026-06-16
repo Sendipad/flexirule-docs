@@ -1,6 +1,8 @@
 ---
-title: "Terminology Migration"
-weight: 5
+title: Terminology Migration
+description: This guide maps legacy FlexiRule terms to the new standardized terminology
+  used in the documentation and future releases.
+weight: 40
 ---
 
 # Terminology Migration Guide

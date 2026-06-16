@@ -1,8 +1,10 @@
 ---
-title: "Standards"
-weight: 100
+title: Standards
+description: Processes are the primary extensibility point for FlexiRule. A **Process**
+  is a grouping of **Operations** (Python functions) that can be called fr...
+weight: 20
 aliases:
-  - /docs/actions/standards/
+- /docs/actions/standards/
 ---
 
 # Process Adapter Standards

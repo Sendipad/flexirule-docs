@@ -1,6 +1,8 @@
 ---
-title: "Triggers"
-weight: 35
+title: Triggers
+description: Triggers act as the entry point for all business logic in FlexiRule.
+  They determine **when** a rule should begin its execution.
+weight: 40
 ---
 
 # Trigger System

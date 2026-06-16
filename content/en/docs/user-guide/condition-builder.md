@@ -1,8 +1,10 @@
 ---
-title: "Condition Builder"
-weight: 20
+title: Condition Builder
+description: The Condition Builder is a specialized Vue 3 workspace designed to let
+  users author complex business logic through a structured, visual interface.
+weight: 40
 aliases:
-  - /docs/builder/condition_builder/
+- /docs/builder/condition_builder/
 ---
 
 # Condition Builder UI (Frontend)

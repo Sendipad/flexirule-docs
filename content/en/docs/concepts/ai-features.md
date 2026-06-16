@@ -1,10 +1,10 @@
 ---
-title: "AI Features"
-description: "Leveraging Artificial Intelligence within FlexiRule logic."
-weight: 30
-parent: "advanced"
+title: AI Features
+description: Leveraging Artificial Intelligence within FlexiRule logic.
+weight: 20
+parent: advanced
 aliases:
-  - /docs/ai_features/
+- /docs/ai_features/
 ---
 
 # AI Features

@@ -1,6 +1,8 @@
 ---
-title: "Document Action: Architecture Reference"
-description: "Class structure, Resource Mapper internals, and mode dispatch logic for the Document Action."
+title: 'Document Action: Architecture Reference'
+description: Class structure, Resource Mapper internals, and mode dispatch logic for
+  the Document Action.
+weight: 30
 ---
 
 # Document Action: Architecture Reference

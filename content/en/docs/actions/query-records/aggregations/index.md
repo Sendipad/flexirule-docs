@@ -1,6 +1,8 @@
 ---
-title: "Aggregations"
-description: "Performing mathematical calculations (Count, Sum, Avg, Min, Max) across records."
+title: Aggregations
+description: Performing mathematical calculations (Count, Sum, Avg, Min, Max) across
+  records.
+weight: 10
 type: docs
 ---
 

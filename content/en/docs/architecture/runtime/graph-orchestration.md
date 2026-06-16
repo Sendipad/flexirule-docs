@@ -1,6 +1,10 @@
 ---
+title: Graph Orchestration
+description: FlexiRule represents automation as a **Directed Graph**. This is not
+  just a UI choice; it is the fundamental way the engine reasons about execution.
+weight: 30
 aliases:
-  - /docs/architecture/graph_orchestration/
+- /docs/architecture/graph_orchestration/
 ---
 
 # Architecture: Graph Orchestration

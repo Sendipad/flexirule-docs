@@ -1,6 +1,8 @@
 ---
-title: "Condition: Architecture Reference"
-description: "Internal implementation details and developer reference for the Condition action."
+title: 'Condition: Architecture Reference'
+description: Internal implementation details and developer reference for the Condition
+  action.
+weight: 20
 ---
 
 # Condition: Architecture Reference

@@ -1,6 +1,8 @@
 ---
-title: "Action Name: Architecture Reference"
-description: "Internal implementation details and developer reference for the Action Name action."
+title: 'Action Name: Architecture Reference'
+description: Internal implementation details and developer reference for the Action
+  Name action.
+weight: 20
 ---
 
 # Action Name: Architecture Reference

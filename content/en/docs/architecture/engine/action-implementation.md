@@ -1,7 +1,7 @@
 ---
-title: "Action Implementation"
-description: "Technical reference for backend action handlers and execution mechanics."
-weight: 50
+title: Action Implementation
+description: Technical reference for backend action handlers and execution mechanics.
+weight: 20
 ---
 
 # Action Implementation Reference

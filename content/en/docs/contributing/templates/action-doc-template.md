@@ -1,22 +1,19 @@
 ---
-title: "Action Name"
-description: "A concise one-sentence description of the action."
-weight: 100
-# aliases: [/docs/actions/old-slug/]
-
+title: Action Name
+description: A concise one-sentence description of the action.
+weight: 30
 capabilities:
   category: data
   mutation: read-only
   targets:
-    - context
+  - context
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - transactional
-
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # Action Name

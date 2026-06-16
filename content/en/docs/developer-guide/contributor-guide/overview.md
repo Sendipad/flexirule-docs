@@ -1,10 +1,10 @@
 ---
-title: "Contributor Guide"
-description: "How to contribute to the FlexiRule project."
-weight: 110
-parent: "reference"
+title: Contributor Guide
+description: How to contribute to the FlexiRule project.
+weight: 20
+parent: reference
 aliases:
-  - /docs/reference/contribution/
+- /docs/reference/contribution/
 ---
 
 # Contributor Guide

@@ -1,6 +1,7 @@
 ---
-title: "Exist Record"
-description: "Verifying the presence of records matching specific criteria."
+title: Exist Record
+description: Verifying the presence of records matching specific criteria.
+weight: 10
 type: docs
 ---
 

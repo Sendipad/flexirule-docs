@@ -1,6 +1,10 @@
 ---
+title: Action Zone
+description: Welcome to the **Master Internal Knowledge Base** for FlexiRule. This
+  workspace contains a complete deep-dive analysis of the FlexiRule architectur...
+weight: 20
 aliases:
-  - /docs/action_zone/
+- /docs/action_zone/
 ---
 
 # Action Zone: FlexiRule Research Initiative (A → Z)

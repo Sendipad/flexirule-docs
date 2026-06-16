@@ -1,12 +1,13 @@
 ---
-title: "Create ToDo"
-description: "Assign a task to a user and link it to the triggering document."
+title: Create ToDo
+description: Assign a task to a user and link it to the triggering document.
+weight: 40
 entity_kind: action_operation
 capabilities:
   category: document
   mutation: read-write
   targets:
-    - database
+  - database
 ---
 
 # Create ToDo

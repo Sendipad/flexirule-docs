@@ -1,25 +1,23 @@
 ---
-title: "Loop"
+title: Loop
+description: Iterates over a collection and executes child nodes for each item.
+weight: 80
 entity_kind: action
 category: control-flow
-description: "Iterates over a collection and executes child nodes for each item."
-weight: 50
 aliases:
-  - /docs/actions/loop/
-
+- /docs/actions/loop/
 capabilities:
   category: flow-control
   mutation: read-only
   targets:
-    - context
+  - context
   triggers:
-    - any
+  - any
   flow: loop
   transaction:
-    - transactional
-
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # Loop Action

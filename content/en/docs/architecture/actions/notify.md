@@ -1,6 +1,8 @@
 ---
-title: "Notify: Architecture Reference"
-description: "Internal implementation details and developer reference for the Notify action."
+title: 'Notify: Architecture Reference'
+description: Internal implementation details and developer reference for the Notify
+  action.
+weight: 60
 ---
 
 # Notify: Architecture Reference

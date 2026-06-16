@@ -1,23 +1,23 @@
 ---
-title: "Switch"
+title: Switch
+description: Directs execution to one of multiple paths based on a value.
+weight: 90
 entity_kind: action
 category: control-flow
-description: "Directs execution to one of multiple paths based on a value."
-weight: 90
 aliases:
-  - /docs/actions/switch/
+- /docs/actions/switch/
 capabilities:
   category: flow-control
   mutation: read-only
   targets:
-    - context
+  - context
   triggers:
-    - any
+  - any
   flow: branching
   transaction:
-    - transactional
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # Switch Action

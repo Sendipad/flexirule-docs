@@ -1,7 +1,8 @@
 ---
-title: "Templates"
-description: "Reusable templates for documenting FlexiRule actions, execution semantics, and architecture."
-weight: 20
+title: Templates
+description: Reusable templates for documenting FlexiRule actions, execution semantics,
+  and architecture.
+weight: 10
 ---
 
 # Documentation Templates

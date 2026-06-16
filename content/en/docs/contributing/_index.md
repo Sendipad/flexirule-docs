@@ -1,7 +1,7 @@
 ---
-title: "Contributing"
-description: "Guidelines and standards for contributing to FlexiRule documentation."
-weight: 100
+title: Contributing
+description: Guidelines and standards for contributing to FlexiRule documentation.
+weight: 120
 ---
 
 # Contributing to FlexiRule Documentation

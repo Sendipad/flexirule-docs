@@ -1,12 +1,13 @@
 ---
-title: "Create New"
-description: "Generate new records in any DocType using data from the current context."
+title: Create New
+description: Generate new records in any DocType using data from the current context.
+weight: 30
 entity_kind: action_operation
 capabilities:
   category: document
   mutation: read-write
   targets:
-    - database
+  - database
 ---
 
 # Create New

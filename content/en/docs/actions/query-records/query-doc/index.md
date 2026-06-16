@@ -1,15 +1,15 @@
 ---
-title: "Query Doc"
-description: "Fetch a single, complete document from the database and make its fields available to the rule flow."
-weight: 20
-
+title: Query Doc
+description: Fetch a single, complete document from the database and make its fields
+  available to the rule flow.
+weight: 10
 entity_kind: action_operation
 category: data-operations
 mutation: false
-targets: ["Frappe DocType"]
-
+targets:
+- Frappe DocType
 badges:
-  - core
+- core
 ---
 
 # Query Doc Mode

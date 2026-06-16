@@ -1,6 +1,8 @@
 ---
-title: "Stop: Architecture Reference"
-description: "Internal implementation details and developer reference for the Stop action."
+title: 'Stop: Architecture Reference'
+description: Internal implementation details and developer reference for the Stop
+  action.
+weight: 80
 ---
 
 # Stop: Architecture Reference

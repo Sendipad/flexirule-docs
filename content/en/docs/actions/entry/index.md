@@ -1,24 +1,22 @@
 ---
-title: "Entry Action"
+title: Entry Action
+description: Serves as the mandatory starting point of every rule flow.
+weight: 10
 entity_kind: action
 category: control-flow
-description: "Serves as the mandatory starting point of every rule flow."
-weight: 1
-
 capabilities:
   category: flow-control
   mutation: read-only
   targets:
-    - context
-    - document
+  - context
+  - document
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - transactional
-
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # Entry Action

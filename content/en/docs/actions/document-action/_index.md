@@ -1,24 +1,24 @@
 ---
-title: "Document Action"
+title: Document Action
+description: Performs CRUD operations on Frappe documents.
+weight: 30
 entity_kind: action
 category: data-operations
-description: "Performs CRUD operations on Frappe documents."
-weight: 40
 aliases:
-  - /docs/actions/document_action/
+- /docs/actions/document_action/
 capabilities:
   category: document
   mutation: read-write
   targets:
-    - external-document
-    - database
+  - external-document
+  - database
   triggers:
-    - any
+  - any
   flow: linear
   transaction:
-    - transactional
+  - transactional
 badges:
-  - core
+- core
 ---
 
 # Document Action

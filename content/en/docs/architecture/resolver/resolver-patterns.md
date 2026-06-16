@@ -1,6 +1,10 @@
 ---
+title: Resolver Patterns
+description: This document catalogs the practical patterns enabled by the FlexiRule
+  Resolver Engine.
+weight: 20
 aliases:
-  - /docs/resolver/resolver_patterns/
+- /docs/resolver/resolver_patterns/
 ---
 
 # Resolver: Resolver Patterns

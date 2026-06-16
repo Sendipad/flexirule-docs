@@ -1,5 +1,7 @@
 ---
-title: "Roadmap"
+title: Roadmap
+description: Documentation for FlexiRule technical components and user guides.
+weight: 90
 ---
 
 # Product Roadmap

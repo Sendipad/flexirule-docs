@@ -1,6 +1,7 @@
 ---
-title: "Query Filters"
-description: "Reference guide for filtering logic across FlexiRule actions."
+title: Query Filters
+description: Reference guide for filtering logic across FlexiRule actions.
+weight: 10
 type: docs
 ---
 

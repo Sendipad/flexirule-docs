@@ -1,5 +1,7 @@
 ---
-title: "Localized Content"
+title: Localized Content
+description: FlexiRule documentation in multiple languages.
+weight: 10
 ---
 
 # Localized Documentation
