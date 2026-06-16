@@ -7,6 +7,8 @@ weight: 10
 
 Welcome to FlexiRule! This guide will help you understand the basics of creating and managing business rules.
 
+<video src="/flexirule-docs/images/flexirule-overview-demo.webm" controls autoplay loop muted></video>
+
 ## Your First Rule
 
 Creating a rule in FlexiRule involves three main steps:

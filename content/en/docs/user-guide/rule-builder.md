@@ -29,7 +29,7 @@ The Rule Builder is a Vue 3-based visual workspace for designing business logic 
 
 ## Visual Example
 
-![Rule Builder Overview](/flexirule-docs/landing-page/rule_builder.png)
+![Rule Builder Overview](/flexirule-docs/images/flexirule-canvas-view.png)
 
 ### Dark Theme Support
 ![Rule Builder Canvas Dark Theme](/flexirule-docs/images/rule-builder-canvas-dark-theme.png)
