@@ -19,17 +19,54 @@ Think of the Normalization Value Resolver as a processing engine that sits betwe
 Specifies the field (Data, Text, Select, etc.) within the current document context that will receive the normalized value.
 
 ### 2. Normalization Profile
-Profiles are pre-defined sets of operations designed for specific use cases.
+Profiles are pre-defined sets of operations designed for specific use cases. Using profiles is highly recommended for maintaining **unified normalization** standards across your system.
+
+By applying the same profile to similar fields in different DocTypes (e.g., using "URL Safe" for both Blog Slugs and Category Slugs), you ensure that data is stored consistently and behaves predictably across the entire platform.
+
 - **Custom Pipeline**: Allows you to manually select and order operations.
-- **Pre-defined Profiles**: (e.g., "Email Cleaning", "Phone Formatting") - These are read-only sets of operations optimized for common data types.
+- **Pre-defined Profiles**:
+    - **URL Safe**: Optimized for generating slugs (Trim → Lowercase → Slug).
+    - **Clean Text**: Standardizes human-readable text (Trim → Remove Extra Spaces).
+    - **Upper Case Token**: Ideal for unique identifiers or codes (Trim → Uppercase → Remove Spaces).
+
+{{< warning >}}
+**Attention Required**: When configuring normalization, always check if an existing Profile fits your needs before creating a Custom Pipeline. Unified data standards prevent duplicate records and search inconsistencies.
+{{< /warning >}}
 
 ### 3. Pipeline Operations
-When using a **Custom Pipeline**, you can chain multiple operations together. Each operation processes the result of the previous one. Common operations include:
-- `lowercase` / `uppercase`
-- `trim`
-- `strip_special_characters`
-- `url_encode`
-- `json_parse`
+When using a **Custom Pipeline**, you can chain multiple operations together. Each operation processes the result of the previous one.
+
+#### Text Cleaning
+| Operation | Behavior |
+| :--- | :--- |
+| `trim` | Removes whitespace from the beginning and end of the text. |
+| `remove_spaces` | Strips all spaces from the text. |
+| `remove_extra_spaces` | Replaces multiple spaces with a single space and trims the ends. |
+
+#### Case Transformation
+| Operation | Behavior |
+| :--- | :--- |
+| `lowercase` | Converts all characters to lowercase. |
+| `uppercase` | Converts all characters to uppercase. |
+| `title_case` | Capitalizes the first letter of every word. |
+| `slug` | Converts text into a URL-friendly format (lowercase, hyphen-separated, alphanumeric only). |
+| `snake_case` | Converts text into a programming-friendly format (lowercase, underscore-separated). |
+
+#### Character Filtering
+| Operation | Behavior |
+| :--- | :--- |
+| `remove_punctuation` | Strips all symbols and punctuation marks. |
+| `remove_numbers` | Removes all numeric digits (0-9). |
+| `numeric_only` | Removes everything except numeric digits. |
+| `alphanumeric_only` | Removes everything except letters and numbers. |
+
+#### Advanced Encoding & Localization
+| Operation | Behavior |
+| :--- | :--- |
+| `unicode_normalize` | Standardizes Unicode characters (using NFKD) to prevent encoding conflicts. |
+| `remove_diacritics` | Strips accents and diacritics from Latin characters (e.g., `é` becomes `e`). |
+| `translate_chars` | Handles specialized translations, such as converting Arabic/Persian digits to Western digits. |
+| `phone_normalize` | Specialized cleaner for phone numbers that handles international prefixes and strips non-digit formatting. |
 
 ### 4. Live Demo / Preview
 The Resolver includes a built-in testing area where you can:
