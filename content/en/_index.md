@@ -21,4 +21,19 @@ With our intuitive drag-and-drop interface, you can build sophisticated workflow
 - **Native Frappe Integration**: Deeply integrated with DocTypes, Hooks, and the Frappe security model.
 - **Enterprise-Grade**: Built for performance, auditability, and scale.
 
-[Get Started with our Guide]({{< relref "docs/getting-started" >}})
+## Documentation Sections
+
+{{< grid >}}
+{{< card title="Getting Started" href="/flexirule-docs/getting-started/" >}}
+Learn the basics and get FlexiRule running in minutes.
+{{< /card >}}
+{{< card title="Using the Builder" href="/flexirule-docs/using-the-builder/" >}}
+Master the visual interface and design your first rule.
+{{< /card >}}
+{{< card title="Core Actions" href="/flexirule-docs/core-actions/" >}}
+Explore the available building blocks for your business logic.
+{{< /card >}}
+{{< card title="Advanced Reference" href="/flexirule-docs/advanced-reference/" >}}
+Deep dive into architecture, APIs, and technical details.
+{{< /card >}}
+{{< /grid >}}
