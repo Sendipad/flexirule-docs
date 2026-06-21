@@ -77,6 +77,6 @@ After installation, you can access the FlexiRule Dashboard from your Frappe Desk
 
 The Visual Rule Builder is the canonical representation of FlexiRule logic — what you see is exactly what executes.
 
-![Visual Rule Builder](/flexirule-docs/landing-page/rule_builder.png)
+![Visual Rule Builder](/landing-page/rule_builder.png)
 
 *Declarative, deeply nested condition trees with deterministic evaluation ensure your business logic remains clear and maintainable.*

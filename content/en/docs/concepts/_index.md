@@ -1,6 +1,6 @@
 ---
 title: Concepts
-description: Documentation for FlexiRule technical components and user guides.
+description: Understand the core principles and architectural patterns that power FlexiRule.
 weight: 20
 ---
 

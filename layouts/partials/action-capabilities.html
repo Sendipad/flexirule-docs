@@ -1,7 +1,7 @@
 {{ $caps := .Params.capabilities }}
 {{ $badges := .Params.badges }}
-{{ $all_caps := .Site.Data.action_capabilities }}
-{{ $all_badges := .Site.Data.action_badges }}
+{{ $all_caps := site.Data.action_capabilities }}
+{{ $all_badges := site.Data.action_badges }}
 
 {{ if or $caps $badges }}
 <div class="action-meta-container">

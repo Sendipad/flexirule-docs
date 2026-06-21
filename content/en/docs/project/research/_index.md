@@ -1,6 +1,6 @@
 ---
 title: Research
-description: Documentation for FlexiRule technical components and user guides.
+description: Research papers and comparative studies that informed FlexiRule's design.
 weight: 10
 ---
 

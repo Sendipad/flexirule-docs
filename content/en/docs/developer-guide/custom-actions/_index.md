@@ -1,6 +1,6 @@
 ---
 title: Custom Actions
-description: Documentation for FlexiRule technical components and user guides.
+description: Learn how to extend FlexiRule by creating your own custom action nodes.
 weight: 10
 ---
 

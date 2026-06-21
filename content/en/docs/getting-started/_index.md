@@ -1,6 +1,6 @@
 ---
 title: Getting Started
-description: Documentation for FlexiRule technical components and user guides.
+description: Learn the fundamentals of FlexiRule, from your first rule to the visual builder.
 weight: 10
 ---
 
@@ -8,7 +8,7 @@ weight: 10
 
 Welcome to FlexiRule! This guide will help you understand the basics of creating and managing business rules.
 
-<video src="/flexirule-docs/images/flexirule-overview-demo.webm" controls autoplay loop muted></video>
+<video src="/images/flexirule-overview-demo.webm" controls autoplay loop muted></video>
 
 ## Your First Rule
 

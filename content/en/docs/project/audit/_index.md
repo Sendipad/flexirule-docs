@@ -1,6 +1,6 @@
 ---
 title: Audit
-description: Documentation for FlexiRule technical components and user guides.
+description: Security and performance audit reports for the FlexiRule framework.
 weight: 10
 ---
 

@@ -29,10 +29,10 @@ The Rule Builder is a Vue 3-based visual workspace for designing business logic 
 
 ## Visual Example
 
-![Rule Builder Overview](/flexirule-docs/images/flexirule-canvas-view.png)
+![Rule Builder Overview](/images/flexirule-canvas-view.png)
 
 ### Dark Theme Support
-![Rule Builder Canvas Dark Theme](/flexirule-docs/images/rule-builder-canvas-dark-theme.png)
+![Rule Builder Canvas Dark Theme](/images/rule-builder-canvas-dark-theme.png)
 
 ---
 
@@ -51,7 +51,7 @@ Each node in the graph represents a **Rule Action**.
 
 The **Action Zone** is the primary interface for adding new logic to your rule canvas. It provides a streamlined, searchable menu of all available actions, categorized by their function.
 
-<video src="/flexirule-docs/images/add-action-from-action-zone.webm" controls autoplay loop muted></video>
+{{< video src="/images/add-action-from-action-zone.webm" autoplay="true" loop="true" muted="true" >}}
 
 ### How it works
 1. **Trigger**: Hover over any connection point or empty space on the canvas.
@@ -77,17 +77,17 @@ The builder ensures that an action can only access variables that are logically 
 ### Canvas Features
 
 #### Node Interaction & Editing
-<video src="/flexirule-docs/images/action-label-edit.webm" controls></video>
+{{< video src="/images/action-label-edit.webm" >}}
 
 #### Intelligent Reconnection
-<video src="/flexirule-docs/images/remove-a-node-will-dynamically-reconnet-nodes.webm" controls></video>
+{{< video src="/images/remove-a-node-will-dynamically-reconnet-nodes.webm" >}}
 
 #### Bulk Actions
-<video src="/flexirule-docs/images/shift-click-nodes-to-copy.webm" controls></video>
+{{< video src="/images/shift-click-nodes-to-copy.webm" >}}
 
 #### Layout Options
 The canvas supports multiple layout orientations to suit different rule complexities.
-![Top to Bottom Layout](/flexirule-docs/images/top-to-bottom-layout.png)
+![Top to Bottom Layout](/images/top-to-bottom-layout.png)
 
 ---
 
@@ -133,19 +133,19 @@ The Rule Builder includes built-in tools to test and debug your rules in real-ti
 ### Interactive Debugging
 The debugger allows you to select a sample document and simulate execution.
 
-![Debug Run Dialog](/flexirule-docs/images/Debug-run-dialog.png)
+![Debug Run Dialog](/images/Debug-run-dialog.png)
 
 ### Visual Execution Path
 Once a test is run, the builder highlights the exact path taken during execution, providing immediate feedback on which nodes were visited.
 
-<video src="/flexirule-docs/images/debug-rule-view-execution-path.webm" controls></video>
+{{< video src="/images/debug-rule-view-execution-path.webm" >}}
 
 ### Real-Time Results
 You can inspect the result of each node, including return values and modified variables, directly on the canvas.
 
-![Debug View Return Result](/flexirule-docs/images/debug-view-return-result.png)
+![Debug View Return Result](/images/debug-view-return-result.png)
 
-![Rule Builder Run and Debug Test](/flexirule-docs/images/rule-builder-run-debug-test.png)
+![Rule Builder Run and Debug Test](/images/rule-builder-run-debug-test.png)
 
 ---
 
@@ -153,7 +153,7 @@ You can inspect the result of each node, including return values and modified va
 
 FlexiRule is designed with a "mobile-first" mindset for rule management. Users can seamlessly review and edit rules on the go using their mobile devices.
 
-![Mobile Action Label Edit](/flexirule-docs/images/mobile-action-label-edit.png.jpg)
+![Mobile Action Label Edit](/images/mobile-action-label-edit.png.jpg)
 
 ### Key Mobile Features
 - **Adaptive UI**: The Rule Builder canvas and configuration panels adjust to smaller screen sizes.
