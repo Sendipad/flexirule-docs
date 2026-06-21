@@ -1,6 +1,6 @@
 ---
 title: Engine
-description: Documentation for FlexiRule technical components and user guides.
+description: Deep dive into the FlexiRule engine internals, compilation logic, and orchestration.
 weight: 10
 ---
 

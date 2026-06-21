@@ -1,6 +1,6 @@
 ---
 title: User Guide
-description: Documentation for FlexiRule technical components and user guides.
+description: Step-by-step guides for building, testing, and managing rules within the visual builder.
 weight: 30
 ---
 

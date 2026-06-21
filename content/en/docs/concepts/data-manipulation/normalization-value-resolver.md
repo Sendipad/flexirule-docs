@@ -11,7 +11,7 @@ The **Normalization Value Resolver** is a powerful core update that allows users
 
 Think of the Normalization Value Resolver as a processing engine that sits between your data source and its final destination. Instead of just mapping a value, you can apply a series of operations to ensure the data is exactly as you need it.
 
-<video src="/flexirule-docs/images/normalization-value-resolver-with-supported-varity-operation.webm" controls autoplay loop muted></video>
+<video src="/images/normalization-value-resolver-with-supported-varity-operation.webm" controls autoplay loop muted></video>
 
 ## Key Components
 

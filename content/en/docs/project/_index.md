@@ -1,6 +1,6 @@
 ---
 title: Project
-description: Documentation for FlexiRule technical components and user guides.
+description: Information about the FlexiRule project, including research, audits, and community standards.
 weight: 100
 ---
 

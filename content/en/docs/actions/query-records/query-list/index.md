@@ -12,7 +12,7 @@ The **Query List** mode is used to retrieve a collection of records from a DocTy
 ## Purpose
 Use Query List when you need to find multiple documents to process, such as "all draft invoices" or "all items in a specific warehouse."
 
-<video src="/flexirule-docs/images/query-records-query-list-features.webm" controls></video>
+<video src="/images/query-records-query-list-features.webm" controls></video>
 
 ## Configuration
 
@@ -40,7 +40,7 @@ FlexiRule allows you to filter datasets dynamically based on rolling time window
 
 For example, you might want to find "all Sales Invoices created in the last 7 days" or "all Tasks due by the end of next month." Instead of writing complex SQL or code, you can use the guided UI to create these calculations.
 
-![Date Formula Configuration](/flexirule-docs/images/date-formula-configuration.png)
+![Date Formula Configuration](/images/date-formula-configuration.png)
 
 Common calculations include:
 - **Rolling Windows**: "10 days from now" or "30 days ago."

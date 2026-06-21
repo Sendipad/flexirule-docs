@@ -1,6 +1,6 @@
 ---
 title: Runtime
-description: Documentation for FlexiRule technical components and user guides.
+description: Technical details on how rules are executed and monitored at runtime.
 weight: 10
 ---
 
