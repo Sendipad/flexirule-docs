@@ -1,6 +1,6 @@
 ---
 title: Administration
-description: Documentation for FlexiRule technical components and user guides.
+description: Guidelines for installing, configuring, and maintaining FlexiRule in your Frappe environment.
 weight: 110
 ---
 

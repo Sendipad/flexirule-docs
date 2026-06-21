@@ -1,6 +1,6 @@
 ---
 title: Reference
-description: Documentation for FlexiRule technical components and user guides.
+description: Technical reference for FlexiRule actions, schemas, and API specifications.
 weight: 70
 ---
 

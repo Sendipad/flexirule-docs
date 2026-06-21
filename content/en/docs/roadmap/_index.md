@@ -1,6 +1,6 @@
 ---
 title: Roadmap
-description: Documentation for FlexiRule technical components and user guides.
+description: Explore the future of FlexiRule, including upcoming features, planned improvements, and our long-term vision.
 weight: 90
 ---
 

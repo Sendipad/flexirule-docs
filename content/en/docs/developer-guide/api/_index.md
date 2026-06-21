@@ -1,6 +1,6 @@
 ---
 title: API Reference
-description: Documentation for FlexiRule technical components and user guides.
+description: Documentation for the FlexiRule Python and REST APIs for custom integrations.
 weight: 10
 ---
 

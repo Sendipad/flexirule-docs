@@ -84,7 +84,7 @@ One of the most powerful uses for conditions is detecting changes.
 
 FlexiRule provides a guided UI for creating complex logic without writing raw code. This is especially useful for temporal logic. You can easily calculate dates (e.g., "10 days from now" or "Last day of current month") using the formula builder.
 
-![Date Formula Configuration](/flexirule-docs/images/date-formula-configuration.png)
+![Date Formula Configuration](/images/date-formula-configuration.png)
 
 ---
 
