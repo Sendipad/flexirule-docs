@@ -21,4 +21,4 @@ With our intuitive drag-and-drop interface, you can build sophisticated workflow
 - **Native Frappe Integration**: Deeply integrated with DocTypes, Hooks, and the Frappe security model.
 - **Enterprise-Grade**: Built for performance, auditability, and scale.
 
-[Get Started with our Guide]({{< relref "docs/getting-started" >}})
+[Get Started with our Guide]({{< relref "getting-started" >}})
