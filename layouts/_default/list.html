@@ -8,6 +8,7 @@
       <h1>{{ .Title }}</h1>
       {{ with $summary }}<p class="lead">{{ . | plainify }}</p>{{ end }}
     </header>
+    {{ partial "action-bar.html" . }}
     <section class="doc-body">{{ .Content }}</section>
     <section class="card-grid" aria-label="Pages in {{ .Title }}">
       {{ range .Pages.ByWeight }}
