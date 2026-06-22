@@ -12,7 +12,7 @@ Building logic in FlexiRule is centered around adding and connecting "Action" no
 
 The **Action Zone** is the primary way to add new logic. It provides a searchable menu of all available actions.
 
-{{< video src="/images/add-action-from-action-zone.webm" autoplay="true" loop="true" muted="true" >}}
+{{< video src="/images/add-action-from-action-zone_op.webm" autoplay="true" loop="true" muted="true" >}}
 
 ### How to Add an Action
 1. **Hover**: Hover your mouse over any connection line or empty space on the canvas.
@@ -25,7 +25,7 @@ The **Action Zone** is the primary way to add new logic. It provides a searchabl
 ### Reconnecting Nodes
 If you delete a node between two others, FlexiRule intelligently heals the connection to maintain your logic flow.
 
-{{< video src="/images/remove-a-node-will-dynamically-reconnet-nodes.webm" >}}
+{{< video src="/images/remove-a-node-will-dynamically-reconnet-nodes_op.webm" >}}
 
 ### Manual Connections
 You can also manually connect nodes by dragging from the output handle of one node to the input handle of another.

@@ -26,7 +26,7 @@ The Rule Builder is your visual workspace for designing business logic. It provi
 ### Bulk Actions
 You can select multiple nodes by holding `Shift` and dragging a selection box. This allows you to move or copy groups of logic at once.
 
-{{< video src="/images/shift-click-nodes-to-copy.webm" >}}
+{{< video src="/images/shift-click-nodes-to-copy_op.webm" >}}
 
 ## Debugging on the Canvas
 
@@ -35,7 +35,7 @@ The Rule Builder includes built-in tools to test your rules in real-time.
 ### Visual Execution Path
 When you run a test, the builder highlights the exact path taken during execution, showing you exactly which nodes were triggered.
 
-{{< video src="/images/debug-rule-view-execution-path.webm" >}}
+{{< video src="/images/debug-rule-view-execution-path_op.webm" >}}
 
 ### Inspecting Results
 You can click on any node after a test run to see its specific results, including modified variables and return values.
