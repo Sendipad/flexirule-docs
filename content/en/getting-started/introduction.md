@@ -17,7 +17,7 @@ FlexiRule is a high-performance, visual automation engine for the Frappe Framewo
 - **Native Frappe Integration**: Deeply integrated with DocTypes, Hooks, and the Frappe security model.
 - **Enterprise-Grade**: Built for performance, auditability, and scale.
 
-<video src="/images/flexirule-overview-demo.webm" controls autoplay loop muted></video>
+<video src="/images/flexirule-overview-demo_op.webm" controls autoplay loop muted></video>
 
 ## Core Concepts
 
