@@ -4,10 +4,8 @@
     <button class="icon-button sidebar-close" type="button" data-sidebar-close aria-label="Close documentation menu">×</button>
   </div>
   <nav class="sidebar-nav">
-    {{ range .Site.Sections }}
-      {{ if eq .Section "docs" }}
-        {{ template "sidebar-tree" (dict "node" . "current" $ "level" 0) }}
-      {{ end }}
+    {{ range .Site.Sections.ByWeight }}
+      {{ template "sidebar-tree" (dict "node" . "current" $ "level" 0) }}
     {{ end }}
   </nav>
 </aside>
