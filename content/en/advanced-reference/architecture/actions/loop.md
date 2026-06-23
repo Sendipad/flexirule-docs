@@ -1,61 +1,43 @@
 ---
-title: 'Loop: Architecture Reference'
-description: Internal implementation details and developer reference for the Loop
-  action.
-weight: 50
+title: Loop Architecture
+description: Internal implementation details of sequential and parallel loop execution.
+weight: 60
+type: docs
 ---
 
-# Loop: Architecture Reference
+# Loop Architecture
 
-## Purpose
+The **Loop** action enables iteration over data collections within the FlexiRule engine.
 
-The **Loop** action is implemented as a graph-aware handler that manages iteration state within the execution context. Unlike linear actions, the Loop handler uses the context to persist pointers between engine steps, allowing for iterative "jumps" across the graph logic.
+---
 
-## Class Structure
+## 1. Class Structure
 
-- **`flexirule.ruleflow.core.action_handlers.loop.LoopHandler`**: The primary implementation class. Inherits from `ActionHandler`.
-- **`HandlerRegistry`**: Manages the singleton instance of the `LoopHandler`.
+- **Handler Class**: `LoopHandler`
+- **Inheritance**: `ActionHandler` -> `flexirule.ruleflow.core.action_handlers.ActionHandler`
+- **Source File**: `flexirule/ruleflow/core/action_handlers/loop.py`
+- **Registry Key**: `Loop`
 
-## Execution Pipeline
+---
 
-The `execute` method of `LoopHandler` follows this internal logic:
+## 2. Iteration Semantics
 
-1.  **State Lookup**: Retrieves loop state from `context["vars"]["_loops"][action.action_id]`.
-2.  **Configuration**: Accesses configuration via `engine._get_action_config(action)`.
-3.  **Resolution**: Resolves the `iterator` expression via `engine._evaluate_python_value`.
-4.  **Item Binding**:
-    - Selects the item based on `loop_state["index"]`.
-    - Determines the alias name (Priority: `action.return_variable` > `config.alias` > `"item"`).
-5.  **Graph Control**:
-    - Returns `True` and `action.next_step_if_true` to enter/continue the loop.
-    - Returns `False` and `action.next_step_if_false` to terminate.
+The handler manages execution based on the `loop_mode` configuration:
 
-## Context Mutation Model
+### Sequential Mode (Default)
+1.  **Iterate**: The handler fetches the next item from the input list.
+2.  **Context Injection**: The current item is injected into the context under the configured variable name (e.g., `item`).
+3.  **Execute Body**: The engine executes all nodes within the loop's body branch.
+4.  **Repeat**: Once the body is complete, the engine returns to the Loop node to process the next item.
 
-The Loop action uses a **persistent-transient hybrid** mutation model:
+### Parallel Mode
+1.  **Batching**: The handler splits the input list into smaller chunks.
+2.  **Concurrency**: Each chunk is processed in a separate thread or background job using `frappe.enqueue`.
+3.  **Synchronization**: The rule flow waits for all parallel tasks to complete before proceeding to the next node (join point logic).
 
-- **Persistent Mutations**: The iteration item (`vars[alias]`) and metadata (`vars.loop`) are written directly to the execution context's `vars` dictionary. These persist in memory until the end of the rule execution.
-- **Transient State**: The internal index and iteration tracker are stored in `vars._loops[action_id]`. This entry is explicitly deleted when the loop completes, preventing state pollution for subsequent nodes.
+---
 
-## Dependencies
+## 3. UI Component Architecture
 
-- **`RuleEngine`**: Provides Python expression evaluation (`_evaluate_python_value`) and configuration retrieval (`_get_action_config`).
-- **`ActionHandler`**: Base interface for all graph nodes.
-
-## Extension Points
-
-- **Custom Item Aliases**: Developers can override the default iteration variable name via the UI `alias` field or the generic `return_variable` field in the action schema.
-- **Metadata Consumers**: Other action handlers or processes can consume the `vars.loop` metadata for logic such as "send only on last item."
-
-## UI Architecture
-
-The Loop configuration UI is defined through a **Contract-Driven Pattern**:
-
-- **Action Type**: `Loop`
-- **Component Mapping**: The frontend maps the `Loop` action type to the `LoopConfig.vue` component (located in `public/js/flexirule/rule_builder/components/config_panels/`).
-- **Dynamic Props**: Configuration fields are rendered based on the JSON schema defined in the action's contract.
-
-## Source Files
-
-- **Backend**: `flexirule/ruleflow/core/action_handlers/loop.py`
-- **Frontend**: `flexirule/public/js/flexirule/rule_builder/components/config_panels/Loop/LoopConfig.vue`
+- **Component**: `LoopConfig.vue`
+- **Path**: `flexirule/public/js/flexirule/rule_builder/components/rule_config/types/LoopConfig.vue`

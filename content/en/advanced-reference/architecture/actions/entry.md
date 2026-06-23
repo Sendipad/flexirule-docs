@@ -1,59 +1,39 @@
 ---
-title: 'Entry Action: Architecture Reference'
-description: Internal implementation details and developer reference for the Entry
-  Action.
-weight: 40
+title: Entry Action Architecture
+description: Internal implementation details of rule initialization and context setup.
+weight: 5
+type: docs
 ---
 
-# Entry Action: Architecture Reference
+# Entry Action Architecture
 
-## Purpose
-The **Entry Action** implementation serves as the structural root of the rule-flow graph. It decouples the trigger-detection logic from the graph-traversal logic by providing a standardized "start" node that the `RuleEngine` can consistently target.
+The **Entry Action** is the mandatory starting node for every FlexiRule flow, responsible for initializing the execution environment.
 
-## Class Structure
-- **`EntryActionHandler(ActionHandler)`**: The core backend class responsible for "executing" the start node.
-- **`HandlerRegistry`**: The singleton registry where `EntryActionHandler` is registered under the key `"Entry Action"`.
+---
 
-### Backend Implementation
-```python
-class EntryActionHandler(ActionHandler):
-	"""Handler for Entry Action type - marks the start node."""
+## 1. Class Structure
 
-	action_type = "Entry Action"
+- **Handler Class**: `EntryHandler`
+- **Inheritance**: `ActionHandler` -> `flexirule.ruleflow.core.action_handlers.ActionHandler`
+- **Source File**: `flexirule/ruleflow/core/action_handlers/entry.py`
+- **Registry Key**: `Entry`
 
-	def execute(self, action, context, engine):
-		"""Entry Action - simply passes through to next step."""
-		return None, action.next_step_if_true
-```
+---
 
-## Execution Pipeline
-1.  **Engine Bootstrapping**: `RuleEngine.run()` is called with a `Rule` object and initial data.
-2.  **Root Discovery**: The engine iterates through the `actions` list to find the first node where `action_id == "root"` or `action_type == "Entry Action"`.
-3.  **Handler Execution**:
-    - The engine fetches the handler from `HandlerRegistry.get("Entry Action")`.
-    - The `execute` method is called.
-4.  **Next Step Resolution**: The engine receives the ID of the next node and continues the Breadth-First Search (BFS) or Sequential traversal.
+## 2. Initialization Workflow
 
-## Context Mutation Model
-The Entry Action uses **Implicit Initialization**. It does not perform explicit `context.set()` calls. Instead, the `RuleEngine` prepares the `ContextManager` *before* invoking the first handler.
+When a rule is triggered:
 
-- **Initialization Source**: `RuleEngine._get_initial_context()`
-- **Mutation Type**: Initialization (State creation).
+1.  **Context Creation**: The engine instantiates a new `ExecutionContext`.
+2.  **Doc Injection**: The triggering document (`doc`) is attached to the context.
+3.  **Variable Setup**: Any global or system-level variables are initialized.
+4.  **Handoff**: The orchestrator is called to begin traversing the graph, starting from the Entry node.
 
-## Dependencies
-- **`flexirule.ruleflow.core.engine`**: Relies on the engine to perform the initial discovery.
-- **`flexirule.ruleflow.core.contracts`**: Uses the shared contract to define its icon and non-configurable status.
+---
 
-## Extension Points
-The Entry Action is considered a "Closed Core" component. Developers should not override the `EntryActionHandler` as it would break the fundamental graph-traversal guarantees of the engine.
+## 3. UI Component Architecture
 
-If customization is needed for "initialization" logic, it is recommended to use an [Assignment]({{< relref "core-actions/assignment" >}}) node immediately following the Entry Action.
+- **Component**: `EntryConfig.vue`
+- **Path**: `flexirule/public/js/flexirule/rule_builder/components/rule_config/types/EntryConfig.vue`
 
-## Internal Events
-- **`rule_execution_start`**: Fired by the `RuleEngine` immediately before the Entry Action is processed.
-
-## Source Files
-- **Backend Handler**: `flexirule/ruleflow/core/action_handlers/simple_actions.py`
-- **Backend Contract**: `flexirule/ruleflow/core/contracts.py`
-- **Frontend Component**: `flexirule/public/js/flexirule/rule_builder/components/nodes/StartNode.vue`
-- **Validation Logic**: `flexirule/ruleflow/core/validation_service.py`
+The UI for the Entry Action is typically minimal, focus primarily on the node label and high-level rule properties.

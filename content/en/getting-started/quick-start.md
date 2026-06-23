@@ -1,33 +1,44 @@
 ---
 title: Quick Start Guide
-description: Create your first business rule in minutes.
+description: Create your first automated business rule in minutes.
 weight: 20
 ---
 
 # Quick Start Guide
 
-Follow these steps to create and activate your first automated business rule.
+Ready to build your first automation? Follow these steps to create a simple rule that automatically approves low-value Sales Orders.
 
 ## 1. Create a New Rule
-1. Navigate to the **Rule** list in the FlexiRule Desk.
-2. Click **New**.
-3. Give your rule a name (e.g., "Auto-Approve Low Value Orders").
-4. Select the **Reference DocType** (e.g., Sales Order).
+1.  Search for **Rule** in the Frappe search bar and open the **Rule List**.
+2.  Click the **New** button.
+3.  **Name**: Enter a descriptive name (e.g., "Auto-Approve Small Orders").
+4.  **Reference DocType**: Select **Sales Order**.
 
-## 2. Define the Trigger
-In the **Triggers** section, decide when this rule should run:
-- **On Save**: Runs whenever the document is saved.
-- **On Submit**: Runs only when the document is submitted.
-- **Scheduled**: Runs at specific intervals.
+## 2. Set the Trigger
+The trigger tells FlexiRule *when* to check your logic.
+1.  In the **Triggers** section, click **Add Row**.
+2.  Set the **Trigger Type** to **Event**.
+3.  Set the **Event** to **Before Submit**.
 
 ## 3. Build the Logic
-Click on the **Rule Builder** tab to open the visual canvas.
+Now, let's define the "intelligence" of your rule using the **Rule Builder**.
 
-1. **Add a Condition**: Click the `+` icon on the **Entry Action** to add a **Condition** node.
-2. **Configure**: Set the condition to check if `doc.grand_total < 1000`.
-3. **Add an Action**: On the `True` path, add a **Document Action** to update the `status` to "Approved".
+1.  Click the **Rule Builder** tab at the top of the page.
+2.  **Add a Condition**: Hover over the bottom connection point of the **Entry Action** node. Click the `+` icon that appears (the **Action Zone**) and select **Condition**.
+3.  **Configure the Condition**:
+    - Click on the new Condition node to open its settings.
+    - Set the check to: `doc.grand_total < 500`.
+    - Click **Apply**.
+4.  **Add the Action**:
+    - Hover over the **True** (green) connection point of your Condition node.
+    - Click the `+` icon and select **Document Action** (labeled as **Update Record**).
+    - In the configuration panel, set the operation to **Update Existing**.
+    - Under **Assignments**, set the `status` field to `Approved`.
 
 ## 4. Activate and Test
-1. Save the Rule document.
-2. Toggle the **Is Active** switch.
-3. Create a test Sales Order to see your rule in action.
+1.  Click **Save** on the Rule document.
+2.  Toggle the **Is Active** switch at the top right to **On**.
+3.  Create a new **Sales Order** with a total under 500 and try to submit it. Your rule will automatically approve it!
+
+---
+**Next Step**: Learn more about the [Rule Builder]({{< relref "using-the-builder/canvas-navigation.md" >}}) interface.

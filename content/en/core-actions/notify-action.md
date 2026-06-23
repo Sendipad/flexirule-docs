@@ -1,6 +1,6 @@
 ---
 title: Notify
-description: Send emails, system notifications, or UI toasts.
+description: Send automated notifications via Email, WhatsApp, or System Alerts.
 weight: 20
 aliases:
   - /docs/actions/notify/
@@ -8,25 +8,40 @@ aliases:
 
 # Notify Action
 
-The **Notify** action is used to communicate information to users or external systems.
+The **Notify** action allows your rule flows to communicate with users or customers automatically.
 
-## Notification Types
+## When to Use
+- **Approvals**: Alert a manager when a high-value order is ready for review.
+- **Customer Updates**: Send a WhatsApp or Email when a shipment is dispatched.
+- **System Alerts**: Notify an administrator of a rule failure or an unusual data condition.
 
-### 1. Email
-Send a formatted email to one or more recipients.
-- **Recipients**: Use static email addresses or dynamic ones (e.g., `doc.owner`).
-- **Templates**: Select from existing Frappe Email Templates or write custom content.
-- **Attachments**: Attach the current document as a PDF.
+## Communication Channels
 
-### 2. System Notification
-Create a notification within the Frappe Desk for a specific user or role. These appear in the notification bell icon.
+FlexiRule supports multiple ways to send messages:
 
-### 3. UI Toast
-Display a temporary popup message (Toast) to the user who triggered the rule.
-- **Types**: Success, Info, Warning, or Error.
-- **Note**: This only works for rules triggered by manual UI actions (e.g., clicking Save).
+- **Email**: Send standard emails using Frappe's Email Templates.
+- **System Notification**: Create a notification inside the Frappe desk (the bell icon).
+- **WhatsApp**: Send messages via integrated WhatsApp providers.
+- **SMS**: Send text messages through your configured SMS gateway.
 
-## Configuration Steps
-1. **Select Type**: Choose how you want to notify.
-2. **Define Content**: Write your message. You can use `{{ doc.name }}` to include data from the document.
-3. **Set Recipients**: Choose who should receive the notification.
+## Configuration
+
+### 1. Choose the Channel
+Select how you want to send the message.
+
+### 2. Set Recipients
+You can send notifications to:
+- **Specific Users**: Select a user from the list.
+- **Dynamic Fields**: Use a field from the document, like `doc.contact_email`.
+- **Roles**: Send to everyone with a specific role (e.g., all "Purchase Managers").
+
+### 3. Define the Message
+- **Templates**: Select a predefined Email Template to keep branding consistent.
+- **Custom Content**: Write a message directly in the action. You can use dynamic variables like `Hello {{ doc.customer }}, your order #{{ doc.name }} is ready.`
+
+## Best Practices
+- **Use Templates**: Predefined templates are easier to maintain and support multiple languages.
+- **Don't Over-Notify**: Group notifications where possible to avoid cluttering your users' inboxes.
+
+---
+**Advanced**: For details on how notification jobs are queued, see the [Notify Architecture]({{< relref "advanced-reference/architecture/actions/notify.md" >}}).

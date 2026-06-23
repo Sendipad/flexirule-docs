@@ -1,47 +1,38 @@
 ---
 title: Canvas Navigation
-description: Learn how to navigate and use the visual Rule Builder canvas.
+description: Learn how to navigate and interact with the visual rule canvas.
 weight: 10
 aliases:
-  - /docs/user-guide/rule-builder/
+  - /docs/using-the-builder/canvas-navigation/
 ---
 
 # Canvas Navigation
 
-The Rule Builder is your visual workspace for designing business logic. It provides a drag-and-drop canvas where you can orchestrate workflows while maintaining full visibility into the execution flow.
+The FlexiRule Builder provides a vast, infinite canvas where you can map out even the most complex business logic. Navigating this space is designed to be fluid and intuitive.
 
-![Rule Builder Overview](/images/flexirule-canvas-view.png)
+## Basic Controls
 
-## Core Canvas Interactions
+| Action | Control |
+| :--- | :--- |
+| **Pan / Move** | Click and drag any empty space on the canvas. Or hold **Space** and drag. |
+| **Zoom In/Out** | Use your mouse wheel or pinch-to-zoom on a trackpad. |
+| **Select Node** | Click on any node to select it and open its configuration panel. |
+| **Multi-Select** | Hold **Shift** and drag a box around multiple nodes. |
 
-### Moving and Zooming
-- **Pan**: Click and drag any empty space on the canvas to move around.
-- **Zoom**: Use your mouse wheel or the zoom controls in the corner to adjust the view.
+## Toolbar Features
 
-### Working with Nodes
-- **Select**: Click a node to select it and open its configuration panel.
-- **Move**: Drag a node to reposition it.
-- **Delete**: Select a node and press `Backspace` or `Delete`. The builder will automatically attempt to reconnect the remaining nodes.
+The toolbar at the top of the canvas provides quick access to essential tools:
 
-### Bulk Actions
-You can select multiple nodes by holding `Shift` and dragging a selection box. This allows you to move or copy groups of logic at once.
+- **Center View**: Quickly re-focus the canvas on your rule's starting point.
+- **Auto-Layout**: Automatically tidy up your nodes into a clean, readable structure.
+- **Search**: Find specific nodes by name within a large rule flow.
+- **Execution Path**: Highlight the path taken during the last test run to debug your logic.
 
-{{< video src="/images/shift-click-nodes-to-copy.webm" >}}
+## Interactive Elements {#examples}
 
-## Debugging on the Canvas
+- **Connection Points**: Small circles on the top and bottom of nodes. Drag from one to another to create a logic flow.
+- **The Action Zone**: When you hover over a connection point or an empty line, a `+` icon appears. Clicking this allows you to insert a new action directly into that spot.
+- **Mini-Map**: A small overview in the corner that helps you keep track of your position in very large rules.
 
-The Rule Builder includes built-in tools to test your rules in real-time.
-
-### Visual Execution Path
-When you run a test, the builder highlights the exact path taken during execution, showing you exactly which nodes were triggered.
-
-{{< video src="/images/debug-rule-view-execution-path.webm" >}}
-
-### Inspecting Results
-You can click on any node after a test run to see its specific results, including modified variables and return values.
-
-![Debug View Return Result](/images/debug-view-return-result.png)
-
-## Examples {#examples}
-
-For more information on how to build rules, see our [Quick Start Guide]({{< relref "getting-started/quick-start" >}}).
+---
+**Tip**: If you ever get "lost" on a large canvas, use the **Center View** button to find your way back to the Entry Action.

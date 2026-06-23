@@ -1,21 +1,39 @@
 ---
 title: Stop and Error Handling
-description: Control how a rule finishes or handle errors.
+description: Terminate a rule flow gracefully or handle unexpected errors.
 weight: 100
 aliases:
   - /docs/actions/stop/
-  - /docs/actions/raise-error/
 ---
 
 # Stop and Error Handling
 
-These nodes allow you to explicitly control the end of a rule or handle situations where something goes wrong.
+Control how your rule finishes. While rules naturally stop at the end of a logic path, the **Stop** node gives you explicit control over *how* they end.
 
-## Stop Action
-The **Stop** action immediately ends the execution of the rule.
-- **Use Case**: Use this inside a **Condition** to exit a rule early if certain criteria aren't met, preventing subsequent actions from running.
+## The Stop Action
 
-## Raise Error Action
-The **Raise Error** action stops the rule and displays an error message to the user.
-- **Use Case**: Use this for strict validation. For example, if a Sales Order is missing a required attachment, you can "Raise Error" with a custom message like "Please upload the signed contract before submitting."
-- **Visual Feedback**: In the Frappe UI, this will appear as a standard error popup.
+The Stop node immediately terminates the current rule execution.
+
+### When to Use
+- **Manual Termination**: If a certain condition is met and no further logic is needed.
+- **Cleanup**: Stopping a rule after a specific "Exit" condition.
+
+## Error Handling
+
+Sometimes things go wrong (e.g., an external API is down). You can configure your rule to handle these situations gracefully.
+
+### 1. The Error Path
+Many actions have an optional **Error Path** (the red connection point). If the action fails, the rule will follow this path instead of stopping.
+- **Example**: If "Notify via WhatsApp" fails, follow the Error path to "Notify via Email" as a fallback.
+
+### 2. Raise Error Node
+Use this node to intentionally stop the rule and show a message to the user or log a specific failure.
+- **User Message**: "Rule failed because the Customer has no email address."
+- **Stop Execution**: This prevents any further actions (like saving the record) from happening.
+
+## Best Practices
+- **Use Clear Messages**: When raising an error, explain *why* it happened so users know how to fix it.
+- **Always Have a Fallback**: For critical notifications or updates, use the Error Path to ensure the rule doesn't just "vanish" if something breaks.
+
+---
+**Advanced**: For technical details on error bubbling and log captures, see [Stop Action Architecture]({{< relref "advanced-reference/architecture/actions/stop.md" >}}).

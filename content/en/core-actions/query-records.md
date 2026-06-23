@@ -2,6 +2,10 @@
 title: Query Records
 description: Retrieve data from the system using filters and aggregations.
 weight: 10
+category: data-operations
+entity_kind: action_operation
+mutation: false
+targets: ["Frappe DocType"]
 aliases:
   - /docs/actions/query-records/
 ---
@@ -12,8 +16,8 @@ The **Query Records** action allows your rule flows to fetch information from th
 
 ## When to Use
 - **Data Enrichment**: Fetching related fields (e.g., getting a Customer's "Territory").
-- **Validation**: Checking for duplicates or conflicting records.
-- **Aggregations**: Calculating totals across multiple documents (e.g., "Sum of all unpaid invoices").
+- **Validation**: Checking for duplicates or conflicting records (e.g., "Does a draft invoice already exist for this customer?").
+- **Aggregations**: Calculating totals across multiple documents (e.g., "Sum of all unpaid invoices for this year").
 
 ## Query Modes
 
@@ -23,19 +27,7 @@ The **Query Records** action allows your rule flows to fetch information from th
 | **Query Doc** | Single Record | Fetching detailed info from a specific record. |
 | **Exist Record** | Yes/No | Simple validation and existence checks. |
 | **Aggregations** | Number | Totals, counts, and averages (Sum, Min, Max). |
-| **Group By** | List of Totals | Summary data grouped by a category (e.g., Sales by Territory). |
-
-## Advanced Querying
-
-### Aggregations
-Use this mode when you only need a single number.
-- **Count**: How many records match the filter.
-- **Sum**: The total of a specific numeric field.
-- **Average/Min/Max**: Standard statistical calculations.
-
-### Group By
-Use this to summarize data into "buckets".
-- **Example**: Get the total sales amount for each individual salesperson in the last month.
+| **Group By** | List of Totals | Summary data grouped by category (e.g., Sales by Territory). |
 
 ## How to Configure
 
@@ -52,5 +44,8 @@ Filters tell FlexiRule exactly which records to find.
 After setting your query, click the **Refresh Schema** button. This performs a live test and makes the resulting fields available to use in later steps of your rule.
 
 ## Common Tips
-- **Always Filter**: Avoid searching the entire database without filters to keep your rules fast.
-- **Check the Result**: Remember that **Query List** always returns a list of items, even if it only finds one. Use **Query Doc** if you only need one specific record.
+- **Performance**: Always use filters. Searching the entire database without filters can slow down your rules.
+- **Single vs. List**: Remember that **Query List** always returns a "list" of items. Use **Query Doc** if you only need one specific record to make it easier to access its fields.
+
+---
+**Advanced**: For technical details on how filters are normalized or how the SQL is generated, see the [Query Records Architecture]({{< relref "advanced-reference/architecture/actions/query-records.md" >}}).

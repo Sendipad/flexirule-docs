@@ -1,38 +1,48 @@
 ---
 title: Adding and Managing Actions
-description: Learn how to use the Action Zone to build your rule logic.
+description: How to build your logic flow by adding, configuring, and connecting action nodes.
 weight: 20
+aliases:
+  - /docs/using-the-builder/adding-actions/
 ---
 
 # Adding and Managing Actions
 
-Building logic in FlexiRule is centered around adding and connecting "Action" nodes.
+Building a rule is a process of adding "Action Nodes" to your canvas and configuring them to perform specific tasks.
 
 ## The Action Zone
 
-The **Action Zone** is the primary way to add new logic. It provides a searchable menu of all available actions.
+The easiest way to build your rule is using the **Action Zone**.
 
-{{< video src="/images/add-action-from-action-zone.webm" autoplay="true" loop="true" muted="true" >}}
+1.  **Find a Connection Point**: Hover your mouse over any node's output point (usually at the bottom) or over an existing connection line.
+2.  **Trigger the Menu**: Click the `+` icon that appears.
+3.  **Choose an Action**: A searchable menu will pop up. Select the action you want to add (e.g., *Query Records* or *Notify*).
 
-### How to Add an Action
-1. **Hover**: Hover your mouse over any connection line or empty space on the canvas.
-2. **Trigger**: Click the `+` icon that appears.
-3. **Search & Select**: Browse categories or type to find the action you need (e.g., "Email" or "Update Record").
-4. **Insert**: The new node is automatically inserted and connected into your flow.
+FlexiRule will automatically insert the node and maintain the flow of your logic.
 
-## Managing Connections
+## Configuring an Action
 
-### Reconnecting Nodes
-If you delete a node between two others, FlexiRule intelligently heals the connection to maintain your logic flow.
+Once a node is on the canvas, you need to tell it exactly what to do.
 
-{{< video src="/images/remove-a-node-will-dynamically-reconnet-nodes.webm" >}}
+1.  **Open Settings**: Click on the node. A configuration panel will slide out from the right.
+2.  **Basic Info**: Every action has a **Label** (give it a clear name like "Find Customer") and a **Description**.
+3.  **Settings**: This is where you define the specific behavior (e.g., which records to search for or what message to send).
+4.  **Apply Changes**: Always click the **Apply** button at the bottom of the panel to save your node's settings.
 
-### Manual Connections
-You can also manually connect nodes by dragging from the output handle of one node to the input handle of another.
+## Connecting Nodes Manually
 
-## Intelligent Configuration
+While the Action Zone is recommended, you can also connect nodes manually:
 
-When you select an action, a configuration panel opens on the right.
+1.  Click and hold a **Connection Point** at the bottom of a node.
+2.  Drag the line to the **Top Connection Point** of another node.
+3.  Release to create the link.
 
-- **Smart Pickers**: Field pickers only show variables that are actually available at that point in the rule.
-- **Validation**: The builder alerts you if required fields are missing before you save.
+## Date Formulas and Expressions
+
+Many actions (like filtering records or setting values) allow you to use dynamic formulas.
+
+- **The Formula Builder**: Look for the "Formula" or "Expression" icon next to input fields.
+- **Guided UI**: Use the guided builder to create complex date ranges like "Start of Last Month" or "7 Days from Now" without writing code.
+
+---
+**Next Step**: Explore the [Core Actions]({{< relref "core-actions/_index.md" >}}) library to see what each node can do.

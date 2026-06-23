@@ -1,45 +1,46 @@
 ---
-title: 'Stop: Architecture Reference'
-description: Internal implementation details and developer reference for the Stop
-  action.
-weight: 80
+title: Stop Action Architecture
+description: Internal implementation details of the Stop action and error handling.
+weight: 100
+type: docs
 ---
 
-# Stop: Architecture Reference
+# Stop Action Architecture
 
-## Purpose
-The **Stop** action provides a clean exit point from the rule execution loop. It is designed to be minimal and leverage standard Frappe exception handling for its `Error` mode.
+The **Stop** action provides an explicit termination point for a rule flow, allowing for graceful exits or forced errors.
 
-## Class Structure
+---
 
-### `StopHandler(ActionHandler)`
--   **Location**: `flexirule/ruleflow/core/action_handlers/simple_actions.py`
--   **Responsibility**: Terminates the execution flow.
--   **Methods**:
-    -   `execute(action, context, engine)`: Implementation of the terminal logic.
+## 1. Class Structure
 
-## Execution Pipeline
+- **Handler Class**: `StopHandler`
+- **Inheritance**: `ActionHandler` -> `flexirule.ruleflow.core.action_handlers.ActionHandler`
+- **Source File**: `flexirule/ruleflow/core/action_handlers/stop.py`
+- **Registry Key**: `Stop`
 
-1.  **Operation Check**: `mode = (getattr(action, "operation", None) or "Success").strip()`
-2.  **Success Path**: Returns `(None, None)`, which signals the `RuleEngine` to terminate the loop.
-3.  **Error Path**:
-    -   Retrieves `value_template`.
-    -   Builds a template context containing `doc`, `vars`, and `frappe`.
-    -   Calls `frappe.render_template`.
-    -   Appends a `source_link` HTML snippet to the message for administrative traceability.
-    -   Calls `frappe.throw(message, title=_("Rule Error"))`.
+---
 
-## Context Mutation Model
-The Stop action is **Read-Only**. It never modifies the context. However, in `Error` mode, it causes a system-wide mutation by rolling back the current database transaction.
+## 2. Termination Logic
 
-## Dependencies
--   `frappe.throw`: Used to raise `ValidationError` and stop the request.
--   `frappe.render_template`: Used for generating dynamic error messages.
+When a `Stop` node is executed:
 
-## Source Files
--   **Handler**: `flexirule/ruleflow/core/action_handlers/simple_actions.py`
--   **Contract**: `flexirule/ruleflow/core/contracts.py`
+1.  **Status Update**: The `ExecutionLog` entry for the rule is updated to a status of `COMPLETED` or `STOPPED`.
+2.  **State Disposal**: The engine clears any temporary variables and ephemeral state associated with the current thread.
+3.  **Halt**: The orchestrator immediately ceases processing the current graph branch.
 
-## Related Topics
-- [Action Documentation]({{< relref "advanced-reference/architecture/actions/stop.md" >}})
-- [Execution Semantics]({{< relref "advanced-reference/reference/execution/stop.md" >}})
+---
+
+## 3. Error Raising and Bubbling
+
+If the action is configured to "Raise Error":
+
+1.  **Exception Generation**: The handler throws a `flexirule.exceptions.RuleExecutionError`.
+2.  **Message Resolution**: Any dynamic markers in the error message (e.g., `{{ doc.name }}`) are resolved before the exception is raised.
+3.  **UI Feedback**: The error message is bubbled up to the Frappe UI, showing a standard error dialog to the user and preventing document submission if the rule was triggered by an `on_submit` event.
+
+---
+
+## 4. UI Component Architecture
+
+- **Component**: `StopConfig.vue`
+- **Path**: `flexirule/public/js/flexirule/rule_builder/components/rule_config/types/StopConfig.vue`
