@@ -8,21 +8,31 @@ aliases:
 
 # Assignment Action
 
-The **Assignment** action is used to change values in your rule. This can include updating fields on the document currently being processed or setting temporary variables for use in later steps.
+The **Assignment** action is used to change values within your rule flow. Think of it as a way to "prepare" data or store temporary information while the rule is running.
 
 ## Types of Assignments
 
 ### 1. Document Field Assignment
-Directly change a field on the current document (the one that triggered the rule).
-- **Example**: Set `status` to "Pending Review".
+Directly change a field on the document that triggered the rule (`doc`).
+- **Use Case**: Update the "Follow-up Date" based on today's date.
 
 ### 2. Context Variable Assignment {#context-variables-vars}
-Create or update a "Variable" that exists only while the rule is running. This is useful for temporary calculations.
-- **Example**: Calculate a total `tax_amount = doc.amount * 0.15`.
+Create a "Variable" that exists only while the rule is executing. This is useful for storing results from queries or calculations to use in later steps.
+- **Use Case**: Calculate a custom tax amount and store it in a variable named `calculated_tax`.
 
-## Batch Assignments
-You can define multiple assignments within a single node. They are executed sequentially from top to bottom.
+## Configuration
 
-## Normalization and Cleaning
-Assignments support "Pipelines" to clean or transform data as it's being set.
-- **Example**: Trimming whitespace from a string or converting a name to uppercase.
+### Batch Assignments
+You can perform multiple assignments in a single node. They are processed one by one from top to bottom.
+
+### Normalization Pipelines
+Assignments support "Pipelines" which allow you to clean or transform data automatically:
+- **Text Cleaning**: Trim spaces, convert to uppercase, or remove special characters.
+- **Math**: Perform simple arithmetic on numbers.
+- **Defaults**: Set a fallback value if a field is empty.
+
+## When to Use
+Use an Assignment node when you need to calculate something or "clean up" data before it gets saved to a record or sent in a notification.
+
+---
+**Tip**: If you are updating many fields on the same document, use a single Assignment node with multiple rows to keep your canvas tidy.

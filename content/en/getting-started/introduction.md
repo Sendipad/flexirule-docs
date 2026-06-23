@@ -8,21 +8,25 @@ aliases:
 
 # Introduction to FlexiRule
 
-FlexiRule is a high-performance, visual automation engine for the Frappe Framework. It allows you to design, execute, and manage complex business logic without writing boilerplate code.
+FlexiRule is a visual automation platform for the Frappe Framework. It enables business users and developers alike to design, execute, and manage complex business logic through an intuitive, node-based interface.
 
 ## Why FlexiRule?
 
-- **Visual First**: Design logic flows using an intuitive node-based interface.
-- **No-Code Experience**: Empower business users to participate in logic design.
-- **Native Frappe Integration**: Deeply integrated with DocTypes, Hooks, and the Frappe security model.
-- **Enterprise-Grade**: Built for performance, auditability, and scale.
+Business logic is often buried in code, making it difficult to visualize, maintain, and audit. FlexiRule changes this by making logic **transparent** and **accessible**.
+
+- **Visualize Your Logic**: See exactly how decisions are made in your business flows.
+- **Empower Business Teams**: Allow non-developers to understand and participate in logic design.
+- **Speed Up Development**: Build and deploy automation faster than writing boilerplate Python scripts.
+- **Native Integration**: Works seamlessly with your existing Frappe DocTypes and security permissions.
 
 <video src="/images/flexirule-overview-demo.webm" controls autoplay loop muted></video>
 
-## Core Concepts
+## Core Philosophy: The Rule Flow
 
-FlexiRule simplifies business automation into three main stages:
+Every automation in FlexiRule follows a simple, three-stage philosophy:
 
-1. **The Trigger**: Defining *when* a rule should run (e.g., when a Sales Order is saved or on a schedule).
-2. **The Logic**: Using the **Rule Builder** to map out the decision path and actions.
-3. **The Result**: Executing actions like updating records, sending notifications, or calling external APIs.
+1.  **The Trigger (When)**: Defines the event that starts the rule. This could be saving a document, a specific schedule, or a manual action.
+2.  **The Logic (How)**: The visual path designed in the **Rule Builder**. This includes checking conditions, querying data, and making decisions.
+3.  **The Result (What)**: The final actions taken by the system, such as updating a record, sending a notification, or calling an external process.
+
+By separating these stages, FlexiRule makes it easy to build robust automations that are easy to understand and even easier to change as your business evolves.

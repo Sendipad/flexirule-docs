@@ -1,6 +1,6 @@
 ---
 title: Loop
-description: Repeat a sequence of actions for each item in a list.
+description: Iterate over lists of records to perform actions on each one.
 weight: 60
 aliases:
   - /docs/actions/loop/
@@ -8,20 +8,28 @@ aliases:
 
 # Loop Action
 
-The **Loop** action allows you to repeat a series of steps for multiple items. This is essential when you have a list of records (like those from a **Query Records** action) and need to perform the same task for each one.
+The **Loop** action allows you to perform the same set of actions for every item in a list. It is almost always used immediately after a **Query Records** action that returns multiple items.
+
+## When to Use
+- **Bulk Updates**: Find all "Overdue" invoices and send a reminder for each one.
+- **Data Consolidation**: Loop through child items (like Sales Order Items) to calculate a custom total.
+- **Record Creation**: For every "Selected Item" in a wizard, create a new corresponding task.
 
 ## How it Works
 
-1. **Input List**: Select the list of items you want to process.
-2. **Loop Flow**: Any actions connected to the loop's output will be executed once for every item in the list.
-3. **Current Item**: Inside the loop, you can access the specific item currently being processed.
+A Loop node has a special "Loop Body" path. The rule flow will enter this path once for every item in your list. When the list is finished, the rule continues from the bottom of the Loop node.
 
-## Example
-**Scenario**: Send a notification for every overdue invoice found.
-1. **Query Records**: Find all "Invoices" where `status` is "Overdue".
-2. **Loop**: Connect the results to a Loop node.
-3. **Notify**: Inside the loop, use the **Notify** action. It will run for each individual invoice.
+## Configuration
+
+1.  **Input List**: Select the list you want to loop over (e.g., the results of your "Query List" step).
+2.  **Item Name**: Give each item a name (e.g., `invoice`). Inside the loop, you can refer to the current item's fields like `invoice.grand_total`.
+3.  **Parallel vs. Sequential**:
+    - **Sequential (Default)**: Process one item at a time. Safe and predictable.
+    - **Parallel**: Process multiple items at once. Much faster for large lists, but requires caution if items depend on each other.
 
 ## Best Practices
-- **Efficiency**: Only loop over the items you need. Use filters in your query to keep the list small.
-- **Complexity**: If your loop logic gets too complex, consider using a **Sub-rule**.
+- **Keep it Lean**: Don't put too many heavy actions (like complex queries) inside a loop if your list is very large.
+- **Clear Labels**: Name your loop based on what it's doing, e.g., "Loop Over Overdue Invoices".
+
+---
+**Advanced**: For technical details on execution semantics and performance, see [Loop Architecture]({{< relref "advanced-reference/architecture/actions/loop.md" >}}).
