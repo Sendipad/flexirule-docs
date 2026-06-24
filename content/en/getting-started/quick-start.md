@@ -6,28 +6,28 @@ weight: 20
 
 # Quick Start Guide
 
-Follow these steps to create and activate your first automated business rule.
+Create and activate your first automated business rule in just a few minutes.
 
-## 1. Create a New Rule
-1. Navigate to the **Rule** list in the FlexiRule Desk.
-2. Click **New**.
-3. Give your rule a name (e.g., "Auto-Approve Low Value Orders").
-4. Select the **Reference DocType** (e.g., Sales Order).
+## 1. Start Your Rule
+1. Open the **Rule** list from your sidebar.
+2. Click the **New** button.
+3. Name your rule (e.g., "Auto-Approve Small Orders").
+4. Choose which record type triggers the rule (e.g., **Sales Order**).
 
-## 2. Define the Trigger
-In the **Triggers** section, decide when this rule should run:
-- **On Save**: Runs whenever the document is saved.
-- **On Submit**: Runs only when the document is submitted.
-- **Scheduled**: Runs at specific intervals.
+## 2. Choose When it Runs
+In the **Triggers** section, pick the moment the rule should start:
+- **On Save**: Every time you save the record.
+- **On Submit**: Only when the record is officially submitted.
+- **Scheduled**: At a specific time of day or interval.
 
-## 3. Build the Logic
-Click on the **Rule Builder** tab to open the visual canvas.
+## 3. Design the Flow
+Open the **Rule Builder** tab to see your visual workspace.
 
-1. **Add a Condition**: Click the `+` icon on the **Entry Action** to add a **Condition** node.
-2. **Configure**: Set the condition to check if `doc.grand_total < 1000`.
-3. **Add an Action**: On the `True` path, add a **Document Action** to update the `status` to "Approved".
+1. **Add a Check**: Click the `+` on the starting block and select **Condition**.
+2. **Set the Rule**: Configure it to check if the `Total Amount` is less than `1,000`.
+3. **Add an Action**: On the **True** (Green) path, click `+` and select **Update Record**. Set the `Status` to "Approved".
 
-## 4. Activate and Test
-1. Save the Rule document.
-2. Toggle the **Is Active** switch.
-3. Create a test Sales Order to see your rule in action.
+## 4. Go Live
+1. **Save** your rule.
+2. Turn on the **Is Active** switch.
+3. Create a test record (like a Sales Order) and watch FlexiRule do the work for you!

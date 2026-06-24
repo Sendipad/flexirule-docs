@@ -8,14 +8,14 @@ aliases:
 
 # Introduction to FlexiRule
 
-FlexiRule is a high-performance, visual automation engine for the Frappe Framework. It allows you to design, execute, and manage complex business logic without writing boilerplate code.
+FlexiRule is a visual automation platform that helps you build business logic without writing code. It transforms complex workflows into clear, manageable diagrams that anyone can understand.
 
-## Why FlexiRule?
+## Why use FlexiRule?
 
-- **Visual First**: Design logic flows using an intuitive node-based interface.
-- **No-Code Experience**: Empower business users to participate in logic design.
-- **Native Frappe Integration**: Deeply integrated with DocTypes, Hooks, and the Frappe security model.
-- **Enterprise-Grade**: Built for performance, auditability, and scale.
+- **Build Visually**: Design your business processes by connecting simple blocks, just like a flowchart.
+- **Save Time**: Automate repetitive tasks like sending emails, updating statuses, or calculating totals in minutes.
+- **Collaborate**: Bridge the gap between business requirements and technical implementation with a shared visual language.
+- **Safe and Secure**: Built directly into your existing system, ensuring your data remains protected and compliant.
 
 <video src="/images/flexirule-overview-demo.webm" controls autoplay loop muted></video>
 

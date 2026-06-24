@@ -8,37 +8,37 @@ aliases:
 
 # Canvas Navigation
 
-The Rule Builder is your visual workspace for designing business logic. It provides a drag-and-drop canvas where you can orchestrate workflows while maintaining full visibility into the execution flow.
+The Rule Builder is your visual workspace. It's a drag-and-drop canvas where you can design business processes by simply connecting blocks (nodes).
 
 ![Rule Builder Overview](/images/flexirule-canvas-view.png)
 
-## Core Canvas Interactions
+## Navigating the Canvas
 
-### Moving and Zooming
-- **Pan**: Click and drag any empty space on the canvas to move around.
-- **Zoom**: Use your mouse wheel or the zoom controls in the corner to adjust the view.
+### Move and Zoom
+- **Move Around**: Click and hold any empty space on the canvas to drag it around.
+- **Zoom In/Out**: Use your mouse wheel or the zoom buttons in the bottom corner to get a better view of your rule.
 
-### Working with Nodes
-- **Select**: Click a node to select it and open its configuration panel.
-- **Move**: Drag a node to reposition it.
-- **Delete**: Select a node and press `Backspace` or `Delete`. The builder will automatically attempt to reconnect the remaining nodes.
+### Managing Blocks
+- **Select**: Click once on any block to open its settings on the right.
+- **Move**: Drag a block to change its position.
+- **Delete**: Select a block and press the `Delete` key. FlexiRule will automatically try to keep your other blocks connected.
 
-### Bulk Actions
-You can select multiple nodes by holding `Shift` and dragging a selection box. This allows you to move or copy groups of logic at once.
+### Copying Multiple Blocks
+You can select several blocks at once by holding the `Shift` key and dragging a box around them. This is great for moving or copying entire sections of logic.
 
 {{< video src="/images/shift-click-nodes-to-copy.webm" >}}
 
-## Debugging on the Canvas
+## Testing Your Rule
 
-The Rule Builder includes built-in tools to test your rules in real-time.
+You don't have to guess if your rule works. The builder has tools to show you exactly what happens when it runs.
 
-### Visual Execution Path
-When you run a test, the builder highlights the exact path taken during execution, showing you exactly which nodes were triggered.
+### See the Path
+When you run a test, the builder lights up the path your rule took. You can see exactly which conditions were met and which actions were triggered.
 
 {{< video src="/images/debug-rule-view-execution-path.webm" >}}
 
-### Inspecting Results
-You can click on any node after a test run to see its specific results, including modified variables and return values.
+### Check the Results
+After a test, click on any block to see what it did. For example, you can see the exact email that would have been sent or the new value of a field.
 
 ![Debug View Return Result](/images/debug-view-return-result.png)
 

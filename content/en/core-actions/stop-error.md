@@ -7,15 +7,15 @@ aliases:
   - /docs/actions/raise-error/
 ---
 
-# Stop and Error Handling
+# Stop and Error
 
-These nodes allow you to explicitly control the end of a rule or handle situations where something goes wrong.
+Use these blocks to control exactly when your rule should finish or to stop it if something is wrong.
 
-## Stop Action
-The **Stop** action immediately ends the execution of the rule.
-- **Use Case**: Use this inside a **Condition** to exit a rule early if certain criteria aren't met, preventing subsequent actions from running.
+## Stop
+The **Stop** block ends the rule immediately.
+- **When to use**: Put this on the "False" path of a **Condition** if you want the rule to just quit if a check fails.
 
-## Raise Error Action
-The **Raise Error** action stops the rule and displays an error message to the user.
-- **Use Case**: Use this for strict validation. For example, if a Sales Order is missing a required attachment, you can "Raise Error" with a custom message like "Please upload the signed contract before submitting."
-- **Visual Feedback**: In the Frappe UI, this will appear as a standard error popup.
+## Raise Error
+The **Raise Error** block stops the rule and shows a warning message to the person using the system.
+- **When to use**: Use this for strict rules. For example, if an order is missing a required file, you can stop the rule and show a message like "You must upload a contract before you can save this."
+- **What the user sees**: A standard system pop-up with your custom message.
