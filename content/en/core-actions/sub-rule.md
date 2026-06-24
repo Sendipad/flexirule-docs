@@ -6,15 +6,15 @@ aliases:
   - /docs/actions/sub-rule/
 ---
 
-# Sub-rule Action
+# Sub-rule
 
-The **Sub-rule** action allows you to execute one rule from inside another. This helps keep your rules organized and allows you to reuse common logic.
+The **Sub-rule** block lets you run one rule from inside another. It's a great way to keep your rules organized and reuse the same logic across different processes.
 
-## Why Use Sub-rules?
-- **Organization**: Break down very large, complex rules into smaller, manageable pieces.
-- **Reusability**: Create a "standard approval" logic once and call it from many different rules.
+## Why use Sub-rules?
+- **Stay Organized**: Break giant, messy rules into small, easy-to-understand pieces.
+- **Reuse Your Work**: Create a "Standard Approval" rule once and use it in ten different places.
 
 ## How to Use
-1. Select the **Sub-rule** node.
-2. Pick the existing rule you want to run.
-3. **Pass Data**: Optionally pass specific variables or documents into the sub-rule.
+1. Add a **Sub-rule** block.
+2. Choose the existing rule you want to run.
+3. **Share Information**: Decide which information from your current rule should be shared with the sub-rule.

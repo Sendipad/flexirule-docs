@@ -11,7 +11,7 @@ Welcome to the Actions section. This section contains detailed information about
 ## Sub-pages
 
 - **[Condition](condition.md)**
-- **[Document Action](document-action.md)**
+- **[Update Record](update-record.md)**
 - **[Entry](entry.md)**
 - **[Loop](loop.md)**
 - **[Notify](notify.md)**

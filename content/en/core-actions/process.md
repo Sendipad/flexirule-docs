@@ -6,16 +6,16 @@ aliases:
   - /docs/actions/process/
 ---
 
-# Process Action
+# Process
 
-The **Process** action is used for advanced logic that goes beyond standard record updates or notifications.
+The **Process** block is for advanced tasks that need a little extra power. Use it when you need to run custom logic or connect to other systems.
 
 ## When to Use
-- **Custom Scripts**: Run a predefined Python or JavaScript process.
-- **Heavy Calculations**: Offload complex math to a dedicated process to keep the UI responsive.
-- **External Integrations**: Call third-party APIs or services.
+- **Custom Logic**: Run a specific piece of custom code built by your team.
+- **Big Calculations**: Handle complex math without slowing down your system.
+- **Connect to Others**: Send or receive information from external tools and websites.
 
-## Configuration
-1. Select the **Process** you want to run.
-2. Provide any required **Input Parameters**.
-3. Use the **Return Value** in subsequent nodes of your rule.
+## How to Set It Up
+1. Choose the **Process** you want to run from the list.
+2. Fill in any **Information** the process needs to start.
+3. If the process sends back an answer, you can use that answer in the next steps of your rule.

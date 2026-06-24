@@ -6,27 +6,27 @@ aliases:
   - /docs/actions/notify/
 ---
 
-# Notify Action
+# Notify
 
-The **Notify** action is used to communicate information to users or external systems.
+Use the **Notify** block to send messages to your team or customers.
 
-## Notification Types
+## Ways to Notify
 
 ### 1. Email
-Send a formatted email to one or more recipients.
-- **Recipients**: Use static email addresses or dynamic ones (e.g., `doc.owner`).
-- **Templates**: Select from existing Frappe Email Templates or write custom content.
-- **Attachments**: Attach the current document as a PDF.
+Send a professional email.
+- **Who**: Send to fixed addresses or pick someone related to the record (like the "Owner").
+- **What**: Write your own message or use a pre-made template.
+- **Attach**: You can automatically include the current record as a PDF.
 
-### 2. System Notification
-Create a notification within the Frappe Desk for a specific user or role. These appear in the notification bell icon.
+### 2. Desktop Notification
+Alert a user or a specific role within the system. These show up in the notification bell.
 
-### 3. UI Toast
-Display a temporary popup message (Toast) to the user who triggered the rule.
-- **Types**: Success, Info, Warning, or Error.
-- **Note**: This only works for rules triggered by manual UI actions (e.g., clicking Save).
+### 3. Quick Alert (Toast)
+Show a temporary pop-up message to the person currently using the system.
+- **Options**: Success, Info, Warning, or Error.
+- **Best for**: Giving instant feedback after someone saves or clicks a button.
 
-## Configuration Steps
-1. **Select Type**: Choose how you want to notify.
-2. **Define Content**: Write your message. You can use `{{ doc.name }}` to include data from the document.
-3. **Set Recipients**: Choose who should receive the notification.
+## How to Set Up
+1. **Pick Method**: Choose how you want to send the message.
+2. **Write Message**: Type your content. You can include details from the record by using curly brackets, like `{name}`.
+3. **Choose Recipients**: Select who needs to see the message.

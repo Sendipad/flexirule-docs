@@ -8,49 +8,36 @@ aliases:
 
 # Query Records
 
-The **Query Records** action allows your rule flows to fetch information from the database. It is the primary way to make decisions based on data that isn't already present in your current document.
+Use the **Query Records** block to find information from elsewhere in your system. It's the best way to get data you need to make decisions or update other records.
 
-## When to Use
-- **Data Enrichment**: Fetching related fields (e.g., getting a Customer's "Territory").
-- **Validation**: Checking for duplicates or conflicting records.
-- **Aggregations**: Calculating totals across multiple documents (e.g., "Sum of all unpaid invoices").
+## Common Uses
+- **Find Details**: Get a customer's address or a product's price.
+- **Check Records**: See if a similar record already exists before creating a new one.
+- **Calculate Totals**: Add up all unpaid invoices for a specific client.
 
-## Query Modes
+## Ways to Search
 
-| Mode | Returns | Best For |
+| Search Type | What it finds | Best For |
 | :--- | :--- | :--- |
-| **Query List** | List of Records | Finding multiple records to loop over. |
-| **Query Doc** | Single Record | Fetching detailed info from a specific record. |
-| **Exist Record** | Yes/No | Simple validation and existence checks. |
-| **Aggregations** | Number | Totals, counts, and averages (Sum, Min, Max). |
-| **Group By** | List of Totals | Summary data grouped by a category (e.g., Sales by Territory). |
+| **Find List** | A group of records | Getting many items to process one by one. |
+| **Find One** | A single record | Getting specific details from one item. |
+| **Check Existence** | A "Yes" or "No" | Simple checks (e.g., "Does this customer exist?"). |
+| **Totals & Math** | A single number | Counting items or adding up values (Sum, Average). |
 
-## Advanced Querying
+## How to Set Up
 
-### Aggregations
-Use this mode when you only need a single number.
-- **Count**: How many records match the filter.
-- **Sum**: The total of a specific numeric field.
-- **Average/Min/Max**: Standard statistical calculations.
+### 1. Choose What to Find
+Pick the type of record you are looking for (e.g., "Sales Invoice").
 
-### Group By
-Use this to summarize data into "buckets".
-- **Example**: Get the total sales amount for each individual salesperson in the last month.
+### 2. Set Your Filters
+Filters tell FlexiRule exactly which records to look for.
+- **Simple**: Find records where `Status` is "Draft".
+- **Smart**: Find records that match your current document (e.g., "Find invoices for *this* customer").
+- **Time-Based**: Find records from "Last 7 Days" using the built-in date builder.
 
-## How to Configure
+### 3. Test and Refresh
+Click **Refresh Schema**. This runs a quick test to make sure your search works and lets FlexiRule know which fields will be available for you to use in the next steps.
 
-### 1. Select the DocType
-Choose the type of record you want to find (e.g., "Sales Invoice").
-
-### 2. Define Filters
-Filters tell FlexiRule exactly which records to find.
-- **Static Filters**: `status = "Draft"`
-- **Dynamic Filters**: `customer = doc.customer` (matches the customer from the current document).
-- **Date Formulas**: Use the formula builder for rolling windows like "Last 7 Days".
-
-### 3. Refresh Schema (Important)
-After setting your query, click the **Refresh Schema** button. This performs a live test and makes the resulting fields available to use in later steps of your rule.
-
-## Common Tips
-- **Always Filter**: Avoid searching the entire database without filters to keep your rules fast.
-- **Check the Result**: Remember that **Query List** always returns a list of items, even if it only finds one. Use **Query Doc** if you only need one specific record.
+## Pro Tips
+- **Be Specific**: Use filters to narrow down your search. Searching everything can slow down your rule.
+- **Pick the Right Type**: If you only need one specific record, use **Find One**. If you need to process a whole list, use **Find List**.

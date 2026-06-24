@@ -6,23 +6,23 @@ aliases:
   - /docs/actions/assignment/
 ---
 
-# Assignment Action
+# Assignment
 
-The **Assignment** action is used to change values in your rule. This can include updating fields on the document currently being processed or setting temporary variables for use in later steps.
+Use the **Assignment** block to set or change values while your rule is running. It's like taking a note or updating a field on your record.
 
-## Types of Assignments
+## Common Uses
 
-### 1. Document Field Assignment
-Directly change a field on the current document (the one that triggered the rule).
-- **Example**: Set `status` to "Pending Review".
+### 1. Update the Current Record
+Change a field on the record that started the rule.
+- **Example**: Automatically set the `Status` of a new ticket to "In Progress".
 
-### 2. Context Variable Assignment {#context-variables-vars}
-Create or update a "Variable" that exists only while the rule is running. This is useful for temporary calculations.
-- **Example**: Calculate a total `tax_amount = doc.amount * 0.15`.
+### 2. Save a Temporary Note (Variables) {#context-variables-vars}
+Create a "Variable" to store a piece of information for later. This information isn't saved to your database; it's only used while the rule is running.
+- **Example**: Calculate the tax for an order and save it as `Tax Amount` so you can use it in an email later.
 
-## Batch Assignments
-You can define multiple assignments within a single node. They are executed sequentially from top to bottom.
+## Do Multiple at Once
+You can list as many assignments as you want in a single block. FlexiRule will process them one by one from top to bottom.
 
-## Normalization and Cleaning
-Assignments support "Pipelines" to clean or transform data as it's being set.
-- **Example**: Trimming whitespace from a string or converting a name to uppercase.
+## Clean Your Data
+You can also use assignments to "clean" information before it's saved.
+- **Example**: Automatically capitalize a customer's name or remove extra spaces from an email address.
