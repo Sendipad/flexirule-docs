@@ -6,23 +6,25 @@ aliases:
   - /docs/getting-started/
 ---
 
-# Introduction to FlexiRule
+# Welcome to FlexiRule
 
-FlexiRule is a high-performance, visual automation engine for the Frappe Framework. It allows you to design, execute, and manage complex business logic without writing boilerplate code.
+FlexiRule is a visual logic builder for Frappe and ERPNext. It helps you automate business processes without writing complex code. Instead of hidden scripts, you build clear, visual maps of how your business should work.
 
-## Why FlexiRule?
+## Why use FlexiRule?
 
-- **Visual First**: Design logic flows using an intuitive node-based interface.
-- **No-Code Experience**: Empower business users to participate in logic design.
-- **Native Frappe Integration**: Deeply integrated with DocTypes, Hooks, and the Frappe security model.
-- **Enterprise-Grade**: Built for performance, auditability, and scale.
+- **See Your Logic**: Design your business flows using an intuitive, drag-and-drop map.
+- **No Coding Required**: Configure complex rules using simple pickers and forms.
+- **Everything in One Place**: Stop searching through hidden files; all your business rules are organized in a single dashboard.
+- **Safe and Reliable**: Built-in safeguards ensure your rules run predictably and don't cause system loops.
 
 <video src="/images/flexirule-overview-demo.webm" controls autoplay loop muted></video>
 
-## Core Concepts
+## How it Works
 
-FlexiRule simplifies business automation into three main stages:
+FlexiRule simplifies automation into three simple steps:
 
-1. **The Trigger**: Defining *when* a rule should run (e.g., when a Sales Order is saved or on a schedule).
-2. **The Logic**: Using the **Rule Builder** to map out the decision path and actions.
-3. **The Result**: Executing actions like updating records, sending notifications, or calling external APIs.
+1. **The Trigger**: Decide *when* a rule should run (e.g., "When a Sales Order is saved").
+2. **The Logic**: Use the **Rule Builder** to draw the path and decisions (e.g., "If the total is over $1,000, send for approval").
+3. **The Result**: Automatically perform actions (e.g., "Update the status" or "Notify the manager").
+
+[Ready to build? Check out the Quick Start Guide →]({{< relref "quick-start" >}})

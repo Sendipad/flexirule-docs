@@ -1,47 +1,48 @@
 ---
-title: Canvas Navigation
+title: Using the Builder
 description: Learn how to navigate and use the visual Rule Builder canvas.
 weight: 10
 aliases:
   - /docs/user-guide/rule-builder/
 ---
 
-# Canvas Navigation
+# Navigating the Builder
 
-The Rule Builder is your visual workspace for designing business logic. It provides a drag-and-drop canvas where you can orchestrate workflows while maintaining full visibility into the execution flow.
+The Rule Builder is your visual workspace. It’s where you "draw" your business processes using blocks and connections.
 
 ![Rule Builder Overview](/images/flexirule-canvas-view.png)
 
-## Core Canvas Interactions
+## Moving Around
 
-### Moving and Zooming
-- **Pan**: Click and drag any empty space on the canvas to move around.
-- **Zoom**: Use your mouse wheel or the zoom controls in the corner to adjust the view.
+- **Move the Map**: Click and drag on any empty space to pan around your rule.
+- **Zoom In/Out**: Use your mouse wheel or the zoom buttons in the corner to see more or less of your flow.
 
-### Working with Nodes
-- **Select**: Click a node to select it and open its configuration panel.
-- **Move**: Drag a node to reposition it.
-- **Delete**: Select a node and press `Backspace` or `Delete`. The builder will automatically attempt to reconnect the remaining nodes.
+## Working with Blocks
 
-### Bulk Actions
-You can select multiple nodes by holding `Shift` and dragging a selection box. This allows you to move or copy groups of logic at once.
+Each block represents a step in your process (like a check or an action).
+
+- **Select**: Click a block to open its settings on the right.
+- **Move**: Drag a block to a new position to keep your map organized.
+- **Delete**: Click a block and press `Delete`. FlexiRule is smart—it will automatically try to reconnect the blocks before and after the one you deleted to keep the flow intact.
+
+### Selecting Multiple Blocks
+Hold `Shift` and drag a box around several blocks to select them all at once. You can then move them as a group or copy them.
 
 {{< video src="/images/shift-click-nodes-to-copy.webm" >}}
 
-## Debugging on the Canvas
+## Testing Your Rule
 
-The Rule Builder includes built-in tools to test your rules in real-time.
+You don't have to guess if your rule works. You can test it right inside the builder.
 
-### Visual Execution Path
-When you run a test, the builder highlights the exact path taken during execution, showing you exactly which nodes were triggered.
+### See the Path
+When you run a test, the builder lights up the exact path the rule followed. This makes it easy to see if a "Condition" worked the way you expected.
 
 {{< video src="/images/debug-rule-view-execution-path.webm" >}}
 
-### Inspecting Results
-You can click on any node after a test run to see its specific results, including modified variables and return values.
+### Check the Results
+After a test, click on any block to see what it did. For example, if you updated a record, you can see exactly which fields were changed.
 
 ![Debug View Return Result](/images/debug-view-return-result.png)
 
-## Examples {#examples}
-
-For more information on how to build rules, see our [Quick Start Guide]({{< relref "getting-started/quick-start" >}}).
+## Learn More
+Ready to start building? See [How to Add Actions]({{< relref "adding-managing-actions" >}}).

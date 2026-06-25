@@ -1,6 +1,6 @@
 ---
 title: Query Records
-description: Retrieve data from the system using filters and aggregations.
+description: Find and retrieve data from other parts of the system.
 weight: 10
 aliases:
   - /docs/actions/query-records/
@@ -8,49 +8,36 @@ aliases:
 
 # Query Records
 
-The **Query Records** action allows your rule flows to fetch information from the database. It is the primary way to make decisions based on data that isn't already present in your current document.
+The **Query Records** block lets you "look up" information that isn't already in the record that started the rule.
 
-## When to Use
-- **Data Enrichment**: Fetching related fields (e.g., getting a Customer's "Territory").
-- **Validation**: Checking for duplicates or conflicting records.
-- **Aggregations**: Calculating totals across multiple documents (e.g., "Sum of all unpaid invoices").
+## When to use it
+- **Find Details**: Get a customer's address from their record when you're processing an order.
+- **Check for Others**: Look for other unpaid invoices for the same customer.
+- **Get Totals**: Calculate the total amount of all orders placed today.
 
-## Query Modes
+## Ways to Find Information
 
-| Mode | Returns | Best For |
+| Way to Find | What it gives you | Best for... |
 | :--- | :--- | :--- |
-| **Query List** | List of Records | Finding multiple records to loop over. |
-| **Query Doc** | Single Record | Fetching detailed info from a specific record. |
-| **Exist Record** | Yes/No | Simple validation and existence checks. |
-| **Aggregations** | Number | Totals, counts, and averages (Sum, Min, Max). |
-| **Group By** | List of Totals | Summary data grouped by a category (e.g., Sales by Territory). |
+| **Find Single** | One specific record | Getting details from one item (e.g., a specific Customer). |
+| **Find Many** | A list of records | Finding multiple things to work with (e.g., all "Draft" invoices). |
+| **Check if Exists** | A Yes or No | Simple checks (e.g., "Is there already a record with this ID?"). |
+| **Calculate Total** | A single number | Getting a Count, Sum, or Average. |
 
-## Advanced Querying
+## How to Set it Up
 
-### Aggregations
-Use this mode when you only need a single number.
-- **Count**: How many records match the filter.
-- **Sum**: The total of a specific numeric field.
-- **Average/Min/Max**: Standard statistical calculations.
+### 1. Choose the Record Type
+Pick what you are looking for (e.g., "Sales Invoice" or "Supplier").
 
-### Group By
-Use this to summarize data into "buckets".
-- **Example**: Get the total sales amount for each individual salesperson in the last month.
+### 2. Set the Filters
+Filters tell FlexiRule exactly which records you want.
+- **Fixed Filter**: `Status` is "Draft".
+- **Matching Filter**: `Customer` matches the `Customer` on the current order.
+- **Time Filter**: Find records from the "Last 7 Days".
 
-## How to Configure
+### 3. Refresh Data (Important)
+Once you've set your filters, click **Refresh Schema**. This tests your lookup and makes all the information it finds available for you to use in the next blocks of your map.
 
-### 1. Select the DocType
-Choose the type of record you want to find (e.g., "Sales Invoice").
-
-### 2. Define Filters
-Filters tell FlexiRule exactly which records to find.
-- **Static Filters**: `status = "Draft"`
-- **Dynamic Filters**: `customer = doc.customer` (matches the customer from the current document).
-- **Date Formulas**: Use the formula builder for rolling windows like "Last 7 Days".
-
-### 3. Refresh Schema (Important)
-After setting your query, click the **Refresh Schema** button. This performs a live test and makes the resulting fields available to use in later steps of your rule.
-
-## Common Tips
-- **Always Filter**: Avoid searching the entire database without filters to keep your rules fast.
-- **Check the Result**: Remember that **Query List** always returns a list of items, even if it only finds one. Use **Query Doc** if you only need one specific record.
+## Simple Tips
+- **Be Specific**: Always use filters so the system doesn't have to look through every single record, which keeps things fast.
+- **One vs. Many**: If you only need one specific record (like a Customer), use **Find Single** (Query Doc). If you need a list to work through, use **Find Many** (Query List).

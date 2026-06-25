@@ -4,30 +4,30 @@ description: Create your first business rule in minutes.
 weight: 20
 ---
 
-# Quick Start Guide
+# Your First Rule
 
-Follow these steps to create and activate your first automated business rule.
+Let's build a simple rule: **"If a Sales Order is over $1,000, mark it for review."**
 
-## 1. Create a New Rule
-1. Navigate to the **Rule** list in the FlexiRule Desk.
+## 1. Create the Rule
+1. Go to the **Rule** list in your Desk.
 2. Click **New**.
-3. Give your rule a name (e.g., "Auto-Approve Low Value Orders").
-4. Select the **Reference DocType** (e.g., Sales Order).
+3. Name it: `High Value Order Review`.
+4. Set the **Reference DocType** to `Sales Order`.
 
-## 2. Define the Trigger
-In the **Triggers** section, decide when this rule should run:
-- **On Save**: Runs whenever the document is saved.
-- **On Submit**: Runs only when the document is submitted.
-- **Scheduled**: Runs at specific intervals.
+## 2. Set the Trigger
+We want this to run every time someone saves an order.
+1. In the **Triggers** section, ensure **On Save** is selected.
 
-## 3. Build the Logic
-Click on the **Rule Builder** tab to open the visual canvas.
+## 3. Build the Path
+Click the **Rule Builder** tab at the top to open the canvas.
 
-1. **Add a Condition**: Click the `+` icon on the **Entry Action** to add a **Condition** node.
-2. **Configure**: Set the condition to check if `doc.grand_total < 1000`.
-3. **Add an Action**: On the `True` path, add a **Document Action** to update the `status` to "Approved".
+1. **Add a Check**: Hover over the line coming from the **Entry Action** (the green start node) and click the `+` icon. Select **Condition**.
+2. **Configure the Check**: In the panel that opens, set it to check if `Grand Total` is `Greater than` `1000`.
+3. **Add an Action**: On the **True** (green) path coming out of your condition, click `+` and select **Update Record**.
+4. **Set the Update**: Choose the operation **Update Existing**. Set the `Status` field to `Pending Review`.
 
-## 4. Activate and Test
-1. Save the Rule document.
-2. Toggle the **Is Active** switch.
-3. Create a test Sales Order to see your rule in action.
+## 4. Activate
+1. Click **Save** on the Rule document.
+2. Switch the **Is Active** toggle to **On**.
+
+**That's it!** Now, whenever a Sales Order over $1,000 is saved, FlexiRule will automatically change its status to "Pending Review".
