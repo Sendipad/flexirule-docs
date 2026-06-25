@@ -1,38 +1,38 @@
 ---
-title: Adding and Managing Actions
+title: Adding Actions
 description: Learn how to use the Action Zone to build your rule logic.
 weight: 20
 ---
 
 # Adding and Managing Actions
 
-Building logic in FlexiRule is centered around adding and connecting "Action" nodes.
+In FlexiRule, you build your process by adding "Action" blocks to your canvas.
 
 ## The Action Zone
 
-The **Action Zone** is the primary way to add new logic. It provides a searchable menu of all available actions.
+The **Action Zone** is how you add new steps. It's a searchable menu of every tool available to you.
 
 {{< video src="/images/add-action-from-action-zone.webm" autoplay="true" loop="true" muted="true" >}}
 
-### How to Add an Action
-1. **Hover**: Hover your mouse over any connection line or empty space on the canvas.
-2. **Trigger**: Click the `+` icon that appears.
-3. **Search & Select**: Browse categories or type to find the action you need (e.g., "Email" or "Update Record").
-4. **Insert**: The new node is automatically inserted and connected into your flow.
+### How to Add a Step
+1. **Find the Spot**: Hover your mouse over any line or empty space where you want to add a step.
+2. **Click `+`**: Click the plus icon that appears.
+3. **Search**: Type what you want to do (like "Email" or "Check").
+4. **Select**: Click the action, and it will be placed and connected automatically.
 
-## Managing Connections
+## Intelligent Connections
 
-### Reconnecting Nodes
-If you delete a node between two others, FlexiRule intelligently heals the connection to maintain your logic flow.
+### Auto-Healing
+If you remove a block from the middle of a flow, FlexiRule will automatically "heal" the gap by connecting the blocks on either side. This prevents your rule from breaking when you make changes.
 
 {{< video src="/images/remove-a-node-will-dynamically-reconnet-nodes.webm" >}}
 
-### Manual Connections
-You can also manually connect nodes by dragging from the output handle of one node to the input handle of another.
+### Manual Connection
+You can also draw connections yourself. Just click and drag from the circle on the right side of one block to the circle on the left side of another.
 
-## Intelligent Configuration
+## Configuring Your Steps
 
-When you select an action, a configuration panel opens on the right.
+When you click a block, a panel opens on the right.
 
-- **Smart Pickers**: Field pickers only show variables that are actually available at that point in the rule.
-- **Validation**: The builder alerts you if required fields are missing before you save.
+- **Smart Pickers**: FlexiRule knows your data. If you're building a rule for a Sales Order, the pickers will only show you fields and information relevant to that order.
+- **Instant Checks**: If a step is missing a required setting, the builder will highlight it so you can fix it before saving.

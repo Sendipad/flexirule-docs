@@ -1,31 +1,31 @@
 ---
 title: Update Record
-description: Create, update, or delete documents in the system.
+description: Change fields, create new items, or delete records.
 weight: 30
 aliases:
   - /docs/actions/document-action/
 ---
 
-# Update Record (Document Action)
+# Update Record
 
-The **Document Action** (often labeled as **Update Record** in the UI) allows you to manipulate documents in the system.
+The **Update Record** block is how your rule makes changes to documents in your system.
 
-## Operations
+## What it Can Do
 
-### 1. Create New
-Create a brand new document in any DocType.
-- **Set Fields**: Define the initial values for the new record.
-- **Asynchronous**: For heavy operations, you can enable "Run in Background".
+### 1. Update Existing
+Change information on a record that already exists.
+- **How it works**: You tell the system which record to change (usually by using information found in a previous **Query Records** step).
+- **Example**: Change a Sales Invoice's `Status` to "Paid".
 
-### 2. Update Existing
-Modify fields on an existing document.
-- **Find the Record**: You must provide the "Name" (ID) of the document to update. Usually, this comes from a previous **Query Records** step.
-- **Field Mapping**: Map values from your current rule context to the target document.
+### 2. Create New
+Build a brand new record from scratch.
+- **How it works**: Pick the type of record you want to create and fill in the initial information.
+- **Example**: Automatically create a "Task" for a manager when a new "Lead" is created.
 
 ### 3. Delete Record
-Remove a document from the system.
-- **Caution**: This action is permanent. Ensure you have proper filters set to target the correct record.
+Permanently remove a record.
+- **Caution**: This cannot be undone. Always use a **Check** (Condition) before this step to make sure you are deleting the correct item.
 
-## Best Practices
-- **Use Validation**: Before updating a record, consider using a **Condition** to ensure the update is valid.
-- **Chain Actions**: Frequently used with **Query Records** (to find the document) followed by **Update Record** (to modify it).
+## Simple Tips
+- **Be Precise**: When updating an existing record, make sure you've used a **Query Records** block first to find exactly the right one.
+- **Check First**: It's often a good idea to use a **Check** (Condition) block before an update to make sure the change is actually needed.

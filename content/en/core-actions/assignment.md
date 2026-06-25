@@ -1,28 +1,28 @@
 ---
-title: Assignment
-description: Set variables and modify document fields within the rule flow.
+title: Set Value (Assignment)
+description: Change values or save temporary information for later.
 weight: 50
 aliases:
   - /docs/actions/assignment/
 ---
 
-# Assignment Action
+# Set Value (Assignment)
 
-The **Assignment** action is used to change values in your rule. This can include updating fields on the document currently being processed or setting temporary variables for use in later steps.
+The **Set Value** block is used to update information during your rule. You can use it to change fields on the current record or to save a temporary piece of information (a "Variable") to use in a later step.
 
-## Types of Assignments
+## Types of Changes
 
-### 1. Document Field Assignment
-Directly change a field on the current document (the one that triggered the rule).
-- **Example**: Set `status` to "Pending Review".
+### 1. Update the Current Record
+Directly change a field on the record that started the rule.
+- **Example**: Set the `Status` to "Review Required".
 
-### 2. Context Variable Assignment {#context-variables-vars}
-Create or update a "Variable" that exists only while the rule is running. This is useful for temporary calculations.
-- **Example**: Calculate a total `tax_amount = doc.amount * 0.15`.
+### 2. Save for Later (Variables) {#context-variables-vars}
+Create a temporary piece of information that only exists while this rule is running. This is great for math or combining text.
+- **Example**: Calculate a total with tax: `Total With Tax = Grand Total * 1.15`. You can then use this `Total With Tax` value in a **Notify** or **Update Record** block later on.
 
-## Batch Assignments
-You can define multiple assignments within a single node. They are executed sequentially from top to bottom.
+## Doing Multiple Things at Once
+You can add several changes inside a single **Set Value** block. The system will process them one by one, from top to bottom.
 
-## Normalization and Cleaning
-Assignments support "Pipelines" to clean or transform data as it's being set.
-- **Example**: Trimming whitespace from a string or converting a name to uppercase.
+## Cleaning and Fixing Data
+You can also use "Pipelines" to clean up data as you set it.
+- **Example**: Automatically remove extra spaces from a name or change text to ALL CAPS.

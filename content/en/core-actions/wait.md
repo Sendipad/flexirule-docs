@@ -1,22 +1,24 @@
 ---
 title: Wait
-description: Pause rule execution for a specified duration or until a date.
+description: Pause the rule for a set amount of time.
 weight: 80
 aliases:
   - /docs/actions/wait/
 ---
 
-# Wait Action
+# Wait
 
-The **Wait** action pauses the execution of your rule. This is useful for follow-up automations or time-delayed tasks.
+The **Wait** block tells the rule to pause before moving on to the next step. This is great for follow-ups or delayed actions.
 
-## Wait Options
+## Ways to Wait
 
-- **Duration**: Wait for a specific amount of time (e.g., "2 days", "4 hours").
-- **Until Date**: Wait until a specific date and time reached. You can use fields from the document (e.g., `doc.due_date`).
+- **For a Duration**: Wait for a specific amount of time, like "2 days" or "4 hours".
+- **Until a Date**: Wait until a specific date is reached. You can use a date from your record, like the `Due Date`.
 
 ## Example
-**Scenario**: Send a reminder email 24 hours after a quote is sent.
-1. Rule triggers when Quote is saved.
-2. **Wait** action set for "1 day".
-3. **Notify** action sends the reminder email.
+**Scenario**: Send a "Thank You" email 24 hours after a customer makes a purchase.
+1. The rule starts when a new "Sales Invoice" is created.
+2. **Wait**: Set the block to wait for "1 day".
+3. **Notify**: Send the thank you email.
+
+The rule will start immediately when the invoice is created, but it will "sit" at the Wait block for 24 hours before sending the email.
