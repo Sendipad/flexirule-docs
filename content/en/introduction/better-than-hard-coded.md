@@ -1,116 +1,243 @@
 ---
 title: Why is FlexiRule better than hard-coded customizations?
 weight: 50
-description: A detailed comparison focusing on the separation of business logic from application code.
+description: A separation-of-concerns approach showing how FlexiRule complements custom development by isolating business policies from application code.
 ---
 
-# Separation of Concerns
+# Separation of Concerns in Frappe Systems
 
-> **FlexiRule is not an alternative to custom development. It is an alternative to embedding evolving business policies directly into application code.**
+> **FlexiRule is not an alternative to custom development. It is an alternative to embedding evolving business policies inside application code.**
 
-In Frappe and ERPNext systems, custom development and FlexiRule are not competing approaches. They serve different layers of the system. Custom development is used to build **capabilities**, while FlexiRule is used to define and manage the **evolving business policies** that sit on top of those capabilities.
+In Frappe and ERPNext systems, custom development and FlexiRule are not competing approaches. They operate at different layers of the system:
+
+- **Custom development builds capabilities**
+- **FlexiRule defines and manages evolving business policies on top of those capabilities**
+
+This separation is the foundation of scalable and maintainable business automation.
 
 ---
 
-## Technical Logic vs. Business Logic
+# Technical Logic vs Business Logic
 
-To maintain a healthy system, it is essential to distinguish between these two categories of logic:
+A healthy system clearly distinguishes between *what the system does* and *how business decisions are made*.
 
 | Technical Logic (Custom Code) | Business Logic (FlexiRule) |
 | :--- | :--- |
 | API integrations | Approval policies |
-| Database access & schema | Discount & Pricing rules |
+| Database access & schema design | Discount & pricing rules |
 | Framework extensions | Validation policies |
 | Background workers | Escalation rules |
 | Custom DocTypes | Cross-process automation |
+| System hooks/events | Business workflows |
 
-**FlexiRule does not replace technical logic; it orchestrates business logic.** Technical logic belongs in custom applications and framework extensions, whereas business logic is better represented as configurable rules that can evolve independently of the application code.
+### Core principle
+
+> **Technical logic belongs in custom development.
+Business logic belongs in configurable rules.**
+
+FlexiRule focuses exclusively on the second category.
 
 ---
 
-## Choosing the Right Approach
+# Choosing the Right Approach
 
-Use this table as a guide for deciding where new logic should live:
+Different requirements naturally belong to different layers of the system:
 
 | Requirement | Recommended Approach |
 | :--- | :--- |
-| Add a new DocType | Custom App |
+| Build a new DocType | Custom App |
 | Extend Frappe framework behavior | Custom Code |
 | Build reusable framework components | Custom Code |
-| Integrate external services | Custom Code, optionally exposed as a FlexiRule Process |
-| Define dynamic approval policies | FlexiRule |
+| Integrate external services | Custom Code (optionally exposed as FlexiRule Process) |
+| Implement dynamic approval policies | FlexiRule |
 | Define validation policies | FlexiRule |
 | Define pricing/discount rules | FlexiRule |
 | Automate cross-document workflows | FlexiRule |
-| Combine capabilities with configurable rules | **Both together** |
+| Combine system capabilities with business rules | Both together |
+
+FlexiRule is most valuable when logic is **policy-driven, frequently changing, and business-owned**.
 
 ---
 
-## What Happens Over Time?
+# What Happens Over Time?
 
-As systems grow, business rules naturally appear in many different implementation points:
--   Python Hooks
--   Server Scripts
--   Custom App overrides
--   Background jobs
--   Patch scripts
+In many real systems, business rules start simple but gradually spread across multiple layers:
 
-Over time, understanding "why something happens" requires tracing logic across these scattered points. **FlexiRule centralizes this category of logic**, moving it from hidden code into a structured, visual rule layer.
+- Python hooks
+- Server scripts
+- Custom app overrides
+- Background jobs
+- Patch scripts
+- Edge-case fixes across modules
+
+```
+
+Initial implementation
+↓
+Server Script added
+↓
+Hook introduced
+↓
+Custom method in app
+↓
+Background worker added
+↓
+Patch script for edge case
+↓
+Logic scattered across multiple layers
+
+```
+
+At this point, understanding a single business rule requires tracing logic across the entire codebase.
+
+### The problem
+
+Business intent becomes fragmented across implementation details.
+
+### The FlexiRule approach
+
+FlexiRule centralizes this category of logic into a **single, structured, and inspectable rule layer**, making business behavior explicit rather than implicit in code paths.
 
 ---
 
-## Maintainability & Ownership
+# Maintainability & Ownership
 
-The real cost of hard-coded logic isn't the initial development—it's the long-term maintenance:
+The real cost of embedded business logic is not implementation—it is long-term evolution.
 
--   **Discoverability**: In FlexiRule, all automation for a DocType is visible in one dashboard. With custom code, you must navigate the entire codebase.
--   **Onboarding**: New developers or consultants can understand a visual graph in minutes. Reading 500 lines of nested `if-else` Python code takes hours.
--   **Ownership**: Functional teams can review and even modify policies in FlexiRule, reducing the dependency on the development team for simple policy changes.
--   **Change History**: Every rule change is tracked through a visual lifecycle and version history, making audits straightforward.
+## 1. Discoverability
+Instead of searching across files and modules, all business rules are visible in one place.
+
+## 2. Ownership clarity
+It becomes clear whether a change is:
+- **Technical responsibility** → custom code
+- **Business policy change** → FlexiRule
+
+## 3. Change history & governance
+Rules evolve with:
+- version tracking
+- lifecycle states
+- audit-friendly change history
+
+instead of being hidden inside distributed Git commits.
+
+## 4. Debugging simplicity
+Rather than tracing execution across code paths, you inspect:
+- rule definition
+- execution trace
+- decision flow
+
+## 5. Faster onboarding
+New developers and functional consultants can understand system behavior without reading the entire codebase.
 
 ---
 
-## Extensibility: Developers and FlexiRule
+# FlexiRule and Developers: A Collaborative Model
 
-FlexiRule does not remove the need for development—it standardizes how development becomes reusable. Developers can build:
--   **Custom Action Types**: New visual blocks for the canvas.
--   **Processes**: Reusable Python logic modules.
--   **Value Resolvers**: Custom ways to calculate data at runtime.
+FlexiRule does not reduce the need for developers—it **redefines how their work is reused**.
 
-Once registered, these technical capabilities become reusable building blocks that business users can combine visually without writing additional code.
+Developers remain responsible for building system capabilities, including:
+
+- **Action Types** → reusable executable blocks
+- **Value Resolvers** → dynamic data evaluation logic
+- **Processes** → structured execution workflows
+- **Integrations** → external system connectors
+
+Once defined, these components become reusable building blocks inside FlexiRule.
+
+### Key principle
+
+> Developers build capabilities.
+> FlexiRule assembles those capabilities into business behavior.
+
+This creates a clean separation between engineering effort and business configuration.
 
 ---
 
-## Comprehensive Comparison
+# Comprehensive Comparison
 
 | Aspect | Custom Code | FlexiRule |
 | :--- | :--- | :--- |
-| **Purpose** | System capability | Business policy |
-| **Change Frequency** | Lower | Higher |
-| **Primary Users** | Developers | Business + Developers |
-| **Logic Location** | Distributed in files | Centralized in Dashboard |
-| **Traceability** | Codebase navigation | Visual rule inspection |
-| **Governance** | Git only | Rule lifecycle + Git |
-| **Reusability** | Code-level reuse | Config + reusable blocks |
-| **Testing** | Unit tests | Integrated Debugger + Dry Run |
+| Primary purpose | System capability implementation | Business policy definition |
+| Change frequency | Lower, stable logic | Higher, evolving rules |
+| Primary users | Developers | Developers + Business users |
+| Logic location | Distributed across codebase | Centralized rule registry |
+| Governance model | Git + code review | Rule lifecycle + optional Git |
+| Traceability | Code navigation | Visual rule inspection |
+| Debugging | Code tracing | Execution flow & rule debugger |
+| Reusability | Code-level reuse | Configurable reusable components |
+| Upgrade impact | Depends on coupling | Reduced business logic coupling |
 
 ---
 
-## Guidance: When to Use What
+# Real-World Example: Discount Policy
 
-Both approaches are essential in a healthy Frappe system.
+## Without FlexiRule
 
-**Use Custom Code when:**
--   Building core system capabilities.
--   Extending framework-level behavior.
--   Integrating with external systems or APIs.
--   Designing fundamental data models (DocTypes).
+A discount policy is typically scattered across:
 
-**Use FlexiRule when:**
--   Business policies change frequently.
--   Non-developers need visibility or control over logic.
--   Rules span multiple business processes or DocTypes.
--   You want centralized governance and an audit trail of logic execution.
+- `sales_order.py`
+- pricing modules
+- server scripts
+- hooks
+- background jobs
 
-### FlexiRule and custom development work best together
-FlexiRule is designed to complement—not replace—the Frappe development model. This separation enables developers to focus on technical functionality while allowing business teams to manage policies and workflows without repeatedly modifying application code.
+Business intent is fragmented and difficult to audit.
+
+## With FlexiRule
+
+The same logic becomes a single structured rule:
+
+```
+
+Discount Policy Rule
+├── Customer Type Check
+├── Order Value Threshold
+├── Credit Status Validation
+└── Manager Approval Condition
+
+```
+
+Everything is:
+- visible
+- editable
+- traceable
+- centralized
+
+---
+
+# When to Use What
+
+## Use Custom Development when:
+- Building core system capabilities
+- Extending Frappe framework behavior
+- Designing data models (DocTypes)
+- Integrating external systems or APIs
+- Creating reusable technical infrastructure
+
+## Use FlexiRule when:
+- Business policies change frequently
+- Non-developers need visibility or control
+- Logic spans multiple processes or modules
+- You need centralized governance of decision-making logic
+
+## Use Both when:
+- Technical capabilities must be exposed as configurable behavior
+- Business logic depends on system-level integrations
+- You want collaboration between developers and business teams
+
+---
+
+# Final Thought
+
+FlexiRule is not designed to reduce the role of custom development.
+
+It is designed to **separate concerns within it**.
+
+By moving business policies out of application code and into a structured rule layer, systems become:
+
+- easier to understand
+- easier to evolve
+- easier to govern
+- more transparent in behavior
+
+while preserving the full power of custom development where it belongs.
