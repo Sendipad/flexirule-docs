@@ -21,7 +21,7 @@ However, they serve very different purposes.
 
 ## Quick Summary
 
-| Use Case | Rule Entry Condition | [Condition Action]({{< relref "core-actions/condition.md" >}}) |
+| Use Case | Rule Entry Condition | [Condition Action]({{< relref "core-actions/check.md" >}}) |
 | :--- | :---: | :---: |
 | Decide whether the rule should run at all | ✅ Yes | ❌ No |
 | Create branching logic inside a rule | ❌ No | ✅ Yes |
@@ -108,7 +108,7 @@ Condition: Customer is VIP?
 
 ### Recommended Uses
 
-Use a [Condition Action]({{< relref "core-actions/condition.md" >}}) when you need:
+Use a [Condition Action]({{< relref "core-actions/check.md" >}}) when you need:
 - **If / Else logic**: Branching into different paths.
 - **Guarded Sequences**: Executing specific actions only under certain conditions within a larger flow.
 - **Decision Trees**: Handling complex business logic after the rule has been triggered.

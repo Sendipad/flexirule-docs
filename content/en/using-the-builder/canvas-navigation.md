@@ -18,13 +18,13 @@ The Rule Builder is your visual workspace for designing business logic. It provi
 - **Pan**: Click and drag any empty space on the canvas to move around.
 - **Zoom**: Use your mouse wheel or the zoom controls in the corner to adjust the view.
 
-### Working with Nodes
-- **Select**: Click a node to select it and open its configuration panel.
-- **Move**: Drag a node to reposition it.
-- **Delete**: Select a node and press `Backspace` or `Delete`. The builder will automatically attempt to reconnect the remaining nodes.
+### Working with Blocks
+- **Select**: Click a block to select it and open its configuration panel.
+- **Move**: Drag a block to reposition it.
+- **Delete**: Select a block and press `Backspace` or `Delete`. The builder will automatically attempt to reconnect the remaining blocks.
 
 ### Bulk Actions
-You can select multiple nodes by holding `Shift` and dragging a selection box. This allows you to move or copy groups of logic at once.
+You can select multiple blocks by holding `Shift` and dragging a selection box. This allows you to move or copy groups of logic at once.
 
 {{< video src="/images/shift-click-nodes-to-copy.webm" >}}
 
@@ -33,12 +33,12 @@ You can select multiple nodes by holding `Shift` and dragging a selection box. T
 The Rule Builder includes built-in tools to test your rules in real-time.
 
 ### Visual Execution Path
-When you run a test, the builder highlights the exact path taken during execution, showing you exactly which nodes were triggered.
+When you run a test, the builder highlights the exact path taken during execution, showing you exactly which blocks were triggered.
 
 {{< video src="/images/debug-rule-view-execution-path.webm" >}}
 
 ### Inspecting Results
-You can click on any node after a test run to see its specific results, including modified variables and return values.
+You can click on any block after a test run to see its specific results, including modified variables and return values.
 
 ![Debug View Return Result](/images/debug-view-return-result.png)
 

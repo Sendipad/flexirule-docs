@@ -8,13 +8,13 @@ aliases:
 
 # Sub-rule Action
 
-The **Sub-rule** action allows you to execute one rule from inside another. This helps keep your rules organized and allows you to reuse common logic.
+The **Sub-rule** action allows you to run one rule from inside another. This is the best way to keep your logic organized and reuse common steps.
 
 ## Why Use Sub-rules?
-- **Organization**: Break down very large, complex rules into smaller, manageable pieces.
-- **Reusability**: Create a "standard approval" logic once and call it from many different rules.
+- **Stay Organized**: Break down very large, complex rules into smaller, easy-to-read pieces.
+- **Reuse Logic**: Create a "Standard Approval" or "Address Validation" rule once and call it from many different places.
 
-## How to Use
-1. Select the **Sub-rule** node.
-2. Pick the existing rule you want to run.
-3. **Pass Data**: Optionally pass specific variables or documents into the sub-rule.
+## How to Configure
+1. **Select Rule**: Pick the existing rule you want to execute.
+2. **Pass Data**: Choose which documents or variables the sub-rule should work with.
+3. **Handle Results**: Use any values returned by the sub-rule in your next steps.

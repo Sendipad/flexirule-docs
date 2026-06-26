@@ -11,6 +11,11 @@ The **Query Records** action is implemented as a core Action Handler within the 
 
 ---
 
+## Dynamic Date Formulas
+The Query Records action includes a specialized evaluator for temporal logic. It supports rolling time windows (e.g., "Last 7 Days") by translating user-friendly formulas into standard SQL/Frappe database queries. This is handled by the `DateFormulaResolver` in the backend.
+
+---
+
 ## 1. Class Structure
 
 - **Handler Class**: `QueryRecordsHandler`

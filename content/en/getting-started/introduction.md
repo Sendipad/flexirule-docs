@@ -13,7 +13,7 @@ FlexiRule is a high-performance, visual automation engine for the Frappe Framewo
 ## Why FlexiRule?
 
 - **Visual First**: Design logic flows using an intuitive node-based interface.
-- **No-Code Experience**: Empower business users to participate in logic design.
+- **User-Friendly**: Empower business users to participate in logic design.
 - **Native Frappe Integration**: Deeply integrated with DocTypes, Hooks, and the Frappe security model.
 - **Enterprise-Grade**: Built for performance, auditability, and scale.
 
@@ -25,4 +25,4 @@ FlexiRule simplifies business automation into three main stages:
 
 1. **The Trigger**: Defining *when* a rule should run (e.g., when a Sales Order is saved or on a schedule).
 2. **The Logic**: Using the **Rule Builder** to map out the decision path and actions.
-3. **The Result**: Executing actions like updating records, sending notifications, or calling external APIs.
+3. **The Result**: Executing actions like updating records, sending notifications, or calling other rules.

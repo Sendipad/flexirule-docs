@@ -8,12 +8,12 @@ aliases:
 
 # Entry Action
 
-Every business rule starts with an **Entry Action**. This node represents the document and data that triggered the rule.
+Every business rule begins with an **Entry Action**. This block represents the data that triggered the rule.
 
 ## What is the Entry Action?
-Think of the Entry Action as the "input" for your logic. It contains the `doc` (the record that triggered the rule) and makes it available to all following steps.
+Think of the Entry Action as the "Start" of your logic. It contains the record (the `doc`) that triggered the rule and makes all of its fields available to every other block in your flow.
 
-## Rule Entry Conditions
-You can configure "Entry Conditions" directly on the Rule header. These act as a gatekeeper: if the condition isn't met, the rule won't even start.
+## Gatekeepers (Entry Conditions)
+You can set "Entry Conditions" on the rule itself. These act like a gatekeeper—if the conditions aren't met, the rule won't even start.
 
-**Note**: For branching logic *after* the rule has already started, use the [Condition Action]({{< relref "condition" >}}).
+For making decisions *after* the rule has started, use a [Check]({{< relref "check" >}}) block.
