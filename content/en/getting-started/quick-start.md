@@ -23,9 +23,9 @@ In the **Triggers** section, decide when this rule should run:
 ## 3. Build the Logic
 Click on the **Rule Builder** tab to open the visual canvas.
 
-1. **Add a Condition**: Click the `+` icon on the **Entry Action** to add a **Condition** node.
-2. **Configure**: Set the condition to check if `doc.grand_total < 1000`.
-3. **Add an Action**: On the `True` path, add a **Document Action** to update the `status` to "Approved".
+1. **Add a Check**: Click the `+` icon on the **Entry Action** to add a **Check** node.
+2. **Configure**: Set the check to see if `grand_total < 1000`.
+3. **Add an Action**: On the `True` path, add a **Set Value** to update the `status` to "Approved".
 
 ## 4. Activate and Test
 1. Save the Rule document.

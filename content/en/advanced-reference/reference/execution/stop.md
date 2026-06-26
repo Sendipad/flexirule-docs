@@ -31,7 +31,7 @@ The Stop action has read-only access to:
 The transaction behavior of the Stop action depends entirely on its mode:
 
 -   **Success**: The action has no impact on the current database transaction. The transaction continues as normal and will commit when the overall rule execution (and any other triggered rules) finishes successfully.
--   **Error**: Raising a `frappe.ValidationError` triggers a standard database **Rollback**. Any changes made by previous nodes in the same rule flow (e.g., [Assignment]({{< relref "core-actions/assignment" >}}) updates to `doc`) will be reverted.
+-   **Error**: Raising a `frappe.ValidationError` triggers a standard database **Rollback**. Any changes made by previous nodes in the same rule flow (e.g., [Assignment]({{< relref "core-actions/set-value" >}}) updates to `doc`) will be reverted.
 
 ## Failure Behavior
 If the Jinja template in the error message fails to render, the engine will raise a secondary rendering error. However, since the intent was already to stop with an error, the result is still a termination of the flow and a rollback of the transaction.

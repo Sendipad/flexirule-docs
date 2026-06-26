@@ -70,5 +70,5 @@ New operators can be added to the frontend `SimpleCondition.vue` component. Sinc
 - **Field Resolver**: `flexirule/ruleflow/utils/field_resolver.py` (Handles nested dot-notation)
 
 ## Related Topics
-- [Action Documentation]({{< relref "core-actions/condition.md" >}})
+- [Action Documentation]({{< relref "core-actions/check.md" >}})
 - [Execution Semantics]({{< relref "advanced-reference/reference/execution/condition.md" >}})

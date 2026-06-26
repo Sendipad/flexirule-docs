@@ -1,19 +1,24 @@
 ---
-title: "Actions"
-description: "Overview and detailed documentation for the Actions section of FlexiRule."
+title: "Action Architecture"
+description: "Internal implementation details and class structures for every logic node."
 weight: 10
 ---
 
-# Actions
+# Action Architecture
 
-Welcome to the Actions section. This section contains detailed information about actions components and their usage in FlexiRule.
+Detailed technical references for the underlying action handlers and execution logic.
 
-## Sub-pages
+## Logic Nodes
 
-- **[Condition](condition.md)**
-- **[Document Action](document-action.md)**
-- **[Entry](entry.md)**
-- **[Loop](loop.md)**
-- **[Notify](notify.md)**
-- **[Query Records](query-records.md)**
-- **[Stop](stop.md)**
+- **[Check]({{< relref "check.md" >}})**
+- **[Set Value]({{< relref "set-value.md" >}})**
+- **[Repeat]({{< relref "repeat.md" >}})**
+- **[Multi-Path]({{< relref "multi-path.md" >}})**
+- **[Advanced Process]({{< relref "advanced-process.md" >}})**
+- **[Query Records]({{< relref "query-records.md" >}})**
+- **[Update Record]({{< relref "document-action.md" >}})**
+- **[Notify]({{< relref "notify.md" >}})**
+- **[Wait]({{< relref "wait.md" >}})**
+- **[Sub-rule]({{< relref "sub-rule.md" >}})**
+- **[Entry]({{< relref "entry.md" >}})**
+- **[Stop]({{< relref "stop.md" >}})**

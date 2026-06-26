@@ -1,31 +1,31 @@
 ---
 title: Update Record
-description: Create, update, or delete documents in the system.
+description: Create, update, or delete records in the system.
 weight: 30
 aliases:
   - /docs/actions/document-action/
 ---
 
-# Update Record (Document Action)
+# Update Record
 
-The **Document Action** (often labeled as **Update Record** in the UI) allows you to manipulate documents in the system.
+The **Update Record** block (internally called Document Action) allows you to create or modify records anywhere in the system.
 
 ## Operations
 
 ### 1. Create New
-Create a brand new document in any DocType.
-- **Set Fields**: Define the initial values for the new record.
-- **Asynchronous**: For heavy operations, you can enable "Run in Background".
+Create a brand new record (e.g., create a "Task" when a "Project" is saved).
+- **Set Fields**: Define the starting values for the new record.
+- **Background Task**: For complex operations, you can choose to run this in the background to keep the interface fast.
 
 ### 2. Update Existing
-Modify fields on an existing document.
-- **Find the Record**: You must provide the "Name" (ID) of the document to update. Usually, this comes from a previous **Query Records** step.
-- **Field Mapping**: Map values from your current rule context to the target document.
+Modify fields on an existing record.
+- **Target Record**: You must specify which record to update. This usually comes from a previous [Query Records]({{< relref "query-records" >}}) step.
+- **Field Mapping**: Choose which fields to change and what their new values should be.
 
 ### 3. Delete Record
-Remove a document from the system.
-- **Caution**: This action is permanent. Ensure you have proper filters set to target the correct record.
+Remove a record from the system.
+- **Note**: Use this with caution. Ensure your filters correctly target only the intended record.
 
-## Best Practices
-- **Use Validation**: Before updating a record, consider using a **Condition** to ensure the update is valid.
-- **Chain Actions**: Frequently used with **Query Records** (to find the document) followed by **Update Record** (to modify it).
+## Common Workflows
+- **Validation**: Check a condition first, then update a status field.
+- **Data Sync**: Use a [Query Records]({{< relref "query-records" >}}) block to find a related document, then use **Update Record** to keep it in sync.
