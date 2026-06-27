@@ -1,104 +1,86 @@
 ---
-title: Rule Lifecycle
-description: Understanding the stages of a rule from creation to execution and retirement.
+title: Rule Lifecycle & Execution
+description: Learn how to manage rules from creation to activation and how they run in the system.
 weight: 10
 ---
 
-# Rule Lifecycle
+# Rule Lifecycle & Execution
 
-A FlexiRule goes through several stages during its existence. Understanding these stages is key to managing your automations safely.
+Every automation you build in FlexiRule follows a specific lifecycle. Understanding these stages ensures that you can develop, test, and update your business logic safely without disrupting your live operations.
 
-## 1. Draft
-When you create a new Rule, it starts in **Draft** mode.
-- Logic and configuration can be modified freely.
-- The rule will NOT trigger automatically upon system events.
-- You can use the **Visual Builder** and run **Manual Tests** to verify your logic.
+## Rule States
 
-## 2. Active
-Once you are satisfied with your logic, you can **Activate** the rule.
-- The rule becomes eligible for execution when its configured trigger occurs (e.g., `Before Save` of a Sales Order).
-- The visual configuration and rule fields are **locked** to prevent accidental changes in production. To edit, you must create an **Amendment**.
+A rule can be in one of four primary states. You can see the current state in the **Status** badge at the top of the rule page.
 
-## 3. Versioning (Amending)
-To modify an Active rule, you use the **Amend** workflow.
-- FlexiRule creates a new **Draft** version of the rule with an incremented version number.
-- The original version remains **Active** until the new version is activated.
-- This provides a clear audit trail of logic changes over time.
-
----
-
-# Rule States
-
-| State | Active | Editable | Description |
+| State | Eligible to Run | Editable | Description |
 | :--- | :---: | :---: | :--- |
-| **Draft** | No | Yes | Initial state for new rules or amendments. |
-| **Active** | Yes | No | Locked and eligible for automatic execution. |
-| **Disabled** | No | Yes | An activated rule that has been manually stopped. |
-| **Archived** | No | No | Retired rule, kept for historical audit logs. |
+| **Draft** | No | **Yes** | The initial state for all new rules. Use this for building and testing. |
+| **Active** | **Yes** | No | The rule is live and will run automatically when its trigger occurs. |
+| **Disabled** | No | **Yes** | A previously active rule that has been temporarily turned off. |
+| **Archived** | No | No | A retired rule kept only for historical records and old execution logs. |
 
 ---
 
-# Rule Trigger Flow
+## Managing Your Rules
 
-The engine follows a strict sequence when an event occurs:
+### 1. Activating a Rule
+When your logic is ready for production, click the **Activate** button.
+- **Validation**: FlexiRule will automatically check your logic for errors (like missing connections or incomplete configurations).
+- **Locking**: Once active, the rule is **locked**. This prevents accidental changes to live business logic.
 
-1.  **Event Occurs**: A DocType event (like `Before Save`) or a Scheduled event triggers the system.
-2.  **Find Matching Rules**: The engine retrieves all active rules matching the DocType and Event from the **Rule Registry**.
-3.  **Sort by Priority**: Rules are sorted by their **Priority**. Higher priority rules run first.
-4.  **Evaluate Trigger Condition**: Before loading the heavy action graph, the **Trigger Condition** (pre-compiled expression) is evaluated. If false, the rule is skipped entirely for performance.
-5.  **Initialize Context**: A runtime context is created, holding `doc`, `old_doc`, and an empty `vars` dictionary.
-6.  **Execute Graph**: Execution starts at the **Start** node and follows the outgoing connections.
-7.  **Complete**: Execution ends when a **Stop** node is reached or no further connections exist.
+### 2. Updating an Active Rule (Amending)
+If you need to change a rule that is already live, use the **Amend Rule** button.
+- **Safety First**: FlexiRule creates a new **Draft** version of your rule.
+- **Continuous Operation**: The original version stays **Active** and continues to run your business until you are ready to replace it with the new version.
+- **History**: This creates a clear version history, allowing you to see how your logic has evolved over time.
 
----
-
-# Execution Order
-
-## 1. Priority
-Rules for the same DocType and Event are executed in order of **Priority**.
-- Deterministic ordering ensures predictable results when multiple rules apply to the same document.
-
-## 2. Trigger Conditions
-FlexiRule uses highly optimized **Pre-compiled Conditions** at the rule level.
-- These are evaluated before any heavy graph logic or action handlers are initialized.
-- This ensures near-zero overhead for rules that don't meet the immediate criteria.
+### 3. Disabling a Rule
+If you need to stop an automation temporarily without deleting it, you can set it to **Disabled**. This is useful during system maintenance or when a specific business policy is paused.
 
 ---
 
-# Safety & Validation
+## How a Rule Runs
 
-FlexiRule performs several safety checks during execution:
+When a business event occurs (like a Sales Order being saved), FlexiRule follows a specific sequence to decide if and how to run your rules.
 
-1.  **Cycle Detection**: The engine prevents infinite loops.
-    - **Total Iterations**: A single rule execution is limited to **1000** steps.
-    - **Node Re-entry**: (System-defined safety limits on repeating the same node).
-2.  **Schema Validation**: The builder validates action configurations against their **Technical Contracts** before allowing a save.
-3.  **Permission Checks**: Rule execution respects Frappe's role-based permissions. You can configure rules to "Ignore Permissions" if they need to perform administrative tasks.
+### Step 1: Finding the Rule
+The system looks for all **Active** rules that match the document type and the event. If multiple rules match, they are run in order of their **Priority** (Rules with priority 20 run before priority 0).
 
----
+### Step 2: The "Gatekeeper" (Trigger Condition)
+Before loading the full logic flow, FlexiRule checks the **Trigger Condition** (if you defined one). Think of this as a fast-pass check. If the condition isn't met (e.g., "Only run if Total > $1,000"), the rule stops immediately. This keeps your system fast.
 
-# Error Handling
+### Step 3: Starting the Flow
+Execution always begins at the **Start** block. From there, it follows the lines you've drawn to the next blocks.
 
-When an action encounters an error, the behavior depends on its **On Error** configuration:
-- **Stop**: Terminates the rule execution and logs the error (Default).
-- **Continue**: Logs a warning and proceeds to the next step.
-- **Retry**: Attempts to re-execute the action based on the configured retry count.
+### Step 4: Branching Logic
+When the flow reaches a **Check** block, it evaluates your criteria:
+- If the result is **True**, it follows the path marked "True".
+- If the result is **False**, it follows the path marked "False".
 
----
+### Step 5: Completion
+The rule finishes when it reaches a **Stop** block or a path with no further connections.
 
-# Logging
-
-Every execution is recorded in the **Rule Execution Log**:
-- **Status**: Success, Failed, or Stopped.
-- **Duration**: Exact execution time in milliseconds.
-- **Path Trace**: A visual record of every node visited during the run.
-- **Context Snapshot**: The state of variables and document fields at the time of execution (available in Debug Mode).
+{{< tip >}}
+**Execution Safety**: To prevent accidental infinite loops, FlexiRule will automatically stop any rule that tries to execute more than **1,000 steps** in a single run.
+{{< /tip >}}
 
 ---
 
-# Testing
+## Testing & Troubleshooting
 
-Before going live, use the integrated **Debugger**:
-- **Manual Run**: Trigger the rule with a specific document from the UI.
-- **Visual Trace**: Review the exact execution path highlighted on the canvas.
-- **Log Inspection**: Inspect detailed input/output values for each step.
+### Debugging
+Before activating a rule, always use the **Debug Rule** tool.
+- You can pick a real document from your system and "simulate" the rule.
+- You will see exactly which path the logic took and what values were calculated.
+- **Important**: Debugging is a simulation; it does not change any real data in your database.
+
+### Execution Logs
+Every time an **Active** rule runs, it creates a record in the **Execution Log**.
+- If a rule didn't behave as expected, check the logs to see the "Visual Path Trace"—a highlighted view of exactly which blocks were executed during that specific run.
+
+---
+
+## Related Topics
+- [Adding & Managing Blocks]({{< relref "rule-builder/adding-managing-actions" >}})
+- [Using the "Check" Block]({{< relref "action-types/condition" >}})
+- [Working with Variables]({{< relref "action-types/assignment" >}})
