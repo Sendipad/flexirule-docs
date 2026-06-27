@@ -2,7 +2,7 @@
 
 {{ .Site.Params.description }}
 
-{{ range where .Site.RegularPages "Section" "docs" }}
+{{ range .Site.RegularPages }}
 ---
 title: {{ .Title }}
 url: {{ .Permalink }}
