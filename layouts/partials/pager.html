@@ -1,7 +1,48 @@
-{{ $prev := .PrevInSection }}{{ $next := .NextInSection }}
+{{ $nodes := slice }}
+{{ range .Site.Sections.ByWeight }}
+  {{ $nodes = $nodes | append . }}
+  {{ $descendants := partial "get-all-descendants" . }}
+  {{ range $descendants }}
+    {{ $nodes = $nodes | append . }}
+  {{ end }}
+{{ end }}
+
+{{ $current := . }}
+{{ $prev := false }}
+{{ $next := false }}
+{{ $matchIdx := -1 }}
+
+{{ range $idx, $node := $nodes }}
+  {{ if eq $node.RelPermalink $current.RelPermalink }}
+    {{ $matchIdx = $idx }}
+  {{ end }}
+{{ end }}
+
+{{ if ge $matchIdx 0 }}
+  {{ if gt $matchIdx 0 }}
+    {{ $prev = index $nodes (sub $matchIdx 1) }}
+  {{ end }}
+  {{ if lt (add $matchIdx 1) (len $nodes) }}
+    {{ $next = index $nodes (add $matchIdx 1) }}
+  {{ end }}
+{{ end }}
+
 {{ if or $prev $next }}
 <nav class="pager" aria-label="Documentation pagination">
-  {{ with $prev }}<a href="{{ .RelPermalink }}" class="pager-link prev"><span class="pager-direction">Previous</span><span class="pager-title">{{ .Title }}</span></a>{{ else }}<span></span>{{ end }}
-  {{ with $next }}<a href="{{ .RelPermalink }}" class="pager-link next"><span class="pager-direction">Next</span><span class="pager-title">{{ .Title }}</span></a>{{ end }}
+  {{ if $prev }}
+    <a href="{{ $prev.RelPermalink }}" class="pager-link prev">
+      <span class="pager-direction">Previous</span>
+      <span class="pager-title">{{ $prev.Title }}</span>
+    </a>
+  {{ else }}
+    <span></span>
+  {{ end }}
+
+  {{ if $next }}
+    <a href="{{ $next.RelPermalink }}" class="pager-link next">
+      <span class="pager-direction">Next</span>
+      <span class="pager-title">{{ $next.Title }}</span>
+    </a>
+  {{ end }}
 </nav>
 {{ end }}

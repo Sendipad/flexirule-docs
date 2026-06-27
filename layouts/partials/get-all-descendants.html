@@ -1,0 +1,11 @@
+{{ $descendants := slice }}
+{{ range .Pages.ByWeight }}
+  {{ $descendants = $descendants | append . }}
+  {{ if .Pages }}
+    {{ $subDescendants := partial "get-all-descendants" . }}
+    {{ range $subDescendants }}
+      {{ $descendants = $descendants | append . }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $descendants }}

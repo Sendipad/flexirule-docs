@@ -4,22 +4,25 @@
     <button class="icon-button sidebar-close" type="button" data-sidebar-close aria-label="Close documentation menu">×</button>
   </div>
   <nav class="sidebar-nav">
-    {{ range .Site.Sections.ByWeight }}
-      {{ template "sidebar-tree" (dict "node" . "current" $ "level" 0) }}
-    {{ end }}
+    {{ template "sidebar-tree" (dict "node" .Site "current" . "level" 0) }}
   </nav>
 </aside>
 
 {{ define "sidebar-tree" }}
   {{ $node := .node }}{{ $current := .current }}{{ $level := .level }}
+  {{ $pages := (cond (eq $level 0) $node.Sections.ByWeight $node.Pages.ByWeight) }}
+
+  {{ if $pages }}
   <ul class="sidebar-list level-{{ $level }}">
-    {{ range $node.Pages.ByWeight }}
+    {{ range $pages }}
       {{ $active := eq $current.RelPermalink .RelPermalink }}
       {{ $open := or $active (.IsAncestor $current) }}
       <li class="sidebar-item{{ if $active }} is-active{{ end }}{{ if $open }} is-open{{ end }}">
-        {{ if and .IsSection .Pages }}
+        {{ if .Pages }}
           <details {{ if $open }}open{{ end }}>
-            <summary><a class="sidebar-link{{ if $active }} active{{ end }}" href="{{ .RelPermalink }}" {{ if $active }}aria-current="page"{{ end }}>{{ .Title }}</a></summary>
+            <summary>
+              <a class="sidebar-link{{ if $active }} active{{ end }}" href="{{ .RelPermalink }}" {{ if $active }}aria-current="page"{{ end }}>{{ .Title }}</a>
+            </summary>
             {{ template "sidebar-tree" (dict "node" . "current" $current "level" (add $level 1)) }}
           </details>
         {{ else }}
@@ -28,4 +31,5 @@
       </li>
     {{ end }}
   </ul>
+  {{ end }}
 {{ end }}
