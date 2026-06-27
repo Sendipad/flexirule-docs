@@ -1,7 +1,7 @@
 ---
 title: Update Record
-description: Create, Update, or Delete documents in ERPNext and custom Frappe apps.
-weight: 30
+description: Modify fields, change states, or perform actions on existing documents.
+weight: 70
 entity_kind: action_operation
 category: data-operations
 mutation: true
@@ -10,71 +10,67 @@ targets: ["Frappe DocType"]
 
 # Update Record Action
 
-The **Update Record** action (internally known as **Document Action**) is used to perform CRUD operations on any DocType in the system. It is the bridge between rule logic and persistent data changes.
+The **Update Record** action (internally **Document Action**) is used to interact with documents in the database. Unlike the **Assignment** action which updates fields on the *triggering* document, **Update Record** is used to modify *other* documents or perform state-level operations like Submit, Cancel, or Amend.
 
 ## Purpose
 
 Use the Update Record action when you need to:
-- **Create New**: Generate a new document (e.g., Create a *Sales Order* from a *Quotation*).
-- **Update Existing**: Modify a specific record (e.g., Update a *Project* status when a *Task* is completed).
-- **Delete Record**: Remove a document from the system.
-- **Add Comment**: Post a message to the document timeline.
-- **Create ToDo**: Assign a task to a user based on rule logic.
+- **Change Remote State**: Update a field on a linked document (e.g., set the "Status" of a Sales Order when an Invoice is paid).
+- **Workflow Control**: Programmatically Submit, Cancel, or Re-open a document.
+- **Bulk Updates**: Update multiple documents found via a **Query Records** block.
 
 ## Action Capabilities
 
 | Capability | Support | Notes |
 | :--- | :--- | :--- |
-| **Field Mapping** | ✅ Yes | Map values from the current rule context to the target document. |
-| **Table Mapping** | ✅ Yes | Bulk-populate child tables from source collections. |
-| **Same-Field Copy** | ✅ Yes | Automatically copy fields with matching names (Frappe Mapper style). |
-| **Async Support** | ✅ Yes | Offload document creation to background workers. |
-| **Permission Bypass**| ✅ Yes | Option to `ignore_permissions` with mandatory audit reason. |
+| **Multi-Operation** | ✅ Yes | Update, Submit, Cancel, Amend, Re-open, Create. |
+| **Batch Support** | ✅ Yes | Can update a single document or a list of documents. |
+| **Conditional Rows** | ✅ Yes | Apply field updates conditionally based on the target document's state. |
+| **Permission Aware**| ✅ Yes | Respects Frappe permissions unless "Ignore Permissions" is enabled. |
 
-## Configuration Modes
+## Modes of Operation
 
-### 1. Create New
-Generates a fresh document.
-- **Reference DocType**: The type of document to create.
-- **Field Mappings**: Define which fields to populate.
-- **Static Values**: Fixed values that never change.
-- **Table Mappings**: Logic for copying child table rows (e.g., Quotation Items to Sales Order Items).
+### 1. Update
+Modifies specific fields on the target document(s).
+- **Target**: An Object (from `Query Doc`) or a List of Objects (from `Query List`).
+- **Assignments**: A grid of field/value pairs to update.
 
-### 2. Update Existing
-Modifies an existing record.
-- **Document Name**: Can be a fixed name or a dynamic expression (e.g., `doc.customer_project`).
-- **Mappings**: Only the mapped fields will be updated; others remain unchanged.
+### 2. Workflow Actions (Submit, Cancel, Amend)
+Executes standard Frappe document lifecycle methods.
+- **Submit**: Validates and submits the document.
+- **Cancel**: Cancels a submitted document.
+- **Amend**: Creates a new draft from a cancelled document.
 
-### 3. Delete Record
-Removes a record based on name and DocType. Requires explicit permission or an audit-logged bypass.
+### 3. Create New (Experimental)
+Initializes and saves a new document of a specified DocType.
 
-### 4. Specialized Modes
-- **Create ToDo**: Simplified UI for assigning Frappe ToDos.
-- **Add Comment**: Appends a comment to the timeline of the triggering document.
+## Configuration
 
-## Field and Table Mapping
+### 1. Operation
+Choose what you want to do with the document (Update, Submit, etc.).
 
-Mappings are the heart of the Update Record action. They define the data flow:
+### 2. Target Document(s)
+Specify which document to act upon.
+- **Variable**: Usually a result from a previous **Query Records** node (e.g., `vars.target_order`).
+- **DocType + Name**: Manually specify a DocType and use a resolver for the name.
 
-**Field Mapping Example:**
-- Target: `customer` ← Source: `doc.customer_name`
-- Target: `status` ← Source: `"Open"` (Static)
+### 3. Field Mapping
+For "Update" or "Create" operations, define which fields to set and what values to use.
 
-**Table Mapping Example:**
-- Target Table: `items`
-- Source Collection: `doc.items`
-- Condition: `item.qty > 0`
-- Row Mapping:
-    - `item_code` ← `item.item_code`
-    - `qty` ← `item.qty`
+## Execution Semantics
+
+1.  **Target Resolution**: The engine resolves the target variable to find the actual document(s).
+2.  **Validation**: Verifies that the document exists and is in a valid state for the requested operation (e.g., you cannot "Submit" a document that is already "Submitted").
+3.  **Execution**: Calls the appropriate Frappe method (`doc.save()`, `doc.submit()`, etc.).
+4.  **Transaction**: If the operation fails, the engine follows the "On Error" strategy. By default, this will roll back the current transaction.
 
 ## Best Practices
 
-- **Use Async for Heavy Tasks**: If creating a document involves complex controller logic or many child rows, enable **Run Asynchronously** to keep the user interface responsive.
-- **Transactional Safety**: Document actions are part of the rule transaction. If the rule fails later, the document creation/update will be rolled back (unless executed asynchronously).
-- **Audit Reasons**: Always provide a clear reason when using "Skip Permissions" for compliance and debugging.
+- **Validate State**: Before trying to Submit or Cancel a document, use a **Check** block to ensure the document is in the correct state (e.g., `doc.docstatus == 0` before Submitting).
+- **Batch Updates**: When updating a list of documents, FlexiRule handles the iteration for you if you pass the entire list as the target.
+- **Permissions**: Be careful with "Ignore Permissions". Only enable it if the rule *must* perform an action that the triggering user wouldn't normally be allowed to do.
 
 ## Common Mistakes
 
-- **Circular Updates**: Updating the *same* document that triggered the rule in an "On Save" event. This can cause recursion. Use **Assignment** for updates to the triggering document instead.
-- **Missing Required Fields**: Ensure all mandatory fields of the target DocType are either mapped or have default values.
+- **Triggering Loops**: Updating a document that triggers another rule which then updates the first document. FlexiRule has cycle detection, but it's best to design for one-way flows.
+- **Updating the Current Doc**: Use the **Assignment** block to update the document that triggered the rule. Use **Update Record** only for *other* documents.

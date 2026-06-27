@@ -38,80 +38,48 @@ graph TD
 
 ---
 
-## Architectural Philosophy
+## Core Components
 
-The core design of FlexiRule is guided by the principle of **Separation of Concerns**. We distinguish between the *definition* of logic (Design Time) and the *execution* of logic (Runtime), using Technical Contracts as the bridge between them.
+### 1. Registry & Contracts (`flexirule/ruleflow/core/contracts.py`)
+This is the single source of truth. Every Action Type (e.g., "Assignment", "Condition", "Query Records") publishes a contract.
+- **Why this matters:** The Rule Builder uses these contracts to dynamically generate UI forms, while the Engine uses them to validate execution.
+- **Implementation**: See `ActionType` DocType and `action_type_registry.py`.
 
-### 1. Registry & Contracts: The Single Source of Truth
-This is the most critical subsystem in FlexiRule. Every Action Type (e.g., "Send Email" or "Query Records") publishes a **Technical Contract** that defines:
-- **Configuration Schema**: What fields are needed in the UI.
-- **Validation Rules**: What constitutes a "valid" block.
-- **Runtime Behavior**: The specific Python logic to execute.
-- **Input/Output Mapping**: How data enters and leaves the block.
+### 2. The Engine (`flexirule/ruleflow/core/engine.py`)
+The engine is the heart of FlexiRule. It handles:
+- **Discovery**: Identifying which rules to run based on the event.
+- **Orchestration**: Walking the execution graph.
+- **Context Management**: Managing the lifecycle of `doc`, `old_doc`, and `vars`.
 
-**Why this matters:** Because every subsystem consumes the same contract, adding a new Action Type automatically makes it available to the Rule Builder, validation engine, and runtime executor without modifying the core engine.
+### 3. Execution Context (`flexirule/ruleflow/core/context_manager.py`)
+A sandboxed environment where the rule runs. It ensures that variables (`vars`) are isolated and that document mutations (`doc`) follow Frappe's security model.
 
-### 2. Rule Builder: Metadata-Driven Designer
-The Rule Builder is more than just a drag-and-drop canvas. It is a **Contract-Driven Designer** that:
-- Dynamically generates configuration forms based on Action Contracts.
-- Provides real-time validation feedback as you connect blocks.
-- Manages the visual graph and technical metadata simultaneously.
-- Allows for property inspection and deep configuration of every node.
-
-### 3. Backend Engine: The Orchestrator
-The Python-based engine is the heart of the system. It is responsible for:
-- **Rule Discovery**: Finding the right rules for the right event via the Registry.
-- **Context Lifecycle**: Managing the state of `doc` and `vars` during a run.
-- **Orchestration**: Walking the execution plan and handling branching logic.
-- **Safety**: Managing transactions, error handling, and timeout protection.
-- **Integration**: Serving as the boundary between FlexiRule and Frappe/ERPNext APIs.
+### 4. Rule Builder (`flexirule/public/js/flexirule/rule_builder/`)
+A Vue 3-based visual designer. It isn't just a drawing tool; it's a **schema-aware editor** that understands the requirements of every logic block in real-time.
 
 ---
 
 ## Design-Time vs. Runtime
 
-FlexiRule maintains a strict boundary between designing and running rules to ensure production stability and performance.
+FlexiRule maintains a strict boundary between designing and running rules.
 
 | Phase | Responsibilities | Output |
 | :--- | :--- | :--- |
-| **Design Time** | Visual Building, Integrity Validation, Condition Compilation, Registry Indexing. | A **Compiled Execution Plan** and high-speed cache entries. |
-| **Runtime** | Event Interception, Registry Lookup, Context Initialization, Plan Execution, Async Logging. | **State Mutation** (Document updates) and a permanent **Audit Trail**. |
+| **Design Time** | Visual Building, Integrity Validation, Condition Compilation. | A **Compiled Execution Plan** stored as JSON. |
+| **Runtime** | Event Interception, Registry Lookup, Plan Execution, Auditing. | **State Mutation** and an **Audit Trail**. |
 
 ---
 
 ## Extension Architecture
 
-FlexiRule is designed to be plug-and-play. Developers can extend the platform by creating new "Logic Blocks" without touching the core engine code.
-
-```text
-Developer writes Python Class
-      │
-      ▼
-Publishes a Contract (JSON/Python)
-      │
-      ▼
-Automatically available to:
- ├── Rule Builder (Dynamic Config Form)
- ├── Validation Engine (Sanity Checks)
- ├── Execution Engine (Runtime Logic)
- └── Documentation (Auto-generated help)
-```
+Developers can add new capabilities by creating **Action Handlers**.
+- **Action Handler**: A Python class (e.g., `AssignmentHandler`) that implements the logic for a specific node type.
+- **Registry**: New handlers are registered automatically, making them immediately available in the UI.
 
 ---
 
 ## Integration Boundaries
 
-FlexiRule orchestrates ERPNext; it does not replace its fundamental framework.
-- **Inbound**: FlexiRule intercepts standard DocType events (Before Save, On Submit, etc.).
-- **Outbound**: FlexiRule performs actions by calling standard Frappe/ERPNext APIs and methods.
-- **Data**: All rule definitions, logs, and configurations are stored as standard Frappe DocTypes.
-
----
-
-## Architectural Principles
-
-- **Metadata over Hard-coding**: Represent logic as data that can be versioned and audited.
-- **Contracts as the Authority**: Ensure consistency across UI, Validation, and Runtime.
-- **Preparation over Interpretation**: Perform heavy lifting during Save to keep Execution lightweight.
-- **Registry-based Discovery**: Decouple rule triggers from application code for better scalability.
-- **Extensibility without Modification**: Allow the platform to grow through modular Action Types.
+- **Inbound**: FlexiRule hooks into DocType events (`before_save`, `on_update`, etc.) via `hooks.py`.
+- **Outbound**: Actions interact with Frappe through standard `frappe.get_doc`, `frappe.db`, and other core APIs.
+- **Persistence**: Rules, Logs, and Settings are all standard Frappe DocTypes.
