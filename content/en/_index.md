@@ -14,11 +14,13 @@ With our intuitive drag-and-drop interface, you can build sophisticated workflow
 
 ![Rule Builder Canvas](/landing-page/rule_builder.png)
 
-## Key Features
+## Get Started
 
-- **Visual Rule Builder**: Create logic flows using a node-based interface.
-- **No-Code Experience**: Empower business users to participate in logic design.
-- **Native Frappe Integration**: Deeply integrated with DocTypes, Hooks, and the Frappe security model.
-- **Enterprise-Grade**: Built for performance, auditability, and scale.
+- **[Introduction]({{< relref "getting-started/introduction" >}})**: Learn why FlexiRule is the right choice for your business.
+- **[Quick Start]({{< relref "getting-started/quick-start" >}})**: Build your first automation in under 5 minutes.
+- **[Using the Builder]({{< relref "using-the-builder" >}})**: Master the canvas and logic blocks.
+- **[Core Actions]({{< relref "core-actions" >}})**: Explore the available automation tools.
 
-[Get Started with our Guide]({{< relref "getting-started" >}})
+## Advanced Users
+
+Looking for technical details or API documentation? Visit the **[Advanced Reference]({{< relref "advanced-reference" >}})** section.
