@@ -1,50 +1,48 @@
 ---
 title: Quick Start
 description: Build your first automation in under 5 minutes.
-weight: 10
+weight: 20
 ---
 
 # Quick Start Guide
 
-Ready to see FlexiRule in action? Follow this guide to build a simple automation that alerts you whenever a high-value Sales Invoice is created.
+Ready to see FlexiRule in action? Follow this guide to build a simple automation that sends a notification whenever a high-value Sales Invoice is created.
 
 ## 1. Create your First Rule
-Go to **Rule List** and click **New**.
+Go to the **Rule List** in your system and click **New**.
 - **Rule Name**: "High Value Alert"
-- **Document Type**: "Sales Invoice"
-- **Trigger Event**: "Before Save"
+- **Apply To**: "Sales Invoice"
+- **Trigger**: "Before Save"
 
 ## 2. Open the Builder
-Click the **Open Rule Builder** button in the dashboard. You'll see a blank canvas with an **Entry Action**.
+Click the **Open Rule Builder** button. You'll see a blank canvas with a **Start** block.
 
-## 3. Add a Condition (Check)
-1. Hover over the **Entry Action** and click the **+** icon.
-2. Search for **Condition** and add it.
-3. In the config panel:
+## 3. Add a Check
+1. Hover over the **Start** block and click the **+** icon.
+2. Select **Check** from the menu.
+3. In the configuration panel:
    - Click **Add Condition**.
-   - Select field: `grand_total`.
-   - Operator: `is greater than`.
+   - Select field: `Grand Total`.
+   - Logic: `is greater than`.
    - Value: `10000`.
 
 ## 4. Add a Notification
-1. Drag a line from the **True** (Green) port of your Condition.
+1. Click the **True** (Green) connection point on your **Check** block.
 2. Select **Notify**.
-3. In the config panel:
-   - **Mode**: "Toast".
+3. In the configuration panel:
+   - **Type**: "System Alert".
    - **Message**: "💰 High value invoice detected! ID: {{ doc.name }}".
 
-## 5. Test it
-1. Click **Test Run**.
-2. Pick an existing Sales Invoice with a total > 10,000.
-3. Click **Run Test**.
-4. You should see a success toast and a green path on your canvas!
+## 5. Test your Rule
+1. Click the **Test Run** button at the top of the canvas.
+2. Select an existing Sales Invoice from the list.
+3. Click **Run**.
+4. You will see a green path showing exactly how your rule executed!
 
-## 6. Go Live
-Close the builder, set the Rule to **Enabled**, and click **Save**. You've just built your first FlexiRule!
+## 6. Enable and Save
+Close the builder, check the **Enabled** box on the Rule document, and click **Save**. Your rule is now live!
 
----
-
-## Common Beginner Mistakes
-- **Forgetting to Enable**: A rule won't run automatically unless the "Enabled" checkbox is checked on the main Rule document.
-- **Wrong Trigger Event**: If you want to update a field on the document being saved, use "Before Save". If you use "After Save", the document is already in the database and your changes might not be persisted.
-- **Broken Connections**: Ensure every node in your logic is connected. An isolated node will never execute.
+## Tips for Success
+- **Enabled Status**: Remember that a rule only works if the **Enabled** checkbox is checked.
+- **Connections**: Every block must be connected to the flow. A block sitting by itself on the canvas won't do anything.
+- **Save Often**: While the builder saves your layout, don't forget to save the main Rule document after you close the builder.
