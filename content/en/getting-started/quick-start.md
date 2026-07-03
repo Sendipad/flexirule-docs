@@ -15,36 +15,36 @@ Go to **Rule List** and click **New**.
 - **Trigger Event**: "Before Save"
 
 ## 2. Open the Builder
-Click the **Open Rule Builder** button in the dashboard. You'll see a blank canvas with an **Entry Action**.
+Click the **Open Rule Builder** button. You'll see a blank canvas with a **Start** block.
 
-## 3. Add a Condition (Check)
-1. Hover over the **Entry Action** and click the **+** icon.
-2. Search for **Condition** and add it.
-3. In the config panel:
+## 3. Add a Check (Condition)
+1. Hover over the **Start** block and click the **+** icon.
+2. Search for **Check** (Condition) and add it.
+3. In the configuration panel:
    - Click **Add Condition**.
-   - Select field: `grand_total`.
+   - Select field: `Grand Total`.
    - Operator: `is greater than`.
    - Value: `10000`.
 
 ## 4. Add a Notification
-1. Drag a line from the **True** (Green) port of your Condition.
+1. Drag a line from the **True** (Green) port of your Check block.
 2. Select **Notify**.
-3. In the config panel:
+3. In the configuration panel:
    - **Mode**: "Toast".
    - **Message**: "💰 High value invoice detected! ID: {{ doc.name }}".
 
 ## 5. Test it
-1. Click **Test Run**.
+1. Click **Test Run** in the builder.
 2. Pick an existing Sales Invoice with a total > 10,000.
 3. Click **Run Test**.
-4. You should see a success toast and a green path on your canvas!
+4. You should see a success message and a highlighted green path on your canvas!
 
 ## 6. Go Live
 Close the builder, set the Rule to **Enabled**, and click **Save**. You've just built your first FlexiRule!
 
 ---
 
-## Common Beginner Mistakes
-- **Forgetting to Enable**: A rule won't run automatically unless the "Enabled" checkbox is checked on the main Rule document.
-- **Wrong Trigger Event**: If you want to update a field on the document being saved, use "Before Save". If you use "After Save", the document is already in the database and your changes might not be persisted.
-- **Broken Connections**: Ensure every node in your logic is connected. An isolated node will never execute.
+## Common Tips
+- **Enable the Rule**: A rule won't run automatically unless the **Enabled** checkbox is checked.
+- **Save First**: Always save your Rule document before opening the builder for the first time.
+- **Connect the Blocks**: Ensure every block in your logic is connected. An isolated block will not run.
