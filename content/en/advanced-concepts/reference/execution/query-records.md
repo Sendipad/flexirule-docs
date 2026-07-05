@@ -50,7 +50,7 @@ Modes like **Count**, **Sum**, **Avg**, **Min**, and **Max** return a primitive 
 
 ### Complex Outputs
 - **Group By**: Returns a list of dictionaries with the keys `[group_field, "value"]`.
-- **Query Report**: Returns an object containing `columns` and `result`. See the [Query Report Detail]({{< relref "action-types/query-records.md" >}}) for usage examples.
+- **Query Report**: Returns an object containing `columns` and `result`. See the [Query Report Detail]({{< relref "action-type/query-records.md" >}}) for usage examples.
 
 ---
 

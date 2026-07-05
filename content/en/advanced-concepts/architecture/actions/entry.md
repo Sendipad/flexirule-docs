@@ -47,7 +47,7 @@ The Entry Action uses **Implicit Initialization**. It does not perform explicit 
 ## Extension Points
 The Entry Action is considered a "Closed Core" component. Developers should not override the `EntryActionHandler` as it would break the fundamental graph-traversal guarantees of the engine.
 
-If customization is needed for "initialization" logic, it is recommended to use an [Assignment]({{< relref "action-types/assignment" >}}) node immediately following the Entry Action.
+If customization is needed for "initialization" logic, it is recommended to use an [Assignment]({{< relref "action-type/assignment" >}}) node immediately following the Entry Action.
 
 ## Internal Events
 - **`rule_execution_start`**: Fired by the `RuleEngine` immediately before the Entry Action is processed.

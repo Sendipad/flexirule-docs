@@ -70,7 +70,7 @@ Before loading the full logic flow, FlexiRule evaluates the **Trigger Condition*
 Execution always begins at the **Start** (Entry Action) block. From there, it follows the lines you've drawn to the next blocks.
 
 ### Step 5: Branching Logic
-When the flow reaches a [Check Block]({{< relref "action-types/condition" >}}), it evaluates your criteria:
+When the flow reaches a [Check Block]({{< relref "action-type/condition" >}}), it evaluates your criteria:
 - If the result is **True**, it follows the path marked "True".
 - If the result is **False**, it follows the path marked "False".
 
@@ -119,6 +119,6 @@ Every time an **Active** rule runs, it creates a record in the **Execution Log**
 
 ## Related Topics
 - [Adding & Managing Blocks]({{< relref "rule-builder/adding-managing-actions" >}})
-- [Using the "Check" Block]({{< relref "action-types/condition" >}})
-- [Working with Variables]({{< relref "action-types/assignment" >}})
+- [Using the "Check" Block]({{< relref "action-type/condition" >}})
+- [Working with Variables]({{< relref "action-type/assignment" >}})
 - [Testing with the Debugger]({{< relref "rule-builder/canvas-navigation#debugging-on-the-canvas" >}})

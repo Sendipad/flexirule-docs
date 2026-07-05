@@ -61,6 +61,6 @@ Since the action is read-only and operates on the local execution context, it is
 - **Memory**: The action has a negligible memory footprint as it does not store large datasets.
 
 ## Related Topics
-- [Action Documentation]({{< relref "action-types/condition.md" >}})
+- [Action Documentation]({{< relref "action-type/condition.md" >}})
 - [Architecture Reference]({{< relref "advanced-concepts/architecture/actions/condition.md" >}})
-- [Condition Builder Guide]({{< relref "action-types/condition.md" >}})
+- [Condition Builder Guide]({{< relref "action-type/condition.md" >}})

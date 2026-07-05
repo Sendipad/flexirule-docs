@@ -32,7 +32,7 @@ The **Condition Builder** is a recursive Vue 3 interface that allows users to co
 -   **Input**: User interactions (drag-and-drop, field selection, operator picking).
 -   **Output**: A standardized **JSON AST (Abstract Syntax Tree)**.
 -   **Key Files**: `ConditionBuilder.vue`, `ConditionNode.vue`, `SimpleCondition.vue`.
--   **Detailed Guide**: [Condition Builder Frontend]({{< relref "action-types/condition.md" >}})
+-   **Detailed Guide**: [Condition Builder Frontend]({{< relref "action-type/condition.md" >}})
 
 ### 2. The Condition Compiler (Backend - Save-Time)
 
