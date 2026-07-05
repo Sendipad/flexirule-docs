@@ -22,11 +22,12 @@ A single condition row consists of three main parts:
 2.  **Operator**: How you are checking it (e.g., `is`, `is not`, `is greater than`, `contains`).
 3.  **Comparison Value**: What you are checking against (e.g., `Open` or `1000`).
 
-### Using the Smart Value Selector
-For both the first and third parts of a condition, you use the **Smart Value Selector**. This tool allows you to:
--   Pick fields directly from the document.
--   Use variables calculated earlier in the rule.
+### Powered by the Smart Value System
+For both the first and third parts of a condition, you use the [Smart Value System]({{< relref "smart-value-system.md" >}}). This allows you to:
+-   Pick fields directly from the document using `@doc`.
+-   Use variables calculated earlier in the rule using `@rule`.
 -   Enter static text or numbers.
+-   Use resolver functions with `/` for complex comparisons.
 
 ## Grouping Logic (AND / OR)
 
