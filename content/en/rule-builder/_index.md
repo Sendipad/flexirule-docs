@@ -1,10 +1,10 @@
 ---
-title: Rule Builder
+title: Rule Builder Guide
 weight: 40
 description: Learn how to use the visual interface to build and manage your business rules.
 ---
 
-# Rule Builder
+# Rule Builder Guide
 
 The Rule Builder is the heart of FlexiRule. it provides a powerful, visual "drag-and-drop" interface that allows you to orchestrate complex business logic without writing code.
 
