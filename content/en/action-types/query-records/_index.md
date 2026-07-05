@@ -10,9 +10,18 @@ targets: ["Frappe DocType"]
 
 # Query Records
 
-The **Query Records** block allows your rules to retrieve information from across the system. It enables a rule to look up data that isn't part of the current execution context—such as verifying a customer's balance, checking stock levels, or counting transactions from a specific period.
+**Query Records** is a rule execution block that retrieves data from the system’s database or reporting layer. It acts as a read-only data access layer, enabling rules to read external context beyond the triggering document and use that data for decisions, calculations, and automation.
 
-This action acts as a retrieval engine, allowing rules to make decisions based on existing system data rather than only the document currently being processed.
+---
+
+## Core Principles
+
+*   **Read-Only:** Query Records never mutates (changes) data. It is dedicated exclusively to finding and retrieving information.
+*   **Downstream Consumption:** It produces structured outputs that are designed to be consumed by downstream rule blocks, including:
+    *   **Conditions (Check):** To drive branching logic.
+    *   **Loops:** To process multiple records in bulk.
+    *   **Calculations:** To enrich data for mathematical operations.
+    *   **Assignments (Set Value):** To update the current document with retrieved information.
 
 ---
 
@@ -29,19 +38,19 @@ You should use a **Query Records** block whenever a rule needs context from the 
 
 ## Available Query Modes
 
-FlexiRule provides several modes for data retrieval, each optimized for specific use cases. Choosing the correct mode ensures rules remain efficient and responsive.
+FlexiRule supports several retrieval modes, allowing for flexible data access depending on your needs.
 
-| Mode | Primary Use Case | Output Type |
+| Mode | Operation Type | Primary Use Case |
 | :--- | :--- | :--- |
-| **[Exist Record]({{< relref "exist-record.md" >}})** | Quickly check if a record exists. | Boolean (Yes/No) |
-| **[Query Doc]({{< relref "query-doc.md" >}})** | Retrieve a single record with its full details. | Single Record (Object) |
-| **[Query List]({{< relref "query-list.md" >}})** | Retrieve multiple records matching criteria. | List of Records |
-| **[Count]({{< relref "count.md" >}})** | Get the total number of matching records. | Number |
-| **[Sum]({{< relref "sum.md" >}})** | Calculate the total of a numeric field. | Number |
-| **[Average]({{< relref "average.md" >}})** | Calculate the average of a numeric field. | Number |
-| **[Min / Max]({{< relref "min-max.md" >}})** | Find the lowest or highest value in a group. | Number / Date |
-| **[Group By]({{< relref "group-by.md" >}})** | Summarize data organized by category. | List of Summaries |
-| **[Query Report]({{< relref "query-report.md" >}})** | Reuse results from an existing system report. | List of Records |
+| **[Exist Record]({{< relref "exist-record.md" >}})** | Existence Check | Quickly check if a record exists. |
+| **[Query Doc]({{< relref "query-doc.md" >}})** | Single-Record Retrieval | Retrieve a single record with its full details. |
+| **[Query List]({{< relref "query-list.md" >}})** | Multi-Record Retrieval | Retrieve multiple records matching criteria. |
+| **[Count]({{< relref "count.md" >}})** | Aggregation | Get the total number of matching records. |
+| **[Sum]({{< relref "sum.md" >}})** | Aggregation | Calculate the total of a numeric field. |
+| **[Average]({{< relref "average.md" >}})** | Aggregation | Calculate the average of a numeric field. |
+| **[Min / Max]({{< relref "min-max.md" >}})** | Aggregation | Find the lowest or highest value in a group. |
+| **[Group By]({{< relref "group-by.md" >}})** | Aggregation | Summarize data organized by category. |
+| **[Query Report]({{< relref "query-report.md" >}})** | Report Reuse | Reuse results from an existing system report. |
 
 ---
 
