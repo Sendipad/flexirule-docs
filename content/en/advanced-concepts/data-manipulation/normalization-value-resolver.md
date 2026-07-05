@@ -83,6 +83,6 @@ By using the Normalization Value Resolver, business users can:
 
 ## Where to find it?
 The Normalization Value Resolver is integrated into:
-- [Assignment Action]({{< relref "action-types/assignment/" >}})
-- [Condition Nodes]({{< relref "action-types/condition/" >}})
+- [Assignment Action]({{< relref "action-type/assignment/" >}})
+- [Condition Nodes]({{< relref "action-type/condition/" >}})
 - Any configuration panel requiring data mapping.

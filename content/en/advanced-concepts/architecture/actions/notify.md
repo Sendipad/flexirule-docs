@@ -87,7 +87,7 @@ The Notify action is strictly **Read-Only** regarding the Rule Context. It does 
 -   **Action Metadata**: `flexirule/ruleflow/core/contracts.py`
 
 ## Related Topics
-- [Action Documentation]({{< relref "action-types/notify/" >}})
+- [Action Documentation]({{< relref "action-type/notify/" >}})
 - [Execution Semantics]({{< relref "advanced-concepts/reference/execution/notify.md" >}})
 
 ## Performance Considerations

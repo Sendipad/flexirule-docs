@@ -52,7 +52,7 @@ The Notify action interacts with transactions differently depending on the mode:
 The Notify action is **not idempotent**. Executing the same Notify action multiple times will result in multiple emails being sent or multiple notifications being created. Use conditional logic (`Run If`) to prevent redundant notifications in re-entrant rules.
 
 ## Related Topics
-- [Action Documentation]({{< relref "action-types/notify/" >}})
+- [Action Documentation]({{< relref "action-type/notify/" >}})
 - [Architecture Reference]({{< relref "advanced-concepts/architecture/actions/notify.md" >}})
 
 ## Performance Notes
