@@ -1,58 +1,57 @@
 ---
 title: Min / Max
-description: Find the lowest or highest value in a group of records.
+description: Retrieve the smallest or largest value from a group of records.
 weight: 80
 ---
 
 # Min / Max
 
-The **Min** (Minimum) and **Max** (Maximum) modes are used to find the smallest or largest value in a specific field across a group of records. They are perfect for finding the "Best Price," the "Earliest Date," or the "Highest Score."
+The **Min** (Minimum) and **Max** (Maximum) modes are used to identify the lowest or highest value in a specific field across a group of matching records.
 
 ---
 
-## When to use it?
+## 1. When to Use
 
-*   **To find the best/worst:** "Find the **lowest** price offered by any supplier for this item."
-*   **To find time limits:** "Find the **earliest** start date across all tasks in this project."
-*   **To check records:** "What is the **highest** amount ever invoiced to this customer?"
-
----
-
-## How to Configure
-
-1.  **Select the Table (DocType):** Choose where to look (e.g., *Supplier Quotation*, *Task*, *Sales Invoice*).
-2.  **Choose the Mode:** Select **Min** for the lowest value or **Max** for the highest value.
-3.  **Define Filters:** Narrow down the records.
-    *   *Example:* `Item Code` equals `doc.item_code` AND `Status` is `Active`.
-4.  **Choose the Field to Aggregate:** Pick the field you want to compare (e.g., *Price*, *Date*, *Amount*).
+*   **Price Discovery:** "Identify the **lowest** price offered for this item across all active Supplier Quotations."
+*   **Timeline Analysis:** "Find the **earliest** start date and **latest** end date for all tasks in a project."
+*   **Record Highs:** "Find the **highest** amount ever invoiced to a specific customer."
 
 ---
 
-## What you get (The Output)
+## 2. Configuration
+
+*   **Table (DocType):** Choose the source table.
+*   **Mode:** Choose **Min** for the lowest value or **Max** for the highest.
+*   **Filters:** Define which records to analyze.
+*   **Field to Aggregate:** Select the field to compare (e.g., *Price*, *Date*, *Quantity*).
+
+---
+
+## 3. Output
 
 This mode returns a single **Number** or **Date**.
 
 ---
 
-## Real-World Example
+## 4. Example
 
-**Scenario:** When a project is updated, a rule finds the latest "Completion Date" of all its sub-tasks and updates the project's own "Estimated End Date."
+**Scenario:** A rule automatically updates a Project's "Estimated End Date" based on the latest end date of its sub-tasks.
 
 *   **Table:** `Task`
 *   **Mode:** `Max`
 *   **Field to Aggregate:** `Expected End Date`
-*   **Filters:** `Project` equals the current project.
-*   **Next Step:** A **Set Value** block takes this "Max" date and saves it to the Project record.
+*   **Filters:** `Project` equals `doc.name` AND `Status` is not `Cancelled`.
+*   **Output Variable:** `last_task_date`
 
 ---
 
-## Performance Guidance
+## 5. Performance Notes
 
-*   **Efficient Searching:** This mode is an **automatic optimization**. The database is designed to find these values instantly without having to read every single detail of every record.
-*   **Fast and Focused:** It is significantly faster than fetching a sorted list and looking at the first item.
+*   **Optimized Search:** Database-level optimization allows the system to find these values without reading the full details of every record.
+*   **Efficiency:** This is significantly faster than retrieving a sorted list and selecting the first result.
 
 ---
 
-## Common Mistakes
+## 6. Common Mistakes
 
-*   **Incorrect Filters:** If you use **Max** on a date field without filtering for "Incomplete" tasks, you might get a date from a task that was cancelled or is irrelevant.
+*   **Ignoring Status:** Forgetting to filter out *Cancelled* or *Draft* records can result in picking a "Max" value that is no longer valid.

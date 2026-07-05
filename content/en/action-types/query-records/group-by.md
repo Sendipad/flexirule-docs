@@ -1,66 +1,75 @@
 ---
 title: Group By
-description: Summarize and categorize data into useful groups.
+description: Summarize and categorize data into grouped results.
 weight: 90
 ---
 
 # Group By
 
-The **Group By** mode is used to summarize information and organize it into categories. Instead of getting one big total, you get totals for each category—for example, "Total Sales broken down by Region" or "Count of Support Tickets grouped by Status."
+The **Group By** mode is used to organize summarized data into categories. Instead of a single total, it provides a breakdown of values based on a specific field, such as "Total Sales by Region" or "Count of Tickets by Priority."
 
 ---
 
-## When to use it?
+## 1. When to Use
 
-*   **To see distributions:** "Show me how many tasks are in each 'Status' (Open, Pending, Closed)."
-*   **To find top performers:** "Calculate the total sales amount grouped by 'Sales Person'."
-*   **To summarize by category:** "Find the total stock quantity grouped by 'Warehouse'."
-
----
-
-## How to Configure
-
-1.  **Select the Table (DocType):** Choose the source data (e.g., *Sales Order*, *Task*, *Stock Ledger Entry*).
-2.  **Define Filters:** Narrow down the records to analyze.
-3.  **Set Group By Field:** Choose the category you want to group by (e.g., *Warehouse*, *Status*, *Sales Person*).
-4.  **Set Aggregate Field:** Choose the field you want to calculate (e.g., *Qty*, *Amount*, *Name*).
-5.  **Choose the Math (Aggregate Function):**
-    *   **Count:** How many items are in each group.
-    *   **Sum:** Total value for each group.
-    *   **Avg:** Average value for each group.
+*   **Categorized Summaries:** "Show me the count of Tasks organized by their 'Status'."
+*   **Performance breakdowns:** "Calculate the total sales amount grouped by 'Sales Person'."
+*   **Inventory Audits:** "Find the total stock quantity grouped by 'Warehouse'."
 
 ---
 
-## What you get (The Output)
+## 2. Configuration
 
-This mode returns a **List of Summaries**. Each item in the list contains the category name and its calculated value.
-
-*   *Example Result:*
-    *   `{ "Warehouse": "Store A", "value": 150 }`
-    *   `{ "Warehouse": "Store B", "value": 42 }`
+*   **Table (DocType):** Choose the source data.
+*   **Filters:** Define which records to include in the analysis.
+*   **Group By Field:** Choose the category field (e.g., *Warehouse*, *Status*, *Sales Person*).
+*   **Aggregate Field:** Choose the numeric or ID field to calculate.
+*   **Aggregate Function:**
+    *   **Count:** Count the number of items in each group.
+    *   **Sum:** Total a numeric field for each group.
+    *   **Avg:** Calculate the average for each group.
 
 ---
 
-## Real-World Example
+## 3. Output
 
-**Scenario:** A rule runs every evening to find out how many Sales Orders were placed today, grouped by their Status, and then sends a summary message to Slack.
+This mode returns a **List of Summaries**.
+
+Each item in the list follows a standardized format:
+*   The grouping field (e.g., `Status`) contains the category name.
+*   The `value` field contains the calculated result for that category.
+
+**Example Output Shape:**
+```json
+[
+  { "status": "Open", "value": 12 },
+  { "status": "Pending", "value": 5 }
+]
+```
+
+---
+
+## 4. Example
+
+**Scenario:** A rule runs nightly to build a summary of Sales Orders placed today, categorized by their current status.
 
 *   **Table:** `Sales Order`
-*   **Mode:** `Group By`
 *   **Group By Field:** `Status`
-*   **Math:** `Count`
-*   **Filters:** `Posting Date` equals `Today`.
-*   **Next Step:** A **Loop** block processes each status group to build a summary message like: "Today: 5 Open, 2 Cancelled, 10 Drafts."
+*   **Aggregate Field:** `ID` (Name)
+*   **Function:** `Count`
+*   **Filters:** `Posting Date` is `Today`.
+*   **Output Variable:** `status_summary`
 
 ---
 
-## Performance Guidance
+## 5. Performance Notes
 
-*   **Massive Efficiency:** Using **Group By** is a powerful **automatic optimization**. It allows the database to do the heavy lifting of sorting and calculating, which is much faster than fetching thousands of records and trying to group them yourself inside the rule.
-*   **Reduced Data Transfer:** Instead of loading 10,000 Sales Orders, the rule only receives a few small rows of summarized data, making the rule run incredibly fast.
+*   **Efficient Categorization:** Using **Group By** is a database-level optimization. It is significantly faster than fetching thousands of individual records and grouping them within the rule logic.
+*   **Reduced Data Transfer:** By only returning the summarized categories and their values, the system avoids loading unnecessary record details.
 
 ---
 
-## Common Mistakes
+## 6. Common Mistakes
 
-*   **Grouping by Unique Fields:** Don't group by a field that is unique for every record (like the *ID* or *Name*). You will just get a list where every group has a value of 1, which isn't very helpful!
+*   **Grouping by Unique Fields:** Do not group by a field that is unique for every record (like *ID* or *Creation Time*). This will result in every group having a value of 1, providing no useful summary.
+*   **Missing Numeric Field for Sum/Avg:** Ensure the field you are aggregating is numeric if you are using Sum or Average functions.

@@ -1,59 +1,58 @@
 ---
 title: Exist Record
-description: The fastest way to check if a record exists without loading data.
+description: Check if a record exists without retrieving data.
 weight: 30
 ---
 
 # Exist Record
 
-The **Exist Record** mode is the fastest and most efficient way to check for something in your system. Instead of loading a whole document or a long list, it simply asks the system: "Is there anything that matches these criteria?" and gets a simple **Yes** or **No** answer.
+The **Exist Record** mode is an efficient way to verify the presence of a record in the system. It returns a simple Yes/No result based on whether any record matches your specified criteria.
 
 ---
 
-## When to use it?
+## 1. When to Use
 
-*   **To prevent duplicates:** "Does a Sales Order with this Reference Number already exist?"
-*   **For simple validations:** "Has this customer already submitted their tax documents?"
-*   **As a prerequisite check:** "Is there an active Project for this Customer before I allow a new Task to be created?"
-
----
-
-## How to Configure
-
-1.  **Select the Table (DocType):** Choose which part of the system to check (e.g., *User*, *Supplier*, *Asset*).
-2.  **Define Filters:** Add the conditions that must be met.
-    *   *Example:* `Email` equals `doc.email_address` AND `Status` equals `Active`.
+*   **Duplicate Prevention:** "Check if a Lead with this email address already exists."
+*   **Presence Validation:** "Verify if a specific item is in the system before proceeding."
+*   **Dependency Checks:** "Confirm an active Contract exists for this Customer."
 
 ---
 
-## What you get (The Output)
+## 2. Configuration
 
-This mode returns a simple **True** (Yes) or **False** (No).
-
-You will almost always follow this block with a **Check** block to decide what to do based on the answer. For example: "If Exist is **True**, stop the rule and show an error message."
-
----
-
-## Real-World Example
-
-**Scenario:** You want to make sure a lead isn't added to the system if their email address is already in use by another lead.
-
-*   **Table:** `Lead`
-*   **Mode:** `Exist Record`
-*   **Filters:** `Email Address` equals the email on the new lead.
-*   **Next Step:** A "Check" block. If the result is **True**, the rule stops the save and tells the user "This lead already exists."
+*   **Table (DocType):** Choose which part of the system to check.
+*   **Filters:** Define the conditions that must be met (e.g., `Reference ID` equals `doc.ref_id`).
 
 ---
 
-## Performance Guidance
+## 3. Output
 
-*   **Top Performance Choice:** This is the **recommended mode for performance** whenever you don't need to actually *read* the data inside the record.
-*   **Lightweight:** Because it doesn't load any fields or document data, it uses almost no system resources. It is much faster than using **Query Doc** or **Query List**.
-*   **Automatic Optimization:** FlexiRule performs this check at the database level without "waking up" the full document, making it nearly instantaneous.
+This mode returns a **Boolean** (`True` if a match is found, `False` if not).
+
+This result is commonly used as a condition in a subsequent **Check** block.
 
 ---
 
-## Common Mistakes
+## 4. Example
 
-*   **Using Query Doc instead:** Don't use **Query Doc** just to see if something is there. Loading the whole document is much slower than a simple "Exist" check.
-*   **Broad Filters:** If your filters are too vague (like just checking if *any* Lead exists), you might get a "Yes" when you really meant "Yes, for this specific email."
+**Scenario:** A rule ensures that a Sales Order cannot be submitted unless a valid "Customer PO" reference is provided and hasn't been used before.
+
+*   **Table:** `Sales Order`
+*   **Filters:** `Customer PO` equals `doc.po_no` AND `Status` is not `Cancelled`.
+*   **Output Variable:** `already_used`
+*   **Logic:** If `vars.already_used` is **True**, the rule triggers an error message.
+
+---
+
+## 5. Performance Notes
+
+*   **Optimized Path:** This is the most efficient check available. The system stops searching as soon as it finds one match.
+*   **No Data Load:** Because no field data is retrieved, this mode uses minimal system resources.
+*   **Automatic Pushdown:** The search is performed entirely at the database level.
+
+---
+
+## 6. Common Mistakes
+
+*   **Using Query Doc Instead:** Do not use **Query Doc** if you only need to know if something exists. Loading a full document is significantly slower than an "Exist" check.
+*   **Incomplete Filters:** If your filters are too broad, you may get a "True" result for a record that isn't the specific one you intended to check.

@@ -1,57 +1,55 @@
 ---
 title: Average
-description: Calculate the average value of a numeric field instantly.
+description: Calculate the mean value of a numeric field.
 weight: 70
 ---
 
 # Average
 
-The **Average** mode calculates the mean (average) value for a specific numeric field across all matching records. It’s a great way to find typical values, such as the "Average Order Value" or "Average Support Response Time."
+The **Average** mode calculates the mean value of a numeric field across all records matching your filters. It is used to determine typical values or benchmark performance.
 
 ---
 
-## When to use it?
+## 1. When to Use
 
-*   **To find typical values:** "What is the average discount given to this customer over the last year?"
-*   **To monitor performance:** "What is the average rating for this support agent?"
-*   **To detect anomalies:** "Calculate the average price for this item so I can see if the current price is way too high."
-
----
-
-## How to Configure
-
-1.  **Select the Table (DocType):** Choose where the data is (e.g., *Sales Order*, *Feedback*, *Quotation*).
-2.  **Define Filters:** Narrow down which records to average.
-    *   *Example:* `Item Code` equals `doc.item_code` AND `Status` is `Completed`.
-3.  **Choose the Field to Aggregate:** Pick the numeric field to calculate (e.g., *Price*, *Score*, *Amount*).
+*   **Benchmarking:** "Find the average order value for this customer over the last 12 months."
+*   **Performance Monitoring:** "What is the average rating given to this support agent?"
+*   **Price Analysis:** "Calculate the average purchase price for this item across all suppliers."
 
 ---
 
-## What you get (The Output)
+## 2. Configuration
+
+*   **Table (DocType):** Choose the source table.
+*   **Filters:** Define the scope of records to analyze.
+*   **Field to Aggregate:** Select the numeric field to average (e.g., *Price*, *Score*, *Amount*).
+
+---
+
+## 3. Output
 
 This mode returns a **Number**.
 
 ---
 
-## Real-World Example
+## 4. Example
 
-**Scenario:** A company wants to automatically flag any Sales Order that gives a discount significantly higher than the customer's usual average.
+**Scenario:** A rule flags any Sales Order where the discount percentage is significantly higher than the customer's historical average.
 
 *   **Table:** `Sales Order`
-*   **Mode:** `Average`
 *   **Field to Aggregate:** `Discount Percentage`
-*   **Filters:** `Customer` equals the current customer.
-*   **Next Step:** A "Check" block compares the current order's discount to this calculated average.
+*   **Filters:** `Customer` equals `doc.customer` AND `Status` is `Completed`.
+*   **Output Variable:** `avg_discount`
 
 ---
 
-## Performance Guidance
+## 5. Performance Notes
 
-*   **Automatic Optimization:** Just like the Sum mode, the system does the math directly in the database. This is **much faster** than loading all records and calculating the average yourself.
-*   **Lightweight:** It only returns one number, no matter how many thousands of records were analyzed to find the average.
+*   **Database Math:** Like Sum and Count, this uses database-level aggregation to ensure high performance even on large datasets.
+*   **Lightweight:** The engine only processes a single result value.
 
 ---
 
-## Common Mistakes
+## 6. Common Mistakes
 
-*   **Averaging Zeroes:** Be aware that if your filters include records with a value of `0`, those will be included in the average and will pull the result down. Use filters to exclude `0` values if they don't make sense for your math.
+*   **Averaging Zeroes:** Records with a value of `0` are included in the average and will lower the result. If zeroes should be ignored, add a filter (e.g., `Field` is `Greater than 0`).

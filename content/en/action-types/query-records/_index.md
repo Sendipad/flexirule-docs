@@ -1,6 +1,6 @@
 ---
 title: Query Records
-description: Find and use information from your system to make smarter rules.
+description: Find and use information from your system to support business logic.
 weight: 10
 entity_kind: action_operation
 category: data-operations
@@ -10,52 +10,62 @@ targets: ["Frappe DocType"]
 
 # Query Records
 
-The **Query Records** block is how your rules "read" information from your system. It allows a rule to look up data that isn't already part of the current task, like checking a customer's total balance, finding a specific item in stock, or counting how many orders were placed today.
+The **Query Records** block allows your rules to retrieve information from across the system. It enables a rule to look up data that isn't part of the current execution context—such as verifying a customer's balance, checking stock levels, or counting transactions from a specific period.
 
-Think of it as a specialized search engine for your rules. Instead of just working with the data in front of it, the rule can reach out and find exactly what it needs to make a decision.
-
----
-
-## When to use it?
-
-You should use a **Query Records** block whenever your rule needs to know something about the rest of your system.
-
-*   **To check for duplicates:** "Does a record with this name already exist?"
-*   **To find related information:** "What is the credit limit for this customer?"
-*   **To perform calculations:** "What is the total value of all open invoices for this supplier?"
-*   **To gather a list:** "Find all overdue tasks so I can send a reminder for each one."
+This action acts as a retrieval engine, allowing rules to make decisions based on existing system data rather than only the document currently being processed.
 
 ---
 
-## Choosing the Right Mode
+## When to Use
 
-To make your rules as fast and efficient as possible, FlexiRule provides different "Modes" for finding data. Choosing the right one helps your rules run quickly and reliably.
+You should use a **Query Records** block whenever a rule needs context from the rest of your system:
 
-| If you want to... | Use this Mode | Why it’s great |
+*   **Validation:** "Does a record with this reference number already exist?"
+*   **Enrichment:** "What is the credit limit for this customer?"
+*   **Calculations:** "What is the total value of all open invoices for this supplier?"
+*   **Batch Processing:** "Find all overdue tasks to trigger follow-up actions."
+
+---
+
+## Available Query Modes
+
+FlexiRule provides several modes for data retrieval, each optimized for specific use cases. Choosing the correct mode ensures rules remain efficient and responsive.
+
+| Mode | Primary Use Case | Output Type |
 | :--- | :--- | :--- |
-| **Check if something exists** | [Exist Record]({{< relref "exist-record.md" >}}) | **Fastest.** It just says "Yes" or "No" without loading extra data. |
-| **Get one specific item** | [Query Doc]({{< relref "query-doc.md" >}}) | **Simple.** Gives you all the details for a single record. |
-| **Get a list of items** | [Query List]({{< relref "query-list.md" >}}) | **Powerful.** Perfect for finding multiple records to work on. |
-| **Count items** | [Count]({{< relref "count.md" >}}) | **Efficient.** Just gives you the number, avoiding slow data loading. |
-| **Calculate totals/averages** | [Sum]({{< relref "sum.md" >}}), [Average]({{< relref "average.md" >}}) | **Automatic.** The system does the math for you instantly. |
-| **Find highest/lowest** | [Min / Max]({{< relref "min-max.md" >}}) | **Smart.** Quickly finds the "best" or "worst" value in a list. |
-| **Summarize data** | [Group By]({{< relref "group-by.md" >}}) | **Organized.** Bundles results by category (e.g., "Totals per Customer"). |
-| **Use an existing Report** | [Query Report]({{< relref "query-report.md" >}}) | **Reusable.** Plugs directly into the reports you've already built. |
+| **[Exist Record]({{< relref "exist-record.md" >}})** | Quickly check if a record exists. | Boolean (Yes/No) |
+| **[Query Doc]({{< relref "query-doc.md" >}})** | Retrieve a single record with its full details. | Single Record (Object) |
+| **[Query List]({{< relref "query-list.md" >}})** | Retrieve multiple records matching criteria. | List of Records |
+| **[Count]({{< relref "count.md" >}})** | Get the total number of matching records. | Number |
+| **[Sum]({{< relref "sum.md" >}})** | Calculate the total of a numeric field. | Number |
+| **[Average]({{< relref "average.md" >}})** | Calculate the average of a numeric field. | Number |
+| **[Min / Max]({{< relref "min-max.md" >}})** | Find the lowest or highest value in a group. | Number / Date |
+| **[Group By]({{< relref "group-by.md" >}})** | Summarize data organized by category. | List of Summaries |
+| **[Query Report]({{< relref "query-report.md" >}})** | Reuse results from an existing system report. | List of Records |
 
 ---
 
-## Performance & Speed
+## Performance & Execution Model
 
-FlexiRule includes **automatic optimizations** that make finding data fast without you having to change any settings.
+To maintain system responsiveness, FlexiRule utilizes several execution strategies. Understanding these helps in building high-performance rules.
 
-*   **Smart Caching:** When you look up a record that was recently used, FlexiRule can often retrieve it instantly from memory instead of searching the database again.
-*   **Direct Math:** Calculations like Sum and Average are performed directly where the data lives, which is much faster than bringing all the data into the rule to do the math.
-*   **Lightweight Checks:** Using the **Exist Record** mode is highly recommended for performance because it avoids loading any unnecessary information.
+### 1. Database-Level Aggregation
+Modes like **Count**, **Sum**, **Average**, and **Min/Max** use "pushdown" optimization. Instead of loading every record into the rule engine, the system performs the calculation directly at the database level. This reduces data transfer and memory usage.
+
+### 2. Intelligent Caching
+The **Query Doc** mode supports a cached retrieval strategy. When enabled, the system attempts to fetch the record from memory rather than the database. This is efficient for master data (like Customers or Items) that is frequently read but rarely changed.
+
+### 3. Lightweight Existence Checks
+**Exist Record** is the most efficient check. It stops searching as soon as it finds a single match and does not load any field data. Use this mode whenever you only need a Yes/No answer.
+
+### 4. Data Volume Control
+Rules should always use **Filters** to narrow the search scope. For list-based queries, always define a **Result Limit** to prevent the rule from attempting to process unexpectedly large datasets.
 
 ---
 
-## Common Tips
+## Best Practices
 
-*   **Use Filters:** Always try to be as specific as possible. Instead of asking for "All Orders," ask for "Orders for Customer X from Today." This keeps your rules running at top speed.
-*   **Select Only What You Need:** If you only need an email address, tell the rule to only fetch the "Email" field. This makes the rule "lighter" and faster.
-*   **Set Limits:** If you are looking for a list, setting a "Limit" (like 20 or 50) prevents the rule from accidentally trying to process thousands of items at once.
+*   **Filter Early:** Be as specific as possible in your filter criteria.
+*   **Minimize Field Fetching:** Only select the specific fields required for your logic.
+*   **Use Aggregations:** Prefer **Count** or **Sum** over fetching a list and looping to calculate totals.
+*   **Monitor Reports:** When using **Query Report**, remember that the rule performance depends entirely on the report's efficiency.

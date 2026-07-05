@@ -1,57 +1,54 @@
 ---
 title: Count
-description: Quickly find out how many items match your criteria.
+description: Determine the total number of records matching your criteria.
 weight: 50
 ---
 
 # Count
 
-The **Count** mode is used when you only need to know "how many" of something exist. It is a highly efficient way to get a total number without having to load any of the actual records.
+The **Count** mode returns the total number of records that match your filters. It is a highly efficient way to measure volume or verify limits without retrieving actual record data.
 
 ---
 
-## When to use it?
+## 1. When to Use
 
-*   **To check volume:** "How many open Support Tickets does this customer have?"
-*   **To verify progress:** "Count how many tasks in this project are marked as 'Completed'."
-*   **To enforce limits:** "Check if the user has already created more than 5 documents today."
-
----
-
-## How to Configure
-
-1.  **Select the Table (DocType):** Choose what to count (e.g., *Invoice*, *Employee*, *Task*).
-2.  **Define Filters:** Tell the system which items should be included in the count.
-    *   *Example:* `Status` equals `Open` AND `Owner` is `doc.owner`.
+*   **Volume Monitoring:** "How many 'Open' support tickets are currently assigned to this user?"
+*   **Threshold Verification:** "Count how many times this customer has ordered this year to determine their loyalty tier."
+*   **Restriction Enforcement:** "Ensure a user doesn't exceed a daily document creation limit."
 
 ---
 
-## What you get (The Output)
+## 2. Configuration
+
+*   **Table (DocType):** Select the table to search.
+*   **Filters:** Define the criteria for the count (e.g., `Status` equals `Open`).
+
+---
+
+## 3. Output
 
 This mode returns a **Number**.
 
-You can use this number in a **Check** block (e.g., "If Count is greater than 10...") or in a **Set Value** block to update a field on your document.
+---
+
+## 4. Example
+
+**Scenario:** A company limits customers to a maximum of 5 "Active" projects.
+
+*   **Table:** `Project`
+*   **Filters:** `Customer` equals `doc.customer` AND `Status` is `Active`.
+*   **Output Variable:** `active_project_count`
+*   **Logic:** A "Check" block ensures `vars.active_project_count` is less than 5 before allowing a new project to be created.
 
 ---
 
-## Real-World Example
+## 5. Performance Notes
 
-**Scenario:** A company wants to limit customers to only 3 active "Warranty Claims" at a time.
-
-*   **Table:** `Warranty Claim`
-*   **Mode:** `Count`
-*   **Filters:** `Customer` equals the current customer AND `Status` is `Open`.
-*   **Next Step:** A "Check" block. If the count is 3 or more, the rule stops the user from creating a new claim and shows an error.
+*   **Database Math:** This mode uses database-level aggregation. It is significantly more efficient than fetching a list of records and counting them in the rule engine.
+*   **Low Data Load:** Only a single number is returned, regardless of how many thousands of records were counted.
 
 ---
 
-## Performance Guidance
+## 6. Common Mistakes
 
-*   **Faster than Query List:** Never use **Query List** just to count items. Using **Count** is an **automatic optimization**—the system performs the calculation directly in the database, which is much faster and uses far less memory than fetching a list.
-*   **Recommended for Performance:** This mode is perfect for "Summary" logic because it avoids loading unnecessary data into your rule.
-
----
-
-## Common Mistakes
-
-*   **Counting Large Tables Without Filters:** Be careful when counting very large tables (like *Email Logs*) without restrictive filters, as even a count can take time if the search criteria are too broad.
+*   **Broad Filters on Large Tables:** While efficient, counting millions of records in a very large table (like *Activity Log*) without restrictive filters can still impact system performance.
