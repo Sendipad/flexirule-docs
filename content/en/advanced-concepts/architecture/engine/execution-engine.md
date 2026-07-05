@@ -105,6 +105,6 @@ Rule conditions and templates are evaluated using `SafeFrappeAPI`, preventing un
 
 ## Related Topics
 
-- [Rule Building]({{< relref "rule-builder/canvas-navigation.md" >}})
+- [Rule Building]({{< relref "rule-builder/canvas.md" >}})
 - [Glossary]({{< relref "advanced-concepts/reference/glossary.md" >}})
 - [API Reference]({{< relref "api-reference/public-apis.md" >}})
