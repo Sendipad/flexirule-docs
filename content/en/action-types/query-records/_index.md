@@ -1,6 +1,6 @@
 ---
 title: Query Records
-description: Retrieve data from the system using filters and aggregations.
+description: Find and use information from your system to support business logic.
 weight: 10
 entity_kind: action_operation
 category: data-operations
@@ -8,267 +8,73 @@ mutation: false
 targets: ["Frappe DocType"]
 ---
 
+# Query Records
 
-# Query Records Action
-
-The **Query Records** action is FlexiRule's data retrieval engine. It allows a rule to retrieve information from any DocType in the database, making it possible to validate data, enrich the current context, perform calculations, and drive business logic based on existing records.
-
----
-
-## Purpose
-
-The **Query Records** action retrieves data from any DocType during rule execution. It enables your rule to access information beyond the current document, allowing decisions and actions based on existing records in the database.
-
-Use this action when your rule needs to:
-
-- **Prevent duplicates** by checking whether matching records already exist.
-- **Retrieve related data** from another DocType, such as a customer's credit limit, supplier information, or item details.
-- **Calculate business metrics** using database aggregations such as **Count**, **Sum**, **Average**, **Minimum**, or **Maximum**.
-- **Find collections of records** that can be processed with a **Loop** action.
-- **Build dynamic business logic** based on historical or related records rather than only the current document.
-
-The **Query Records** action is the primary way to access and reuse existing business data within a FlexiRule workflow.
+**Query Records** is a rule execution block that retrieves data from the system’s database or reporting layer. It acts as a read-only data access layer, enabling rules to read external context beyond the triggering document and use that data for decisions, calculations, and automation.
 
 ---
 
-## Action Capabilities
+## Core Principles
 
-| Capability | Support | Notes |
-|------------|---------|-------|
-| Multiple Query Modes | ✅ Yes | Supports Query Doc, Query List, Exist, Count, Sum, Average, Minimum, and Maximum. |
-| Dynamic Filters | ✅ Yes | Build filters using values from the current execution context (`doc`, `vars`, previous action outputs, etc.). |
-| Date Formulas | ✅ Yes | Supports relative date ranges such as **Today**, **Current Month**, **Last 30 Days**, and more. |
-| Field Selection | ✅ Yes | Retrieve only the fields you need to improve performance. |
-| Schema Refresh | ✅ Yes | Automatically maps the returned fields so they can be referenced in later actions. |
-| Cached Lookups | ✅ Yes | Supports `use_cached_doc` to improve performance for cached DocTypes. |
+*   **Read-Only:** Query Records never mutates (changes) data. It is dedicated exclusively to finding and retrieving information.
+*   **Downstream Consumption:** It produces structured outputs that are designed to be consumed by downstream rule blocks, including:
+    *   **Conditions (Check):** To drive branching logic.
+    *   **Loops:** To process multiple records in bulk.
+    *   **Calculations:** To enrich data for mathematical operations.
+    *   **Assignments (Set Value):** To update the current document with retrieved information.
 
 ---
 
-# Query Modes
+## When to Use
 
-## Query Doc
+You should use a **Query Records** block whenever a rule needs context from the rest of your system:
 
-Retrieves the first record that matches the specified filters.
-
-**Returns**
-
-A single Object (Dictionary).
-
-**Best for**
-
-- Loading a master record.
-- Fetching settings or configuration values.
-- Retrieving related document information.
-
-**Example**
-
-Retrieve a Customer document to access its credit limit before approving a Sales Order.
+*   **Validation:** "Does a record with this reference number already exist?"
+*   **Enrichment:** "What is the credit limit for this customer?"
+*   **Calculations:** "What is the total value of all open invoices for this supplier?"
+*   **Batch Processing:** "Find all overdue tasks to trigger follow-up actions."
 
 ---
 
-## Query List
+## Available Query Modes
 
-Retrieves all records that match the specified filters.
+FlexiRule supports several retrieval modes, allowing for flexible data access depending on your needs.
 
-**Returns**
-
-A List of Objects.
-
-**Best for**
-
-- Finding related documents.
-- Processing multiple records using a **Loop** action.
-- Building collections for further processing.
-
-**Example**
-
-Retrieve all overdue Tasks assigned to the current user.
+| Mode | Operation Type | Primary Use Case |
+| :--- | :--- | :--- |
+| **[Exist Record]({{< relref "exist-record.md" >}})** | Existence Check | Quickly check if a record exists. |
+| **[Query Doc]({{< relref "query-doc.md" >}})** | Single-Record Retrieval | Retrieve a single record with its full details. |
+| **[Query List]({{< relref "query-list.md" >}})** | Multi-Record Retrieval | Retrieve multiple records matching criteria. |
+| **[Count]({{< relref "count.md" >}})** | Aggregation | Get the total number of matching records. |
+| **[Sum]({{< relref "sum.md" >}})** | Aggregation | Calculate the total of a numeric field. |
+| **[Average]({{< relref "average.md" >}})** | Aggregation | Calculate the average of a numeric field. |
+| **[Min / Max]({{< relref "min-max.md" >}})** | Aggregation | Find the lowest or highest value in a group. |
+| **[Group By]({{< relref "group-by.md" >}})** | Aggregation | Summarize data organized by category. |
+| **[Query Report]({{< relref "query-report.md" >}})** | Report Reuse | Reuse results from an existing system report. |
 
 ---
 
-## Aggregations
+## Performance & Execution Model
 
-Performs calculations directly in the database without retrieving every matching record.
+To maintain system responsiveness, FlexiRule utilizes several execution strategies. Understanding these helps in building high-performance rules.
 
-**Supported operations**
+### 1. Database-Level Aggregation
+Modes like **Count**, **Sum**, **Average**, and **Min/Max** use "pushdown" optimization. Instead of loading every record into the rule engine, the system performs the calculation directly at the database level. This reduces data transfer and memory usage.
 
-- Count
-- Sum
-- Average
-- Minimum
-- Maximum
+### 2. Intelligent Caching
+The **Query Doc** mode supports a cached retrieval strategy. When enabled, the system attempts to fetch the record from memory rather than the database. This is efficient for master data (like Customers or Items) that is frequently read but rarely changed.
 
-**Returns**
+### 3. Lightweight Existence Checks
+**Exist Record** is the most efficient check. It stops searching as soon as it finds a single match and does not load any field data. Use this mode whenever you only need a Yes/No answer.
 
-A Number.
-
-**Example**
-
-Calculate the **Sum** of `base_grand_total` for all unpaid Sales Invoices belonging to the current customer.
+### 4. Data Volume Control
+Rules should always use **Filters** to narrow the search scope. For list-based queries, always define a **Result Limit** to prevent the rule from attempting to process unexpectedly large datasets.
 
 ---
 
-## Exist
-
-Checks whether at least one record matches the specified filters.
-
-**Returns**
-
-A Boolean (`true` or `false`).
-
-Because no records are retrieved, this is the fastest query mode.
-
-**Best for**
-
-- Duplicate checks.
-- Conditional branching.
-- Validation rules.
-- Prerequisite checks.
-
-**Example**
-
-Determine whether another active quotation already exists for the same customer.
-
----
-
-# Configuration
-
-## DocType
-
-Select the DocType you want to query.
-
-Once selected, the available fields become available for filters, sorting, and field selection.
-
----
-
-## Query Mode
-
-Choose how the query should return results:
-
-- **Query Doc** – Return a single record.
-- **Query List** – Return multiple records.
-- **Exist** – Return whether a matching record exists.
-- **Count** – Return the number of matching records.
-- **Sum** – Return the sum of a numeric field.
-- **Average** – Return the average value of a numeric field.
-- **Minimum** – Return the smallest value of a field.
-- **Maximum** – Return the largest value of a field.
-
----
-
-## Filters
-
-Filters determine which records are returned.
-
-You can combine multiple conditions using **AND** and **OR** groups.
-
-Examples:
-
-| Condition | Example |
-|-----------|---------|
-| Static Value | `status = "Open"` |
-| Current Document | `customer = {{ doc.customer }}` |
-| Variable | `company = {{ vars.company }}` |
-| Date Formula | `posting_date within Last 30 Days` |
-
----
-
-## Selected Fields
-
-For **Query Doc** and **Query List**, specify which fields should be returned.
-
-Selecting only the required fields reduces database load and improves execution performance.
-
-If no fields are specified, the entire document may be retrieved depending on the configuration.
-
----
-
-## Sorting
-
-Optionally specify one or more sort fields and the sort direction (Ascending or Descending).
-
-Sorting is commonly used when:
-
-- Retrieving the latest document.
-- Selecting the highest or lowest value.
-- Returning records in chronological order.
-
----
-
-## Limit
-
-Available for **Query List**.
-
-Limits the maximum number of records returned.
-
-Setting a limit improves performance and avoids unnecessarily large result sets.
-
----
-
-## Refresh Schema
-
-After changing the query mode or selected fields, click **Refresh Schema**.
-
-This updates the Rule Builder with the fields returned by the query so they become available in autocomplete and can be referenced by subsequent actions.
-
----
-
-# Output
-
-The output depends on the selected query mode.
-
-| Query Mode | Return Type |
-|------------|-------------|
-| Query Doc | Object |
-| Query List | List of Objects |
-| Exist | Boolean |
-| Count | Number |
-| Sum | Number |
-| Average | Number |
-| Minimum | Number |
-| Maximum | Number |
-
-The output can be referenced by later actions using the action's output variable.
-
----
-
-# Best Practices
-
-- Use **Exist** whenever you only need to know whether a record exists.
-- Use **Query Doc** instead of **Query List** when only one record is required.
-- Always apply filters to avoid scanning unnecessary records.
-- Select only the fields your rule actually needs.
-- Set a **Limit** for **Query List** whenever appropriate.
-- Use database aggregations instead of retrieving records and calculating totals inside the rule.
-- Refresh the schema after modifying the query configuration.
-
----
-
-# Common Mistakes
-
-### Querying Large Tables Without Filters
-
-Running queries against large DocTypes (such as **Stock Ledger Entry**) without restrictive filters can significantly impact performance.
-
----
-
-### Using the Wrong Query Mode
-
-Remember the return types:
-
-- **Query Doc** returns a single Object.
-- **Query List** returns a List of Objects.
-
-A list must be processed with a **Loop** action or indexed appropriately before accessing individual field values.
-
----
-
-### Retrieving Unnecessary Fields
-
-Fetching the entire document when only a few fields are required increases database load and slows execution.
-
----
-
-### Forgetting to Refresh the Schema
-
-If you modify the selected fields or query mode without refreshing the schema, newly returned fields may not appear in autocomplete for subsequent actions.
+## Best Practices
+
+*   **Filter Early:** Be as specific as possible in your filter criteria.
+*   **Minimize Field Fetching:** Only select the specific fields required for your logic.
+*   **Use Aggregations:** Prefer **Count** or **Sum** over fetching a list and looping to calculate totals.
+*   **Monitor Reports:** When using **Query Report**, remember that the rule performance depends entirely on the report's efficiency.
