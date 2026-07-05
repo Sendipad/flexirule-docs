@@ -1,6 +1,6 @@
 ---
 title: Query Records
-description: Retrieve data from the system using filters and aggregations.
+description: Find and use information from your system to make smarter rules.
 weight: 10
 entity_kind: action_operation
 category: data-operations
@@ -8,267 +8,54 @@ mutation: false
 targets: ["Frappe DocType"]
 ---
 
+# Query Records
 
-# Query Records Action
+The **Query Records** block is how your rules "read" information from your system. It allows a rule to look up data that isn't already part of the current task, like checking a customer's total balance, finding a specific item in stock, or counting how many orders were placed today.
 
-The **Query Records** action is FlexiRule's data retrieval engine. It allows a rule to retrieve information from any DocType in the database, making it possible to validate data, enrich the current context, perform calculations, and drive business logic based on existing records.
-
----
-
-## Purpose
-
-The **Query Records** action retrieves data from any DocType during rule execution. It enables your rule to access information beyond the current document, allowing decisions and actions based on existing records in the database.
-
-Use this action when your rule needs to:
-
-- **Prevent duplicates** by checking whether matching records already exist.
-- **Retrieve related data** from another DocType, such as a customer's credit limit, supplier information, or item details.
-- **Calculate business metrics** using database aggregations such as **Count**, **Sum**, **Average**, **Minimum**, or **Maximum**.
-- **Find collections of records** that can be processed with a **Loop** action.
-- **Build dynamic business logic** based on historical or related records rather than only the current document.
-
-The **Query Records** action is the primary way to access and reuse existing business data within a FlexiRule workflow.
+Think of it as a specialized search engine for your rules. Instead of just working with the data in front of it, the rule can reach out and find exactly what it needs to make a decision.
 
 ---
 
-## Action Capabilities
+## When to use it?
 
-| Capability | Support | Notes |
-|------------|---------|-------|
-| Multiple Query Modes | ✅ Yes | Supports Query Doc, Query List, Exist, Count, Sum, Average, Minimum, and Maximum. |
-| Dynamic Filters | ✅ Yes | Build filters using values from the current execution context (`doc`, `vars`, previous action outputs, etc.). |
-| Date Formulas | ✅ Yes | Supports relative date ranges such as **Today**, **Current Month**, **Last 30 Days**, and more. |
-| Field Selection | ✅ Yes | Retrieve only the fields you need to improve performance. |
-| Schema Refresh | ✅ Yes | Automatically maps the returned fields so they can be referenced in later actions. |
-| Cached Lookups | ✅ Yes | Supports `use_cached_doc` to improve performance for cached DocTypes. |
+You should use a **Query Records** block whenever your rule needs to know something about the rest of your system.
+
+*   **To check for duplicates:** "Does a record with this name already exist?"
+*   **To find related information:** "What is the credit limit for this customer?"
+*   **To perform calculations:** "What is the total value of all open invoices for this supplier?"
+*   **To gather a list:** "Find all overdue tasks so I can send a reminder for each one."
 
 ---
 
-# Query Modes
+## Choosing the Right Mode
 
-## Query Doc
+To make your rules as fast and efficient as possible, FlexiRule provides different "Modes" for finding data. Choosing the right one helps your rules run quickly and reliably.
 
-Retrieves the first record that matches the specified filters.
-
-**Returns**
-
-A single Object (Dictionary).
-
-**Best for**
-
-- Loading a master record.
-- Fetching settings or configuration values.
-- Retrieving related document information.
-
-**Example**
-
-Retrieve a Customer document to access its credit limit before approving a Sales Order.
+| If you want to... | Use this Mode | Why it’s great |
+| :--- | :--- | :--- |
+| **Check if something exists** | [Exist Record]({{< relref "exist-record.md" >}}) | **Fastest.** It just says "Yes" or "No" without loading extra data. |
+| **Get one specific item** | [Query Doc]({{< relref "query-doc.md" >}}) | **Simple.** Gives you all the details for a single record. |
+| **Get a list of items** | [Query List]({{< relref "query-list.md" >}}) | **Powerful.** Perfect for finding multiple records to work on. |
+| **Count items** | [Count]({{< relref "count.md" >}}) | **Efficient.** Just gives you the number, avoiding slow data loading. |
+| **Calculate totals/averages** | [Sum]({{< relref "sum.md" >}}), [Average]({{< relref "average.md" >}}) | **Automatic.** The system does the math for you instantly. |
+| **Find highest/lowest** | [Min / Max]({{< relref "min-max.md" >}}) | **Smart.** Quickly finds the "best" or "worst" value in a list. |
+| **Summarize data** | [Group By]({{< relref "group-by.md" >}}) | **Organized.** Bundles results by category (e.g., "Totals per Customer"). |
+| **Use an existing Report** | [Query Report]({{< relref "query-report.md" >}}) | **Reusable.** Plugs directly into the reports you've already built. |
 
 ---
 
-## Query List
+## Performance & Speed
 
-Retrieves all records that match the specified filters.
+FlexiRule includes **automatic optimizations** that make finding data fast without you having to change any settings.
 
-**Returns**
-
-A List of Objects.
-
-**Best for**
-
-- Finding related documents.
-- Processing multiple records using a **Loop** action.
-- Building collections for further processing.
-
-**Example**
-
-Retrieve all overdue Tasks assigned to the current user.
+*   **Smart Caching:** When you look up a record that was recently used, FlexiRule can often retrieve it instantly from memory instead of searching the database again.
+*   **Direct Math:** Calculations like Sum and Average are performed directly where the data lives, which is much faster than bringing all the data into the rule to do the math.
+*   **Lightweight Checks:** Using the **Exist Record** mode is highly recommended for performance because it avoids loading any unnecessary information.
 
 ---
 
-## Aggregations
-
-Performs calculations directly in the database without retrieving every matching record.
-
-**Supported operations**
-
-- Count
-- Sum
-- Average
-- Minimum
-- Maximum
-
-**Returns**
-
-A Number.
-
-**Example**
-
-Calculate the **Sum** of `base_grand_total` for all unpaid Sales Invoices belonging to the current customer.
-
----
-
-## Exist
-
-Checks whether at least one record matches the specified filters.
-
-**Returns**
-
-A Boolean (`true` or `false`).
-
-Because no records are retrieved, this is the fastest query mode.
-
-**Best for**
-
-- Duplicate checks.
-- Conditional branching.
-- Validation rules.
-- Prerequisite checks.
-
-**Example**
-
-Determine whether another active quotation already exists for the same customer.
-
----
-
-# Configuration
-
-## DocType
-
-Select the DocType you want to query.
-
-Once selected, the available fields become available for filters, sorting, and field selection.
-
----
-
-## Query Mode
-
-Choose how the query should return results:
-
-- **Query Doc** – Return a single record.
-- **Query List** – Return multiple records.
-- **Exist** – Return whether a matching record exists.
-- **Count** – Return the number of matching records.
-- **Sum** – Return the sum of a numeric field.
-- **Average** – Return the average value of a numeric field.
-- **Minimum** – Return the smallest value of a field.
-- **Maximum** – Return the largest value of a field.
-
----
-
-## Filters
-
-Filters determine which records are returned.
-
-You can combine multiple conditions using **AND** and **OR** groups.
-
-Examples:
-
-| Condition | Example |
-|-----------|---------|
-| Static Value | `status = "Open"` |
-| Current Document | `customer = {{ doc.customer }}` |
-| Variable | `company = {{ vars.company }}` |
-| Date Formula | `posting_date within Last 30 Days` |
-
----
-
-## Selected Fields
-
-For **Query Doc** and **Query List**, specify which fields should be returned.
-
-Selecting only the required fields reduces database load and improves execution performance.
-
-If no fields are specified, the entire document may be retrieved depending on the configuration.
-
----
-
-## Sorting
-
-Optionally specify one or more sort fields and the sort direction (Ascending or Descending).
-
-Sorting is commonly used when:
-
-- Retrieving the latest document.
-- Selecting the highest or lowest value.
-- Returning records in chronological order.
-
----
-
-## Limit
-
-Available for **Query List**.
-
-Limits the maximum number of records returned.
-
-Setting a limit improves performance and avoids unnecessarily large result sets.
-
----
-
-## Refresh Schema
-
-After changing the query mode or selected fields, click **Refresh Schema**.
-
-This updates the Rule Builder with the fields returned by the query so they become available in autocomplete and can be referenced by subsequent actions.
-
----
-
-# Output
-
-The output depends on the selected query mode.
-
-| Query Mode | Return Type |
-|------------|-------------|
-| Query Doc | Object |
-| Query List | List of Objects |
-| Exist | Boolean |
-| Count | Number |
-| Sum | Number |
-| Average | Number |
-| Minimum | Number |
-| Maximum | Number |
-
-The output can be referenced by later actions using the action's output variable.
-
----
-
-# Best Practices
-
-- Use **Exist** whenever you only need to know whether a record exists.
-- Use **Query Doc** instead of **Query List** when only one record is required.
-- Always apply filters to avoid scanning unnecessary records.
-- Select only the fields your rule actually needs.
-- Set a **Limit** for **Query List** whenever appropriate.
-- Use database aggregations instead of retrieving records and calculating totals inside the rule.
-- Refresh the schema after modifying the query configuration.
-
----
-
-# Common Mistakes
-
-### Querying Large Tables Without Filters
-
-Running queries against large DocTypes (such as **Stock Ledger Entry**) without restrictive filters can significantly impact performance.
-
----
-
-### Using the Wrong Query Mode
-
-Remember the return types:
-
-- **Query Doc** returns a single Object.
-- **Query List** returns a List of Objects.
-
-A list must be processed with a **Loop** action or indexed appropriately before accessing individual field values.
-
----
-
-### Retrieving Unnecessary Fields
-
-Fetching the entire document when only a few fields are required increases database load and slows execution.
-
----
-
-### Forgetting to Refresh the Schema
-
-If you modify the selected fields or query mode without refreshing the schema, newly returned fields may not appear in autocomplete for subsequent actions.
+## Common Tips
+
+*   **Use Filters:** Always try to be as specific as possible. Instead of asking for "All Orders," ask for "Orders for Customer X from Today." This keeps your rules running at top speed.
+*   **Select Only What You Need:** If you only need an email address, tell the rule to only fetch the "Email" field. This makes the rule "lighter" and faster.
+*   **Set Limits:** If you are looking for a list, setting a "Limit" (like 20 or 50) prevents the rule from accidentally trying to process thousands of items at once.
