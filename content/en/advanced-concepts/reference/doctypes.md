@@ -54,7 +54,7 @@ The primary container for an automation flow. It defines **when** logic starts a
 Represents a single executable node (Step) within a Rule's graph.
 
 ### When to Use
-- Rule Actions are managed via the [Rule Builder]({{< relref "rule-builder/canvas-navigation.md" >}}), which handles the creation of these child records automatically.
+- Rule Actions are managed via the [Rule Builder]({{< relref "rule-builder/canvas.md" >}}), which handles the creation of these child records automatically.
 
 | Field | Type | Description |
 | :--- | :--- | :--- |
@@ -94,5 +94,5 @@ Audit trail for every rule execution.
 ## Related Topics
 
 - [Execution Engine]({{< relref "advanced-concepts/architecture/engine/execution-engine.md" >}})
-- [Rule Builder]({{< relref "rule-builder/canvas-navigation.md" >}})
+- [Rule Builder]({{< relref "rule-builder/canvas.md" >}})
 - [API Reference]({{< relref "api-reference/public-apis.md" >}})
