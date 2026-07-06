@@ -84,5 +84,5 @@ Need to process a collection?
 ## Related Topics
 
 - [Glossary]({{< relref "advanced-concepts/reference/glossary.md" >}})
-- [Rule Builder]({{< relref "rule-builder/canvas-navigation.md" >}})
+- [Rule Builder]({{< relref "rule-builder/canvas.md" >}})
 - [Action Zone]({{< relref "action-type/" >}})

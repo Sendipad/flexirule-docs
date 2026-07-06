@@ -48,4 +48,4 @@ Common terminology and core concepts used throughout the FlexiRule documentation
 
 - [System Architecture]({{< relref "advanced-concepts/architecture/" >}})
 - [Execution Engine]({{< relref "advanced-concepts/architecture/engine/execution-engine.md" >}})
-- [Rule Building]({{< relref "rule-builder/canvas-navigation.md" >}})
+- [Rule Building]({{< relref "rule-builder/canvas.md" >}})
