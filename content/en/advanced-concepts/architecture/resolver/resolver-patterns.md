@@ -1,56 +1,51 @@
 ---
-title: Resolver Patterns
-description: This document catalogs the practical patterns enabled by the FlexiRule
-  Resolver Engine.
-weight: 20
+title: Resolver Patterns & Architecture
+description: Comprehensive catalog and architecture of compiled Value Resolvers in FlexiRule.
+weight: 10
 aliases:
 - /docs/resolver/resolver_patterns/
 ---
 
-# Resolver: Resolver Patterns
+# Resolver Patterns & Architecture
 
-## 📚 Capability Encyclopedia
-This document catalogs the practical patterns enabled by the FlexiRule Resolver Engine.
-
-### 1. Dynamic Path Traversal
-Resolvers support deep dot-notation.
-- `doc.items.0.amount`: Get the amount of the first item.
-- `vars.query_result.name`: Get a field from a previously queried record.
-
-### 2. Time-Based Logic
-The `DateFormulaResolver` and `DateDiffResolver` handle enterprise date requirements:
-- `Today + 14 days`: For due date calculation.
-- `Diff(doc.delivery_date, doc.posting_date)`: For lead-time calculation.
-
-### 3. Collection Aggregation
-The `ChildAggregationResolver` eliminates the need for "Loop" nodes in simple cases:
-- `Sum(doc.items.amount)`: Total an entire child table in one step.
-- `Count(doc.attachments)`: Check if any files were uploaded.
-
-### 4. String Interpolation & Templating
-The `ExpressionResolver` and `JinjaResolver` allow for rich text generation:
-- `"Hello {{ doc.first_name }}, your order #{{ doc.name }} is ready."`
-- These are used in notifications, descriptions, and comments.
-
-### 5. System Context Injection
-Resolvers can access environmental data without explicit passing:
-- `User`: The current session user.
-- `Role Check`: Boolean check if the user has a specific role.
+The FlexiRule Value Resolver engine processes dynamic inputs across rules, conditions, and actions. Every dynamic input is backed by a compiled resolver strategy (`CompiledResolver`) in `flexirule.ruleflow.core.value_resolver`.
 
 ---
 
-## 🛠️ Enterprise Use Cases
+## Catalog of Compiled Resolvers
 
-| Requirement | Resolver Pattern |
-| :--- | :--- |
-| **Clean a URL slug** | `NormalizationResolver(mode='slug', path='doc.title')` |
-| **Apply a 10% discount** | `MathFormulaResolver(a='doc.total', op='*', b=0.9)` |
-| **Format for a Report** | `FormatResolver(mode='date', config='dd-mm-yyyy', path='doc.posting_date')` |
-| **Default if empty** | `JinjaResolver(template='{{ doc.email or vars.fallback_email }}')` |
+| Resolver Type | Internal Class | Description & Key Parameters |
+| :--- | :--- | :--- |
+| `none` | `NoneResolver` | Returns `None` constant. |
+| `static` | `StaticResolver` | Returns literal string, number, or boolean value. |
+| `variable` / `var` | `VariableResolver` | Evaluates dot-notation context variables (`doc.total`, `vars.order.status`, `system.user`). |
+| `date_formula` | `DateFormulaResolver` | Adds/subtracts units (`days`, `weeks`, `months`, `years`, `hours`) from `today` or a document field. |
+| `math_formula` | `MathFormulaResolver` | Performs arithmetic (`+`, `-`, `*`, `/`, `%`) between fields or numeric constants. |
+| `date_diff` | `DateDiffResolver` | Calculates numerical difference (`days`, `hours`, `minutes`, `seconds`) between two dates. |
+| `child_aggregation` | `ChildAggregationResolver` | Aggregates child table fields (`sum`, `avg`, `min`, `max`, `count`) directly without requiring loops. |
+| `string_formula` | `StringFormulaResolver` | String operations (`concat`, `uppercase`, `lowercase`, `trim`, `replace`, `substring`). |
+| `normalization` | `NormalizationResolver` | Normalizes values (modes: `slug`, `lowercase`, `uppercase`, `strip`, `clean_spaces`, `digits_only`, `email`). |
+| `format` | `FormatResolver` | Formats dates, numbers, currency, or JSON strings. |
+| `system_context` | `SystemContextResolver` | Injects active session/system values (`user`, `company`, `roles`, `today`, `now`). |
+| `collection` | `CollectionResolver` | Evaluates, filters, plucks, or checks conditions on list/child-table collections. |
+| `fetch` | `FetchResolver` | Direct single-value database lookup via link fields (`frappe.db.get_value`). |
+| `jinja` | `JinjaResolver` | Renders Jinja templates with full context access. |
+| `safe_eval` / `expression` | `SafeEvalResolver` / `ExpressionResolver` | Evaluates safe expressions and tokenized template strings. |
 
 ---
 
-## 🔮 Future Evolution Ideas
-- **Lookup Resolvers**: A resolver that performs a `frappe.db.get_value` directly without needing a separate "Query Records" node.
-- **Mapping Resolvers**: Transforming a list of IDs into a list of Names.
-- **Conditional Resolvers**: `If(Condition, ValueA, ValueB)` logic within the resolver itself.
+## Smart Value Input Integration
+
+In the user interface, the **Smart Value Selector** abstracts these resolvers into three primary visual modes:
+
+1. **Static Value Mode**: Converts to `StaticResolver`.
+2. **Variable Mode (`@`)**: Interactively searches context variables and maps to `VariableResolver`.
+3. **Resolver / Function Mode (`/`)**: Formats configurations for formulas, collections, formatting, fetches, and context resolvers.
+
+---
+
+## Execution & Compilation Lifecycle
+
+1. **Instantiation**: `ValueResolver.compile_resolver(config)` parses the raw dict.
+2. **Strategy Matching**: Maps `config.type` to the corresponding `CompiledResolver` subclass.
+3. **Evaluation**: Called via `resolver.resolve(context)` during rule engine execution with zero runtime parsing overhead.

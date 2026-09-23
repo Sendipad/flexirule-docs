@@ -1,74 +1,51 @@
 ---
-title: API Reference
-description: Public whitelisted methods for programmatic interaction with FlexiRule.
+title: Public API Reference
+description: Complete public whitelisted REST & Python API endpoints for FlexiRule on Frappe.
 weight: 10
 ---
 
 # Public API Reference
 
-FlexiRule provides a comprehensive set of whitelisted backend methods accessible via `frappe.call()`. These APIs follow standard Frappe conventions and are gated by the same permissions as the Rule Builder.
-
-## Rule Execution & Testing
-
-### `test_rule`
-Execute a rule manually for testing purposes.
-- **Parameters**:
-    - `rule_name`: Name of the rule to test.
-    - `doctype`: (Optional) DocType of the test document.
-    - `docname`: Name of the test document.
-    - `dry_run`: If true, database changes are not committed.
-    - `save_log`: If true, an execution log is persisted.
-- **Returns**: Execution results including status, duration, and path trace.
-
-### `execute_rule`
-The pure execution API for running a rule programmatically.
-- **Parameters**:
-    - `rule_name`: Name of the rule.
-    - `context`: JSON object of initial variables (`vars`).
-    - `dry_run`: Boolean.
-- **Returns**: Resulting context and execution trace.
-
-### `simulate_rule`
-Dry-run simulation that provides deep introspection of variable states at each step.
-- **Returns**: Success status and full `step_details` array.
+FlexiRule exposes whitelisted Frappe API endpoints (`@frappe.whitelist()`) located in `flexirule.ruleflow.api`.
 
 ---
 
-## Lifecycle Management
+## Complete API Endpoint Catalog
 
-### `transition_rule`
-Change the status of a rule (e.g., from Draft to Active).
-- **Parameters**:
-    - `target_status`: One of `Draft`, `Active`, `Disabled`, `Archived`.
-
-### `amend_rule`
-Create a new version (amendment) of an existing rule.
-- **Returns**: Name of the new draft rule version.
-
-### `clone_rule`
-Create a full copy of a rule.
-- **Parameters**:
-    - `new_name`: (Optional) Name for the new rule.
+| API Endpoint | Method / Purpose | Parameters |
+| :--- | :--- | :--- |
+| `test_rule` | Dry-run / test rule execution | `rule_name`, `doctype`, `docname`, `doc_json`, `dry_run`, `save_log` |
+| `execute_rule` | Production rule execution | `rule_name`, `doc`, `vars`, `dry_run`, `skip_permissions` |
+| `simulate_rule` | Step-by-step trace simulation | `rule_name`, `docname`, `doc_json` |
+| `get_execution_preview` | Generate execution node graph preview | `rule_name`, `docname` |
+| `initialize_rule_graph` | Pre-compile rule graph | `rule_name` |
+| `validate_rule_document` | Validate rule structure | `doc`, `mode` (`full` / `light`) |
+| `validate_node` | Validate single action node | `rule_name`, `action_id` |
+| `get_node_config_schema` | Get JSON schema for node config | `rule_name`, `action_id` |
+| `get_contract_dto` | Get system action type contracts | None |
+| `get_operator_config` | Get condition builder operators | None |
+| `get_doctype_fields` | Get searchable fields for DocType | `doctype`, `filters` |
+| `get_schema_field_options` | Get field option metadata | `doctype`, `fieldname` |
+| `search_actions` | Fuzzy search action types/operations | `query`, `filters`, `limit` |
+| `get_process_operations` | List operations for process | `process_name` |
+| `get_all_process_operations` | List all process operations | None |
+| `get_action_context_schema` | Get upstream variable context schema | `rule_name`, `action_id` |
+| `test_action_query` | Dry-run test Query Records | `action_config`, `docname` |
+| `get_rule_versions` | List historical versions of rule | `rule_name`, `limit` |
+| `restore_rule_version` | Rollback rule to version | `rule_name`, `version_name` |
+| `export_rule` | Export rule JSON payload | `rule_name` |
+| `import_rule` | Import rule JSON payload | `import_data`, `overwrite` |
+| `clone_rule` | Clone rule and graph | `rule_name`, `new_name` |
+| `amend_rule` | Create new version amendment | `rule_name` |
+| `transition_rule` | Transition lifecycle state | `rule_name`, `target_status` |
+| `get_allowed_transitions` | Get valid lifecycle states | `rule_name` |
+| `get_rule_stats` | Get rule metrics & execution logs | `rule_name` |
+| `clear_cache` | Flush Redis & in-memory caches | `doctype` |
+| `normalize_test_value` | Test value resolver normalization | `value`, `target_type` |
 
 ---
 
-## Introspection & Search
+## Security & Permission Gating
 
-### `get_contract_dto`
-Returns the canonical contract for all action types, including schemas and capabilities. Primarily used by the Rule Builder UI.
-
-### `get_doctype_fields`
-Fetch fields for a DocType, optimized for use in Rule Builder pickers. Supports grouping and child table field extraction.
-
-### `search_actions`
-Fuzzy search across all registered Action Types and Process Operations.
-
----
-
-## Maintenance
-
-### `clear_cache`
-Clears the multi-level Rule Registry cache (Request-local, Redis, and Database). Recommended after manual database changes to rules.
-
-### `get_rule_stats`
-Returns performance and reliability metrics for a specific rule (Execution count, Success rate, Avg duration).
+1. **Authentication**: All endpoints require an active Frappe session or valid API key authentication (`Authorization: token api_key:api_secret`).
+2. **Authorization & Role Checks**: Gated by `Rule Permission` DocType records and system role permissions (`System Manager`, `FlexiRule Manager`).

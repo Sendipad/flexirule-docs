@@ -1,6 +1,6 @@
 ---
 title: Advanced Process
-description: Execute complex, reusable business logic operations.
+description: Execute complex, reusable business logic operations using built-in or registered process operations.
 weight: 110
 aliases:
   - /docs/actions/process/
@@ -8,57 +8,41 @@ aliases:
 
 # Advanced Process Action
 
-The **Advanced Process** action (internally called **Process**) is the primary extension point for custom business logic in FlexiRule. While blocks like "Check" or "Assignment" handle basic flow and data updates, the Process action allows you to execute sophisticated, reusable operations defined in the **Process Registry**.
+The **Advanced Process** action (internally called **Process**) is the primary extension point for modular business logic in FlexiRule. It executes configurable operations through the `ProcessOperationExecutor` decoupled from rule graph definition.
 
 ## Purpose
 
 Use the Process action for:
-- **Complex Calculations**: Tax engines, freight calculators, or financial models.
-- **External Integrations**: Sending data to Slack, calling a REST API, or interacting with AWS.
-- **System Tasks**: Generating PDFs, bulk-creating documents, or triggering Frappe background jobs.
-- **Reusable Business Logic**: Any logic that is used across multiple rules should be encapsulated as a "Process".
+- **Data Validation Operations**: Run schema or rule-based validation (`validation`).
+- **Record Deduplication**: Execute scoring and fuzzy matching algorithms (`deduplication`).
+- **Batch Processing**: Process collections of records in chunked batches (`batch`).
+- **Data Enrichment**: Fetch and auto-populate missing record details (`enrichment`).
+- **Custom Registered Operations**: Invoke custom domain handlers registered in `ProcessRegistry`.
 
-## Action Capabilities
+## Built-In Operations
 
-| Capability | Support | Notes |
+| Operation Name | Module | Primary Capability |
 | :--- | :--- | :--- |
-| **Input Mapping** | ✅ Yes | Map variables from the rule context to the Process inputs. |
-| **Output Mapping** | ✅ Yes | Store the Process result back into the rule context. |
-| **Schema-Aware** | ✅ Yes | The UI dynamically adapts based on the Process configuration schema. |
-| **Transactional** | ✅ Yes | Supports savepoints to ensure data integrity during execution. |
+| `validation` | `ruleflow.process.validation` | Document/field validation and error collection. |
+| `deduplication` | `ruleflow.process.deduplication` | Duplicate detection and match scoring algorithms. |
+| `batch` | `ruleflow.process.batch` | Chunked processing of multi-record collections. |
+| `enrichment` | `ruleflow.process.enrichment` | External/internal data enrichment pipeline. |
 
 ## Configuration
 
-### 1. Process Selection
-Select from the list of registered Processes. Each process may have multiple **Operations** (e.g., a "Slack" process might have "Send Message" and "Upload File" operations).
+### 1. Process & Operation Selection
+Select the target **Process** and specific **Operation**. The UI dynamically renders required inputs based on `process_operation.json` definitions.
 
-### 2. Input Configuration
-Based on the selected process, you will see a dynamic set of fields. You can provide:
-- **Static Values**: Hardcoded strings or numbers.
-- **Dynamic Resolvers**: Reference fields from `doc` or `vars`.
-- **Input Mapping**: Use the mapping grid to bind complex context data to process parameters.
+### 2. Inputs & Parameter Mapping
+Inputs accept standard **Smart Value** configurations (Static, `@doc` / `@vars`, or `/resolver` functions).
 
 ### 3. Execution Options
-- **On Error**: Choose whether to stop, continue, or retry the rule if the process fails.
-- **Is Async**: If enabled, the process will run in a background worker (using `frappe.enqueue`), and the rule will continue immediately.
+- **On Error**: Choose error recovery policy (`Stop`, `Raise Error`, `Continue`).
+- **Async Execution**: Enable background task queue processing (`frappe.enqueue`).
 
-### 4. Output Handling
-Specify a **Return Variable** (e.g., `vars.api_response`) where the result of the process will be stored for use in subsequent blocks.
+### 4. Output Storage
+Results are stored in `vars.<return_variable>` for access by subsequent actions in the flow.
 
-## Execution Semantics
+## Technical Architecture
 
-1.  **Input Resolution**: The engine resolves all input mapping and dynamic values.
-2.  **Validation**: The engine verifies inputs against the process's internal schema.
-3.  **Operation Execution**: The Process Handler executes the specific Python logic for the operation.
-4.  **Result Capture**: The output is captured and mapped back to the execution context.
-5.  **Flow Continuation**: The engine follows the **Success** (True) branch.
-
-## Best Practices
-
-- **Encapsulate Logic**: If you find yourself building the same sequence of 10 nodes in multiple rules, move that logic into a single **Process**.
-- **Error Handling**: Always configure an "On Error" strategy for processes that interact with external services (like APIs), as they are more likely to fail than internal logic.
-- **Keep it Atomic**: A process should ideally perform one specific task and return a clear result.
-
-## Technical Details
-
-Processes are managed via the `Process` DocType and registered in the system's `ProcessRegistry`. Developers can add new processes by creating a Python class that implements the `ProcessContract`. For more information, see the [Architecture Reference]({{< relref "advanced-concepts/architecture/actions/advanced-process.md" >}}).
+For backend class structures, registration contracts, and custom process operation creation, refer to the [Process Architecture Reference]({{< relref "advanced-concepts/architecture/actions/advanced-process.md" >}}).
