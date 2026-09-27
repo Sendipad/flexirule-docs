@@ -99,23 +99,23 @@ Consider a common ERPNext scenario: **Block Sales Orders if customer balance exc
 
 <div class="grid-2">
 
-{{< card title="Getting Started" link="/getting-started/" icon="rocket" >}}
+{{< card title="Getting Started" href="getting-started/" icon="rocket" >}}
 Install FlexiRule, configure your first rule, and run visual debug sessions.
 {{< /card >}}
 
-{{< card title="Introduction & Concepts" link="/introduction/" icon="info" >}}
+{{< card title="Introduction & Concepts" href="introduction/" icon="info" >}}
 Understand system architecture, key capabilities, and core concepts.
 {{< /card >}}
 
-{{< card title="Rule Builder Guide" link="/rule-builder/" icon="canvas" >}}
+{{< card title="Rule Builder Guide" href="rule-builder/" icon="canvas" >}}
 Explore canvas navigation, node connections, action settings, and the Smart Value Selector.
 {{< /card >}}
 
-{{< card title="Core Actions Catalog" link="/action-type/" icon="catalog" >}}
+{{< card title="Core Actions Catalog" href="action-type/" icon="catalog" >}}
 Browse complete guides for Set Value, Check, Query Records, Update Record, Repeat, Notify, and more.
 {{< /card >}}
 
-{{< card title="Developer Architecture" link="/advanced-concepts/" icon="code" >}}
+{{< card title="Developer Architecture" href="advanced-concepts/" icon="code" >}}
 Deep dive into execution semantics, compiler optimization, registry contracts, and extension points.
 {{< /card >}}
 
