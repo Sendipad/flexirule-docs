@@ -1,24 +1,35 @@
 ---
 title: Update Existing
-description: Modifying specific records in the system.
+description: Modify specific existing database records using UI field mappings.
 weight: 20
 ---
 
 # Update Existing Record
 
-Use this mode to change fields on a document that already exists in the database.
+Use **Update Existing Record** mode to change field values on records that already exist in the database.
 
-## Identifying the Document
-You must tell FlexiRule *which* record to update:
-- **Document Name**: A fixed name (e.g., `PROJ-001`).
-- **Dynamic Expression**: A path to the name (e.g., `doc.linked_project`).
+---
 
-## Partial Updates
-Unlike "Create New", you only need to map the fields you want to **change**. All other fields on the existing record will remain exactly as they are.
+## 1. Identifying Target Record
 
-## Example
-**Scenario**: When a "Task" is completed, update its parent "Project" status.
-1. **Target DocType**: `Project`.
-2. **Document Name**: `doc.project`.
-3. **Field Mapping**:
-   - `status` ← `'In Progress'`
+In the configuration panel, specify which record to update:
+- **Target Record**: Choose a record variable retrieved from a **Query Records** block (e.g., `@vars.target_project`).
+- **DocType + Document Name**: Select the target DocType and pick the document name field using the **Smart Value Selector** (e.g., `@doc.linked_project`).
+
+---
+
+## 2. Partial Field Updates
+
+Unlike creating a new record, you only need to map the specific fields you want to change. All unmapped fields on the target record remain unchanged.
+
+---
+
+## 3. Practical Example
+
+### Scenario: Update Project Status when a Task is Completed
+
+1. Add an **Update Record** block and set Operation to **Update Existing**.
+2. **Target DocType**: Select `Project`.
+3. **Document Name**: Select `Project` (`@doc.project`) using the **Smart Value Selector**.
+4. **Field Mapping**:
+   - `Status` ← `"In Progress"`

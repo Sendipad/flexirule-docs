@@ -1,6 +1,6 @@
 ---
 title: Set Value (Assignment)
-description: Perform sequential batch state mutations on document fields and context variables.
+description: Update document fields or store values in rule variables using a visual configuration grid.
 weight: 50
 entity_kind: action_operation
 category: data-operations
@@ -10,80 +10,98 @@ targets: ["Frappe DocType", "Context Variable"]
 
 # Set Value (Assignment) Action
 
-The **Set Value** action (internal handler: `Assignment`) is the primary mechanism for state mutation in FlexiRule. It allows you to define a sequence of mutations—**Batch Assignments**—that run sequentially to update document fields or store internal rule state.
+The **Set Value** action is the primary way to update document fields or store calculations in rule variables as execution flows through your rule.
 
 ---
 
-## 1. When to Use
+## 1. What is it?
+
+A Set Value block allows you to make one or more changes in sequence. You can set a document field (like setting Status to "Approved"), update temporary rule variables, or perform numeric calculations like incrementing a total.
+
+---
+
+## 2. When to Use
 
 Use the Set Value action when you need to:
-- Update fields on the triggering document (e.g., set `workflow_state` to `"Approved"` or `posting_date` to today).
-- Initialize or update temporary context variables (`@vars`) to store intermediate calculation results for downstream blocks.
-- Perform numeric calculations (Increment, Decrement) on fields or variables.
-- Append items to list variables or merge dictionary objects.
-- Normalize and sanitize incoming text fields before saving.
+- **Update fields on the triggering document** (e.g., set `Workflow State` to `"Approved"` or `Posting Date` to today).
+- **Store temporary values** in rule variables (`@vars`) to use in downstream steps or calculations.
+- **Perform numeric operations** such as adding to or subtracting from existing totals.
+- **Manage collections** by appending items to list variables.
 
 ---
 
-## 2. Configuration
+## 3. How to Configure
 
-The Set Value configuration panel uses a sequential grid where each row represents one mutation step:
-
-### Row Configuration Fields
-- **Target Path**: Destination path (`doc.fieldname` for document fields or `vars.variable_name` for temporary context variables).
-- **Operator**:
-  - `Set`: Overwrites target with resolved value.
-  - `Clear`: Resets target to `None` or empty.
-  - `Increment`: Adds numeric value to existing total.
-  - `Decrement`: Subtracts numeric value from existing total.
-  - `Append`: Appends item to a list/array variable.
-  - `Merge`: Merges key-value dictionary into target object.
-  - `Toggle`: Inverts boolean value (`true` <-> `false`).
-- **Value Input**: Configured via the **Smart Value Selector** (`Static Value`, `@ Variable`, or `/ Resolver`).
-- **Condition (`when`)**: Optional boolean expression evaluated before running the specific row mutation.
-
----
-
-## 3. Output
-
-- **Context Mutation**: Directly mutates `@doc` or `@vars` in the execution context.
-- **Return Contract**: Returns a dictionary of applied mutations: `{"mutations": [{"target": "doc.status", "value": "Approved"}, ...]}`.
-- **Next Node Execution**: Execution immediately proceeds down the primary outbound edge.
+1. **Add the Action**: Add a **Set Value** block to your visual canvas.
+2. **Add an Assignment Row**: Click **Add Row** in the configuration grid.
+3. **Select Target**:
+   - Click the **Target** field.
+   - Use the picker or search to choose whether you are updating a **Document Field** (e.g., `Status`) or a **Rule Variable** (e.g., `vars.discount_rate`).
+4. **Choose an Operator**:
+   - **Set**: Replaces the target with a new value.
+   - **Clear**: Resets the target to empty.
+   - **Increment / Decrement**: Adds or subtracts a number from the current target value.
+   - **Append**: Adds an item to a list variable.
+   - **Toggle**: Inverts a true/false boolean.
+5. **Set Value using Smart Value Selector**:
+   - Click the **Value** field.
+   - Type `@` or `/` or click the picker icon to open the **Smart Value Selector**.
+   - Pick a document field, variable, system value, or formula.
+6. **Optional Row Condition ("When")**:
+   - Click **Add Condition** on a row if this specific update should only run under certain conditions.
 
 ---
 
-## 4. Example
+## 4. UI Configuration Options
 
-### Scenario: Calculate Customer Discount and Loyalty Points
+| Option | Description |
+| :--- | :--- |
+| **Target Field** | Select a document field (`doc.field`) or temporary variable (`vars.name`). |
+| **Operator** | `Set`, `Clear`, `Increment`, `Decrement`, `Append`, `Merge`, or `Toggle`. |
+| **Value Input** | Enter values using the **Smart Value Selector** (Static value, `@ Variable`, or `/ Resolver`). |
+| **When Condition** | Optional boolean check evaluated before applying this specific row update. |
 
-1. **Row 1**:
+---
+
+## 5. Practical Example
+
+### Scenario: Calculate Discount and Update Workflow State
+
+To calculate a customer discount and set the workflow status:
+
+1. Add a **Set Value** action and add three configuration rows:
+2. **Row 1 (Rule Variable Calculation)**:
    - **Target**: `vars.discount_rate`
    - **Operator**: `Set`
-   - **Value**: `/math_formula` (`doc.loyalty_points * 0.01`)
-   - **When**: `doc.loyalty_points > 100`
-
-2. **Row 2**:
+   - **Value**: Open Smart Value Selector → Choose Formula → `doc.loyalty_points * 0.01`
+   - **When Condition**: `doc.loyalty_points > 100`
+3. **Row 2 (Document Field Update)**:
    - **Target**: `doc.discount_amount`
    - **Operator**: `Set`
-   - **Value**: `/math_formula` (`doc.grand_total * vars.discount_rate`)
-
-3. **Row 3**:
+   - **Value**: Open Smart Value Selector → Choose Formula → `doc.grand_total * vars.discount_rate`
+4. **Row 3 (Status Update)**:
    - **Target**: `doc.workflow_state`
    - **Operator**: `Set`
-   - **Value**: `Discount Applied`
-
----
-
-## 5. Performance Notes
-
-- **In-Memory Operations**: Mutations to `@doc` and `@vars` occur strictly in-memory during rule execution and add zero database overhead.
-- **Event Timing**: Mutating `@doc` during `Before Save` or `Validate` events automatically persists changes when Frappe saves the document without triggering additional database writes.
-- **Batch Processing**: Multiple assignments in a single Set Value block execute sequentially in $O(N)$ time with minimal overhead.
+   - **Value**: `"Discount Applied"`
 
 ---
 
 ## 6. Common Mistakes
 
-- **Missing Prefix**: Omitting `doc.` or `vars.` (e.g., typing `status` instead of `doc.status`).
-- **Mutating After Submit**: Attempting to update read-only `@doc` fields on `After Save` or `On Submit` events without using an **Update Record** block.
-- **Uninitialized Variable Use**: Referencing `@vars.discount_rate` in row 2 when row 1 was skipped due to a false `when` condition.
+- **Incorrect Field Target**: Choosing `status` instead of selecting `doc.status` from the target picker.
+- **Updating Read-Only Fields After Save**: Trying to update `@doc` fields during `After Save` or `On Submit` events. Use an [Update Record]({{< relref "action-type/update-record/" >}}) action when updating existing database records outside the initial save.
+- **Using Uninitialized Variables**: Referencing `@vars.discount_rate` in a downstream action when the row that creates it was skipped due to a false row condition.
+
+---
+
+## 7. Related Features
+
+- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): Learn how to discover and input values visually.
+- [Update Record]({{< relref "action-type/update-record/" >}}): Use Update Record when modifying other database documents or changing submitted records.
+
+---
+
+## 8. Developer & Technical Details
+
+For information on path resolution, sequential mutation mechanics, and value normalization pipelines:
+- [Assignment Architecture Reference]({{< relref "advanced-concepts/architecture/actions/assignment.md" >}})

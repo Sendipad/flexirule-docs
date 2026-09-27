@@ -1,61 +1,73 @@
 ---
 title: Condition Builder
-description: Learn how to create logical branches in your rules.
+description: Learn how to create visual logical condition groups in FlexiRule.
 weight: 50
 ---
 
 # Condition Builder
 
-The **Condition Builder** is a visual interface used to define "Yes/No" logic. It is most commonly found inside the **Check** block, but it is also used for filters and trigger conditions.
+The **Condition Builder** is a visual interface used to define logical "True/False" evaluation rules. It is used in **Check** blocks, query filters, and trigger condition evaluations.
 
-## How it Looks
+---
 
-Instead of writing complex code, you build conditions using a structured, row-based interface. Each row represents a single logical check.
+## 1. Visual Condition Rows
 
-![Condition Builder Example](/images/demo-condition-and-query.webm)
+Instead of writing complex code, you build conditions using a structured, row-based interface. Each row represents a single comparison check.
 
-## Building a Condition
+A condition row consists of three main parts:
 
-A single condition row consists of three main parts:
+1. **Left Operand**: Select the document field or variable to check (e.g., `Status` or `Grand Total`).
+2. **Operator**: Select the comparison operator (e.g., `Equals`, `Not Equals`, `Greater Than`, `Contains`, `Is Set`).
+3. **Right Operand**: Select the comparison value or field to compare against (e.g., `"Open"` or `5000`).
 
-1.  **Field/Value**: What you are checking (e.g., `Status` or `Grand Total`).
-2.  **Operator**: How you are checking it (e.g., `is`, `is not`, `is greater than`, `contains`).
-3.  **Comparison Value**: What you are checking against (e.g., `Open` or `1000`).
+---
 
-### Powered by the Smart Value System
-For both the first and third parts of a condition, you use the [Smart Value System]({{< relref "smart-value-system.md" >}}). This allows you to:
--   Pick fields directly from the document using `@doc`.
--   Use variables calculated earlier in the rule using `@rule`.
--   Enter static text or numbers.
--   Use resolver functions with `/` for complex comparisons.
+## 2. Using the Smart Value Selector
 
-## Grouping Logic (AND / OR)
+For both operands in a condition row, click the field to open the **Smart Value Selector**:
+- Select document fields (`@doc.grand_total`).
+- Select temporary rule variables (`@vars.calculated_total`).
+- Select system metadata (`@system.today`).
+- Choose dynamic value resolvers (`/math_formula`, `/fetch`, `/child_aggregation`).
 
-Rules often require checking more than one thing at a time. The Condition Builder uses **Groups** to handle this.
+---
 
--   **AND Groups**: All conditions in the group must be true for the whole group to be true. (e.g., "Status is Open" **AND** "Total > 1000").
--   **OR Groups**: Only one condition in the group needs to be true for the whole group to be true. (e.g., "Customer is VIP" **OR** "Order is Urgent").
+## 3. Logical Grouping (ALL / ANY / NOT)
 
-### Nested Groups
-You can add groups inside of other groups to create complex logic. The UI represents this with indented boxes, making it easy to see which conditions belong together.
+You can combine multiple conditions using **Logic Groups**:
 
-## Visual Structure
+- **ALL (AND)**: Every condition row in the group must be true for the group to evaluate to true (e.g., `Status == "Open"` **ALL** `Grand Total > 5000`).
+- **ANY (OR)**: At least one condition row in the group must be true (e.g., `Customer Group == "VIP"` **ANY** `Priority == "Urgent"`).
+- **NOT**: Inverts the result of the group.
 
--   **Add Condition**: Click the `+ Condition` button to add a new row to the current group.
--   **Add Group**: Click the `+ Group` button to create a new nested AND/OR block.
--   **Toggle Logic**: Click the **AND/OR** label at the top of a group to switch the logic for all rows within that group.
--   **Delete**: Use the trash icon next to any row or group to remove it.
+### Nested Condition Groups
+You can add nested groups inside a parent group to express complex logic. The UI represents nested groups with indented visual cards.
 
-## Example: Complex Approval Logic
-Imagine you want a rule to run if:
-*(The Order is from a VIP Customer)* **AND** *(The Total is over $5,000 **OR** the Order is marked as "Urgent")*
+---
 
-In the Condition Builder, this would look like:
-- **Group (AND)**
-  - Row: `Customer Type` is `VIP`
-  - **Group (OR)**
-    - Row: `Grand Total` > `5000`
-    - Row: `Priority` is `Urgent`
+## 4. UI Controls
 
-## Validation
-As you build, FlexiRule checks your logic. If you leave a value empty or use an operator that doesn't make sense for the field type (like using "Greater Than" on a text field), the builder will highlight the error so you can fix it before saving.
+- **Add Condition**: Click **+ Condition** to add a new check row to the current group.
+- **Add Group**: Click **+ Group** to create a nested ALL/ANY block.
+- **Toggle Group Logic**: Click the **ALL / ANY** logic pill at the top of a group card to toggle logic.
+- **Remove Row / Group**: Click the trash icon next to a condition row or group to remove it.
+
+---
+
+## 5. Practical Example
+
+### Scenario: High-Value VIP Approval Condition
+
+To check if an order requires manager approval:
+- **Group (ALL)**
+  - Row 1: `Customer Group` `Equals` `"VIP"`
+  - **Group (ANY)**
+    - Row 2: `Grand Total` `Greater Than` `100,000`
+    - Row 3: `Priority` `Equals` `"Urgent"`
+
+---
+
+## 6. Related Features
+
+- [Check (Condition) Action]({{< relref "action-type/condition.md" >}}): Use conditions to branch rule execution paths.
+- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): How to pick fields and values in condition rows.

@@ -1,6 +1,6 @@
 ---
 title: Sub-Rule
-description: Execute nested reusable sub-rules within the primary rule execution flow.
+description: Run an exposed sub-rule as a reusable module within your visual rule flow.
 weight: 90
 entity_kind: action_operation
 category: logic-control
@@ -12,60 +12,76 @@ aliases:
 
 # Sub-Rule Action
 
-The **Sub-Rule** action (internal handler: `SubRuleHandler`) executes another rule exposed as a sub-rule directly within the parent execution context, enabling nested composition and logic reuse.
+The **Sub-Rule** action lets you run another rule—exposed as a sub-rule—directly inside your main rule flow, allowing you to reuse modular logic across multiple rules.
 
 ---
 
-## 1. When to Use
+## 1. What is it?
 
-Use the Sub-Rule action when you need to:
-- Encapsulate reusable multi-step verification or workflow logic (e.g., standard approval workflows).
-- Modularize complex rules into clean, maintainable sub-flows.
-- Share automation routines across different DocTypes or trigger events.
+A Sub-Rule block executes a separate rule flow and passes variables back and forth. This lets you build reusable logic modules (like standard approval workflows or credit checks) once and call them from multiple rules.
 
----
-
-## 2. Configuration
-
-### Configuration Fields
-- **Sub-Rule**: Select target Rule (must have `exposed_as_subrule = 1` enabled).
-- **Target Context / Document**: Pass the target document or payload (`@doc` or custom variable).
-- **Input Mappings**: Map parent context variables (`@vars`) to input fields expected by the sub-rule.
-- **Output Variable**: Store the sub-rule's returned variables in parent `@vars.<output_variable>`.
+```
+Main Rule ──→ Sub-Rule ("Calculate Customer Risk") ──→ Next Action (Check Risk Score)
+```
 
 ---
 
-## 3. Output
+## 2. When to Use
 
-- **Sub-Context Merging**: Sub-rule execution outputs are captured and mapped into parent `@vars`.
-- **Branching**: Continues down primary outbound edge after sub-rule completion.
-- **Return Contract**: Returns `{"sub_rule_execution_id": "...", "outputs": {...}}`.
+Use a Sub-Rule action when you need to:
+- **Reuse multi-step verification routines** across different DocTypes or trigger events.
+- **Break down complex rules** into clean, modular sub-flows.
+- **Standardize business calculations** (e.g., standard credit scoring or discount rules).
 
 ---
 
-## 4. Example
+## 3. How to Configure
 
-### Scenario: Invoke Standard Risk Scoring Sub-Rule
+1. **Add the Action**: Add a **Sub-Rule** block to your visual canvas.
+2. **Select Target Sub-Rule**:
+   - Choose from the list of rules exposed as sub-rules.
+3. **Map Input Variables**:
+   - Map values from your main rule to the input variables expected by the sub-rule using the **Smart Value Selector**.
+4. **Set Output Variable**:
+   - Enter a variable name (e.g., `risk_result`) to capture the sub-rule's returned output in `@vars`.
+5. **Connect Outbound Branch**: Connect the Sub-Rule block's output port to the next action node.
 
-1. **Sub-Rule Configuration**:
-   - **Target Sub-Rule**: `"Calculate Customer Risk Score"`
-   - **Input Mapping**: `customer` -> `@doc.customer`
-   - **Output Variable**: `risk_score_result`
-2. **Next Node (Check)**:
+---
+
+## 4. UI Configuration Options
+
+| Option | Description |
+| :--- | :--- |
+| **Sub-Rule** | Select target rule (must have *Exposed as Sub-Rule* enabled in its rule configuration). |
+| **Input Mappings** | Map main rule fields/variables to sub-rule parameters using the **Smart Value Selector**. |
+| **Output Variable** | Variable name in `@vars` where sub-rule output results will be stored. |
+
+---
+
+## 5. Practical Example
+
+### Scenario: Run Standard Customer Risk Scoring Sub-Rule
+
+1. **Sub-Rule Block Configuration**:
+   - **Sub-Rule**: Select `"Calculate Customer Risk Score"`.
+   - **Input Mapping**: Map `Customer` → `@doc.customer` using Smart Value Selector.
+   - **Output Variable**: Enter `risk_score_result`.
+2. **Next Action (Check)**:
+   - Add a **Check** block following the sub-rule.
    - **Condition**: `@vars.risk_score_result.score > 80`
-   - **True Branch**: Route to manager review.
-
----
-
-## 5. Performance Notes
-
-- **In-Memory Invocation**: Sub-rules execute in the same process thread and transaction boundary, avoiding network overhead.
-- **Depth Guard**: FlexiRule enforces a maximum call depth ceiling (10 levels) to prevent stack overflow from infinite recursion.
+   - **True Branch**: Route to manager review notification.
 
 ---
 
 ## 6. Common Mistakes
 
-- **Sub-Rule Not Exposed**: Attempting to select a target rule that does not have `Exposed as Sub-Rule` enabled in its settings.
-- **Circular Sub-Rule Calls**: Creating a chain where Rule A calls Rule B, which calls Rule A.
-- **Missing Variable Mappings**: Failing to supply required input variables expected by the sub-rule.
+- **Sub-Rule Not Exposed**: Trying to select a rule that does not have *Exposed as Sub-Rule* enabled in its settings.
+- **Circular Sub-Rule Calls**: Creating a loop where Rule A calls Sub-Rule B, which calls Sub-Rule A.
+- **Missing Input Mappings**: Forgetting to map mandatory input variables required by the sub-rule.
+
+---
+
+## 7. Related Features
+
+- [Rule Configuration]({{< relref "rule-builder/rule-configuration.md" >}}): Learn how to expose a rule as a reusable sub-rule.
+- [Advanced Process]({{< relref "action-type/process.md" >}}): Execute pre-built code operations rather than visual sub-rules.

@@ -1,6 +1,6 @@
 ---
 title: Switch
-description: Route rule execution down multiple matching branches based on key value comparisons.
+description: Route execution along multiple outbound paths based on matching field values.
 weight: 70
 entity_kind: action_operation
 category: logic-control
@@ -12,57 +12,79 @@ aliases:
 
 # Switch Action
 
-The **Switch** action (internal handler: `SwitchHandler`) provides multi-way value branching, routing execution down matching case branches based on an evaluated target expression.
+The **Switch** action provides multi-way visual branching, routing execution down matching case paths based on the value of a target field or variable.
 
 ---
 
-## 1. When to Use
+## 1. What is it?
+
+Instead of connecting multiple Check (If/Else) blocks together, a Switch block evaluates a single field or variable and branches execution directly to the matching case port. It also includes a **Default** branch for unhandled values.
+
+```
+                     ┌── "High" ───→ Action A (Alert Engineer)
+                     ├── "Medium" ─→ Action B (Queue Email)
+Switch (Priority) ───┼── "Low" ────→ Action C (Set SLA = 5)
+                     └── Default ──→ Action D (Set SLA = 3)
+```
+
+---
+
+## 2. When to Use
 
 Use the Switch action when you need to:
-- Route logic based on categorical fields with more than two outcomes (e.g., `doc.status`, `doc.territory`, `doc.customer_group`).
-- Replace multiple nested **Check (Condition)** nodes with a single clean multi-port branching block.
-- Fallback safely to a Default branch when no explicit cases match.
+- **Route logic based on categorical fields** with three or more values (e.g., `Status`, `Territory`, `Customer Group`, `Priority`).
+- **Simplify complex flows** by replacing chained Check (If/Else) blocks with a single multi-port node.
+- **Provide a fallback path** using the **Default** branch when an unexpected or unlisted value is encountered.
 
 ---
 
-## 2. Configuration
+## 3. How to Configure
 
-### Configuration Fields
-- **Target Value**: Field or variable evaluated by the switch (e.g., `@doc.status` or `@vars.category`).
-- **Cases List**: Define case key values (e.g., `"Pending"`, `"Approved"`, `"Rejected"`).
-- **Default Branch**: Fallback outbound edge executed when no defined cases match.
+1. **Add the Action**: Add a **Switch** block to your visual canvas.
+2. **Select Target Value**:
+   - Click **Target Field**.
+   - Use the **Smart Value Selector** to pick a document field (e.g., `Priority` or `@doc.priority`) or variable (`@vars.category`).
+3. **Add Cases**:
+   - Click **Add Case**.
+   - Enter the expected value string or number for each branch (e.g., `"High"`, `"Medium"`, `"Low"`).
+4. **Connect Outbound Branches**:
+   - Connect each case port (`"High"`, `"Medium"`, `"Low"`) to its corresponding action.
+   - Connect the **Default** port to the action that should run if none of the explicit cases match.
 
 ---
 
-## 3. Output
+## 4. UI Configuration Options
 
-- **Multi-Port Branching**: Execution proceeds down the outbound port corresponding to the matching case key.
-- **Return Contract**: Returns `{"matched_case": "Approved", "target_value": "Approved"}`.
+| Option | Description |
+| :--- | :--- |
+| **Target Field** | Select the field or variable to evaluate using the **Smart Value Selector**. |
+| **Cases List** | Add matching case values (e.g., `"Pending"`, `"Approved"`, `"Rejected"`). Each case creates an outbound port. |
+| **Default Branch** | Outbound port followed when no defined cases match the evaluated target value. |
 
 ---
 
-## 4. Example
+## 5. Practical Example
 
 ### Scenario: Route Support Tickets by Priority
 
-1. **Switch Configuration**:
-   - **Target**: `@doc.priority`
-   - **Cases**: `"High"`, `"Medium"`, `"Low"`
-2. **Branch Outputs**:
-   - **Case "High"**: Connect to **Notify** (SMS alert to On-Call Engineer).
-   - **Case "Medium"**: Connect to **Notify** (Email to Support Queue).
-   - **Case "Low"**: Connect to **Set Value** (`doc.sla_days = 5`).
-   - **Default**: Connect to **Set Value** (`doc.sla_days = 3`).
-
----
-
-## 5. Performance Notes
-
-- **O(1) Hash Lookup**: Case evaluation matches keys in constant time $O(1)$, making it significantly faster than chaining 5+ Check nodes.
+1. Add a **Switch** action and set Target Field to `Priority` (`@doc.priority`).
+2. Add three cases: `"High"`, `"Medium"`, and `"Low"`.
+3. **Connect Branches**:
+   - **Case "High"**: Connect to **Notify** action (Send instant alert to on-call engineer).
+   - **Case "Medium"**: Connect to **Notify** action (Send email to support team queue).
+   - **Case "Low"**: Connect to **Set Value** action (`doc.sla_days = 5`).
+   - **Default**: Connect to **Set Value** action (`doc.sla_days = 3`).
 
 ---
 
 ## 6. Common Mistakes
 
-- **Case-Sensitivity Mismatches**: Matching `"high"` against `"High"` without normalizing string casing first.
-- **Unconnected Default Branch**: Leaving the Default port empty, causing execution to halt unexpectedly when an unhandled value is encountered.
+- **Case-Sensitivity Mismatches**: Matching `"high"` against `"High"`. Make sure case strings match exact field values.
+- **Unconnected Default Branch**: Leaving the **Default** branch empty, which causes rule execution to stop quietly if an unexpected value occurs.
+
+---
+
+## 7. Related Features
+
+- [Check (Condition)]({{< relref "action-type/condition.md" >}}): Use Check when evaluating complex true/false conditions (AND/OR logic) rather than simple value matching.
+- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): How to select target fields visually.
