@@ -1,47 +1,66 @@
 ---
 title: Automatically Assign Documents
-description: Tutorial on routing documents to users based on round-robin or specific field values.
+description: Visual step-by-step tutorial on routing documents to specific team members based on field selections.
 weight: 30
 ---
 
 # Tutorial: Automatically Assign Documents
 
-In this tutorial, we will build a rule that automatically assigns a "High Priority" Support Ticket to a Senior Support Engineer.
+In this tutorial, you will visually build a rule that automatically assigns high-priority Support Tickets to a Senior Engineer and updates ticket status.
 
-## Business Scenario
-**Objective**: Ensure that critical issues are immediately brought to the attention of the right personnel without manual intervention.
-**Prerequisites**: A "Support Ticket" DocType with a "Priority" field.
+---
 
-## Step-by-Step Instructions
+## Scenario Overview
 
-### 1. Create the Rule
-1. Go to **Rule List** and click **New**.
-2. **Rule Name**: "Auto-Assign Critical Tickets".
-3. **Document Type**: "Support Ticket".
-4. **Trigger Event**: "Before Save".
-5. Click **Save** and **Open Rule Builder**.
+**Business Goal**: Instantly assign critical support tickets to senior staff without manual triage.
 
-### 2. Add Priority Check
-1. Add a **Condition** node after the Entry Action.
-2. Config: `priority` is `High` OR `Critical`.
+- **Target DocType**: `Support Ticket`
+- **Trigger Event**: `DocType Event` -> `Before Save`
+- **Visual Nodes**: `Start` -> `Check` -> `Update Record` -> `Set Value`
 
-### 3. Add Assignment Action
-1. From the **True** branch of the Condition, add an **Update Record** action.
-2. **Mode**: "Create ToDo".
-3. **Assigned To**: `senior_engineer@yourcompany.com` (or use a dynamic expression to pick from a list).
-4. **Description**: `High priority ticket {{ doc.name }} requires your attention.`
+---
 
-### 4. Update Ticket Status
-1. Add an **Assignment** node after the "Create ToDo" action.
-2. **Target**: `doc.status`.
-3. **Operator**: `Set`.
-4. **Value**: `Assigned`.
+## Step-by-Step UI Instructions
 
-### 5. Test and Enable
-1. Run a **Test Run** with a High priority ticket.
-2. Verify that a ToDo is created and the ticket status changes to "Assigned".
-3. Enable the rule.
+### Step 1: Create the Rule
+1. Go to **FlexiRule -> Rule List -> New**.
+2. Set **Rule Name** to `Auto-Assign Critical Tickets`.
+3. Set **Document Type** to `Support Ticket`.
+4. Set **Trigger Event** to `Before Save`.
+5. Click **Save** and open the **Rule Builder**.
 
-## Tips and Best Practices
-- **Round-Robin**: For more advanced routing, you can use a **Process Operation** that keeps track of the last assigned user in a custom DocType and picks the next one in line.
-- **Notification**: Consider adding a **Notify** action (Toast) to tell the person saving the ticket that it has been automatically assigned.
+---
+
+### Step 2: Configure the Check Node for Ticket Priority
+1. Connect a **Check** (Condition) node from the **Start** node.
+2. In the Check configuration panel:
+   - Set Group Logic to **ANY**.
+   - Click the first value field, type `@` to open the **Smart Value Selector**, and select **Support Ticket → Priority**.
+   - Set Operator to **Equals**, enter `High`.
+   - Click **Add Condition**.
+   - Select **Support Ticket → Priority**, set Operator to **Equals**, enter `Critical`.
+
+---
+
+### Step 3: Add Update Record Node (Create Assignment)
+1. From the **True** outbound port of the Check node, connect an **Update Record** action node.
+2. In the Update Record configuration panel:
+   - Set **Target Operation** to `Create ToDo / Assignment`.
+   - In the **Assigned To** field, enter `senior_engineer@yourcompany.com` or use `@` to select a user field.
+   - Click the **Description** field, type `Critical issue requires attention for ticket `, type `@` to open the **Smart Value Selector**, and select **Support Ticket → Name**.
+
+---
+
+### Step 4: Update Ticket Status using Set Value
+1. From the outbound port of the Update Record node, connect a **Set Value** node.
+2. In the Set Value configuration panel:
+   - Click **Target Path**, type `@`, and select **Support Ticket → Status**.
+   - Set **Operator** to `Set`.
+   - In the **Value** field, enter `Assigned`.
+
+---
+
+### Step 5: Test and Enable
+1. Click **Test Run**, select a High priority ticket, and click **Run Test**.
+2. Verify the visual path highlights in green, creating a ToDo and setting ticket status to Assigned.
+3. Close the builder, enable the rule, and save.
