@@ -24,11 +24,11 @@ FlexiRule uses a **Schema-Driven Rendering** approach. The frontend does not "kn
 The UI is built on a library of **Polymorphic Controls**:
 - **`ComboBoxControl`**: Handles Links, Autocompletes, and "DocField" selection.
 - **`MultiSelectList`**: Manages collections and multi-select tags.
-- **`FlexValueControl`**: The "King" of controls—a multi-modal input that switches between static values, variable tokens, and advanced resolver builders.
+- **`FlexValueControl` (Smart Value Selector)**: The "King" of controls—a multi-modal input that switches between static values, variable tokens, and advanced resolver builders.
 
 ---
 
-## ⚡ FlexValueControl: The Multi-Modal Editor
+## ⚡ Smart Value Selector (`FlexValueControl`): The Multi-Modal Editor
 This is a critical low-code primitive. It uses **Tiptap (ProseMirror)** to allow users to mix:
 - **Plain Text**: Just typing.
 - **@Variables**: Searching for context variables via a mention-style popup.

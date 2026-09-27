@@ -1,6 +1,6 @@
 ---
-title: Condition
-description: Evaluate complex logic gates to determine the execution path.
+title: Check (Condition)
+description: Evaluate logical condition groups to branch execution path between True and False branches.
 weight: 40
 entity_kind: action_operation
 category: logic-control
@@ -8,61 +8,70 @@ mutation: false
 targets: ["Frappe DocType", "Context Variable"]
 ---
 
-# Condition Action (Check)
+# Check (Condition) Action
 
-The **Condition** action (referred to as **Check** in user-first documentation) is the primary decision-making node in FlexiRule. it evaluates one or more logical expressions and directs the flow to either the **True** (Success) or **False** (Failure) branch.
+The **Check** action (internal handler: `Condition`) is the visual decision-making block in FlexiRule. It evaluates condition expressions against runtime context and branches the execution path along either the **True** or **False** outbound edge.
 
-## Purpose
+---
 
-Use the Condition action to:
-- Validate data before proceeding (e.g., "Is the Sales Order date in the future?").
-- Branch logic based on field values (e.g., "If Category is 'Electronics', go to Step A, else go to Step B").
-- Evaluate complex business rules involving multiple fields and child tables.
+## 1. When to Use
 
-## Action Capabilities
+Use the Check action when you need to:
+- Validate document attributes before allowing workflow progression (e.g., check if `grand_total > 50000`).
+- Route execution down different business branches based on customer tier, region, or status.
+- Evaluate child table collection rules (e.g., verify whether **all** line items have warehouse assigned).
+- Compare current document values against historical `@old_doc` values or `@vars`.
 
-| Capability | Support | Notes |
-| :--- | :--- | :--- |
-| **Nested Groups** | ✅ Yes | Support for recursive AND/OR logic groups. |
-| **Collection Logic**| ✅ Yes | Check if **Any**, **All**, or **None** of the rows in a child table meet a criteria. |
-| **Fast Execution** | ✅ Yes | Conditions are pre-compiled into optimized Python strings. |
-| **Cross-Context** | ✅ Yes | Compare `doc` fields against `vars`, `session` user, or global constants. |
+---
 
-## Configuration
+## 2. Configuration
 
-### 1. Condition Groups
-Conditions are organized into groups. Each group has a logical operator:
-- **ALL (AND)**: Every condition in the group must be true.
-- **ANY (OR)**: At least one condition in the group must be true.
-- **NONE (NOT)**: No conditions in the group can be true.
+The Check action is configured using the **Condition Builder**:
 
-### 2. Simple Conditions
-A simple condition consists of:
-- **Field/Subject**: The value being checked (e.g., `doc.status`).
-- **Operator**: The comparison logic (e.g., `Equals`, `Contains`, `Is Set`, `Matches Regex`).
-- **Value/Object**: The criteria to check against.
+### Structure & Operators
+- **Logic Grouping**: Combine conditions with `ALL` (AND), `ANY` (OR), or `NOT` logic.
+- **Comparison Operators**:
+  - `==` (Equals), `!=` (Not Equals)
+  - `>`, `>=`, `<`, `<=` (Numeric comparisons)
+  - `contains`, `not contains`, `in`, `not in` (Text/List search)
+  - `is set`, `is not set` (Null/empty checks)
+- **Operands**: Configured using the **Smart Value Selector** (`@doc`, `@vars`, `@system`, or `/ Resolvers`).
+- **Collection Conditions**: Evaluate child table lists using `any`, `all`, `none`, or `count` operations.
 
-### 3. Collection Evaluations (New in V2)
-You can now evaluate child tables (collections) directly:
-- **Target**: A child table field (e.g., `doc.items`).
-- **Evaluation**: "At least one row matches", "Every row matches", "No rows match".
-- **Criteria**: A nested set of conditions applied to each row in the collection.
+---
 
-## Execution Semantics
+## 3. Output
 
-1.  **Evaluation**: The engine evaluates the compiled expression against the current context.
-2.  **Branching**:
-    - If `True`: The engine follows the connection labeled **True** (next_step_if_true).
-    - If `False`: The engine follows the connection labeled **False** (next_step_if_false).
-3.  **Default Behavior**: If a branch is not connected, the rule execution finishes successfully at that node.
+- **Boolean Decision**: Evaluates to `True` or `False`.
+- **Branching**:
+  - If `True`: Execution continues along the **True** outbound edge.
+  - If `False`: Execution continues along the **False** outbound edge.
+- **Return Contract**: Returns `{"result": true, "evaluated_expression": "..."}`.
 
-## Best Practices
+---
 
-- **Flatten Logic**: While FlexiRule supports deeply nested groups, keeping conditions shallow makes them easier for others to read.
-- **Check for "Set"**: Before comparing a field value, use the "Is Set" operator if the field might be empty, to avoid unexpected results.
-- **Visual Feedback**: During a Test Run, FlexiRule highlights the path taken, allowing you to see exactly why a condition evaluated the way it did.
+## 4. Example
 
-## Common Mistakes
+### Scenario: High-Value VIP Credit Check
 
-- **Comparing Strings and Numbers**: Ensure the types match. Comparing a string "100" to a number 100 might fail depending on the operator.
-- **Empty Groups**: An empty "ALL" group typically evaluates to `True`, while an empty "ANY" group evaluates to `False`.
+- **Condition Group**: `ALL`
+  - **Row 1**: `@doc.grand_total` `>` `100000`
+  - **Row 2**: `@doc.customer_group` `==` `"VIP"`
+  - **Row 3**: `/fetch` (`customer`, `Customer`, `credit_limit`) `>=` `@doc.grand_total`
+- **True Branch**: Connect to **Set Value** (`doc.status = "Approved"`).
+- **False Branch**: Connect to **Notify** (Alert Credit Manager).
+
+---
+
+## 5. Performance Notes
+
+- **Pre-Compiled Expressions**: Condition expressions are pre-compiled into optimized Python Bytecode by `ConditionEvaluator`, executing in under 0.1ms per evaluation.
+- **Short-Circuit Evaluation**: Logical groups evaluate lazily (`ALL` stops at first `False`; `ANY` stops at first `True`), avoiding unnecessary resolver evaluations.
+
+---
+
+## 6. Common Mistakes
+
+- **Disconnected Branch**: Leaving either the `True` or `False` outbound port disconnected when action logic was expected on both paths.
+- **Null Reference Errors**: Comparing fields that may be empty without using an `is set` check first.
+- **Type Mismatch**: Comparing text string `"100"` with numeric integer `100`.

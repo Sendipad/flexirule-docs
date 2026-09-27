@@ -1,6 +1,6 @@
 ---
-title: Stop and Error Handling
-description: Terminate rule execution silently or raise validation errors to the user.
+title: Stop / Error
+description: Terminate rule execution silently or block document saving with a custom validation error message.
 weight: 100
 entity_kind: action_operation
 category: logic-control
@@ -8,53 +8,62 @@ mutation: false
 targets: ["Rule Execution", "Validation Error"]
 ---
 
-# Stop and Error Handling Action
+# Stop / Error Action
 
-The **Stop** and **Raise Error** actions are terminal nodes that control how a rule flow concludes. They are essential for implementing validation logic and early exits.
+The **Stop / Error** action (internal handler: `simple_actions.StopActionHandler`) serves as a terminal node in the visual rule graph, controlling how rule execution terminates.
 
-## Purpose
+---
 
-Use these actions to:
-- **Silently Terminate**: Stop the rule execution without any message (e.g., "If Category is not relevant, Stop").
-- **Enforce Validation**: Block a document save or submission with a custom error message.
-- **Rollback Changes**: Stop the current database transaction to prevent invalid data from being saved.
+## 1. When to Use
 
-## Action Capabilities
+Use the Stop / Error action when you need to:
+- **Block Document Save/Submit**: Prevent users from saving invalid data by throwing a user-facing `frappe.ValidationError`.
+- **Early Exit (Silent Stop)**: Terminate rule execution cleanly when pre-conditions fail without raising errors.
+- **Rollback Changes**: Cancel pending database mutations made during the current transaction.
 
-| Capability | Support | Notes |
-| :--- | :--- | :--- |
-| **Terminal** | ✅ Yes | No next steps are possible after this node. |
-| **Custom Messages** | ✅ Yes | Supports Jinja templates for dynamic error messages. |
-| **Transaction Control**| ✅ Yes | "Error" mode triggers a database rollback. |
-| **Traceability** | ✅ Yes | Automatically appends a link to the "Source Rule" in error popups. |
+---
 
-## Modes of Operation
+## 2. Configuration
 
-### 1. Success (Silent Stop)
-The rule finishes immediately and successfully.
-- **Behavior**: No further nodes are executed. Any changes made by previous nodes in the graph are **committed** to the database.
+### Configuration Options
+- **Mode**:
+  - `Error` (Raise Validation Error): Displays error popup and aborts transaction.
+  - `Stop / Exit` (Silent Exit): Terminates rule execution cleanly without error popup.
+- **Message Template**: Configured via the **Smart Value Selector** (`Static Text`, `@ Variables`, or `/ Resolvers`). Supports formatted error messages.
+- **Title**: (Optional) Title header displayed on Frappe error dialogs.
 
-### 2. Error (Raise Error)
-The rule stops and throws a `frappe.ValidationError`.
-- **Behavior**: A standard Frappe error popup appears with your message. The current database transaction is **rolled back**, meaning any changes made by previous nodes in the same rule are cancelled.
-- **Message**: You can use Jinja to make the error helpful:
-  ```jinja
-  Cannot submit order {{ doc.name }}: The grand total must be at least {{ vars.min_amount }}.
-  ```
+---
 
-## Configuration
+## 3. Output
 
-- **Operation/Mode**: Choose between "Success" or "Error".
-- **Error Message**: (Only for Error mode) The template for the message shown to the user.
-- **Error Title**: (Optional) A custom title for the error popup.
+- **Terminal Node**: No outbound edges are allowed; execution halts immediately.
+- **Transaction Impact**:
+  - `Error Mode`: Raises `frappe.ValidationError`, causing Frappe to rollback database transaction.
+  - `Stop Mode`: Completes cleanly, committing preceding in-memory `@doc` mutations.
 
-## Best Practices
+---
 
-- **Provide Clear Messages**: When raising an error, tell the user exactly *why* the rule stopped and what they can do to fix it.
-- **Use for Guard Clauses**: Use a **Condition** followed by a **Stop** node at the beginning of your rule to "exit early" if the document doesn't need processing. This saves system resources.
-- **Validation First**: Perform all your checks and "Raise Error" nodes before you perform any "Update Record" actions that have side effects.
+## 4. Example
 
-## Common Mistakes
+### Scenario: Prevent Sales Order Submission without Valid Customer Tax ID
 
-- **Stopping vs. Ending**: You don't *need* a Stop node at every branch. If a branch simply ends without a connection, FlexiRule treats it as a successful silent stop automatically.
-- **Rollback Confusion**: Remember that "Error" mode rolls back the *entire* rule's changes. If you want to log an error but keep the changes, use a **Notify** (Toast) action followed by a **Stop (Success)** instead.
+1. **Check Node**: Is `@doc.tax_id` `is not set` AND `@doc.grand_total > 10000`?
+2. **True Branch**: Connect to **Stop / Error** node.
+3. **Stop / Error Configuration**:
+   - **Mode**: `Error`
+   - **Message**: `"Sales Order {doc.name} cannot be submitted without a valid Tax ID for orders above 10,000."`
+
+---
+
+## 5. Performance Notes
+
+- **Zero DB Overhead**: Terminal checks execute immediately in memory without additional database operations.
+- **Fast Exit**: Placing a **Stop (Silent Exit)** early in the flow saves CPU cycles by bypassing unnecessary downstream nodes.
+
+---
+
+## 6. Common Mistakes
+
+- **Confusing Silent Stop with Error**: Using `Stop (Exit)` when you intended to prevent a document save (Silent Stop allows save to complete).
+- **Generic Error Messages**: Raising unhelpful errors like `"Error occurred"` instead of providing actionable feedback to the user.
+- **Redundant Stop Nodes**: Adding a Stop node at the end of every branch (FlexiRule automatically finishes execution when an outbound branch ends naturally).

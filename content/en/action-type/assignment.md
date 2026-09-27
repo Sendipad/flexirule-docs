@@ -1,5 +1,5 @@
 ---
-title: Assignment
+title: Set Value (Assignment)
 description: Perform sequential batch state mutations on document fields and context variables.
 weight: 50
 entity_kind: action_operation
@@ -8,64 +8,82 @@ mutation: true
 targets: ["Frappe DocType", "Context Variable"]
 ---
 
-# Assignment Action
+# Set Value (Assignment) Action
 
-The **Assignment** action (formerly *Set Value*) is the primary mechanism for state mutation in FlexiRule. It allows you to define a sequence of mutations—**Batch Assignments**—that are executed in order to update document fields or manage internal rule state.
+The **Set Value** action (internal handler: `Assignment`) is the primary mechanism for state mutation in FlexiRule. It allows you to define a sequence of mutations—**Batch Assignments**—that run sequentially to update document fields or store internal rule state.
 
-## Purpose
+---
 
-Use the Assignment action when you need to:
-- Update fields on the triggering document (e.g., change `status` to "Approved").
-- Initialize or update context variables (`vars`) to store intermediate calculation results.
-- Perform mathematical operations (Increment, Decrement) on numeric fields.
-- Manage collections (Append to lists, Merge dictionaries).
+## 1. When to Use
 
-## Action Capabilities
+Use the Set Value action when you need to:
+- Update fields on the triggering document (e.g., set `workflow_state` to `"Approved"` or `posting_date` to today).
+- Initialize or update temporary context variables (`@vars`) to store intermediate calculation results for downstream blocks.
+- Perform numeric calculations (Increment, Decrement) on fields or variables.
+- Append items to list variables or merge dictionary objects.
+- Normalize and sanitize incoming text fields before saving.
 
-| Capability | Support | Notes |
-| :--- | :--- | :--- |
-| **Batch Execution** | ✅ Yes | Execute multiple assignments in a single node. |
-| **Conditional Rows** | ✅ Yes | Each assignment row can have its own `when` condition. |
-| **Multi-Operator** | ✅ Yes | Supports Set, Clear, Increment, Decrement, Append, Merge, and Toggle. |
-| **Data Normalization**| ✅ Yes | Integrated pipelines for cleaning and transforming data. |
-| **Value Resolution** | ✅ Yes | Unified resolver for static values, formulas, and complex lookups. |
+---
 
-## Configuration
+## 2. Configuration
 
-The Assignment action uses a grid-based interface where each row represents one mutation.
+The Set Value configuration panel uses a sequential grid where each row represents one mutation step:
 
-### 1. Target Path
-Defines where the value will be stored.
-- `doc.field_name`: Updates a field on the current document.
-- `vars.variable_name`: Sets a temporary variable available for the rest of the rule execution.
+### Row Configuration Fields
+- **Target Path**: Destination path (`doc.fieldname` for document fields or `vars.variable_name` for temporary context variables).
+- **Operator**:
+  - `Set`: Overwrites target with resolved value.
+  - `Clear`: Resets target to `None` or empty.
+  - `Increment`: Adds numeric value to existing total.
+  - `Decrement`: Subtracts numeric value from existing total.
+  - `Append`: Appends item to a list/array variable.
+  - `Merge`: Merges key-value dictionary into target object.
+  - `Toggle`: Inverts boolean value (`true` <-> `false`).
+- **Value Input**: Configured via the **Smart Value Selector** (`Static Value`, `@ Variable`, or `/ Resolver`).
+- **Condition (`when`)**: Optional boolean expression evaluated before running the specific row mutation.
 
-### 2. Operator
-Defines *how* the value is applied:
-- **Set**: Replaces the current value with the new value.
-- **Clear**: Removes the value (sets to `None` or empty).
-- **Increment / Decrement**: Adds or subtracts from the current numeric value.
-- **Append**: Adds a value to the end of a list/array.
-- **Merge**: Merges a dictionary into the target dictionary.
-- **Toggle**: Swaps a boolean value between `true` and `false`.
+---
 
-### 3. Value
-The new value or operand. This can be:
-- **Static Value**: A hardcoded string, number, or date.
-- **Variable Path**: A reference to another field (e.g., `doc.base_amount`).
-- **Formula**: A Python-based expression for calculations.
-- **Data Pipeline**: A sequence of normalization steps (e.g., Trim → Uppercase).
+## 3. Output
 
-### 4. Condition (When)
-An optional expression that must evaluate to `true` for this specific assignment to run. This allows for complex "If-Else" logic within a single Assignment block.
+- **Context Mutation**: Directly mutates `@doc` or `@vars` in the execution context.
+- **Return Contract**: Returns a dictionary of applied mutations: `{"mutations": [{"target": "doc.status", "value": "Approved"}, ...]}`.
+- **Next Node Execution**: Execution immediately proceeds down the primary outbound edge.
 
-## Best Practices
+---
 
-- **Use Variables for Clarity**: Instead of repeating a complex formula in multiple nodes, calculate it once and store it in a `vars.total_price` variable.
-- **Sequential Logic**: Remember that assignments run from top to bottom. If row 2 depends on the result of row 1, it will work correctly.
-- **Event Awareness**: FlexiRule prevents you from mutating `doc.*` fields during "After Save" or "On Submit" events to prevent database inconsistencies. Use "Before Save" for field updates.
+## 4. Example
 
-## Common Mistakes
+### Scenario: Calculate Customer Discount and Loyalty Points
 
-- **Incorrect Path**: Forgetting the `doc.` or `vars.` prefix. `status` will fail; `doc.status` will succeed.
-- **Type Mismatch**: Trying to `Increment` a text field or `Append` to a number.
-- **Infinite Loops**: Setting a field that triggers the same rule again (though FlexiRule has built-in cycle detection to catch this).
+1. **Row 1**:
+   - **Target**: `vars.discount_rate`
+   - **Operator**: `Set`
+   - **Value**: `/math_formula` (`doc.loyalty_points * 0.01`)
+   - **When**: `doc.loyalty_points > 100`
+
+2. **Row 2**:
+   - **Target**: `doc.discount_amount`
+   - **Operator**: `Set`
+   - **Value**: `/math_formula` (`doc.grand_total * vars.discount_rate`)
+
+3. **Row 3**:
+   - **Target**: `doc.workflow_state`
+   - **Operator**: `Set`
+   - **Value**: `Discount Applied`
+
+---
+
+## 5. Performance Notes
+
+- **In-Memory Operations**: Mutations to `@doc` and `@vars` occur strictly in-memory during rule execution and add zero database overhead.
+- **Event Timing**: Mutating `@doc` during `Before Save` or `Validate` events automatically persists changes when Frappe saves the document without triggering additional database writes.
+- **Batch Processing**: Multiple assignments in a single Set Value block execute sequentially in $O(N)$ time with minimal overhead.
+
+---
+
+## 6. Common Mistakes
+
+- **Missing Prefix**: Omitting `doc.` or `vars.` (e.g., typing `status` instead of `doc.status`).
+- **Mutating After Submit**: Attempting to update read-only `@doc` fields on `After Save` or `On Submit` events without using an **Update Record** block.
+- **Uninitialized Variable Use**: Referencing `@vars.discount_rate` in row 2 when row 1 was skipped due to a false `when` condition.
