@@ -1,68 +1,84 @@
 ---
 title: Repeat (Loop)
-description: Iterate over a list of items and execute a sequence of actions for each.
+description: Iterate over child table rows or query collections to run actions for each item.
 weight: 60
+entity_kind: action_operation
+category: logic-control
+mutation: false
+targets: ["Frappe DocType", "Context Variable"]
 aliases:
   - /docs/actions/loop/
 ---
 
-# Repeat Action (Loop)
+# Repeat (Loop) Action
 
-The **Repeat** action (internally called **Loop**) allows you to iterate over a collection of items—such as rows in a child table or results from a **Query Records** block—and execute a specific execution path for each item.
+The **Repeat** action (internal handler: `Loop`) iterates over a collection of items—such as child table rows (`@doc.items`) or query results (`@vars.query_results`)—executing a sub-flow for each item before exiting.
 
-## How it Works
+---
 
-1.  **Iterator**: You define which list to iterate over (e.g., `doc.items` or `vars.query_results`).
-2.  **Item Alias**: You define a name for the current item (e.g., `item` or `row`). This variable is updated in every iteration.
-3.  **The Loop Path**: The engine follows the **True** branch for every item in the list.
-4.  **The Exit Path**: Once all items have been processed, the engine follows the **False** branch to continue the rest of the rule.
+## 1. When to Use
 
-## Configuration
+Use the Repeat action when you need to:
+- Process every row in a child table (e.g., validate warehouse stock for each item row).
+- Perform batch field calculations across multiple child records.
+- Iterate over records returned by a **Query Records** block.
+- Create external records or send notifications for each record in a collection.
 
-### 1. Iterator
-An expression that resolves to a list or tuple.
-- Example: `doc.items` (standard Frappe child table).
-- Example: `vars.matching_invoices` (result from a previous Query Records block).
+---
 
-### 2. Item Alias (Return Variable)
-The name of the variable that will hold the current item during each iteration.
-- Default: `item`.
-- Accessible as: `vars.item` (or your custom name).
+## 2. Configuration
 
-### 3. Loop Metadata
-Inside the loop, FlexiRule providing a special `vars.loop` object with useful metadata:
-- `vars.loop.index`: The current iteration index (starting from 0).
-- `vars.loop.length`: The total number of items in the list.
-- `vars.loop.first`: Boolean, `true` if this is the first iteration.
-- `vars.loop.last`: Boolean, `true` if this is the last iteration.
+### Configuration Fields
+- **Collection Source**: Target array to iterate over (e.g., `doc.items` or `vars.open_invoices`).
+- **Item Alias**: Variable name assigned to the active row during iteration (default: `item`, accessible via `@vars.item`).
+- **Loop Metadata (`vars.loop`)**:
+  - `vars.loop.index`: 0-based iteration index.
+  - `vars.loop.length`: Total row count.
+  - `vars.loop.first`: `true` if processing the first row.
+  - `vars.loop.last`: `true` if processing the final row.
 
-## Execution Semantics
+### Ports & Branching
+- **Loop Port (True / Body)**: Connects to the action flow executed for each item.
+- **Exit Port (False / Completed)**: Connects to the action flow executed after all rows have been processed.
 
-- **Top-to-Bottom Iteration**: The loop processes items in the order they appear in the input list.
-- **State Preservation**: Variables modified inside the loop persist across iterations and after the loop completes.
-- **Safety**: FlexiRule's global iteration limit (1000 steps) applies to loops to prevent accidental infinite recursion.
+---
 
-## Example: Apply Discount to All Items
+## 3. Output
 
-**Scenario**: You want to set a 10% discount on every row in a Sales Order items table.
+- **Context Variable`: Assigns `@vars.item` (or custom alias) and `@vars.loop` metadata during each iteration.
+- **Branching`:
+  - For each row: Follows the **Loop** branch.
+  - After all rows finish: Follows the **Exit** branch.
+- **Return Contract**: Returns `{"processed_count": N, "completed": true}`.
 
-1.  **Repeat Block**:
-    - **Iterator**: `doc.items`
-    - **Alias**: `row`
-    - **Next (True)**: Connect to an **Assignment** block.
-    - **Next (False)**: Connect to the rest of your rule (e.g., a "Notify" block).
-2.  **Assignment Block**:
-    - **Target**: `vars.row.discount_percentage`
-    - **Value**: `10`
-    - **Next**: Connect back to the **Repeat** block to continue iteration.
+---
 
-## Best Practices
+## 4. Example
 
-- **Connect Back**: Ensure the last node in your loop path connects back to the **Repeat** block to trigger the next iteration.
-- **Use Sub-rules for Complexity**: If the logic inside your loop is more than 3-4 nodes, move it into a **Sub-rule** for better readability and maintainability.
-- **Filtering**: Instead of looping over a large list and using a **Condition** block inside to skip items, try to filter the list *before* it reaches the loop (e.g., using a Query Records with specific filters).
+### Scenario: Calculate Line Item Discount for Sales Order Items
 
-## Common Mistakes
+1. **Repeat Block Configuration**:
+   - **Collection**: `doc.items`
+   - **Item Alias**: `row`
+   - **Loop Branch**: Connect to **Set Value** block.
+   - **Exit Branch**: Connect to **Set Value** (`doc.total_discount_calculated = true`).
 
-- **Wrong Path**: Forgetting to connect the final step of the loop back to the Repeat node. If you don't connect back, the loop will only run for the first item.
-- **Variable Overlap**: If you have nested loops, ensure they use different **Item Aliases** to avoid one loop overwriting the data of another.
+2. **Set Value Block Inside Loop**:
+   - **Target**: `vars.row.discount_amount`
+   - **Value**: `/math_formula` (`vars.row.rate * 0.10`)
+   - **Outbound Edge**: Connect back to **Repeat** node to continue next iteration.
+
+---
+
+## 5. Performance Notes
+
+- **Max Safety Iteration Limit**: FlexiRule enforces a safety ceiling of **1,000 iterations** per loop node execution to catch infinite recursion.
+- **In-Memory Iteration**: Iterating over local list variables adds minimal overhead compared to executing database queries inside a loop body.
+
+---
+
+## 6. Common Mistakes
+
+- **Forgetting Loop Back**: Omitting the return connection from the last action in the loop body back to the Repeat block (causing the loop to execute only once).
+- **Nested Alias Collisions**: Reusing the same Item Alias name (`item`) across nested loops, overwriting outer loop context.
+- **Database Reads Inside Loop**: Running single `frappe.db.get_value` queries inside a loop instead of performing a single **Query Records** action before the loop.

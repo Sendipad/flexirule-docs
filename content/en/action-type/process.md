@@ -1,64 +1,79 @@
 ---
 title: Advanced Process
-description: Execute complex, reusable business logic operations.
+description: Execute complex, reusable business logic operations using registered Process contracts.
 weight: 110
+entity_kind: action_operation
+category: data-operations
+mutation: true
+targets: ["Frappe DocType", "Context Variable"]
 aliases:
   - /docs/actions/process/
 ---
 
 # Advanced Process Action
 
-The **Advanced Process** action (internally called **Process**) is the primary extension point for custom business logic in FlexiRule. While blocks like "Check" or "Assignment" handle basic flow and data updates, the Process action allows you to execute sophisticated, reusable operations defined in the **Process Registry**.
+The **Advanced Process** action (internal handler: `Process`) executes registered business operations created by developers or system plugins. It decouples complex orchestration tasks (such as deduplication, validation pipelines, batch operations, or enrichment) from visual rule layout.
 
-## Purpose
+---
 
-Use the Process action for:
-- **Complex Calculations**: Tax engines, freight calculators, or financial models.
-- **External Integrations**: Sending data to Slack, calling a REST API, or interacting with AWS.
-- **System Tasks**: Generating PDFs, bulk-creating documents, or triggering Frappe background jobs.
-- **Reusable Business Logic**: Any logic that is used across multiple rules should be encapsulated as a "Process".
+## 1. When to Use
 
-## Action Capabilities
+Use the Advanced Process action when you need to:
+- Run complex multi-step algorithms (e.g., deduplication matching, tax engines, credit score calculation).
+- Perform external API integrations or system operations (e.g., generating PDFs, calling webhooks).
+- Reuse standard business operations across multiple rules without repeating node logic.
+- Execute heavy background operations asynchronously using `frappe.enqueue`.
 
-| Capability | Support | Notes |
-| :--- | :--- | :--- |
-| **Input Mapping** | ✅ Yes | Map variables from the rule context to the Process inputs. |
-| **Output Mapping** | ✅ Yes | Store the Process result back into the rule context. |
-| **Schema-Aware** | ✅ Yes | The UI dynamically adapts based on the Process configuration schema. |
-| **Transactional** | ✅ Yes | Supports savepoints to ensure data integrity during execution. |
+---
 
-## Configuration
+## 2. Configuration
 
-### 1. Process Selection
-Select from the list of registered Processes. Each process may have multiple **Operations** (e.g., a "Slack" process might have "Send Message" and "Upload File" operations).
+### Configuration Fields
+- **Process**: Select registered Process definition (e.g., `Deduplication`, `Validation`, `Batch`, `Enrichment`).
+- **Operation**: Select specific operation within the process (e.g., `Score Duplicates`, `Validate Tax ID`).
+- **Operation Config**: Input parameters rendered dynamically based on the operation's schema contract.
+- **Input Mapping**: Map `@doc` or `@vars` fields to required operation input parameters.
+- **Output Variable**: Destination variable name in `@vars` where process outputs will be stored.
+- **Error Handling Strategy**: Choose action behavior on failure (`Stop Rule`, `Continue`, or `Branch on Error`).
 
-### 2. Input Configuration
-Based on the selected process, you will see a dynamic set of fields. You can provide:
-- **Static Values**: Hardcoded strings or numbers.
-- **Dynamic Resolvers**: Reference fields from `doc` or `vars`.
-- **Input Mapping**: Use the mapping grid to bind complex context data to process parameters.
+---
 
-### 3. Execution Options
-- **On Error**: Choose whether to stop, continue, or retry the rule if the process fails.
-- **Is Async**: If enabled, the process will run in a background worker (using `frappe.enqueue`), and the rule will continue immediately.
+## 3. Output
 
-### 4. Output Handling
-Specify a **Return Variable** (e.g., `vars.api_response`) where the result of the process will be stored for use in subsequent blocks.
+- **Context Variable Mutation**: Stores structured operation output dictionary in `@vars.<output_variable>`.
+- **Branching**:
+  - Success: Continues down primary outbound edge.
+  - Failure: Halts rule execution (or branches to error port if configured).
+- **Return Contract**: Returns dictionary of outputs defined by the operation's `ProcessContract`.
 
-## Execution Semantics
+---
 
-1.  **Input Resolution**: The engine resolves all input mapping and dynamic values.
-2.  **Validation**: The engine verifies inputs against the process's internal schema.
-3.  **Operation Execution**: The Process Handler executes the specific Python logic for the operation.
-4.  **Result Capture**: The output is captured and mapped back to the execution context.
-5.  **Flow Continuation**: The engine follows the **Success** (True) branch.
+## 4. Example
 
-## Best Practices
+### Scenario: Deduplicate Customer Records on Insert
 
-- **Encapsulate Logic**: If you find yourself building the same sequence of 10 nodes in multiple rules, move that logic into a single **Process**.
-- **Error Handling**: Always configure an "On Error" strategy for processes that interact with external services (like APIs), as they are more likely to fail than internal logic.
-- **Keep it Atomic**: A process should ideally perform one specific task and return a clear result.
+1. **Advanced Process Block Configuration**:
+   - **Process**: `Deduplication`
+   - **Operation**: `Find Duplicates`
+   - **Input Mapping**:
+     - `email_id` -> `@doc.email_id`
+     - `tax_id` -> `@doc.tax_id`
+   - **Output Variable**: `duplicate_result`
+2. **Next Node (Check)**:
+   - **Condition**: `@vars.duplicate_result.is_duplicate == true`
+   - **True Branch**: Connect to **Stop / Error** (`"Duplicate Customer Detected!"`).
 
-## Technical Details
+---
 
-Processes are managed via the `Process` DocType and registered in the system's `ProcessRegistry`. Developers can add new processes by creating a Python class that implements the `ProcessContract`. For more information, see the [Architecture Reference]({{< relref "advanced-concepts/architecture/actions/advanced-process.md" >}}).
+## 5. Performance Notes
+
+- **Registry Execution**: Process operations are executed via `ProcessOperationExecutor`, incurring minimal dispatch latency (<0.5ms).
+- **Asynchronous Execution**: Processes configured as `Async` run in Frappe Background Workers (`frappe.enqueue`), keeping foreground requests fast and responsive.
+
+---
+
+## 6. Common Mistakes
+
+- **Unmapped Required Inputs**: Failing to map mandatory operation parameters defined in `ProcessContract`.
+- **Ignoring Execution Errors**: Choosing `Continue on Error` without checking the error status in subsequent nodes.
+- **Overusing Custom Processes for Simple Logic**: Writing custom Python Process code for basic field updates that could be handled natively by a **Set Value** block.

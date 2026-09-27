@@ -102,9 +102,9 @@ A **Value Resolver** is the mechanism that turns a dynamic expression into a rea
 
 ---
 
-## 12. Logical Command for Frontend FlexValue Control
+## 12. Logical Commands & Smart Value Selector
 
-A **Logical Command** is a decision or comparison primitive used inside rule logic, and it exists so rules have a structured way to evaluate business decisions such as equals, not equals, greater than, less than, contains, AND, OR, and NOT; it interacts with value resolvers and condition blocks by determining whether the rule continues down one path or another, and for example it can check whether `doc.grand_total > vars.credit_limit AND doc.customer_status == "Active"` before allowing the rule to continue.
+A **Logical Command** is a decision or comparison primitive evaluated within rule logic (e.g., `equals`, `not equals`, `greater than`, `less than`, `contains`, `in`, `is set`, `AND`, `OR`, `NOT`). Configured through the **Smart Value Selector**, logical commands combine dynamic value resolvers and context fields to evaluate boolean conditions, determining execution branching or action triggers. For example, a check condition can evaluate `doc.grand_total > vars.credit_limit AND doc.status == "Submitted"` to route high-value approvals.
 
 ---
 
