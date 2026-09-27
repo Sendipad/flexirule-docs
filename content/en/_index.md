@@ -11,6 +11,17 @@ description: "High-performance, visual rule engineering and workflow orchestrati
 
 ---
 
+## 🚀 Quick Start & Learning Path
+
+New to FlexiRule? Follow this progressive sequence:
+
+1. **[Getting Started: Quick Start Guide]({{< relref "getting-started/quick-start.md" >}})**: Install FlexiRule and build your first automation in under 5 minutes.
+2. **[Introduction: What is FlexiRule?]({{< relref "introduction/what-is-flexirule.md" >}})**: Learn how FlexiRule replaces scattered scripts with visual orchestration.
+3. **[Core Concepts]({{< relref "introduction/core-concepts.md" >}})**: Master the building blocks—Rules, Triggers, Context, Blocks, Action Types, and Value Resolvers.
+4. **[Rule Builder Guide]({{< relref "rule-builder/_index.md" >}})**: Learn canvas navigation, node connections, and the Smart Value Selector.
+
+---
+
 ## What Problem Does FlexiRule Solve?
 
 As ERPNext implementations grow, business logic frequently degrades into **"Hook Hell"**:
@@ -27,7 +38,7 @@ As ERPNext implementations grow, business logic frequently degrades into **"Hook
 ## Who is FlexiRule For?
 
 - **Business Analysts & Functional Consultants**: Configure complex validation, multi-field calculations, and approval routing without waiting for developer cycles.
-- **ERP Next Administrators**: Monitor rule execution logs, manage rule versioning safely in production, and audit business logic changes.
+- **ERPNext Administrators**: Monitor rule execution logs, manage rule versioning safely in production, and audit business logic changes.
 - **Developers**: Extend FlexiRule with custom action handlers, reusable process operations, and backend resolvers using clean, decoupled registry contracts.
 
 ---
@@ -89,7 +100,11 @@ Consider a common ERPNext scenario: **Block Sales Orders if customer balance exc
 <div class="grid-2">
 
 {{< card title="Getting Started" link="/getting-started/" icon="rocket" >}}
-Learn how to install FlexiRule, configure your first rule, and run visual debug sessions.
+Install FlexiRule, configure your first rule, and run visual debug sessions.
+{{< /card >}}
+
+{{< card title="Introduction & Concepts" link="/introduction/" icon="info" >}}
+Understand system architecture, key capabilities, and core concepts.
 {{< /card >}}
 
 {{< card title="Rule Builder Guide" link="/rule-builder/" icon="canvas" >}}
