@@ -1,6 +1,6 @@
 ---
 title: Start (Entry Action)
-description: The entry root node of every visual rule execution graph.
+description: The starting root node on every visual rule canvas.
 weight: 5
 entity_kind: action_operation
 category: logic-control
@@ -10,48 +10,59 @@ aliases:
   - /docs/actions/entry/
 ---
 
-# Start (Entry Action) Action
+# Start Node
 
-The **Start** node (internal handler: `simple_actions.EntryActionHandler`) serves as the immutable root node of every visual rule canvas. It initializes runtime context (`@doc`, `@old_doc`, `@vars`, `@system`) when a rule is triggered.
-
----
-
-## 1. When to Use
-
-- Automatically present as the mandatory starting node on every rule canvas.
-- Serves as the anchor point from which execution graph connections begin.
+The **Start** node is the mandatory starting point of every visual rule canvas. It initializes rule data when a triggering event occurs and directs execution to your first action node.
 
 ---
 
-## 2. Configuration
+## 1. What is it?
 
-- **Automatic Initialization**: Requires no manual configuration.
-- **Fast Trigger Filters**: Trigger filters (`watched_fields` and `trigger_condition` JSON) configured on the Rule header evaluate before loading the Start node.
+Every rule canvas begins with a Start node. It represents the entry point when a rule is triggered (such as when a document is saved or submitted). It makes document data (`@doc`), historical pre-event data (`@old_doc`), variables (`@vars`), and system context (`@system`) available to all downstream actions.
 
----
-
-## 3. Output
-
-- **Context Payload**: Exposes `@doc` (trigger document), `@old_doc` (pre-event state), `@vars` (initialized context dictionary), and `@system` (session user/time).
-- **Execution Path**: Directs execution down its primary outbound connection edge.
+```
+Start (Event Trigger) ──→ Check / Set Value / Query Records
+```
 
 ---
 
-## 4. Example
+## 2. How it Works
 
-1. **Trigger Event**: `Sales Invoice` `Before Save`.
-2. **Start Node**: Initializes `@doc` with current form data.
-3. **Outbound Port**: Connects directly to **Check** or **Query Records** block.
-
----
-
-## 5. Performance Notes
-
-- **Zero Latency**: Context pointer binding occurs instantly in $O(1)$ time upon rule instantiation.
+- **Automatic Presence**: The Start node is created automatically whenever you create a new rule. It cannot be deleted.
+- **No Manual Configuration**: It requires no manual configuration settings on the canvas.
+- **Outbound Edge**: Connect its outbound port directly to your rule's first action (such as a **Check** or **Query Records** block).
 
 ---
 
-## 6. Common Mistakes
+## 3. Available Data Provided at Start
 
-- **Attempting to Delete Start Node**: The Start node is mandatory and cannot be deleted from the rule canvas.
-- **Confusing Trigger Condition with Check Node**: Putting complex multi-node branching into trigger conditions instead of connecting a **Check (Condition)** node after Start.
+When execution begins at the Start node, the following context data is made available through the **Smart Value Selector**:
+
+| Category | Description |
+| :--- | :--- |
+| **Document Fields (`@doc`)** | The current values of the document that triggered the rule. |
+| **Previous Values (`@old_doc`)** | Document values prior to the current save/update (useful for change tracking). |
+| **System Info (`@system`)** | Active session user, timestamp, and company information. |
+| **Variables (`@vars`)** | Temporary rule variables available for storage throughout execution. |
+
+---
+
+## 4. Practical Example
+
+1. **Trigger Event**: Set rule header trigger to `Sales Invoice` on `Before Save`.
+2. **Start Node**: Automatically initializes with form field values when a user clicks Save.
+3. **First Connection**: Connect the Start node's outbound port directly to a **Check** or **Set Value** block.
+
+---
+
+## 5. Related Features
+
+- [Rule Lifecycle]({{< relref "rule-builder/rule-lifecycle.md" >}}): Understand how triggers initiate rule execution.
+- [Canvas]({{< relref "rule-builder/canvas.md" >}}): Learn how to build visual flows starting from the Start node.
+
+---
+
+## 6. Developer & Technical Details
+
+For graph traversal bootstrapping and context initialization mechanics:
+- [Entry Action Architecture Reference]({{< relref "advanced-concepts/architecture/actions/entry.md" >}})

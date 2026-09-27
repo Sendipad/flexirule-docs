@@ -1,6 +1,6 @@
 ---
 title: Stop / Error
-description: Terminate rule execution silently or block document saving with a custom validation error message.
+description: Terminate rule execution cleanly or display a validation error message to block document saving.
 weight: 100
 entity_kind: action_operation
 category: logic-control
@@ -10,60 +10,84 @@ targets: ["Rule Execution", "Validation Error"]
 
 # Stop / Error Action
 
-The **Stop / Error** action (internal handler: `simple_actions.StopActionHandler`) serves as a terminal node in the visual rule graph, controlling how rule execution terminates.
+The **Stop / Error** action is a terminal block in a rule flow that controls how rule execution finishes—either exiting quietly or throwing a validation error to prevent a document save.
 
 ---
 
-## 1. When to Use
+## 1. What is it?
+
+A Stop / Error block ends rule processing. Depending on how you configure its mode, it can either:
+- **Stop (Exit)**: End rule execution quietly when conditions fail, allowing normal processing to continue.
+- **Error (Validation Error)**: Display an error dialog to the user and prevent the document from saving or submitting.
+
+```
+Check (Valid Tax ID?) ─── False ───→ Stop / Error (Error Mode: "Tax ID is required!")
+```
+
+---
+
+## 2. When to Use
 
 Use the Stop / Error action when you need to:
-- **Block Document Save/Submit**: Prevent users from saving invalid data by throwing a user-facing `frappe.ValidationError`.
-- **Early Exit (Silent Stop)**: Terminate rule execution cleanly when pre-conditions fail without raising errors.
-- **Rollback Changes**: Cancel pending database mutations made during the current transaction.
+- **Block invalid document saves** (e.g., prevent submitting an invoice without a required purchase order number).
+- **Exit early from a rule flow** when preconditions fail (e.g., exit cleanly if the document is not in Draft state).
+- **Provide clear validation feedback** to users directly on their screen.
 
 ---
 
-## 2. Configuration
+## 3. How to Configure
 
-### Configuration Options
-- **Mode**:
-  - `Error` (Raise Validation Error): Displays error popup and aborts transaction.
-  - `Stop / Exit` (Silent Exit): Terminates rule execution cleanly without error popup.
-- **Message Template**: Configured via the **Smart Value Selector** (`Static Text`, `@ Variables`, or `/ Resolvers`). Supports formatted error messages.
-- **Title**: (Optional) Title header displayed on Frappe error dialogs.
-
----
-
-## 3. Output
-
-- **Terminal Node**: No outbound edges are allowed; execution halts immediately.
-- **Transaction Impact**:
-  - `Error Mode`: Raises `frappe.ValidationError`, causing Frappe to rollback database transaction.
-  - `Stop Mode`: Completes cleanly, committing preceding in-memory `@doc` mutations.
+1. **Add the Action**: Add a **Stop / Error** block at the end of a rule branch.
+2. **Select Mode**:
+   - **Error Mode**: Displays an error popup and cancels the document save/submit.
+   - **Stop Mode**: Exits rule execution cleanly with no error popup.
+3. **Configure Error Message (for Error Mode)**:
+   - Click the **Message** field.
+   - Use the **Smart Value Selector** to compose a dynamic message including document fields (e.g., `"Sales Order {doc.name} requires a Tax ID for totals above 10,000."`).
+4. **Set Error Title (Optional)**:
+   - Enter a title header displayed on the error popup dialog (e.g., `"Validation Error"`).
 
 ---
 
-## 4. Example
+## 4. UI Configuration Options
 
-### Scenario: Prevent Sales Order Submission without Valid Customer Tax ID
+| Option | Description |
+| :--- | :--- |
+| **Mode** | Select **Error** (blocks save with error dialog) or **Stop** (silent early exit). |
+| **Message** | Error message template constructed using the **Smart Value Selector**. |
+| **Title** | Optional dialog header title displayed to the user. |
 
-1. **Check Node**: Is `@doc.tax_id` `is not set` AND `@doc.grand_total > 10000`?
-2. **True Branch**: Connect to **Stop / Error** node.
+---
+
+## 5. Practical Example
+
+### Scenario: Prevent Sales Order Submission Without Tax ID
+
+1. **Check Block**: Is `Tax ID` (`@doc.tax_id`) empty **AND** `Grand Total` (`@doc.grand_total`) greater than `10,000`?
+2. **True Branch**: Connect to **Stop / Error** block.
 3. **Stop / Error Configuration**:
    - **Mode**: `Error`
-   - **Message**: `"Sales Order {doc.name} cannot be submitted without a valid Tax ID for orders above 10,000."`
-
----
-
-## 5. Performance Notes
-
-- **Zero DB Overhead**: Terminal checks execute immediately in memory without additional database operations.
-- **Fast Exit**: Placing a **Stop (Silent Exit)** early in the flow saves CPU cycles by bypassing unnecessary downstream nodes.
+   - **Title**: `"Tax ID Required"`
+   - **Message**: `"Sales Order {doc.name} cannot be saved without a valid Tax ID for orders above 10,000."`
 
 ---
 
 ## 6. Common Mistakes
 
-- **Confusing Silent Stop with Error**: Using `Stop (Exit)` when you intended to prevent a document save (Silent Stop allows save to complete).
-- **Generic Error Messages**: Raising unhelpful errors like `"Error occurred"` instead of providing actionable feedback to the user.
-- **Redundant Stop Nodes**: Adding a Stop node at the end of every branch (FlexiRule automatically finishes execution when an outbound branch ends naturally).
+- **Confusing Silent Stop with Error**: Using *Stop* mode when you intended to prevent a document save (Silent Stop allows the document to save normally).
+- **Generic Error Messages**: Showing generic text like `"Invalid data"` instead of telling the user specifically what field needs fixing.
+- **Adding Unnecessary Stop Nodes**: Placing a Stop node at the end of every branch. Rules automatically finish when an outbound branch reaches its end naturally.
+
+---
+
+## 7. Related Features
+
+- [Check (Condition)]({{< relref "action-type/condition.md" >}}): Use Check blocks before Stop / Error actions to evaluate validation conditions.
+- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): How to insert document values into error message templates.
+
+---
+
+## 8. Developer & Technical Details
+
+For exception handling mechanisms and template rendering mechanics:
+- [Stop Architecture Reference]({{< relref "advanced-concepts/architecture/actions/stop.md" >}})

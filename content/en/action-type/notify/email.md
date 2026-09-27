@@ -1,32 +1,36 @@
 ---
 title: Email
-description: Sending automated emails with attachments and dynamic templates.
+description: Configure automated emails with attachments and dynamic templates in FlexiRule.
 weight: 10
 ---
 
 # Email Notification
 
-The **Email** mode of the Notify action is the most common way to send information to customers and external stakeholders.
+The **Email** channel in the Notify action allows you to send automated emails to customers, suppliers, and internal users.
 
-## Configuration
+---
 
-### 1. Recipients
-You can specify recipients in three ways:
-- **Static**: Enter a single email or a comma-separated list.
-- **Dynamic Variable**: Use `{{ doc.contact_email }}` or `{{ vars.manager_email }}`.
-- **User Link**: Select a User Link field from your DocType.
+## 1. How to Configure Email Notifications
 
-### 2. Subject and Message
-Both fields support **Jinja2** templates.
-- **Example Subject**: `Order Confirmation: {{ doc.name }}`
-- **Example Message**:
-  ```html
-  Dear {{ doc.customer }},<br>
-  Your order placed on {{ doc.posting_date }} has been received.
-  ```
+### Recipients
+Choose recipients using three methods in the UI:
+- **Static List**: Enter one or more email addresses.
+- **Dynamic Field / Variable**: Use the **Smart Value Selector** to select an email field from the document (e.g., `@doc.contact_email`) or a variable (`@vars.manager_email`).
+- **User / Role**: Select specific system users or roles.
 
-### 3. Attachments
-- **Attach PDF**: Generates a PDF of the triggering document using its default print format and attaches it to the email.
+### Subject & Message
+Compose subjects and body content using text and field tags selected through the **Smart Value Selector**:
+- **Subject**: `"Order Confirmation: {doc.name}"`
+- **Message**: Insert document fields like Customer Name (`@doc.customer`) or Date (`@doc.posting_date`) directly into the body text.
 
-## Execution Behavior
-Emails are added to the **Email Queue** in Frappe. They are not sent instantly by the web server but are picked up by the background worker (usually every minute).
+### Attachments
+- **Attach PDF**: Toggle on to generate and attach a PDF of the triggering document using its print format.
+
+---
+
+## 2. Practical Example
+
+1. Add **Notify** action and select **Email** channel.
+2. **Recipients**: Open Smart Value Selector → Select `@doc.contact_email`.
+3. **Subject**: `"Invoice {doc.name} Payment Received"`.
+4. **Attach PDF**: Enable PDF attachment.

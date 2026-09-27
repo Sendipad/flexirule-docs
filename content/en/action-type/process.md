@@ -1,6 +1,6 @@
 ---
 title: Advanced Process
-description: Execute complex, reusable business logic operations using registered Process contracts.
+description: Run reusable, system-registered business processes and custom operations directly from your rules.
 weight: 110
 entity_kind: action_operation
 category: data-operations
@@ -12,68 +12,87 @@ aliases:
 
 # Advanced Process Action
 
-The **Advanced Process** action (internal handler: `Process`) executes registered business operations created by developers or system plugins. It decouples complex orchestration tasks (such as deduplication, validation pipelines, batch operations, or enrichment) from visual rule layout.
+The **Advanced Process** action allows you to execute complex, pre-built business operations—such as record deduplication, tax calculations, credit scoring, or external integrations—directly within a visual rule.
 
 ---
 
-## 1. When to Use
+## 1. What is it?
+
+An Advanced Process block lets you call modular, reusable operations configured in your system without having to build complex logic steps manually on the visual canvas. It passes inputs from your rule into the process and saves the output into a rule variable (`@vars`).
+
+---
+
+## 2. When to Use
 
 Use the Advanced Process action when you need to:
-- Run complex multi-step algorithms (e.g., deduplication matching, tax engines, credit score calculation).
-- Perform external API integrations or system operations (e.g., generating PDFs, calling webhooks).
-- Reuse standard business operations across multiple rules without repeating node logic.
-- Execute heavy background operations asynchronously using `frappe.enqueue`.
+- **Run pre-built business algorithms** (e.g., customer deduplication checks, risk score calculations).
+- **Perform integrations or system tasks** (e.g., generating documents, sending webhooks, invoking tax services).
+- **Reuse standard operations** across multiple rules without duplicating canvas nodes.
+- **Run heavy background operations** asynchronously using background worker queues.
 
 ---
 
-## 2. Configuration
+## 3. How to Configure
 
-### Configuration Fields
-- **Process**: Select registered Process definition (e.g., `Deduplication`, `Validation`, `Batch`, `Enrichment`).
-- **Operation**: Select specific operation within the process (e.g., `Score Duplicates`, `Validate Tax ID`).
-- **Operation Config**: Input parameters rendered dynamically based on the operation's schema contract.
-- **Input Mapping**: Map `@doc` or `@vars` fields to required operation input parameters.
-- **Output Variable**: Destination variable name in `@vars` where process outputs will be stored.
-- **Error Handling Strategy**: Choose action behavior on failure (`Stop Rule`, `Continue`, or `Branch on Error`).
-
----
-
-## 3. Output
-
-- **Context Variable Mutation**: Stores structured operation output dictionary in `@vars.<output_variable>`.
-- **Branching**:
-  - Success: Continues down primary outbound edge.
-  - Failure: Halts rule execution (or branches to error port if configured).
-- **Return Contract**: Returns dictionary of outputs defined by the operation's `ProcessContract`.
+1. **Add the Action**: Add an **Advanced Process** block to your visual canvas.
+2. **Select Process & Operation**:
+   - Select the registered **Process** (e.g., `Deduplication`, `Tax Calculation`).
+   - Select the specific **Operation** (e.g., `Find Duplicates`, `Calculate Line Item Tax`).
+3. **Map Inputs**:
+   - Fill in the required input parameters using the **Smart Value Selector** (`@doc`, `@vars`, or static values).
+4. **Set Output Variable**:
+   - Enter a variable name in **Output Variable** where process outputs will be saved (e.g., `dedup_result`).
+5. **Configure Failure Handling**:
+   - Select how the rule should respond if the process fails (`Stop Rule`, `Continue`, or `Branch on Error`).
 
 ---
 
-## 4. Example
+## 4. UI Configuration Options
 
-### Scenario: Deduplicate Customer Records on Insert
-
-1. **Advanced Process Block Configuration**:
-   - **Process**: `Deduplication`
-   - **Operation**: `Find Duplicates`
-   - **Input Mapping**:
-     - `email_id` -> `@doc.email_id`
-     - `tax_id` -> `@doc.tax_id`
-   - **Output Variable**: `duplicate_result`
-2. **Next Node (Check)**:
-   - **Condition**: `@vars.duplicate_result.is_duplicate == true`
-   - **True Branch**: Connect to **Stop / Error** (`"Duplicate Customer Detected!"`).
+| Option | Description |
+| :--- | :--- |
+| **Process** | Select the registered business process group from the dropdown list. |
+| **Operation** | Choose the specific action operation provided by the selected process. |
+| **Input Mapping** | Map required operation parameters to document fields (`@doc`) or variables (`@vars`) using the Smart Value Selector. |
+| **Output Variable** | Variable name in `@vars` where the output dictionary will be stored for downstream actions. |
+| **Error Handling** | Configure rule behavior on failure: **Stop Rule**, **Continue**, or **Branch on Error**. |
 
 ---
 
-## 5. Performance Notes
+## 5. Practical Example
 
-- **Registry Execution**: Process operations are executed via `ProcessOperationExecutor`, incurring minimal dispatch latency (<0.5ms).
-- **Asynchronous Execution**: Processes configured as `Async` run in Frappe Background Workers (`frappe.enqueue`), keeping foreground requests fast and responsive.
+### Scenario: Deduplicate Customer Records on Create
+
+1. Add an **Advanced Process** block to the canvas.
+2. **Process**: Select `Deduplication`.
+3. **Operation**: Select `Find Duplicates`.
+4. **Input Mapping**:
+   - Map `Email` → Select `@doc.email_id` using Smart Value Selector.
+   - Map `Tax ID` → Select `@doc.tax_id` using Smart Value Selector.
+5. **Output Variable**: Enter `duplicate_check`.
+6. **Next Node (Check)**:
+   - Add a **Check** action following the process.
+   - Condition: `@vars.duplicate_check.is_duplicate == true`
+   - **True Branch**: Connect to **Stop / Error** ("Duplicate customer detected!").
 
 ---
 
 ## 6. Common Mistakes
 
-- **Unmapped Required Inputs**: Failing to map mandatory operation parameters defined in `ProcessContract`.
-- **Ignoring Execution Errors**: Choosing `Continue on Error` without checking the error status in subsequent nodes.
-- **Overusing Custom Processes for Simple Logic**: Writing custom Python Process code for basic field updates that could be handled natively by a **Set Value** block.
+- **Unmapped Required Inputs**: Leaving mandatory operation parameters empty.
+- **Ignoring Process Failure**: Setting Error Strategy to `Continue` without checking the error output in downstream actions.
+- **Overusing Custom Processes for Simple Logic**: Creating custom code processes for simple field updates that can be built directly using [Set Value]({{< relref "action-type/assignment.md" >}}) blocks.
+
+---
+
+## 7. Related Features
+
+- [Set Value]({{< relref "action-type/assignment.md" >}}): For standard field updates and simple variable calculations.
+- [Sub-Rule]({{< relref "action-type/sub-rule.md" >}}): To execute another visual rule rather than a code process.
+
+---
+
+## 8. Developer & Technical Details
+
+For process registration, adapter class structures, and schema validation mechanics:
+- [Advanced Process Architecture Reference]({{< relref "advanced-concepts/architecture/actions/advanced-process.md" >}})

@@ -1,6 +1,6 @@
 ---
 title: Check (Condition)
-description: Evaluate logical condition groups to branch execution path between True and False branches.
+description: Evaluate logical condition groups in the UI to branch execution paths between True and False branches.
 weight: 40
 entity_kind: action_operation
 category: logic-control
@@ -10,68 +10,103 @@ targets: ["Frappe DocType", "Context Variable"]
 
 # Check (Condition) Action
 
-The **Check** action (internal handler: `Condition`) is the visual decision-making block in FlexiRule. It evaluates condition expressions against runtime context and branches the execution path along either the **True** or **False** outbound edge.
+A **Check** action lets a rule evaluate one or more conditions and direct execution along different visual paths depending on whether those conditions are satisfied.
 
 ---
 
-## 1. When to Use
+## 1. What is it?
 
-Use the Check action when you need to:
-- Validate document attributes before allowing workflow progression (e.g., check if `grand_total > 50000`).
-- Route execution down different business branches based on customer tier, region, or status.
-- Evaluate child table collection rules (e.g., verify whether **all** line items have warehouse assigned).
-- Compare current document values against historical `@old_doc` values or `@vars`.
+The Check block is the visual decision-making hub of a rule. It evaluates your configured logic against document data or context variables and splits execution into two outbound branches:
 
----
+- **True**: Followed when all or any conditions pass (depending on your logic setting).
+- **False**: Followed when the conditions do not pass.
 
-## 2. Configuration
-
-The Check action is configured using the **Condition Builder**:
-
-### Structure & Operators
-- **Logic Grouping**: Combine conditions with `ALL` (AND), `ANY` (OR), or `NOT` logic.
-- **Comparison Operators**:
-  - `==` (Equals), `!=` (Not Equals)
-  - `>`, `>=`, `<`, `<=` (Numeric comparisons)
-  - `contains`, `not contains`, `in`, `not in` (Text/List search)
-  - `is set`, `is not set` (Null/empty checks)
-- **Operands**: Configured using the **Smart Value Selector** (`@doc`, `@vars`, `@system`, or `/ Resolvers`).
-- **Collection Conditions**: Evaluate child table lists using `any`, `all`, `none`, or `count` operations.
+```
+                 ┌── True ──→ Action A (e.g. Set Status = "Approved")
+Check ───────────┤
+                 └── False ─→ Action B (e.g. Notify Manager)
+```
 
 ---
 
-## 3. Output
+## 2. When to Use
 
-- **Boolean Decision**: Evaluates to `True` or `False`.
-- **Branching**:
-  - If `True`: Execution continues along the **True** outbound edge.
-  - If `False`: Execution continues along the **False** outbound edge.
-- **Return Contract**: Returns `{"result": true, "evaluated_expression": "..."}`.
-
----
-
-## 4. Example
-
-### Scenario: High-Value VIP Credit Check
-
-- **Condition Group**: `ALL`
-  - **Row 1**: `@doc.grand_total` `>` `100000`
-  - **Row 2**: `@doc.customer_group` `==` `"VIP"`
-  - **Row 3**: `/fetch` (`customer`, `Customer`, `credit_limit`) `>=` `@doc.grand_total`
-- **True Branch**: Connect to **Set Value** (`doc.status = "Approved"`).
-- **False Branch**: Connect to **Notify** (Alert Credit Manager).
+Use a Check action whenever you need to:
+- **Validate field values** before proceeding (e.g., check if Grand Total is greater than 50,000).
+- **Branch business logic** based on customer tier, region, or document status.
+- **Check child-table data** (e.g., verify if all line items have a warehouse assigned).
+- **Compare current values** against historical document state or temporary rule variables.
 
 ---
 
-## 5. Performance Notes
+## 3. How to Configure
 
-- **Pre-Compiled Expressions**: Condition expressions are pre-compiled into optimized Python Bytecode by `ConditionEvaluator`, executing in under 0.1ms per evaluation.
-- **Short-Circuit Evaluation**: Logical groups evaluate lazily (`ALL` stops at first `False`; `ANY` stops at first `True`), avoiding unnecessary resolver evaluations.
+1. **Add the Action**: Drag or add a **Check** block onto your visual canvas.
+2. **Choose Logic Grouping**:
+   - **ALL (AND)**: Every condition row in the group must evaluate to true.
+   - **ANY (OR)**: At least one condition row must evaluate to true.
+   - **NOT**: Inverts the result of the condition group.
+3. **Configure Conditions using Smart Value Selector**:
+   - Click the left operand field.
+   - Type `@` or click the value selector to open the **Smart Value Selector**.
+   - Search for and select your document field (e.g., `Grand Total`).
+   - Choose a comparison operator (`Equals`, `Greater Than`, `Contains`, `Is Set`, etc.).
+   - Click the right operand field and select a static value, variable, or calculated value using the Smart Value Selector.
+4. **Connect Branches**:
+   - Drag a line from the **True** port to the action you want to execute when conditions pass.
+   - Drag a line from the **False** port to the action you want to execute when conditions fail.
+
+---
+
+## 4. UI Configuration Options
+
+| Setting | Options / Description |
+| :--- | :--- |
+| **Logic Grouping** | Select **ALL** (all rows must match), **ANY** (at least one row matches), or **NOT** (inverts group result). |
+| **Comparison Operators** | `==` (Equals), `!=` (Not Equals), `>`, `>=`, `<`, `<=` (Numeric), `contains`, `is set`, `is not set`, `in`. |
+| **Value Input** | Use the **Smart Value Selector** to select Document Fields (`@doc`), Variables (`@vars`), System values (`@system`), or Resolvers (`/`). |
+| **Collection Conditions** | Evaluate lists and child tables using `all`, `any`, `none`, or `count` operations. |
+
+---
+
+## 5. Practical Example
+
+### Scenario: High-Value VIP Approval
+
+To check if a Sales Order requires manager approval:
+
+1. Add a **Check** action to the canvas and set Logic to **ALL**.
+2. **Row 1**:
+   - Select field: `Grand Total` (`@doc.grand_total`)
+   - Operator: `Greater Than` (`>`)
+   - Value: `100,000`
+3. **Row 2**:
+   - Select field: `Customer Group` (`@doc.customer_group`)
+   - Operator: `Equals` (`==`)
+   - Value: `"VIP"`
+4. **Connect Outbound Branches**:
+   - Connect **True** branch to a **Set Value** action (`doc.workflow_state = "Approved"`).
+   - Connect **False** branch to a **Notify** action (Send credit review request email).
 
 ---
 
 ## 6. Common Mistakes
 
-- **Disconnected Branch**: Leaving either the `True` or `False` outbound port disconnected when action logic was expected on both paths.
-- **Null Reference Errors**: Comparing fields that may be empty without using an `is set` check first.
-- **Type Mismatch**: Comparing text string `"100"` with numeric integer `100`.
+- **Disconnected Branch**: Leaving either the **True** or **False** branch unconnected when actions were expected on both outcomes.
+- **Missing Null Checks**: Comparing fields that might be empty without adding an `Is Set` condition first.
+- **Type Mismatch**: Comparing a text string `"100"` with a numeric value `100`. Use proper data types in the Smart Value Selector.
+
+---
+
+## 7. Related Features
+
+- [Condition Builder]({{< relref "rule-builder/condition-builder.md" >}}): Detailed guide on building nested condition groups in the UI.
+- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): How to select and manipulate values visually.
+- [Switch]({{< relref "action-type/switch.md" >}}): Use Switch when you need to branch based on multiple distinct values instead of a single true/false check.
+
+---
+
+## 8. Developer & Technical Details
+
+For low-level execution details, AST payload formats, and Python evaluation internals, refer to the developer documentation:
+- [Condition Architecture Reference]({{< relref "advanced-concepts/architecture/actions/condition.md" >}})

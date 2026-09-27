@@ -1,6 +1,6 @@
 ---
 title: Update Record
-description: Modify fields, change states, or perform actions on existing documents.
+description: Modify fields, change states, or perform lifecycle operations on database records in the UI.
 weight: 70
 entity_kind: action_operation
 category: data-operations
@@ -10,67 +10,64 @@ targets: ["Frappe DocType"]
 
 # Update Record Action
 
-The **Update Record** action (internally **Document Action**) is used to interact with documents in the database. Unlike the **Assignment** action which updates fields on the *triggering* document, **Update Record** is used to modify *other* documents or perform state-level operations like Submit, Cancel, or Amend.
+The **Update Record** action allows a rule to modify records in the database, update linked documents, or execute document workflow state transitions (such as Submit, Cancel, or Re-open).
 
-## Purpose
+---
+
+## 1. What is it?
+
+While the **Set Value** action modifies fields on the *currently triggering* document in memory before it saves, the **Update Record** action is used to modify *other* records in the database or execute state actions like Submitting or Cancelling a document.
+
+---
+
+## 2. When to Use
 
 Use the Update Record action when you need to:
-- **Change Remote State**: Update a field on a linked document (e.g., set the "Status" of a Sales Order when an Invoice is paid).
-- **Workflow Control**: Programmatically Submit, Cancel, or Re-open a document.
-- **Bulk Updates**: Update multiple documents found via a **Query Records** block.
+- **Update linked database records** (e.g., set a Sales Order's status to "Billed" when an Invoice is paid).
+- **Execute workflow lifecycle actions** programmatically (Submit, Cancel, Amend, or Re-open records).
+- **Perform bulk updates** on records fetched by a **Query Records** block.
+- **Create new records** in another DocType automatically.
 
-## Action Capabilities
+---
 
-| Capability | Support | Notes |
-| :--- | :--- | :--- |
-| **Multi-Operation** | ✅ Yes | Update, Submit, Cancel, Amend, Re-open, Create. |
-| **Batch Support** | ✅ Yes | Can update a single document or a list of documents. |
-| **Conditional Rows** | ✅ Yes | Apply field updates conditionally based on the target document's state. |
-| **Permission Aware**| ✅ Yes | Respects Frappe permissions unless "Ignore Permissions" is enabled. |
+## 3. How to Configure
 
-## Modes of Operation
+1. **Add the Action**: Add an **Update Record** block to your visual canvas.
+2. **Select Operation**:
+   - **Update**: Modify specific fields on existing records.
+   - **Submit / Cancel / Amend**: Execute document lifecycle transitions.
+   - **Create New**: Create a brand new record.
+3. **Select Target Document(s)**:
+   - Select a target record variable (e.g., a result from a **Query Records** block) or pick a DocType and select the Document Name using the **Smart Value Selector**.
+4. **Configure Field Mappings**:
+   - Add field mapping rows specifying target fields and values selected via the **Smart Value Selector**.
+5. **Connect Outbound Branch**: Connect the Update Record block to your next action.
 
-### 1. Update
-Modifies specific fields on the target document(s).
-- **Target**: An Object (from `Query Doc`) or a List of Objects (from `Query List`).
-- **Assignments**: A grid of field/value pairs to update.
+---
 
-### 2. Workflow Actions (Submit, Cancel, Amend)
-Executes standard Frappe document lifecycle methods.
-- **Submit**: Validates and submits the document.
-- **Cancel**: Cancels a submitted document.
-- **Amend**: Creates a new draft from a cancelled document.
+## 4. Practical Example
 
-### 3. Create New (Experimental)
-Initializes and saves a new document of a specified DocType.
+### Scenario: Update Linked Sales Order Status when Invoice is Paid
 
-## Configuration
+1. **Target Record**: Select DocType `Sales Order` and map Document Name to `@doc.sales_order` using the Smart Value Selector.
+2. **Operation**: Choose `Update`.
+3. **Field Mappings**:
+   - Target field: `Status`
+   - Value: Select `"Billed"`
+4. **Save Rule**: When the Invoice is paid, the linked Sales Order updates in the database.
 
-### 1. Operation
-Choose what you want to do with the document (Update, Submit, etc.).
+---
 
-### 2. Target Document(s)
-Specify which document to act upon.
-- **Variable**: Usually a result from a previous **Query Records** node (e.g., `vars.target_order`).
-- **DocType + Name**: Manually specify a DocType and use a resolver for the name.
+## 5. Related Features
 
-### 3. Field Mapping
-For "Update" or "Create" operations, define which fields to set and what values to use.
+- [Set Value]({{< relref "action-type/assignment.md" >}}): For updating fields on the *current* triggering document.
+- [Query Records]({{< relref "action-type/query-records/" >}}): Fetch database records to target with Update Record actions.
+- [Create New Record]({{< relref "action-type/update-record/create-new.md" >}}): Guide on creating new records.
+- [Update Existing Record]({{< relref "action-type/update-record/update-existing.md" >}}): Guide on modifying existing records.
 
-## Execution Semantics
+---
 
-1.  **Target Resolution**: The engine resolves the target variable to find the actual document(s).
-2.  **Validation**: Verifies that the document exists and is in a valid state for the requested operation (e.g., you cannot "Submit" a document that is already "Submitted").
-3.  **Execution**: Calls the appropriate Frappe method (`doc.save()`, `doc.submit()`, etc.).
-4.  **Transaction**: If the operation fails, the engine follows the "On Error" strategy. By default, this will roll back the current transaction.
+## 6. Developer & Technical Details
 
-## Best Practices
-
-- **Validate State**: Before trying to Submit or Cancel a document, use a **Check** block to ensure the document is in the correct state (e.g., `doc.docstatus == 0` before Submitting).
-- **Batch Updates**: When updating a list of documents, FlexiRule handles the iteration for you if you pass the entire list as the target.
-- **Permissions**: Be careful with "Ignore Permissions". Only enable it if the rule *must* perform an action that the triggering user wouldn't normally be allowed to do.
-
-## Common Mistakes
-
-- **Triggering Loops**: Updating a document that triggers another rule which then updates the first document. FlexiRule has cycle detection, but it's best to design for one-way flows.
-- **Updating the Current Doc**: Use the **Assignment** block to update the document that triggered the rule. Use **Update Record** only for *other* documents.
+For information on document action handlers, transaction boundaries, and state validation:
+- [Document Action Architecture Reference]({{< relref "advanced-concepts/architecture/actions/document-action.md" >}})
