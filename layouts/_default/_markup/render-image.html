@@ -1,4 +1,8 @@
+{{ $src := .Destination }}
+{{ if not (or (hasPrefix $src "http://") (hasPrefix $src "https://")) }}
+  {{ $src = (strings.TrimPrefix "/" $src) | relURL }}
+{{ end }}
 <figure>
-  <img src="{{ .Destination | relURL }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
+  <img src="{{ $src }}" alt="{{ .Text }}"{{ with .Title }} title="{{ . }}"{{ end }} loading="lazy" decoding="async">
   {{ with .Title | default .Text }}<figcaption>{{ . }}</figcaption>{{ end }}
 </figure>
