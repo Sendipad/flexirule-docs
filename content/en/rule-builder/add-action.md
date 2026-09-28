@@ -12,6 +12,8 @@ Building a rule involves adding "Actions" (Blocks) to the canvas and connecting 
 
 The Action Zone is the primary way to insert new logic into your rule. It appears dynamically as you work on the canvas.
 
+![Action Bar insertion control](/images/rule-builder-action-bar.png)
+
 {{< video src="/images/add-action-from-action-zone.webm" autoplay="true" loop="true" muted="true" >}}
 
 ### How to Add an Action
@@ -19,6 +21,8 @@ The Action Zone is the primary way to insert new logic into your rule. It appear
 2.  **Browse or Search**: An action menu will pop up. You can:
     -   **Search**: Type keywords like "Email," "Update," or "Check" to find specific actions quickly.
     -   **Categories**: Browse through categorized lists like *Data Operations*, *Communications*, or *Flow Control*.
+
+    ![Action Type Selector dropdown menu](/images/action-type-selector-menu.png)
 3.  **Select**: Click the action you want to add.
 4.  **Auto-Insertion**: The new block will be automatically placed on the canvas. If you clicked a connection line, the new block will be inserted *between* the two existing blocks, and the connections will be automatically updated.
 
@@ -46,5 +50,16 @@ The easiest way to add logic to an existing flow is to hover over the arrow conn
 As soon as you add an action, it is selected by default, and its **Action Settings** panel opens on the right. This allows you to immediately configure the details of the new block without extra clicks.
 
 ## Managing Actions
+
+Action cards on the canvas provide interactive toolbars and headers for direct manipulation.
+
+![Action card header toolbar showing Run Test, Copy, and Delete actions](/images/action-card-header-toolbar.png)
+
+![Action card toolbar with capability badges](/images/action-card-badges-toolbar.png)
+
+When an action contains sub-actions or nested steps (such as loops or complex processes), the action card displays a structured sub-node tree view.
+
+![Action card displaying sub-nodes tree](/images/action-card-sub-nodes.png)
+
 -   **Renaming**: You can customize the name of any block by clicking its title in the settings panel. This helps make your flow more readable (e.g., instead of "Notify," name it "Send Approval Email").
 -   **Deleting**: To remove a block, select it and press `Delete` on your keyboard, or click the trash icon in its settings panel. The builder will attempt to reconnect the preceding and following blocks automatically.

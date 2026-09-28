@@ -33,6 +33,8 @@ Variables allow you to reference document data and context dynamically. Type the
 ### 3. Dynamic Value Resolvers (`/`)
 Value Resolvers calculate dynamic values on the fly. Type the `/` key or click the **Resolver (/)** button to select a visual resolver builder.
 
+![Smart Value Selector showing Logic Commands dropdown](/images/smart-value-selector-commands.png)
+
 ---
 
 ## Dynamic Value Resolver Families
@@ -60,6 +62,9 @@ FlexiRule features 12 user-facing Value Resolver families accessible via the `/`
 
 ### 1. Date Formula (`date_formula`)
 Calculates a target date relative to a base date.
+
+![Smart Value Selector showing Date & Time Formula options](/images/smart-value-resolver-date-formula.png)
+
 - **UI Options**:
   - `Base Date`: Select `Today` or a document date field.
   - `Offset Sign`: Select `+` or `-`.
