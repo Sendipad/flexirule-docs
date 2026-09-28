@@ -1,1 +1,5 @@
-<video src="{{ .Get "src" | relURL }}" {{ if .Get "controls" | default true }}controls{{ end }} {{ if .Get "autoplay" }}autoplay{{ end }} {{ if .Get "loop" }}loop{{ end }} {{ if .Get "muted" }}muted{{ end }}></video>
+{{ $src := .Get "src" }}
+{{ if not (or (hasPrefix $src "http://") (hasPrefix $src "https://")) }}
+  {{ $src = (strings.TrimPrefix "/" $src) | relURL }}
+{{ end }}
+<video src="{{ $src }}" {{ if .Get "controls" | default true }}controls{{ end }} {{ if .Get "autoplay" }}autoplay{{ end }} {{ if .Get "loop" }}loop{{ end }} {{ if .Get "muted" }}muted{{ end }}></video>

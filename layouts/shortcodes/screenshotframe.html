@@ -1,7 +1,8 @@
 {{ $src := .Get "src" }}
 {{ $alt := .Get "alt" }}
 {{ $caption := .Get "caption" }}
-{{ $img := resources.Get (printf "images/%s" $src) }}
+{{ $cleanSrc := strings.TrimPrefix "/" $src }}
+{{ $img := resources.Get (printf "images/%s" (strings.TrimPrefix "images/" $cleanSrc)) }}
 
 <figure class="screenshot-frame">
   {{ if $img }}
@@ -18,7 +19,11 @@
     </picture>
   {{ else }}
     {{/* Fallback to static if resource not found */}}
-    <img src="{{ $src | relURL }}" alt="{{ $alt }}" loading="lazy" decoding="async">
+    {{ $fallbackSrc := $src }}
+    {{ if not (or (hasPrefix $fallbackSrc "http://") (hasPrefix $fallbackSrc "https://")) }}
+      {{ $fallbackSrc = $cleanSrc | relURL }}
+    {{ end }}
+    <img src="{{ $fallbackSrc }}" alt="{{ $alt }}" loading="lazy" decoding="async">
   {{ end }}
   {{ with $caption }}<figcaption>{{ . }}</figcaption>{{ end }}
 </figure>
