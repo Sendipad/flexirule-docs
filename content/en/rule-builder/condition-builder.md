@@ -14,6 +14,8 @@ The **Condition Builder** is a visual interface used to define logical "True/Fal
 
 Instead of writing complex code, you build conditions using a structured, row-based interface. Each row represents a single comparison check.
 
+![Condition Builder rule configuration panel](/images/condition-builder-panel.png)
+
 A condition row consists of three main parts:
 
 1. **Left Operand**: Select the document field or variable to check (e.g., `Status` or `Grand Total`).
@@ -51,6 +53,12 @@ You can add nested groups inside a parent group to express complex logic. The UI
 - **Add Group**: Click **+ Group** to create a nested ALL/ANY block.
 - **Toggle Group Logic**: Click the **ALL / ANY** logic pill at the top of a group card to toggle logic.
 - **Remove Row / Group**: Click the trash icon next to a condition row or group to remove it.
+
+### Canvas Condition Preview
+
+Check blocks on the canvas highlight configured conditions directly on the action card for quick visual verification.
+
+![Action card showing inline condition branching preview](/images/action-card-condition-preview.png)
 
 ---
 
