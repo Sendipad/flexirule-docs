@@ -10,11 +10,13 @@ aliases:
 
 The Rule Builder provides a visual workspace where you can design your business logic by dragging, dropping, and connecting different "Blocks." This visual approach allows you to see exactly how data flows through your system.
 
-![Rule Builder Overview](/images/flexirule-canvas-view.png)
+![Rule Builder Canvas Overview](/images/rule-builder-canvas-overview.png)
 
 ## The Visual Workspace
 
 The canvas is an infinite workspace that represents your rule's logic as a flowchart.
+
+![Rule Flow Canvas Connections](/images/rule-flow-canvas-connections.png)
 
 ### How Logic is Represented
 - **Blocks**: Each step in your rule is represented by a Block (node). Blocks have a clear icon, a title, and often a sub-label describing their specific configuration.

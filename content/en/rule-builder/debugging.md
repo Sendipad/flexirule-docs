@@ -17,6 +17,10 @@ The **Debug Rule** tool allows you to run your logic in a "sandbox" mode before 
 2.  **Select a Record**: Pick a real document from your system (e.g., a specific Sales Order) to use as the test data.
 3.  **Simulate**: Click **Run Test**.
 
+![Rule Builder canvas showing debug execution run dialog](/images/rule-debugger-canvas-execution.png)
+
+![Debug Run dialog showing JSON test context](/images/rule-debugger-dialog.png)
+
 ### Understanding the Results
 -   **Visual Path Trace**: On the canvas, the path taken by the logic is highlighted. You can see exactly which "Check" blocks were true and which actions were triggered.
 -   **No Real Changes**: The debugger simulates the actions but **does not** save any changes to your database. It is 100% safe to use on production data.

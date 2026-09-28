@@ -8,6 +8,8 @@ weight: 60
 
 When you select a block on the canvas, the **Action Settings** panel slides out from the right side of the screen. This is where you define the specific behavior for that step in your rule.
 
+![Action Settings panel overview](/images/action-settings-panel-overview.png)
+
 ## Common Interface Elements
 
 While every action has different options, they all share a consistent design:
@@ -33,10 +35,14 @@ In any Smart Value field, you can use these shortcuts:
 
 In the settings panel, you will encounter different types of input controls:
 
+![Action Settings dynamic properties form](/images/action-settings-properties-form.png)
+
 - **Dropdowns**: Choose from a fixed list of options.
 - **Checkboxes**: Toggle settings on or off.
 - **Data Grids**: Used for actions like "Set Value," where you need to map multiple fields at once. Each row in the grid uses a Smart Value field for the value column.
 - **Multi-Select**: Pick one or more tags or items from a list.
+
+![Action Settings field options overview](/images/action-settings-fields-view.png)
 
 ## Context Awareness
 
