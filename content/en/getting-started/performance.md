@@ -1,7 +1,9 @@
 ---
 title: How does FlexiRule achieve high performance?
-weight: 60
+weight: 90
 description: An in-depth look at the architectural decisions that ensure FlexiRule remains fast and scalable in production environments.
+aliases:
+  - /introduction/performance/
 ---
 
 # Performance Architecture

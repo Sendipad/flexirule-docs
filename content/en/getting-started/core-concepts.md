@@ -1,7 +1,9 @@
 ---
 title: Core Concepts
-weight: 70
+weight: 60
 description: The fundamental building blocks of the FlexiRule ecosystem.
+aliases:
+  - /introduction/core-concepts/
 ---
 
 # Core Concepts

@@ -2,6 +2,8 @@
 title: What is FlexiRule?
 weight: 10
 description: A high-level overview of FlexiRule and its role in the Frappe ecosystem.
+aliases:
+  - /introduction/what-is-flexirule/
 ---
 
 # What is FlexiRule?

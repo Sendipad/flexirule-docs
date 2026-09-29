@@ -1,7 +1,7 @@
 ---
 title: Quick Start
 description: Build your first automation visually in under 5 minutes.
-weight: 10
+weight: 100
 ---
 
 # Quick Start Guide
