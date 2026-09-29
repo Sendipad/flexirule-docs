@@ -2,6 +2,8 @@
 title: Why should I use FlexiRule?
 weight: 20
 description: Understanding the business value and agility provided by visual rules.
+aliases:
+  - /introduction/why-flexirule/
 ---
 
 # Why should I use FlexiRule?

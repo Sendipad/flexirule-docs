@@ -1,7 +1,9 @@
 ---
 title: Why is FlexiRule better than hard-coded customizations?
-weight: 50
+weight: 80
 description: A separation-of-concerns approach showing how FlexiRule complements custom development by isolating business policies from application code.
+aliases:
+  - /introduction/better-than-hard-coded/
 ---
 
 # Separation of Concerns in Frappe Systems

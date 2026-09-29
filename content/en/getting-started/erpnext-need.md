@@ -1,7 +1,9 @@
 ---
 title: Does ERPNext need FlexiRule?
-weight: 30
+weight: 40
 description: A balanced guide on when standard ERPNext features are sufficient versus when FlexiRule becomes necessary.
+aliases:
+  - /introduction/erpnext-need/
 ---
 
 # Does ERPNext need FlexiRule?

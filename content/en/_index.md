@@ -15,9 +15,9 @@ description: "High-performance, visual rule engineering and workflow orchestrati
 
 New to FlexiRule? Follow this progressive sequence:
 
-1. **[Getting Started: Quick Start Guide]({{< relref "getting-started/quick-start.md" >}})**: Install FlexiRule and build your first automation in under 5 minutes.
-2. **[Introduction: What is FlexiRule?]({{< relref "introduction/what-is-flexirule.md" >}})**: Learn how FlexiRule replaces scattered scripts with visual orchestration.
-3. **[Core Concepts]({{< relref "introduction/core-concepts.md" >}})**: Master the building blocks—Rules, Triggers, Context, Blocks, Action Types, and Value Resolvers.
+1. **[What is FlexiRule?]({{< relref "getting-started/what-is-flexirule.md" >}})**: Learn how FlexiRule replaces scattered scripts with visual orchestration.
+2. **[Getting Started: Quick Start Guide]({{< relref "getting-started/quick-start.md" >}})**: Install FlexiRule and build your first automation in under 5 minutes.
+3. **[Core Concepts]({{< relref "getting-started/core-concepts.md" >}})**: Master the building blocks—Rules, Triggers, Context, Blocks, Action Types, and Value Resolvers.
 4. **[Rule Builder Guide]({{< relref "rule-builder/_index.md" >}})**: Learn canvas navigation, node connections, and the Smart Value Selector.
 
 ---
@@ -100,11 +100,7 @@ Consider a common ERPNext scenario: **Block Sales Orders if customer balance exc
 <div class="grid-2">
 
 {{< card title="Getting Started" href="getting-started/" icon="rocket" >}}
-Install FlexiRule, configure your first rule, and run visual debug sessions.
-{{< /card >}}
-
-{{< card title="Introduction & Concepts" href="introduction/" icon="info" >}}
-Understand system architecture, key capabilities, and core concepts.
+Understand system architecture, key capabilities, core concepts, and step-by-step quick start guides.
 {{< /card >}}
 
 {{< card title="Rule Builder Guide" href="rule-builder/" icon="canvas" >}}

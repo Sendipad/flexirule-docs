@@ -1,7 +1,9 @@
 ---
 title: Key Capabilities
-weight: 90
+weight: 50
 description: A summary of the major features and functional highlights of FlexiRule.
+aliases:
+  - /introduction/key-capabilities/
 ---
 
 # Key Capabilities

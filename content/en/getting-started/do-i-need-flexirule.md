@@ -1,7 +1,9 @@
 ---
 title: Do I need FlexiRule?
-weight: 40
-description: A decision guide to help you determine if FlexiRule is appropriate for your organization.
+weight: 30
+description: A decision guide to help you determine if FlexiRule is the right investment for your organization.
+aliases:
+  - /introduction/do-i-need-flexirule/
 ---
 
 # Do I need FlexiRule?

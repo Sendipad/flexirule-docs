@@ -1,7 +1,9 @@
 ---
 title: High-level Architecture
-weight: 80
+weight: 70
 description: A deep dive into the subsystems and architectural philosophy powering FlexiRule.
+aliases:
+  - /introduction/architecture/
 ---
 
 # High-level Architecture

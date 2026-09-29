@@ -1,5 +1,5 @@
 ---
 title: Getting Started
-weight: 20
-description: A step-by-step guide for non-technical users to build their first automation.
+weight: 10
+description: Welcome to FlexiRule. Explore fundamental concepts, architecture, platform philosophy, and step-by-step guides to start building visual automations.
 ---
