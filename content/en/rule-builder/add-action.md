@@ -1,65 +1,59 @@
 ---
-title: Adding Actions
-description: Learn how to add new logic blocks to your rule.
+title: Adding Actions & The Action Palette
+description: Learn how to add, connect, and arrange logic actions on the Rule Builder canvas.
 weight: 20
 ---
 
-# Adding Actions
+# Adding Actions & The Action Palette
 
-Building a rule involves adding "Actions" (Blocks) to the canvas and connecting them to form a logical flow. FlexiRule makes this process intuitive with the **Action Zone**.
+Building a rule flow involves inserting action blocks onto the canvas and connecting them into a visual flowchart. FlexiRule makes inserting actions easy with the **Action Palette** and the interactive **Add Action** controls.
 
-## The Action Zone
+---
 
-The Action Zone is the primary way to insert new logic into your rule. It appears dynamically as you work on the canvas.
+## Methods for Adding Actions
 
-![Action Bar insertion control](/images/rule-builder-action-bar.png)
+You can insert new actions using three intuitive methods:
 
-{{< video src="/images/add-action-from-action-zone.webm" autoplay="true" loop="true" muted="true" >}}
+### 1. Connector Line Plus Button (`+`)
+Hover over any connector arrow between existing nodes on the canvas. A **+** button appears.
+1. Click the **+** button on the connector line.
+2. The **Action Palette** drawer opens.
+3. Select an action. The new block is automatically spliced into the connector line between the two nodes without breaking the flow.
 
-### How to Add an Action
-1.  **Trigger the Menu**: Hover your mouse over any connection line (the arrows between blocks) or click the `+` icon that appears in empty spaces on the canvas.
-2.  **Browse or Search**: An action menu will pop up. You can:
-    -   **Search**: Type keywords like "Email," "Update," or "Check" to find specific actions quickly.
-    -   **Categories**: Browse through categorized lists like *Data Operations*, *Communications*, or *Flow Control*.
+### 2. Output Port Dragging
+Click and drag out from an outbound connector handle (such as the **True** green port or **False** red port on a Check node) and release on empty canvas space to immediately open the Action Palette.
 
-    ![Action Type Selector dropdown menu](/images/action-type-selector-menu.png)
-3.  **Select**: Click the action you want to add.
-4.  **Auto-Insertion**: The new block will be automatically placed on the canvas. If you clicked a connection line, the new block will be inserted *between* the two existing blocks, and the connections will be automatically updated.
+### 3. Command Palette (`Ctrl K`)
+Press `Ctrl K` or `/` anywhere on the canvas to launch the quick **Command Palette**. Type the action name (e.g. `Notify` or `Query Records`) and press **Enter** to place it on the canvas.
 
-## Types of Actions
+---
 
-When adding an action, you will see several types of blocks categorized by their purpose:
+## Exploring the Action Palette Drawer
 
--   **Set Value**: Used for calculations and updating variables within the rule.
--   **Check (Condition)**: Creates a fork in the road based on logic (True/False).
--   **Update Record**: Saves changes directly to a record in your system.
--   **Notify**: Sends alerts via Email, SMS, or System Notifications.
--   **Repeat (Loop)**: Runs a series of actions for every item in a list.
--   **Process**: Triggers advanced system operations or external integrations.
+When the Action Palette opens, actions are organized into clear business categories:
 
-## Organizing Blocks
+![Action Type Selector dropdown menu](/images/action-type-selector-menu.png)
 
-Once an action is added, you can click and drag it to any position on the canvas.
+### Action Categories
 
-### Inserting Between Blocks
-The easiest way to add logic to an existing flow is to hover over the arrow connecting two blocks. When the `+` icon appears, clicking it and selecting an action will "splice" the new action into the flow, saving you from manually deleting and re-drawing connection lines.
+| Category | Icon | Featured Action Types | Typical Business Use Case |
+| :--- | :---: | :--- | :--- |
+| **Logic & Flow** | <i class="fa fa-code-fork"></i> | **Check** <i class="fa fa-code-fork"></i>, **Switch** <i class="fa fa-random"></i>, **Repeat (Loop)** <i class="fa fa-refresh"></i>, **Wait** <i class="fa fa-clock-o"></i>, **Raise Error** <i class="fa fa-exclamation-triangle"></i> | Conditional decision making, branching, multi-case matching, and iteration over child tables. |
+| **Data Operations** | <i class="fa fa-database"></i> | **Set Value** <i class="fa fa-list-ol"></i>, **Query Records** <i class="fa fa-search"></i> | Assigning document or variable values, running database queries, aggregations, and counts. |
+| **Document Operations** | <i class="fa fa-file-text"></i> | **Update Record** <i class="fa fa-file-text"></i> | Creating, updating, submitting, cancelling, or deleting Frappe records. |
+| **Communication & Notifications** | <i class="fa fa-bell"></i> | **Notify** <i class="fa fa-bell"></i> | Dispatching Emails, System Toast Alerts, SMS, or Webhook/Slack notifications. |
+| **Advanced Process & Integration** | <i class="fa fa-cogs"></i> | **Sub-Rule** <i class="fa fa-cube"></i>, **Process** <i class="fa fa-cog"></i> | Calling modular child rules or executing custom Python server processes. |
 
-{{< video src="/images/remove-a-node-will-dynamically-reconnet-nodes.webm" >}}
+---
 
-### Quick Configuration
-As soon as you add an action, it is selected by default, and its **Action Settings** panel opens on the right. This allows you to immediately configure the details of the new block without extra clicks.
+## Node Header Toolbars & Managing Actions
 
-## Managing Actions
-
-Action cards on the canvas provide interactive toolbars and headers for direct manipulation.
+Every action node on the canvas includes an interactive top toolbar:
 
 ![Action card header toolbar showing Run Test, Copy, and Delete actions](/images/action-card-header-toolbar.png)
 
-![Action card toolbar with capability badges](/images/action-card-badges-toolbar.png)
-
-When an action contains sub-actions or nested steps (such as loops or complex processes), the action card displays a structured sub-node tree view.
-
-![Action card displaying sub-nodes tree](/images/action-card-sub-nodes.png)
-
--   **Renaming**: You can customize the name of any block by clicking its title in the settings panel. This helps make your flow more readable (e.g., instead of "Notify," name it "Send Approval Email").
--   **Deleting**: To remove a block, select it and press `Delete` on your keyboard, or click the trash icon in its settings panel. The builder will attempt to reconnect the preceding and following blocks automatically.
+- **Rename / Custom Title**: Click the block title in the configuration panel to set a business-friendly label (e.g. change `Set Value` to `Calculate High-Value Discount`).
+- **Capability Badges**: Badges on the card indicate enabled features (such as **Conditions Enabled** or **Output Mapped**).
+- **Sub-Nodes Tree View**: Actions with nested steps (such as Loops or Sub-Rules) display an expandable tree view showing nested execution steps.
+- **Copy Node**: Duplicate the configured block across the canvas or into another rule using `Ctrl C` / `Ctrl V`.
+- **Delete Node**: Delete the block using `Delete` or `Backspace`. Surrounding connector lines automatically re-link.

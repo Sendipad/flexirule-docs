@@ -1,59 +1,52 @@
 ---
-title: Action Settings
-description: Learn how to configure individual blocks in your rule.
+title: Action Settings Panel
+description: Learn how to configure individual action nodes using the Action Settings panel and Schema Browser.
 weight: 60
 ---
 
-# Action Settings
+# Action Settings Panel
 
-When you select a block on the canvas, the **Action Settings** panel slides out from the right side of the screen. This is where you define the specific behavior for that step in your rule.
+When you select an action node on the canvas, its **Action Settings** panel opens. This panel provides all input fields, operations, and settings for that specific step.
 
 ![Action Settings panel overview](/images/action-settings-panel-overview.png)
 
-## Common Interface Elements
+---
 
-While every action has different options, they all share a consistent design:
+## Panel Interface Layout
 
-- **Block Title**: At the top, you can see and edit the name of the block.
-- **Description**: A brief explanation of what the action does.
-- **Configuration Fields**: The main area where you input data, select options, and define logic.
+The Action Settings panel is divided into clear sections:
 
-## Smart Value Fields
+### 1. Node Header & Title
+- **Node Title**: Rename the node to reflect its business function (e.g. rename `Notify` to `Send Approval Notification to Manager`).
+- **Action Type Badge**: Displays the action type name and icon (e.g. Check <i class="fa fa-code-fork"></i>, Set Value <i class="fa fa-list-ol"></i>).
+- **Close Button**: Closes the drawer or returns focus to the canvas.
 
-Most settings in FlexiRule use "Smart" fields. These fields allow you to provide data in three different ways: static text, variables, or dynamic functions.
+### 2. Action Description & Help Guide
+Every action includes inline description text explaining what the action does, what inputs it expects, and what outputs it produces.
 
-To learn more about the logic behind these fields, see the [Smart Value System]({{< relref "smart-value-system.md" >}}).
-
-### Quick Access
-In any Smart Value field, you can use these shortcuts:
-
-1. **Static Input**: Just type a value directly into the field.
-2. **Variable Picker (@)**: Type `@` or click the variable icon to see a list of available data, such as `@doc.customer_name` or `@vars.total_count`.
-3. **Advanced Resolvers (/)**: Type `/` or click the resolver icon to access tools like math, text formatting, and date calculations.
-
-## Field Types
-
-In the settings panel, you will encounter different types of input controls:
+### 3. Dynamic Configuration Controls
+Depending on the selected action, controls are dynamically rendered:
 
 ![Action Settings dynamic properties form](/images/action-settings-properties-form.png)
 
-- **Dropdowns**: Choose from a fixed list of options.
-- **Checkboxes**: Toggle settings on or off.
-- **Data Grids**: Used for actions like "Set Value," where you need to map multiple fields at once. Each row in the grid uses a Smart Value field for the value column.
-- **Multi-Select**: Pick one or more tags or items from a list.
+- **Smart Value Inputs**: Text fields integrated with the **Smart Value Selector** (`@` and `/`).
+- **Select Dropdowns**: Single-choice dropdowns for selecting operations or channels.
+- **Checkboxes & Switches**: Toggles for boolean flags (e.g. `Stop Execution on Error`).
+- **Inline Grids**: Tabular controls for mapping multiple fields or variable assignments at once.
+- **Tiptap Rich Text Editors**: Formatted text editors for drafting notification emails and templates.
 
 ![Action Settings field options overview](/images/action-settings-fields-view.png)
 
-## Context Awareness
+---
 
-The settings panel knows where the block is located in your flow:
-- **Available Variables**: In the `@` menu, you will see variables that have been defined *before* the current block.
-- **Validation**: Required fields are marked, and the panel will alert you if your configuration is incomplete or contains errors.
+## Schema & Variable Integration
 
-## Saving Changes
+The panel is fully context-aware:
+- **Available Variables**: Press `@` in any input to see all document fields (`@doc`) and variables created by preceding nodes (`@vars`).
+- **Live Validation**: Any missing required fields or invalid formula syntax generate real-time inline warning notices <i class="fa fa-exclamation-circle"></i>.
 
-Changes in the Action Settings panel are drafted immediately. Save the entire rule using the button at the top of the canvas to commit your changes to the system.
+---
 
-{{< tip >}}
-**Keep it Readable**: Use the title field at the top of the settings panel to give each block a business-friendly name. Instead of "Set Value 1," use "Calculate Discounted Total."
-{{< /tip >}}
+## Auto-Saving Configuration
+
+All changes made in the Action Settings panel are drafted instantly. Click **Save** <i class="fa fa-floppy-o"></i> (`Ctrl S`) in the top action bar to persist changes to the database.

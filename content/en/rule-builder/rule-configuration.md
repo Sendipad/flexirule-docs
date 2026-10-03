@@ -1,48 +1,50 @@
 ---
-title: Rule Configuration
-description: Learn how to set up the global settings for your rule.
+title: Rule Configuration & Trigger Setup
+description: Learn how to set up global rule parameters, target DocTypes, trigger events, and gatekeeper conditions.
 weight: 30
 ---
 
-# Rule Configuration
+# Rule Configuration & Trigger Setup
 
-Before you start drawing logic on the canvas, you need to define the "Who, When, and How" of your rule. This is handled in the **Rule Configuration** section, which you can access via the **Configure** button or when creating a new rule.
+Before designing your flow on the visual canvas, define the global metadata and execution triggers for your rule in **Rule Configuration**.
 
-## Setup Flow
+---
 
-Configuring a rule typically follows these steps in the UI:
+## Accessing Rule Configuration
 
-### 1. Basic Information
--   **Rule Name**: Give your rule a clear, descriptive name (e.g., "Auto-Approve Low Value Orders").
--   **Document Type**: Select the type of record this rule applies to (e.g., "Sales Order" or "Support Ticket").
+You can access rule configuration settings at any time:
+- **Rule Document**: Open the Rule record in Frappe.
+- **Rule Builder Canvas**: Click **Setup / Configuration** <i class="fa fa-cog"></i> in the top action bar or double-click the **Start Node** <i class="fa fa-play"></i>.
 
-### 2. The Trigger (When)
-The **Trigger** defines the specific event that wakes up the rule.
--   **Events**: Common triggers include `Before Save`, `After Save`, `On Submit`, or `On Cancel`.
--   **Trigger Condition**: You can define a high-level "gatekeeper" condition. If this condition isn't met, the rule won't even start, saving system resources.
-    -   *Example*: `Total Amount > 500`
+---
 
-### 3. Execution Order (Priority)
-If you have multiple rules running on the same event (e.g., three different rules that all run "Before Save" on a Sales Order), you can control which one runs first using **Priority**.
--   Rules with a **higher number** run first.
--   *Tip*: Use this if Rule B depends on a value calculated by Rule A.
+## Global Setup Parameters
 
-## The Configuration Modal
+### 1. Basic Rule Metadata
+- **Rule Name**: A unique, descriptive business title (e.g. `Auto Approve Low Value Sales Orders`).
+- **Target DocType**: The Frappe document type this rule applies to (e.g. `Sales Order`, `Purchase Invoice`, `Customer`).
 
-When you click **Configure** on an existing rule, a modal appears allowing you to adjust these settings without leaving the canvas.
+### 2. Trigger Events (When the Rule Runs)
+Select when FlexiRule wakes up to evaluate the rule:
 
-### Dynamic Setup
-As you select different Document Types, the available fields for your **Trigger Condition** will automatically update to match. The **Smart Value Selector** is used here to help you pick fields and define logic easily.
+| Trigger Event | Execution Timing | Ideal Use Case |
+| :--- | :--- | :--- |
+| **Before Save** | Fires immediately before the document is saved to the database. | Field calculations, input validations, and value assignments. |
+| **After Save** | Fires immediately after the document is saved. | Notifications, audit logging, and downstream document creation. |
+| **Before Submit** | Fires before document submission. | Pre-submission approval checks and blocking validation errors. |
+| **After Submit** | Fires after document submission. | Post-submission ledger updates or external system sync. |
+| **On Cancel** | Fires when a submitted document is cancelled. | Reversing actions or clearing status flags. |
+| **On Trash** | Fires before a record is deleted. | Preventing accidental deletion or logging deletion events. |
+| **Scheduled** | Fires automatically on a defined time schedule (e.g. Daily, Hourly). | Periodic background jobs, overdue checks, and summary reports. |
+| **Manual / Event** | Triggered on-demand via custom buttons or external API calls. | User-initiated workflows. |
 
-## Advanced Setup (Optional)
+### 3. Trigger Condition (Fast Gatekeeper Check)
+The **Trigger Condition** is an optional pre-check evaluated at the entry point.
+- **Purpose**: If the trigger condition evaluates to `False`, FlexiRule halts execution before loading the rule canvas or evaluating downstream action nodes.
+- **Example**: `@doc.grand_total > 5000 AND @doc.docstatus == 0`
+- **Performance Benefit**: Prevents unnecessary rule executions for irrelevant documents, keeping your system fast.
 
-### Order of Operations
-In the configuration UI, you can also see a summary of how the rule is positioned relative to other rules in your system. This "execution stack" view helps you ensure that your automation doesn't conflict with other active rules.
-
-### Performance Settings
-For advanced users, the configuration may include toggles for:
--   **Asynchronous Execution**: Allowing the rule to run in the background so the user doesn't have to wait for it to finish.
--   **Logging Level**: Controlling how much detail is saved in the execution logs for this specific rule.
-
-## Transitioning to the Canvas
-Once your configuration is saved, the **Start** block on the canvas is automatically updated with your document context. Any variables or fields related to your chosen Document Type will now be available in the **Smart Value Selector** throughout your rule.
+### 4. Rule Priority & Execution Order
+When multiple active rules share the same Target DocType and Trigger Event, **Priority** dictates execution sequence:
+- Higher priority numbers run before lower priority numbers (e.g. Priority `10` runs before Priority `1`).
+- **Best Practice**: Give calculation and data assignment rules higher priority than notification rules so notifications contain updated values.

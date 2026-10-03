@@ -1,108 +1,110 @@
 ---
-title: Smart Value System
-description: Learn how FlexiRule handles dynamic inputs using static values, variables, and dynamic value resolvers.
+title: Smart Value Selector & Value Resolvers
+description: Learn how to input dynamic data across FlexiRule forms using Static Values, Variable References (@), and Dynamic Value Resolvers (⚡).
 weight: 45
 ---
 
-# Smart Value System
+# Smart Value Selector & Value Resolvers
 
-The **Smart Value System** is the dynamic input interface in FlexiRule. Whether you are setting a field value in a Set Value block, configuring a Check condition, constructing an email template, or filtering queries, you use the same intuitive input mechanism across the visual canvas.
+The **Smart Value Selector** is the core dynamic input component in FlexiRule. Whenever you configure an input field—whether setting a document field in Set Value, building conditions in Check, creating query filters, or drafting email templates—you use the Smart Value Selector.
 
-> **The Core Principle**: Every input field in FlexiRule is a smart input powered by the **Smart Value Selector**, enabling seamless toggling between static values, variable references, and dynamic value resolvers without writing complex manual syntax.
+> **Core Principle**: Every smart input field allows you to seamlessly toggle between static literal values, context variable references (`@`), and dynamic value resolvers (`⚡`) without needing to write code or complex syntax.
 
 ---
 
 ## The Three Input Modes
 
-Input fields in FlexiRule support three operational modes:
+Every input field in FlexiRule supports three operational modes:
 
 ### 1. Static Value
-Directly type or pick constant values:
-- **Text**: `Approved`, `High Priority`, `Welcome to FlexiRule`
-- **Numbers**: `100`, `0.05`, `-10`
-- **Dates**: Selected via the calendar picker or standard date format (`YYYY-MM-DD`).
+Directly enter constant literal values based on the field's expected data type:
+- **Text / Strings**: `Approved`, `Urgent`, `Follow up needed`
+- **Numbers**: `100`, `0.15`, `-5`
+- **Dates & Times**: Selected via interactive calendar pickers or standard date strings (`YYYY-MM-DD`).
+- **Select Dropdowns**: Standard single-choice options.
 
 ### 2. Variable Reference (`@`)
-Variables allow you to reference document data and context dynamically. Type the `@` key or click the **Variable (@)** button to open the searchable variable selector menu:
-
-- **Document Fields (`@doc`)**: Select fields on the document triggering the rule (e.g., `Grand Total`, `Customer`, `Status`).
-- **Previous Values (`@old_doc`)**: Select pre-update field values on change events (e.g., `Previous Status` to verify if a field was modified).
-- **Rule Variables (`@vars`)**: Select temporary variables created by previous action blocks in the current rule flow (e.g., `Calculated Discount`, `Open Invoices`).
-- **System Information (`@system`)**: Access environment information such as `Current User` or `Today`.
-
-### 3. Dynamic Value Resolvers (`/`)
-Value Resolvers calculate dynamic values on the fly. Type the `/` key or click the **Resolver (/)** button to select a visual resolver builder.
+Press the `@` key inside any smart input field (or click the **Variable (@)** button) to open the variable picker popup:
 
 ![Smart Value Selector showing Logic Commands dropdown](/images/smart-value-selector-commands.png)
 
----
+Available variable context scopes include:
+- **Document Fields (`@doc`)** <i class="fa fa-file-text-o"></i>: Fields on the record triggering the rule (e.g. `@doc.grand_total`, `@doc.customer`).
+- **Previous Record Values (`@old_doc`)** <i class="fa fa-history"></i>: Pre-update field state on save events (e.g. compare `@old_doc.status` with `@doc.status` to check for status changes).
+- **Rule Variables (`@vars`)** <i class="fa fa-cube"></i>: Temporary variables stored by earlier actions in the current flow (e.g. `@vars.calculated_discount`).
+- **Parent Document Fields (`@parent`)** <i class="fa fa-level-up"></i>: Parent document fields when inside a child table loop.
+- **Loop Item Context (`@loop`)** <i class="fa fa-repeat"></i>: Current row item (`@loop.item`) and iteration index (`@loop.index`) inside Repeat (Loop) blocks.
+- **Session & Environment (`@session`)** <i class="fa fa-user"></i>: Information about the active user (`@session.user`, `@session.company`).
 
-## Dynamic Value Resolver Families
-
-FlexiRule features 12 user-facing Value Resolver families accessible via the `/` menu in the Smart Value Selector:
-
-| Resolver Family | Trigger Key | Primary Output | Use Case |
-| :--- | :--- | :--- | :--- |
-| **Date Formula** | `/date_formula` | Date / Datetime | Add or subtract days, months, or years from today or a base date field. |
-| **Math Formula** | `/math_formula` | Float / Int | Perform safe arithmetic (`+`, `-`, `*`, `/`) with rounding precision. |
-| **Date Difference** | `/date_diff` | Integer | Calculate time difference in days, months, or years between two dates. |
-| **Child Table Aggregation** | `/child_aggregation` | Float / Int | Calculate Sum, Average, or Count across child table rows. |
-| **Collection Operations** | `/collection` | Array / Value | Filter, count, check (`any`/`all`), extract (`pluck`), or aggregate child rows. |
-| **String Manipulation** | `/string_formula` | Text | Concatenate text, convert casing, or format strings. |
-| **Normalization** | `/normalization` | Clean Text | Apply cleaning pipelines (trim, slugify, lower) to sanitize text inputs. |
-| **Format** | `/format` | Formatted Text | Format currency amounts, dates, or structured text templates. |
-| **Fetch From Link** | `/fetch` | Field Value | Read a field from a linked database record without full document loading. |
-| **System Context** | `/system_context` | String / Boolean | Fetch active session user info or check user permissions. |
-| **Variables (`@`)** | `@` | Any | Access runtime context (`@doc`, `@old_doc`, `@vars`). |
-| **Static Value** | Literal | Literal | Enter constant values. |
+### 3. Resolver (`⚡`)
+Press the `/` key or click the **Resolver (`⚡`)** button to launch visual value calculation engines.
 
 ---
 
-## Visual Resolver Builders
+## Value Resolver Families
 
-### 1. Date Formula (`date_formula`)
-Calculates a target date relative to a base date.
+FlexiRule includes 6 visual Value Resolver families accessible via the **Resolver (`⚡`)** menu:
+
+| Resolver Family | Icon | Primary Output | Business Use Case |
+| :--- | :---: | :--- | :--- |
+| **Date & Time** | <i class="fa fa-calendar"></i> | Date / Datetime | Add/subtract days or months, calculate date diffs, format dates, fetch current time, or locate boundary dates (start/end of month). |
+| **Math Formula** | <i class="fa fa-calculator"></i> | Number / Float | Perform arithmetic calculations (`+`, `-`, `*`, `/`) combining variables and numeric constants with decimal rounding. |
+| **Lookup** | <i class="fa fa-search"></i> | Field Value | Fetch a field value from any linked record or DocType in the system. |
+| **Text Transform** | <i class="fa fa-font"></i> | Text String | Concatenate text strings, adjust casing (UPPERCASE/lowercase), trim whitespace, or substitute text. |
+| **Collection** | <i class="fa fa-table"></i> | List / Value | Perform child table operations: count rows, sum child amounts, average, min/max, filter rows, or pluck unique field lists. |
+| **System Context** | <i class="fa fa-globe"></i> | Context String | Retrieve environment information, global system defaults, or session properties. |
+
+---
+
+## Visual Resolver Builders in Detail
+
+### 1. Date & Time Resolver <i class="fa fa-calendar"></i>
+Calculates dates dynamically using six operation modes:
 
 ![Smart Value Selector showing Date & Time Formula options](/images/smart-value-resolver-date-formula.png)
 
-- **UI Options**:
-  - `Base Date`: Select `Today` or a document date field.
-  - `Offset Sign`: Select `+` or `-`.
-  - `Offset Value`: Enter numeric offset (e.g., `30`).
-  - `Offset Unit`: Choose `Days`, `Months`, or `Years`.
-- **Example**: `Posting Date + 30 Days` → calculates an invoice due date.
+- **Calculate Mode**: Add or subtract offsets (e.g. `@doc.posting_date + 30 Days` to compute payment due date).
+- **Difference Mode**: Calculate duration between two dates in days, months, or years (e.g. age of invoice).
+- **Extract Mode**: Pull specific components from a date (Day, Month, Year, Day of Week).
+- **Format Mode**: Convert raw dates into custom user display formats (e.g. `DD/MM/YYYY`).
+- **Current Mode**: Get the current system Date, Time, or Datetime.
+- **Boundary Mode**: Locate Start of Day, End of Day, Start of Month, or End of Month.
 
-### 2. Math Formula (`math_formula`)
-Performs arithmetic calculations with rounding precision.
-- **UI Options**:
-  - `Field A`: Select left operand field or variable.
-  - `Operator`: Choose `+`, `-`, `*`, or `/`.
-  - `Field B / Constant`: Select right operand field or enter constant number.
-  - `Precision`: Set decimal places (e.g., `2`).
-- **Example**: `Net Total * 0.15 (Precision: 2)` → calculates a tax amount.
+### 2. Math Formula Resolver <i class="fa fa-calculator"></i>
+Visually builds arithmetic formulas combining variables and constant values:
+- **Field A**: Operand variable (e.g. `@doc.net_total`).
+- **Operator**: Choose `+`, `-`, `*`, or `/`.
+- **Field B**: Second operand variable or constant number (e.g. `0.15`).
+- **Rounding Precision**: Set decimal place rounding (e.g. `2`).
+- **Example**: `@doc.net_total * 0.15` rounded to 2 decimal places to calculate tax.
 
-### 3. Fetch From Link (`fetch`)
-Performs a single-field database lookup via a linked record.
-- **UI Options**:
-  - `Link Field`: Select link field on current document (e.g., `Customer`).
-  - `Target DocType`: Select target DocType (e.g., `Customer`).
-  - `Field to Fetch`: Select target field (e.g., `Credit Limit`).
-- **Example**: Retrieve a customer's credit limit dynamically when processing a Sales Order.
+### 3. Lookup Resolver <i class="fa fa-search"></i>
+Performs single-field record lookups from any DocType:
+- **Target DocType**: Select target document type (e.g. `Customer`).
+- **Filter Criteria**: Specify lookup condition (e.g. `name == @doc.customer`).
+- **Field to Fetch**: Choose target field to return (e.g. `credit_limit`).
+
+### 4. Text Transform Resolver <i class="fa fa-font"></i>
+Manipulates text strings cleanly:
+- **Operations**: `Concatenate` (join multiple variables/text strings), `Uppercase`, `Lowercase`, `Trim`, `Find & Replace`, `Substring`.
+- **Example**: Concatenate `INV-` + `@doc.name` + ` - ` + `@doc.customer_name`.
+
+### 5. Collection Resolver <i class="fa fa-table"></i>
+Performs list and child table aggregations:
+- **Target Collection**: Select child table field (e.g. `@doc.items`).
+- **Operations**:
+  - `Count`: Total number of child rows.
+  - `Sum`: Sum of a numeric child field (e.g. sum of `qty`).
+  - `Average`: Mean average of a child field.
+  - `Min / Max`: Minimum or maximum value in child rows.
+  - `Filter`: Filter child rows matching specific criteria.
+  - `Pluck`: Extract a list of specific field values across all rows.
+  - `Unique`: Deduplicate list values.
 
 ---
 
-## Variable Scope & Runtime Rules
+## Variable Lifetime & Scope
 
-1. **Rule Isolation**: Variables stored in `@vars` exist during the single rule execution run. They are not stored in the database unless explicitly saved using an **Update Record** action.
-2. **Branch Isolation**: Variables created inside one conditional branch (e.g., **True** branch) are not initialized on alternative branches (**False** branch).
-3. **Loop Context**: Inside a **Repeat (Loop)** block, `@vars.item` represents the active row item of the current iteration.
-
----
-
-## Where the Smart Value Selector is Used
-
-The Smart Value Selector is used across all rule builder configuration panels:
-- **Set Value Action**: Select targets and values for field updates or rule variables.
-- **Check (Condition) Action**: Compare fields and expressions visually.
-- **Query Records Action**: Define dynamic query filter criteria.
-- **Notify Action**: Build dynamic notification subjects and message bodies.
+1. **Rule Duration**: Variables stored in `@vars` exist during the current execution run.
+2. **Branch Isolation**: Variables set inside a conditional branch (e.g. **True** branch) are isolated to that branch path.
+3. **Loop Scope**: `@loop.item` and `@loop.index` are available inside Repeat (Loop) blocks.
