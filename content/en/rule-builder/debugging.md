@@ -1,60 +1,65 @@
 ---
 title: Debugging & Execution Logs
-description: Learn how to test your rules and understand why they run.
+description: Learn how to test rules visually in sandbox mode and inspect live execution logs.
 weight: 80
 ---
 
 # Debugging & Execution Logs
 
-FlexiRule provides built-in tools to help you understand exactly what happens when a rule runs. Whether you are testing a new idea or investigating why a live rule didn't behave as expected, these tools give you full visibility.
+FlexiRule provides visual testing and auditing tools to help you test rules in a safe sandbox environment and monitor live executions.
 
-## Testing with the Debugger
+---
 
-The **Debug Rule** tool allows you to run your logic in a "sandbox" mode before you activate it.
+## Live Simulation Debugger
 
-### How to Run a Test
-1.  **Open Debugger**: Click the **Debug Rule** button at the top of the canvas.
-2.  **Select a Record**: Pick a real document from your system (e.g., a specific Sales Order) to use as the test data.
-3.  **Simulate**: Click **Run Test**.
+The **Debug** tool allows you to simulate rule execution on real document records without modifying your database.
+
+### How to Run a Visual Test
+1. On the Rule Builder canvas, click **Debug** <i class="fa fa-bug"></i> in the top action bar (or press `Alt D`).
+2. The **Debug Panel** opens:
+   - **Select Test Document**: Pick an existing record from your system (e.g. a specific Sales Order) to test with.
+   - **Custom Context (Optional)**: Provide custom JSON overrides if testing specific scenarios.
+3. Click **Run Test**.
 
 ![Rule Builder canvas showing debug execution run dialog](/images/rule-debugger-canvas-execution.png)
 
 ![Debug Run dialog showing JSON test context](/images/rule-debugger-dialog.png)
 
-### Understanding the Results
--   **Visual Path Trace**: On the canvas, the path taken by the logic is highlighted. You can see exactly which "Check" blocks were true and which actions were triggered.
--   **No Real Changes**: The debugger simulates the actions but **does not** save any changes to your database. It is 100% safe to use on production data.
--   **Result Inspection**: Click on any highlighted block after the test to see its specific inputs and outputs (e.g., what value was calculated or what email would have been sent).
+---
+
+## Inspecting Debug Results
+
+After clicking **Run Test**, FlexiRule evaluates your flow step-by-step:
+
+- **Visual Canvas Path**: The path taken by execution highlights in **Green**. Unexecuted or skipped branches dim in **Gray**. Errors highlight in **Red**.
+- **Step Inspector**: Click any highlighted node card on the canvas to inspect its step results:
+  - **Inputs Received**: Dynamic values resolved for that step.
+  - **Outputs Produced**: Modified variables (`@vars`) or return payloads.
+  - **Step Duration**: Execution time in milliseconds.
+  - **Status**: Success, Skipped, or Failed.
 
 ![Debug View Return Result](/images/debug-view-return-result.png)
 
-## Execution Logs
-
-For **Active** rules, FlexiRule keeps a history of every time the rule was triggered. This is your primary tool for troubleshooting live automations.
-
-### Why did the rule trigger?
-The logs will show you:
--   **The Event**: Which document and event (e.g., Save) triggered the run.
--   **The Outcome**: Whether the rule finished successfully, was skipped, or hit an error.
-
-### Why did the rule NOT trigger?
-If you expected a rule to run but it didn't, check the logs for:
--   **Trigger Condition Failed**: The high-level "gatekeeper" condition you set in the Rule Configuration wasn't met.
--   **Disabled State**: The rule was set to "Disabled" at the time of the event.
--   **Priority Conflict**: Another rule with higher priority might have stopped the execution chain.
-
-## Understanding the Visual Path
-
-When viewing a log or a debug run, the canvas uses color-coded highlights:
-
--   **Green/Highlighted**: The block was executed successfully.
--   **Grey/Dimmed**: The block was skipped (e.g., it was on the "False" path of a "Check" block).
--   **Red**: The block encountered an error.
-
 {{< video src="/images/debug-rule-view-execution-path.webm" >}}
 
-## Common Troubleshooting Tips
+---
 
--   **Check the Variables**: If a "Set Value" block isn't working, use the debugger to see if the input variables actually have the data you expect.
--   **Look for Loops**: If a rule stops unexpectedly, it might have hit the safety limit (FlexiRule stops any rule that exceeds 1,000 steps to prevent system crashes).
--   **Validation Errors**: If a rule fails to activate, the builder will usually point you directly to the block that is missing a setting or has an invalid formula.
+## Rule Execution Logs
+
+For active rules running in production, FlexiRule logs every execution event in **Rule Execution Logs**.
+
+### Accessing Execution Logs
+- **RuleFlow Workspace**: Click the **Execution Logs** shortcut <i class="fa fa-list"></i>.
+- **Rule Document**: Click **Execution Logs** in the document view menu.
+
+### Log Audit Fields
+Each execution log entry details:
+- **Execution ID**: Unique tracking identifier.
+- **Rule Name & Target DocType**: Name of the executed rule and document.
+- **Trigger Event**: Event that triggered execution (e.g. `Before Save`).
+- **Status**:
+  - `Success`: Rule completed all actions successfully.
+  - `Skipped`: Trigger condition evaluated to false, skipping execution.
+  - `Failed`: Rule encountered a runtime error or user-raised error.
+- **Execution Duration**: Total run time in seconds/milliseconds.
+- **Detailed Step Trace**: Complete breakdown of every node executed, variables evaluated, and error stack trace (if failed).

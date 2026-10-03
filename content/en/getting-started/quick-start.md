@@ -1,71 +1,86 @@
 ---
-title: Quick Start
-description: Build your first automation visually in under 5 minutes.
+title: Quick Start Guide
+description: Build your first visual automation in under 5 minutes starting from the RuleFlow Workspace.
 weight: 100
 ---
 
 # Quick Start Guide
 
-Build a visual rule in under 5 minutes that alerts you whenever a high-value Sales Invoice is created.
+Build a visual rule in under 5 minutes that alerts you whenever a high-value **Sales Invoice** is created in ERPNext.
 
 ---
 
-## 1. Create your First Rule
-1. Go to **FlexiRule -> Rule List** and click **New**.
-2. Set **Rule Name** to `High Value Alert`.
-3. Set **Document Type** to `Sales Invoice`.
-4. Set **Trigger Event** to `Before Save`.
-5. Click **Save**.
+## 1. Navigate to the RuleFlow Workspace
+In Frappe / ERPNext, access FlexiRule using either method:
+- **Sidebar**: Click **RuleFlow** in the main application navigation bar.
+- **Awesomebar**: Type `RuleFlow` in the top search bar (`Ctrl K` or `Cmd K`) and press **Enter**.
+
+The **RuleFlow Workspace** is your central control center. It provides quick access shortcuts:
+- **New Rule**: Immediately creates a new rule document.
+- **Rule List**: View and manage all existing rules.
+- **Rule Builder**: Open the full-screen visual canvas engine.
+- **Execution Logs**: Inspect historical rule execution activity.
 
 ---
 
-## 2. Open the Visual Rule Builder
-1. Click **Open Rule Builder** at the top of the form.
-2. You will see the visual canvas containing the mandatory **Start (Entry Action)** node.
+## 2. Create Your First Rule
+1. On the **RuleFlow Workspace**, click the **New Rule** shortcut button (or type `New Rule` in the Awesomebar).
+2. On the Rule form, fill in the basic configuration:
+   - **Rule Name**: `High Value Invoice Alert`
+   - **Target DocType**: `Sales Invoice`
+   - **Trigger Event**: `Before Save` (runs automatically when a Sales Invoice is saved)
+3. Click **Save** in the top right corner.
 
 ---
 
-## 3. Add a Check (Condition) Node
-1. Hover over the **Start** node's connection port and click the **+ Add Action** button.
-2. Select **Check** (Condition) from the action list.
-3. In the configuration panel on the right:
-   - Ensure Group Logic is set to **ALL**.
+## 3. Open the Visual Rule Builder
+1. With your rule saved, click the **Rule Builder** button in the document action bar (or click **Rule Builder** from the workspace).
+2. The visual Rule Builder canvas opens, displaying the mandatory **Start (Entry Action)** node with a green play icon <i class="fa fa-play"></i>.
+
+---
+
+## 4. Add a Check (Condition) Action
+1. Hover over the connector line below the **Start** node and click the **+ Add Action** button (or press `Ctrl K` to open the Command Palette).
+2. In the Action Palette drawer, under **Logic & Flow**, select **Check** <i class="fa fa-code-fork"></i>.
+3. The **Check Settings** panel opens on the right (or via modal dialog depending on your preference):
+   - Set **Match Logic** to **ALL (AND)**.
    - Click **Add Condition**.
-   - Click the left value field and type `@` to open the **Smart Value Selector**.
-   - In the search popup, search for `Grand Total`.
-   - Select **Sales Invoice → Grand Total**.
-   - Set the comparison operator dropdown to **Is Greater Than**.
+   - Click the left value input field and press `@` to open the **Smart Value Selector**.
+   - Search for `Grand Total` and select **Sales Invoice → Grand Total** (`@doc.grand_total`).
+   - Set the operator dropdown to **Is Greater Than**.
    - In the right value field, enter `10000`.
 
 ---
 
-## 4. Add a Notification Node
-1. Click and drag a connection line from the **True** (Green) outbound port of the Check node.
-2. Select **Notify** from the action picker.
-3. In the Notify configuration panel:
-   - Set **Channel / Mode** to `UI Message (Toast)`.
-   - Click inside the **Message** editor field.
-   - Enter `💰 High value invoice detected! Invoice ID: `.
-   - Type `@` to open the **Smart Value Selector**.
-   - Search for `Name` and select **Sales Invoice → Name** to dynamically insert the document ID token.
+## 5. Add a Notify Action
+1. On the canvas, find the **True** (Green) output connector port coming out of the **Check** node.
+2. Click and drag from the **True** port, or click the **+ Add Action** icon on the True branch.
+3. In the Action Palette drawer, select **Notify** <i class="fa fa-bell"></i> under **Communication & Notifications**.
+4. In the Notify configuration panel:
+   - Set **Notification Channel** to `UI Message (Toast)`.
+   - In the **Message** content box, type:
+     `💰 High value invoice detected! Invoice ID: `
+   - Press `@` to trigger the **Smart Value Selector**, search for `Name`, and pick **Sales Invoice → Name** (`@doc.name`).
 
 ---
 
-## 5. Test Your Rule Visually
-1. Click **Test Run** in the top action bar.
-2. Select an existing Sales Invoice record with a Grand Total above 10,000.
+## 6. Test & Debug Your Rule Visually
+1. In the top action bar of the Rule Builder, click **Debug** <i class="fa fa-bug"></i> (or press `Alt D`).
+2. In the **Debug Panel**, select an existing test **Sales Invoice** document with a Grand Total over 10,000.
 3. Click **Run Test**.
-4. Observe the green execution path highlighted on your canvas leading to the Notify block, along with the live toast notification preview!
+4. Watch the canvas highlight the execution path in green, showing each step's status, duration, and output variables!
 
 ---
 
-## 6. Go Live
-1. Close the Rule Builder using the **Close** button.
-2. On the main Rule document, check the **Enabled** box.
-3. Click **Save**. Your rule is now active!
+## 7. Activate Your Rule
+1. Return to the Rule document form by closing the Rule Builder or using the breadcrumbs.
+2. Check the **Is Active** checkbox.
+3. Click **Save**.
+
+Your visual rule is now live! Whenever a Sales Invoice with a Grand Total over 10,000 is saved, FlexiRule will automatically evaluate the condition and display the high-value toast notification.
 
 ---
 
-## Visual Design Best Practices
-- **Use the Smart Value Selector**: Always use `@` or click the **Variable (@)** button to pick document fields rather than typing field names manually.
-- **Connect Every Node**: Ensure outbound ports are connected to downstream actions so the execution flow completes seamlessly.
+## Visual Design Tips
+- **Smart Value Selector (`@`)**: Always use `@` or click the variable button to reference fields dynamically rather than typing string text manually.
+- **Action Config Modes**: You can switch between **Workspace 3-Panel View** (Schema / Canvas / Configuration side-by-side) and **Dialog View** via **Preferences** <i class="fa fa-sliders"></i> in the top menu bar.
