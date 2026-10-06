@@ -57,7 +57,7 @@ When execution begins at the Start node, the following context data is made avai
 
 ## 5. Related Features
 
-- [Rule Lifecycle]({{< relref "rule-builder/rule-lifecycle.md" >}}): Understand how triggers initiate rule execution.
+- [Rule Lifecycle]({{< relref "test-operate/rule-lifecycle.md" >}}): Understand how triggers initiate rule execution.
 - [Canvas]({{< relref "rule-builder/canvas.md" >}}): Learn how to build visual flows starting from the Start node.
 
 ---
