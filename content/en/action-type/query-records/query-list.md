@@ -1,62 +1,43 @@
 ---
 title: Query List
-description: Find multiple records matching specific criteria.
+description: Retrieve a list-oriented result for use in later rule steps.
 weight: 20
 ---
 
 # Query List
 
-The **Query List** mode is used to retrieve a collection of records. It is the standard choice when you need to perform actions on multiple related items, such as identifying all open tasks for a specific project.
+Use **Query List** when the flow needs a collection of selected values or list-oriented results, rather than a single document or aggregate. For example, a rule may need a list of task names or item codes before deciding what to do next.
 
----
+## Configure a Query List
 
-## 1. When to Use
+1. Add a **Query Records** action.
+2. Select **Query List** from the mode selector.
+3. Choose the target DocType and configure the supported filters.
+4. Select the fields or values needed by the next step, where available.
+5. Set a result limit and ordering if the mode exposes those controls.
+6. Save the output under a meaningful name and inspect it in Debug.
 
-*   **Collection Gathering:** "Find all Sales Orders created by a specific user."
-*   **Loop Preparation:** "Gather all items that are below their reorder level."
-*   **Summarization:** "Identify all transactions that occurred today."
+## Example
 
----
+**Goal:** identify open, urgent tasks that are not yet assigned.
 
-## 2. Configuration
+Configure the query to target `Task`, then use the available filter controls to match:
+- Priority is Urgent
+- Status is Open
+- Assigned To is empty
 
-*   **Table (DocType):** Choose the source of the data (e.g., *Sales Order*, *Task*).
-*   **Filters:** Define criteria to narrow down the result set (e.g., `Status` equals `Open`).
-*   **Fields:** Select which pieces of information to retrieve for each record.
-*   **Sorting:** Define the order of the results (e.g., "Creation Date Descending").
-*   **Result Limit:** Set a maximum number of records to return (e.g., 50).
+The exact field and operator labels depend on the DocType metadata and installed builder. Configure them in the UI rather than pasting the example as a query expression.
 
----
+## Understand the output
 
-## 3. Output
+A list-oriented result is not automatically a full document object. Confirm the output shape in Debug before using it in another action. Use a **Loop** when the next step must process each result separately. Use **Fetch Records** when you need a collection of records, **Query Doc** for a single record, or an aggregate mode when you only need a number or summary.
 
-This mode returns a **List of Records**.
+## Best practices
 
-To use the data inside these records, you typically follow this block with a **Loop** block to process each item individually.
+- Keep filters specific, especially on high-volume DocTypes.
+- Bound the result size where the selected mode supports a limit.
+- Request only the fields the rule needs.
+- Test both matching and empty-result cases.
+- Avoid assuming linked-document or child-table paths are supported unless the filter UI exposes them.
 
----
-
-## 4. Example
-
-**Scenario:** A project manager needs a list of all "Urgent" tasks that are not yet assigned.
-
-*   **Table:** `Task`
-*   **Filters:** `Priority` equals `Urgent` AND `Status` equals `Open` AND `Assigned To` is empty.
-*   **Sorting:** `Creation Date` (Ascending)
-*   **Result Limit:** 20
-*   **Output Variable:** `urgent_tasks`
-
----
-
-## 5. Performance Notes
-
-*   **Mandatory Filtering:** Searching large tables without filters will cause performance degradation.
-*   **Limit Your Results:** Always set a **Result Limit**. This protects the rule from attempting to load thousands of records, which can cause timeouts.
-*   **Optimized Fetching:** Selecting only the specific fields required (rather than the entire record) significantly reduces the data load.
-
----
-
-## 6. Common Mistakes
-
-*   **Missing a Loop:** A "List" cannot be updated directly. You must use a **Loop** block to iterate through the results.
-*   **Broad Filters:** Failing to use specific filters on high-volume tables (like *Stock Ledger*) can slow down the entire system.
+[Back to Query Records]({{< relref "action-type/query-records/_index.md" >}}) · [Query filters]({{< relref "advanced-concepts/reference/query-filters/index.md" >}})
