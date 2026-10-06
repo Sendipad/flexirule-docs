@@ -9,6 +9,8 @@ description: "Build, test, and manage business rules visually in Frappe and ERPN
 
 {{< figure src="/landing-page/rule_builder.png" alt="FlexiRule visual rule builder canvas" >}}
 
+{{< video src="/images/flexirule-overview-demo.webm" controls="true" muted="true" loop="true" >}}
+
 <div class="grid-2">
 
 {{< card title="Start here" href="getting-started/quick-start/" icon="rocket" >}}
