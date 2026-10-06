@@ -48,7 +48,7 @@ Use a Sub-Rule action when you need to:
    - Enter a variable name (e.g., `risk_result`) to capture the sub-rule's returned output in `@vars`.
 5. **Connect Outbound Branch**: Connect the Sub-Rule block's output port to the next action node.
 
-{{< video src="/images/ruleflow-canvas-with-sub-rule.png" controls="true" muted="true" loop="true" >}}
+![Sub-Rule flow with nested rule canvas](/images/ruleflow-canvas-with-sub-rule.png)
 
 ---
 
