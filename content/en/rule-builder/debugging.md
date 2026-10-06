@@ -25,6 +25,8 @@ The **Debug** tool allows you to simulate rule execution on real document record
 
 ![Debug Run dialog showing JSON test context](/images/rule-debugger-dialog.png)
 
+![Run Debug Test control](/images/rule-builder-run-debug-test.png)
+
 ---
 
 ## Inspecting Debug Results
