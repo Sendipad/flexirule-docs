@@ -1,72 +1,52 @@
 ---
 title: Query Filters
-description: Reference guide for filtering logic across FlexiRule actions.
+description: Understand filters used to narrow FlexiRule database queries.
 weight: 10
 type: docs
 ---
 
-# Query Filter Reference
+# Query Filters
 
-FlexiRule uses a standardized filter system for any action that queries the database (such as **Query Records**). This system allows you to build complex logical conditions without writing code.
+Filters tell a query which records should be included. In the visual builder, choose a field, an operator, and a value using the filter controls provided for the selected query mode. The available fields and operators can depend on the target DocType and mode.
 
----
+FlexiRule's query behavior is built around Frappe's data/query APIs. Do not assume that every SQL expression, Python expression, or arbitrary dotted path is accepted as a filter. Use the fields and operators exposed by the builder and test the resulting query.
 
-## Filter Basics
+## Build a filter
 
-A filter consists of three parts:
-1.  **Field**: The DocType field to check (e.g., `status`, `customer`).
-2.  **Operator**: The comparison logic (e.g., `==`, `!=`, `like`).
-3.  **Value**: The target value (fixed, variable, or expression).
+A filter generally combines three parts:
 
----
+1. **Field** — a field on the target DocType, such as `status`, `customer`, or `grand_total`.
+2. **Operator** — the comparison to apply, such as equals, not equals, greater than, or in.
+3. **Value** — a fixed value or a supported dynamic value resolved from the current execution context.
 
-## Supported Operators
+For example, a Sales Invoice query might include:
 
-| Operator | Description | Example |
-| :--- | :--- | :--- |
-| `==` | Exact equality | `status == "Draft"` |
-| `!=` | Not equal to | `docstatus != 1` |
-| `>` / `>=` | Greater than (or equal) | `grand_total >= 5000` |
-| `<` / `<=` | Less than (or equal) | `outstanding < 10` |
-| `in` | Value is in a list | `name in ["SO-001", "SO-002"]` |
-| `not in` | Value is not in a list | `customer not in vars.blocked_list` |
-| `like` | SQL-style pattern match | `name like "SO-2024-%"` |
-| `starts with`| Convenience pattern match | `item_code starts with "CPU"` |
-| `ends with` | Convenience pattern match | `serial_no ends with "XYZ"` |
-| `between` | Value within a range | `creation between ["2024-01-01", "2024-01-31"]` |
-| `Timespan` | Natural language dates | `creation Timespan "last month"` |
+| Field | Operator | Value |
+|---|---|---|
+| `customer` | Equals | The current document's customer |
+| `docstatus` | Equals | `1` |
+| `outstanding_amount` | Greater Than | `0` |
 
----
+This example describes the intent of the filter. Configure each row through the actual filter editor and use the Smart Value Selector for dynamic values.
 
-## Filter Groups (AND/OR)
+## Combining conditions
 
-Filters can be grouped together to create complex logic:
+When the query editor offers filter groups, use **AND** when all conditions must match and **OR** when any condition may match. Keep groups easy to review: complicated filter trees are harder to debug and can be more expensive to execute.
 
-- **AND Groups**: All conditions in the group must be met.
-- **OR Groups**: At least one condition in the group must be met.
+## Linked documents and child tables
 
-You can nest these groups (e.g., An OR group containing multiple AND groups) to handle sophisticated business rules.
+A Link field stores a reference to another document; it does not mean every field on the linked document is automatically available as a filter field. Likewise, child-table filtering has different semantics from filtering a normal field on the parent DocType.
 
----
+Use only linked-field traversal or child-table filters that the installed query mode and UI explicitly support. If a required relationship cannot be expressed by the filter controls, consider a separate query or a purpose-built server-side operation rather than assuming dot notation will work.
 
-## Deep Field Lookups (Dot Notation)
+## Dynamic values
 
-FlexiRule supports "relationship traversal" using dot notation. This allows you to filter based on fields in a linked document or a child table.
+Use the Smart Value Selector to insert values from the current execution context, such as the triggering document or a variable produced by an earlier action. Dynamic values are resolved at runtime, so test the query with representative documents and inspect the actual output.
 
-### Child Table Filtering
-- `items.item_code == "CPU-01"`: Filters for documents that contain at least one row in the `items` child table with the specified item code.
+## Troubleshooting
 
-### Link Field Filtering
-- `customer.territory == "North America"`: Filters for documents where the linked Customer belongs to the "North America" territory.
-
----
-
-## Using Dynamic Values
-
-Instead of typing a fixed value, you can use the **Value Resolver** to pull data from the current context:
-
-- `{{doc.customer}}`: Resolves to the customer name of the triggering document.
-- `{{vars.target_date}}`: Resolves to a variable calculated in a previous node.
-- `{{Today - 7 days}}`: Resolves to a calculated date.
-
-*See the [Value Resolver]({{< relref "advanced-concepts/architecture/resolver/_index.md" >}}) for full expression syntax.*
+- **No records returned:** verify the DocType, field, operator, value type, and document status.
+- **Too many records returned:** add filters and use a sensible result limit where available.
+- **A linked field is unavailable:** filter by the actual Link field or split the lookup into separate query steps.
+- **Unexpected empty values:** test whether the source field is unset and whether the chosen operator handles empty values as intended.
+- **Different output than expected:** inspect the result in Debug and confirm whether the mode returns records, values, a scalar, or grouped/report data.
