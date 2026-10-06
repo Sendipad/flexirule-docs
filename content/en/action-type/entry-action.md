@@ -1,7 +1,7 @@
 ---
 title: Start (Entry Action)
 description: The starting root node on every visual rule canvas.
-weight: 5
+weight: 10
 entity_kind: action_operation
 category: logic-control
 mutation: false
