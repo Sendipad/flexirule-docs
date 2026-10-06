@@ -1,28 +1,46 @@
 ---
 title: Initial Configuration
-description: Steps to take after installing FlexiRule.
+description: Prepare FlexiRule for safe use after installation.
 weight: 15
 ---
 
 # Initial Configuration
 
-After installing FlexiRule, follow these steps to prepare your environment.
+After installing FlexiRule, prepare the site and verify the basic workflow before creating production automations.
 
-## 1. Verify App Installation
-Ensure `flexirule` is listed in your `site_config.json` under `installed_apps`.
+## 1. Confirm installation and access
 
-## 2. Configure Default Roles
-Add the **Rule Builder** role to any user who needs to design automations. System Managers have access by default.
+Confirm that FlexiRule is installed on the intended site and that the users who will create or manage rules have the appropriate roles. Rule and settings permissions are controlled by the installed DocType permissions; do not assume a role name from an older guide is present on every site.
 
-## 3. Review Global Settings
-Visit **RuleFlow Settings** and ensure **Enable Rule Execution** is checked. If you are in a production environment, set a **Log Retention** period (e.g., 60 days) to keep your database clean.
+## 2. Review RuleFlow Settings
 
-## 4. Test the Rule Builder
-Create a simple "Test" rule for a DocType like *Note* or *ToDo* to verify that the canvas and configuration panels load correctly.
+Open **RuleFlow Settings** from the Desk. Review:
 
-## 5. Background Jobs Check
-If you plan to use **Asynchronous** actions, ensure that your bench background workers are running:
-```bash
-bench worker
-```
-Check the **Background Jobs** list in the Desk to verify that FlexiRule tasks are being processed.
+- Debug logging and log retention
+- Default maximum execution time
+- Whether asynchronous actions are allowed
+- Excluded DocTypes
+- Builder configuration mode, canvas theme, and layout direction
+- Whether activation approval is required
+- Whether editing active rules is permitted
+
+Choose operational values with your site's workload and change-control practices in mind.
+
+## 3. Check background processing if needed
+
+If your rules use asynchronous actions or scheduler-driven work, confirm that the site's background workers and scheduler are running using your normal Frappe operations procedures. Check the Desk's background job views and logs for failures. Synchronous rules do not require you to start a worker manually from a documentation example.
+
+## 4. Create a low-risk test rule
+
+Create a rule for a safe test DocType or a development site. Configure a supported trigger, add one simple action, and save it. Use the Rule Builder's Debug tools with representative test data and inspect the execution log.
+
+## 5. Verify before production
+
+- [ ] The intended users can open the Rule Builder and edit rules.
+- [ ] The rule's trigger type, DocType, and event are correct.
+- [ ] The flow was tested with matching and non-matching data.
+- [ ] Actions with side effects have been reviewed.
+- [ ] Timeouts, asynchronous behavior, permissions, and log retention are appropriate.
+- [ ] Activation approval requirements are understood.
+
+For the next step, follow the [Quick Start Guide]({{< relref "getting-started/quick-start.md" >}}).
