@@ -1,6 +1,6 @@
 ---
 title: Query Records
-description: Find and use information from your system to support business logic.
+description: Retrieve records and summaries for decisions in a visual rule.
 weight: 10
 entity_kind: action_operation
 category: data-operations
@@ -10,71 +10,60 @@ targets: ["Frappe DocType"]
 
 # Query Records
 
-**Query Records** is a rule execution block that retrieves data from the system’s database or reporting layer. It acts as a read-only data access layer, enabling rules to read external context beyond the triggering document and use that data for decisions, calculations, and automation.
+Use **Query Records** when a rule needs information beyond the document that triggered it. Configure a target DocType, choose a query mode, define supported filters, and store the result for later actions.
 
----
+A query is a data-reading step. It does not itself mean that matching records are updated; use a separate action when you need to change data.
 
-## Core Principles
+{{< callout type="info" >}}
+Start with a narrow filter and only request the fields your rule needs. Test the query against known records before using its output in a production rule.
+{{< /callout >}}
 
-*   **Read-Only:** Query Records never mutates (changes) data. It is dedicated exclusively to finding and retrieving information.
-*   **Downstream Consumption:** It produces structured outputs that are designed to be consumed by downstream rule blocks, including:
-    *   **Conditions (Check):** To drive branching logic.
-    *   **Loops:** To process multiple records in bulk.
-    *   **Calculations:** To enrich data for mathematical operations.
-    *   **Assignments (Set Value):** To update the current document with retrieved information.
+## Choose the right mode
 
----
+| Mode | Use it when you need… | Result concept |
+|---|---|---|
+| **Fetch Records** | A configurable record query with selected fields, filters, ordering, and a result limit | A collection of matching records |
+| **Query List** | A list-oriented result rather than full document objects | A lightweight list of selected values |
+| **Query Doc** | One particular document or a single-record result | One record |
+| **Exist Record** | To know whether any matching record exists | A yes/no result |
+| **Query Report** | Data from a supported existing report | Report rows or report output |
+| **Count** | The number of matching records | A number |
+| **Sum** | The total of a numeric field | A number |
+| **Average** | The average of a numeric field | A number |
+| **Min** | The lowest value of a field | A value |
+| **Max** | The highest value of a field | A value |
+| **Group By** | A summary grouped by one or more fields | Grouped results |
 
-## When to Use
+Mode availability and configuration fields are defined by the installed FlexiRule version. Use the mode selector and its visible fields as the source of truth.
 
-You should use a **Query Records** block whenever a rule needs context from the rest of your system:
+## A typical setup
 
-*   **Validation:** "Does a record with this reference number already exist?"
-*   **Enrichment:** "What is the credit limit for this customer?"
-*   **Calculations:** "What is the total value of all open invoices for this supplier?"
-*   **Batch Processing:** "Find all overdue tasks to trigger follow-up actions."
+1. Add a **Query Records** action to the canvas.
+2. Select the target **Reference DocType**.
+3. Choose the query mode that matches the result you need.
+4. Add filters to narrow the records.
+5. Configure selected fields, ordering, grouping, or limits when the mode supports them.
+6. Set **Save Result As** (or the corresponding output setting) so later actions can reference the result.
+7. Run a debug test and inspect the output before connecting it to conditions, loops, assignments, or notifications.
 
----
+## Use query results in later actions
 
-## Available Query Modes
+The result is useful only when later actions know where to read it from. Give the output a meaningful variable name, then select that value through the Smart Value Selector in the next action. Check whether the selected mode returns a single record, a list, a scalar aggregate, or report rows; these shapes are not interchangeable.
 
-FlexiRule supports several retrieval modes, allowing for flexible data access depending on your needs.
+## Performance and reliability
 
-| Mode | Operation Type | Primary Use Case |
-| :--- | :--- | :--- |
-| **[Exist Record]({{< relref "exist-record.md" >}})** | Existence Check | Quickly check if a record exists. |
-| **[Query Doc]({{< relref "query-doc.md" >}})** | Single-Record Retrieval | Retrieve a single record with its full details. |
-| **[Query List]({{< relref "query-list.md" >}})** | Multi-Record Retrieval | Retrieve multiple records matching criteria. |
-| **[Count]({{< relref "count.md" >}})** | Aggregation | Get the total number of matching records. |
-| **[Sum]({{< relref "sum.md" >}})** | Aggregation | Calculate the total of a numeric field. |
-| **[Average]({{< relref "average.md" >}})** | Aggregation | Calculate the average of a numeric field. |
-| **[Min / Max]({{< relref "min-max.md" >}})** | Aggregation | Find the lowest or highest value in a group. |
-| **[Group By]({{< relref "group-by.md" >}})** | Aggregation | Summarize data organized by category. |
-| **[Query Report]({{< relref "query-report.md" >}})** | Report Reuse | Reuse results from an existing system report. |
+- Prefer **Exist Record** for a yes/no question instead of retrieving a whole list.
+- Prefer **Count**, **Sum**, **Average**, **Min**, **Max**, or **Group By** when the required result is an aggregate and the selected mode supports it.
+- Keep list queries bounded with a sensible result limit.
+- Select only fields used by the rule.
+- Test empty results and unexpected values, not only the case where records are found.
+- Review permissions and any explicit permission-bypass setting carefully.
 
----
+## Related guides
 
-## Performance & Execution Model
-
-To maintain system responsiveness, FlexiRule utilizes several execution strategies. Understanding these helps in building high-performance rules.
-
-### 1. Database-Level Aggregation
-Modes like **Count**, **Sum**, **Average**, and **Min/Max** use "pushdown" optimization. Instead of loading every record into the rule engine, the system performs the calculation directly at the database level. This reduces data transfer and memory usage.
-
-### 2. Intelligent Caching
-The **Query Doc** mode supports a cached retrieval strategy. When enabled, the system attempts to fetch the record from memory rather than the database. This is efficient for master data (like Customers or Items) that is frequently read but rarely changed.
-
-### 3. Lightweight Existence Checks
-**Exist Record** is the most efficient check. It stops searching as soon as it finds a single match and does not load any field data. Use this mode whenever you only need a Yes/No answer.
-
-### 4. Data Volume Control
-Rules should always use **Filters** to narrow the search scope. For list-based queries, always define a **Result Limit** to prevent the rule from attempting to process unexpectedly large datasets.
-
----
-
-## Best Practices
-
-*   **Filter Early:** Be as specific as possible in your filter criteria.
-*   **Minimize Field Fetching:** Only select the specific fields required for your logic.
-*   **Use Aggregations:** Prefer **Count** or **Sum** over fetching a list and looping to calculate totals.
-*   **Monitor Reports:** When using **Query Report**, remember that the rule performance depends entirely on the report's efficiency.
+- [Fetch Records](fetch-records.md)
+- [Query List](query-list.md)
+- [Query Doc](query-doc.md)
+- [Exist Record](exist-record.md)
+- [Query Report](query-report.md)
+- [Query filters]({{< relref "advanced-concepts/reference/query-filters/index.md" >}})
