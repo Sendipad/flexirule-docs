@@ -59,7 +59,10 @@ FlexiRule includes 6 visual Value Resolver families accessible via the **Resolve
 ## Visual Resolver Builders in Detail
 
 ### 1. Date & Time Resolver <i class="fa fa-calendar"></i>
+
 Calculates dates dynamically using six operation modes:
+
+![Date & Time formula configuration](/images/date-formula-configuration.png)
 
 ![Smart Value Selector showing Date & Time Formula options](/images/smart-value-resolver-date-formula.png)
 
