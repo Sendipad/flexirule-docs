@@ -1,37 +1,33 @@
 ---
-title: Tutorials & Practical Recipes
+title: Tutorials
 weight: 50
-description: Practical, business-oriented recipes and step-by-step guides for automating FlexiRule workflows.
+description: Practical, business-oriented recipes that show how to build useful FlexiRule automations.
 ---
 
-# Tutorials & Practical Recipes
+# Tutorials
 
-Explore step-by-step business recipes demonstrating real-world automation scenarios using FlexiRule on the Frappe Framework and ERPNext.
-
----
-
-## Practical Recipes Catalog
+Use these recipes after you understand the builder. Each tutorial starts from a business outcome and walks through the rule design.
 
 <div class="grid-2">
 
 {{< card title="Validate & Block Submission" href="tutorials/validate-and-block-document/" icon="warning" >}}
-Enforce business guardrails and block invalid document save/submission with custom error dialogs.
+Enforce business guardrails and block invalid document save or submission.
 {{< /card >}}
 
 {{< card title="Work with Child Tables" href="tutorials/child-table-calculations/" icon="catalog" >}}
-Iterate through child table items, evaluate line-item conditions, and calculate row discounts.
+Iterate through child table items and calculate line-item values.
 {{< /card >}}
 
 {{< card title="Automatic Assignment" href="tutorials/automatic-assignment/" icon="user" >}}
-Automatically assign incoming support tickets or sales leads to team members based on territory.
+Automatically assign records based on business rules.
 {{< /card >}}
 
 {{< card title="Send Email Notifications" href="tutorials/send-email-sales-order/" icon="email" >}}
-Construct dynamic email alerts with Jinja templates when high-value sales orders are created.
+Build dynamic notifications from document data.
 {{< /card >}}
 
 {{< card title="Manager Approval Workflow" href="tutorials/manager-approval/" icon="check" >}}
-Build multi-stage approval thresholds and update workflow states automatically.
+Build approval thresholds and update workflow state.
 {{< /card >}}
 
 </div>
