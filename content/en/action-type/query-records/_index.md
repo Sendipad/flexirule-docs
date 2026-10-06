@@ -14,9 +14,7 @@ Use **Query Records** when a rule needs information beyond the document that tri
 
 A query is a data-reading step. It does not itself mean that matching records are updated; use a separate action when you need to change data.
 
-{{< callout type="info" >}}
-Start with a narrow filter and only request the fields your rule needs. Test the query against known records before using its output in a production rule.
-{{< /callout >}}
+> **Tip:** Start with a narrow filter and only request the fields your rule needs. Test the query against known records before using its output in a production rule.
 
 ## Choose the right mode
 
