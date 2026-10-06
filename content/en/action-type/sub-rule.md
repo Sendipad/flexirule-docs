@@ -14,6 +14,8 @@ aliases:
 
 The **Sub-Rule** action lets you run another rule—exposed as a sub-rule—directly inside your main rule flow, allowing you to reuse modular logic across multiple rules.
 
+![FlexiRule canvas with a reusable Sub-Rule node](/images/flexirule-canvas-with-sub-rule.png)
+
 ---
 
 ## 1. What is it?
@@ -46,6 +48,8 @@ Use a Sub-Rule action when you need to:
    - Enter a variable name (e.g., `risk_result`) to capture the sub-rule's returned output in `@vars`.
 5. **Connect Outbound Branch**: Connect the Sub-Rule block's output port to the next action node.
 
+![Sub-Rule flow with nested rule canvas](/images/ruleflow-canvas-with-sub-rule.png)
+
 ---
 
 ## 4. UI Configuration Options
@@ -71,15 +75,11 @@ Use a Sub-Rule action when you need to:
    - **Condition**: `@vars.risk_score_result.score > 80`
    - **True Branch**: Route to manager review notification.
 
----
-
 ## 6. Common Mistakes
 
 - **Sub-Rule Not Exposed**: Trying to select a rule that does not have *Exposed as Sub-Rule* enabled in its settings.
 - **Circular Sub-Rule Calls**: Creating a loop where Rule A calls Sub-Rule B, which calls Sub-Rule A.
 - **Missing Input Mappings**: Forgetting to map mandatory input variables required by the sub-rule.
-
----
 
 ## 7. Related Features
 

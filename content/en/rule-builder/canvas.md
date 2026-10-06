@@ -12,6 +12,8 @@ The **Rule Builder** is FlexiRule's visual workspace where you build and edit ru
 
 ![Rule Builder Canvas Overview](/images/rule-builder-canvas-overview.png)
 
+{{< video src="/images/remove-a-node-will-dynamically-reconnet-nodes.webm" controls="true" muted="true" loop="true" >}}
+
 ---
 
 ## Accessing the Rule Builder
@@ -49,7 +51,10 @@ The **Dialog View** maximizes your visual canvas space. Clicking any node opens 
 - **Zoom**: Scroll your mouse wheel, or use the zoom controls (+ / - / fit view) in the lower canvas toolbar.
 
 ### Top Menu Action Bar
+
 The top bar provides essential rule management shortcuts:
+
+![Rule Builder action bar](/images/rule-builder-action-bar.png)
 
 | Action | Icon | Shortcut | Description |
 | :--- | :---: | :---: | :--- |
@@ -63,6 +68,14 @@ The top bar provides essential rule management shortcuts:
 | **Copy / Paste** | <i class="fa fa-copy"></i> | `Ctrl C` | Copy selected nodes to duplicate within the canvas or across rules. |
 | **Preferences** | <i class="fa fa-sliders"></i> | `Alt P` | Toggle between Dialog Modal mode and Workspace Three-Panel mode. |
 
+### Layout direction
+
+The canvas can be organized **Left to Right** or **Top to Bottom** according to the saved RuleFlow Settings preference.
+
+![Top-to-bottom layout example](/images/top-to-bottom-layout.png)
+
+![Rule Builder dark theme](/images/rule-builder-canvas-dark-theme.png)
+
 ---
 
 ## Working with Canvas Nodes
@@ -71,6 +84,9 @@ Every step in your rule flow is represented by a visual node card:
 - **Start Node** <i class="fa fa-play"></i>: Root node created automatically when a rule is initialized. Holds trigger event definitions and optional trigger conditions.
 - **Action Nodes**: Colored cards with feature icons representing specific operations (Check <i class="fa fa-code-fork"></i>, Set Value <i class="fa fa-list-ol"></i>, Query Records <i class="fa fa-search"></i>, Notify <i class="fa fa-bell"></i>, Update Record <i class="fa fa-file-text"></i>, etc.).
 - **Branch Handles & Connectors**: Output handles (e.g. **True** green port and **False** red port on Check nodes) connecting to downstream actions.
+
+![Rule flow canvas connections](/images/rule-flow-canvas-connections.png)
+
 - **Node Selection & Reordering**: Click any node to open its properties panel. Drag nodes to reposition them smoothly across the infinite canvas.
 - **Deleting Nodes**: Select a node and press `Delete` or `Backspace`, or click **Delete** in its property drawer. Connecting lines automatically reconnect surrounding nodes.
 

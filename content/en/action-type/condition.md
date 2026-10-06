@@ -39,6 +39,8 @@ Use a Check action whenever you need to:
 
 ---
 
+![Check action condition branch preview](/images/action-card-condition-preview.png)
+
 ## 3. How to Configure
 
 1. **Add the Action**: Drag or add a **Check** block onto your visual canvas.

@@ -1,86 +1,73 @@
 ---
 title: Quick Start Guide
-description: Build your first visual automation in under 5 minutes starting from the RuleFlow Workspace.
+description: Create, test, and activate a first visual rule in Frappe or ERPNext.
 weight: 100
 ---
 
 # Quick Start Guide
 
-Build a visual rule in under 5 minutes that alerts you whenever a high-value **Sales Invoice** is created in ERPNext.
+This walkthrough shows the typical workflow for a simple rule: check a document value, then take an action when the condition is met. Exact labels can vary slightly with your FlexiRule version and builder preferences.
 
----
+> **Before you begin:** Use a development or test site first. Notifications and other actions may have real effects when a rule is active.
 
-## 1. Navigate to the RuleFlow Workspace
-In Frappe / ERPNext, access FlexiRule using either method:
-- **Sidebar**: Click **RuleFlow** in the main application navigation bar.
-- **Awesomebar**: Type `RuleFlow` in the top search bar (`Ctrl K` or `Cmd K`) and press **Enter**.
+## 1. Open RuleFlow
 
-The **RuleFlow Workspace** is your central control center. It provides quick access shortcuts:
-- **New Rule**: Immediately creates a new rule document.
-- **Rule List**: View and manage all existing rules.
-- **Rule Builder**: Open the full-screen visual canvas engine.
-- **Execution Logs**: Inspect historical rule execution activity.
+In Frappe or ERPNext, open **RuleFlow** from the application navigation or search for it in the Awesomebar. From the workspace, open the rule list or create a new Rule.
 
----
+## 2. Configure the rule
 
-## 2. Create Your First Rule
-1. On the **RuleFlow Workspace**, click the **New Rule** shortcut button (or type `New Rule` in the Awesomebar).
-2. On the Rule form, fill in the basic configuration:
-   - **Rule Name**: `High Value Invoice Alert`
-   - **Target DocType**: `Sales Invoice`
-   - **Trigger Event**: `Before Save` (runs automatically when a Sales Invoice is saved)
-3. Click **Save** in the top right corner.
+Give the rule a clear name, such as `High Value Invoice Review`. For a document-triggered rule, choose:
 
----
+| Setting | Example | Meaning |
+|---|---|---|
+| Trigger Type | DocType Event | Run in response to a document lifecycle event |
+| Document Type | Sales Invoice | The document the rule applies to |
+| Trigger Event | Validate | Evaluate the rule during validation |
+| Execution Mode | Synchronous | Run as part of the current request; use asynchronous execution only when appropriate |
 
-## 3. Open the Visual Rule Builder
-1. With your rule saved, click the **Rule Builder** button in the document action bar (or click **Rule Builder** from the workspace).
-2. The visual Rule Builder canvas opens, displaying the mandatory **Start (Entry Action)** node with a green play icon <i class="fa fa-play"></i>.
+Save the rule before opening the visual builder. Choose an event that fits the intended behavior: validation is usually appropriate for checks that must stop an invalid document, while post-save or submit events suit other kinds of follow-up work.
 
----
+## 3. Open the Rule Builder
 
-## 4. Add a Check (Condition) Action
-1. Hover over the connector line below the **Start** node and click the **+ Add Action** button (or press `Ctrl K` to open the Command Palette).
-2. In the Action Palette drawer, under **Logic & Flow**, select **Check** <i class="fa fa-code-fork"></i>.
-3. The **Check Settings** panel opens on the right (or via modal dialog depending on your preference):
-   - Set **Match Logic** to **ALL (AND)**.
-   - Click **Add Condition**.
-   - Click the left value input field and press `@` to open the **Smart Value Selector**.
-   - Search for `Grand Total` and select **Sales Invoice → Grand Total** (`@doc.grand_total`).
-   - Set the operator dropdown to **Is Greater Than**.
-   - In the right value field, enter `10000`.
+Open **Rule Builder** from the Rule form or workspace. The canvas represents the flow as connected action nodes. Start with the entry node, then add the action types needed for your scenario.
 
----
+## See the flow in action
 
-## 5. Add a Notify Action
-1. On the canvas, find the **True** (Green) output connector port coming out of the **Check** node.
-2. Click and drag from the **True** port, or click the **+ Add Action** icon on the True branch.
-3. In the Action Palette drawer, select **Notify** <i class="fa fa-bell"></i> under **Communication & Notifications**.
-4. In the Notify configuration panel:
-   - Set **Notification Channel** to `UI Message (Toast)`.
-   - In the **Message** content box, type:
-     `💰 High value invoice detected! Invoice ID: `
-   - Press `@` to trigger the **Smart Value Selector**, search for `Name`, and pick **Sales Invoice → Name** (`@doc.name`).
+{{< video src="/images/demo-condition-and-query.webm" controls="true" muted="true" loop="true" >}}
 
----
+## 4. Add a condition
 
-## 6. Test & Debug Your Rule Visually
-1. In the top action bar of the Rule Builder, click **Debug** <i class="fa fa-bug"></i> (or press `Alt D`).
-2. In the **Debug Panel**, select an existing test **Sales Invoice** document with a Grand Total over 10,000.
-3. Click **Run Test**.
-4. Watch the canvas highlight the execution path in green, showing each step's status, duration, and output variables!
+Add a **Condition** action (the exact display label may be **Check** in some UI areas). Configure a comparison using the Smart Value Selector rather than guessing field names:
 
----
+- Left value: the current document's Grand Total, commonly represented as `@doc.grand_total`
+- Operator: greater than
+- Right value: `10000`
 
-## 7. Activate Your Rule
-1. Return to the Rule document form by closing the Rule Builder or using the breadcrumbs.
-2. Check the **Is Active** checkbox.
-3. Click **Save**.
+This creates a decision based on the current Sales Invoice. Confirm the field and operator shown in your installed builder.
 
-Your visual rule is now live! Whenever a Sales Invoice with a Grand Total over 10,000 is saved, FlexiRule will automatically evaluate the condition and display the high-value toast notification.
+## 5. Add the next action
 
----
+Connect the matching branch to an action such as **Notify**. Configure the channel and message using values from the current document, such as its document name. Leave the other branch empty or connect it to the appropriate alternative action for your use case.
 
-## Visual Design Tips
-- **Smart Value Selector (`@`)**: Always use `@` or click the variable button to reference fields dynamically rather than typing string text manually.
-- **Action Config Modes**: You can switch between **Workspace 3-Panel View** (Schema / Canvas / Configuration side-by-side) and **Dialog View** via **Preferences** <i class="fa fa-sliders"></i> in the top menu bar.
+## 6. Debug with a representative document
+
+Use the builder's **Debug** tools to run a test with a suitable existing document. Inspect the path taken, action outcomes, and any errors. Test both sides of the condition, not just the successful case.
+
+## 7. Activate only after review
+
+Return to the Rule form and enable the rule using the activation control available in your version. Save, then verify that the rule status and activation state are as expected. If your site requires approval to activate rules, follow that process.
+
+## Before using the rule in production
+
+- [ ] Confirm the trigger type, DocType, and event.
+- [ ] Test a document that should match and one that should not.
+- [ ] Review any actions that write data, send messages, or create documents.
+- [ ] Confirm the rule's execution mode, permissions, and timeout.
+- [ ] Check the execution log after the first real run.
+
+## Helpful next steps
+
+- [Rule configuration and triggers]({{< relref "rule-builder/rule-configuration.md" >}})
+- [Canvas guide]({{< relref "rule-builder/canvas.md" >}})
+- [Debugging guide]({{< relref "rule-builder/debugging.md" >}})
+- [Query Records]({{< relref "action-type/query-records/_index.md" >}})
