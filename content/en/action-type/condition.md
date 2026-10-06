@@ -1,7 +1,7 @@
 ---
 title: Check (Condition)
 description: Evaluate logical condition groups in the UI to branch execution paths between True and False branches.
-weight: 40
+weight: 20
 entity_kind: action_operation
 category: logic-control
 mutation: false
