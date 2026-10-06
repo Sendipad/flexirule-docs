@@ -40,6 +40,8 @@ Use the Repeat action when you need to:
 
 ---
 
+![Repeat action showing nested sub-nodes](/images/action-card-sub-nodes.png)
+
 ## 3. How to Configure
 
 1. **Add the Action**: Add a **Repeat** block to your visual canvas.
