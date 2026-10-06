@@ -54,7 +54,6 @@ The **Dialog View** maximizes your visual canvas space. Clicking any node opens 
 
 The top bar provides essential rule management shortcuts:
 
-![Rule Builder action bar](/images/rule-builder-action-bar.png)
 
 | Action | Icon | Shortcut | Description |
 | :--- | :---: | :---: | :--- |
@@ -85,7 +84,6 @@ Every step in your rule flow is represented by a visual node card:
 - **Action Nodes**: Colored cards with feature icons representing specific operations (Check <i class="fa fa-code-fork"></i>, Set Value <i class="fa fa-list-ol"></i>, Query Records <i class="fa fa-search"></i>, Notify <i class="fa fa-bell"></i>, Update Record <i class="fa fa-file-text"></i>, etc.).
 - **Branch Handles & Connectors**: Output handles (e.g. **True** green port and **False** red port on Check nodes) connecting to downstream actions.
 
-![Rule flow canvas connections](/images/rule-flow-canvas-connections.png)
 
 - **Node Selection & Reordering**: Click any node to open its properties panel. Drag nodes to reposition them smoothly across the infinite canvas.
 - **Deleting Nodes**: Select a node and press `Delete` or `Backspace`, or click **Delete** in its property drawer. Connecting lines automatically reconnect surrounding nodes.
