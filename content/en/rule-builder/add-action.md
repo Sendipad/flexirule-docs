@@ -15,15 +15,21 @@ Building a rule flow involves inserting action blocks onto the canvas and connec
 You can insert new actions using three intuitive methods:
 
 ### 1. Connector Line Plus Button (`+`)
+
 Hover over any connector arrow between existing nodes on the canvas. A **+** button appears.
+
 1. Click the **+** button on the connector line.
 2. The **Action Palette** drawer opens.
 3. Select an action. The new block is automatically spliced into the connector line between the two nodes without breaking the flow.
 
+{{< video src="/images/add-action-from-action-zone.webm" controls="true" muted="true" loop="true" >}}
+
 ### 2. Output Port Dragging
+
 Click and drag out from an outbound connector handle (such as the **True** green port or **False** red port on a Check node) and release on empty canvas space to immediately open the Action Palette.
 
 ### 3. Command Palette (`Ctrl K`)
+
 Press `Ctrl K` or `/` anywhere on the canvas to launch the quick **Command Palette**. Type the action name (e.g. `Notify` or `Query Records`) and press **Enter** to place it on the canvas.
 
 ---
@@ -52,8 +58,17 @@ Every action node on the canvas includes an interactive top toolbar:
 
 ![Action card header toolbar showing Run Test, Copy, and Delete actions](/images/action-card-header-toolbar.png)
 
+![Action card badges and toolbar state](/images/action-card-badges-toolbar.png)
+
+{{< video src="/images/action-label-edit.webm" controls="true" muted="true" loop="true" >}}
+
 - **Rename / Custom Title**: Click the block title in the configuration panel to set a business-friendly label (e.g. change `Set Value` to `Calculate High-Value Discount`).
 - **Capability Badges**: Badges on the card indicate enabled features (such as **Conditions Enabled** or **Output Mapped**).
 - **Sub-Nodes Tree View**: Actions with nested steps (such as Loops or Sub-Rules) display an expandable tree view showing nested execution steps.
+
+![Action card sub-nodes tree view](/images/action-card-sub-nodes.png)
+
 - **Copy Node**: Duplicate the configured block across the canvas or into another rule using `Ctrl C` / `Ctrl V`.
 - **Delete Node**: Delete the block using `Delete` or `Backspace`. Surrounding connector lines automatically re-link.
+
+{{< video src="/images/shift-click-nodes-to-copy.webm" controls="true" muted="true" loop="true" >}}
