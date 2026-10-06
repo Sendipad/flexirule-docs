@@ -1,7 +1,7 @@
 ---
 title: Sub-Rule
 description: Run an exposed sub-rule as a reusable module within your visual rule flow.
-weight: 90
+weight: 70
 entity_kind: action_operation
 category: logic-control
 mutation: true
