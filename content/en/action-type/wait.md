@@ -1,7 +1,7 @@
 ---
 title: Wait
 description: Pause rule execution for a specified duration or until a target date and time.
-weight: 80
+weight: 60
 entity_kind: action_operation
 category: logic-control
 mutation: false
