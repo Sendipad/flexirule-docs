@@ -8,6 +8,8 @@ description: Learn how to use the visual interface to build and manage your busi
 
 The Rule Builder is the heart of FlexiRule. it provides a powerful, visual "drag-and-drop" interface that allows you to orchestrate complex business logic without writing code.
 
+![FlexiRule canvas workspace overview](/images/flexirule-canvas-view.png)
+
 ## In this Section
 
 - **[Canvas Navigation]({{< relref "canvas.md" >}})**: Learn how to move around the workspace and arrange your logic blocks.
