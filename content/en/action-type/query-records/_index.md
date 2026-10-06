@@ -1,7 +1,7 @@
 ---
 title: Query Records
 description: Retrieve records and summaries for decisions in a visual rule.
-weight: 10
+weight: 90
 entity_kind: action_operation
 category: data-operations
 mutation: false
