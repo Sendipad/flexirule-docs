@@ -1,7 +1,7 @@
 ---
 title: Switch
 description: Route execution along multiple outbound paths based on matching field values.
-weight: 70
+weight: 30
 entity_kind: action_operation
 category: logic-control
 mutation: false
