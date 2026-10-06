@@ -1,118 +1,56 @@
 ---
-title: "FlexiRule: The Visual Logic Platform"
-description: "High-performance, visual rule engineering and workflow orchestration engine for Frappe Framework and ERPNext."
+title: "FlexiRule: Visual Business Automation for Frappe"
+description: "Build, test, and manage business rules visually in Frappe and ERPNext."
 ---
 
-# Welcome to FlexiRule
+# Build business rules visually
 
-**FlexiRule** is a high-performance, visual logic engineering and orchestration engine for the Frappe Framework and ERPNext. It allows business analysts, ERP consultants, and developers to design, execute, and manage complex business logic without writing scattered Python code.
+**FlexiRule helps teams turn business policies into visible, testable automations** for Frappe and ERPNext. Build a rule from a trigger, decisions, data lookups, assignments, and follow-up actions—without scattering every policy across custom scripts.
 
-![FlexiRule Logo](/landing-page/flexiRule.png)
-
----
-
-## 🚀 Quick Start & Learning Path
-
-New to FlexiRule? Follow this progressive sequence:
-
-1. **[What is FlexiRule?]({{< relref "getting-started/what-is-flexirule.md" >}})**: Learn how FlexiRule replaces scattered scripts with visual orchestration.
-2. **[Getting Started: Quick Start Guide]({{< relref "getting-started/quick-start.md" >}})**: Install FlexiRule and build your first automation in under 5 minutes.
-3. **[Core Concepts]({{< relref "getting-started/core-concepts.md" >}})**: Master the building blocks—Rules, Triggers, Context, Blocks, Action Types, and Value Resolvers.
-4. **[Rule Builder Guide]({{< relref "rule-builder/_index.md" >}})**: Learn canvas navigation, node connections, and the Smart Value Selector.
-
----
-
-## What Problem Does FlexiRule Solve?
-
-As ERPNext implementations grow, business logic frequently degrades into **"Hook Hell"**:
-- **Fragmented Python Hooks**: Business rules hidden across multiple custom apps without clear execution order.
-- **Unversioned Server Scripts**: Difficult to test, debug, or maintain across upgrades.
-- **UI Script Sprawl**: Validation logic scattered across client scripts and server overrides.
-
-**FlexiRule centralizes all document events, scheduled jobs, and custom processes into a single, visual, deterministic orchestration layer.**
-
-![Rule Builder Canvas](/landing-page/rule_builder.png)
-
----
-
-## Who is FlexiRule For?
-
-- **Business Analysts & Functional Consultants**: Configure complex validation, multi-field calculations, and approval routing without waiting for developer cycles.
-- **ERPNext Administrators**: Monitor rule execution logs, manage rule versioning safely in production, and audit business logic changes.
-- **Developers**: Extend FlexiRule with custom action handlers, reusable process operations, and backend resolvers using clean, decoupled registry contracts.
-
----
-
-## How the Visual Rule Model Works
-
-FlexiRule executes business rules using a 5-stage deterministic execution pipeline:
-
-```text
-1. Trigger Event (DocType / Schedule / Callable)
-        │
-        ▼
-2. Fast Filter (JSON Trigger Condition & Watched Fields)
-        │
-        ▼
-3. Context Initialization (doc, old_doc, vars, session)
-        │
-        ▼
-4. Graph Execution (Visual Action Nodes & Smart Value Resolvers)
-        │
-        ▼
-5. Result & Audit Logging (Execution Path, Performance & Output)
-```
-
-1. **Triggers**: Detect document lifecycle events (`Before Save`, `On Submit`, `Validate`), background schedules, or API calls.
-2. **Trigger Filters**: Evaluate lightweight JSON pre-conditions instantly before loading full rule execution contexts.
-3. **Execution Context**: Holds the active document (`doc`), previous state (`old_doc`), custom variables (`vars`), and user session info.
-4. **Action Nodes**: Execute visual building blocks (Set Value, Check, Query Records, Repeat, Update Record, Notify, Process, Switch).
-5. **Smart Value Selector**: Resolves dynamic inputs (formulas, date math, child table aggregations, link fetches, and system values) at runtime.
-
----
-
-## What Can You Build?
-
-- **Automated Field Assignments**: Dynamically set values, calculate margins, and format strings on document save.
-- **Document Validations & Guardrails**: Block document submission with custom error messages when business conditions fail.
-- **Child Table Operations**: Iterate through item tables, aggregate row amounts, filter lines, or update child rows dynamically.
-- **Cross-Document Workflows**: Query related records, create or update external documents, and track multi-step approvals.
-- **Reusable Business Processes**: Encapsulate complex algorithms into reusable Process operations callable across multiple rules.
-
----
-
-## A Real-World Example: Sales Order Credit Limit Check
-
-Consider a common ERPNext scenario: **Block Sales Orders if customer balance exceeds credit limit.**
-
-1. **Trigger**: `DocType Event` on `Sales Order` during `Validate`.
-2. **Trigger Filter**: `doc.grand_total > 0`.
-3. **Step 1 (Query Records)**: Query total unpaid `Sales Invoice` documents where `customer == doc.customer` and `docstatus == 1`.
-4. **Step 2 (Set Value)**: Calculate `vars.total_unpaid = sum(invoices.outstanding_amount)`.
-5. **Step 3 (Check Condition)**: Is `(vars.total_unpaid + doc.grand_total) > doc.credit_limit`?
-   - **True Branch**: Execute **Stop / Error** action: `"Credit Limit Exceeded! Current Unpaid: {vars.total_unpaid}"`.
-   - **False Branch**: Execute **Set Value** action: `doc.workflow_state = "Auto Approved"`.
-
----
-
-## Explore the Documentation
+{{< figure src="/landing-page/rule_builder.png" alt="FlexiRule visual rule builder canvas" >}}
 
 <div class="grid-2">
 
-{{< card title="Getting Started" href="getting-started/" icon="rocket" >}}
-Understand system architecture, key capabilities, core concepts, and step-by-step quick start guides.
+{{< card title="Start here" href="getting-started/quick-start/" icon="rocket" >}}
+Create a rule, add a condition, test the flow, and understand what happens when it runs.
 {{< /card >}}
 
-{{< card title="Rule Builder Guide" href="rule-builder/" icon="canvas" >}}
-Explore canvas navigation, node connections, action settings, and the Smart Value Selector.
+{{< card title="Build a rule" href="rule-builder/" icon="canvas" >}}
+Learn the canvas, trigger setup, action configuration, and visual debugging.
 {{< /card >}}
 
-{{< card title="Core Actions Catalog" href="action-type/" icon="catalog" >}}
-Browse complete guides for Set Value, Check, Query Records, Update Record, Repeat, Notify, and more.
+{{< card title="Find the right action" href="action-type/" icon="catalog" >}}
+Explore data queries, assignments, conditions, notifications, and reusable processes.
 {{< /card >}}
 
-{{< card title="Developer Architecture" href="advanced-concepts/" icon="code" >}}
-Deep dive into execution semantics, compiler optimization, registry contracts, and extension points.
+{{< card title="Understand data queries" href="action-type/query-records/" icon="database" >}}
+Learn when to fetch records, check existence, count, aggregate, or reuse a report.
 {{< /card >}}
 
 </div>
+
+## How FlexiRule works
+
+<ol>
+<li><strong>Choose a trigger.</strong> A rule can respond to a supported document event, a scheduler event, or a callable entry point.</li>
+<li><strong>Set entry conditions.</strong> Trigger conditions and watched fields can help avoid unnecessary rule execution.</li>
+<li><strong>Build the flow.</strong> Add action nodes, configure their inputs, and connect the paths that represent your business policy.</li>
+<li><strong>Test before relying on it.</strong> Use the builder's debug tools and execution logs to inspect the path, step outcomes, and errors.</li>
+<li><strong>Activate deliberately.</strong> Confirm the rule is configured for the intended DocType and event before enabling it.</li>
+</ol>
+
+## What can you automate?
+
+- **Validation:** prevent a document from proceeding when a business requirement is not met.
+- **Field assignments:** calculate or populate values from the current document and related data.
+- **Data-driven decisions:** query records and use the result to choose the next path.
+- **Notifications:** inform users or teams when a defined business event occurs.
+- **Reusable logic:** call a callable rule or reusable process where appropriate.
+
+## A practical example: high-value invoice review
+
+A Sales Invoice rule might run during **Validate**, check whether the grand total exceeds a configured threshold, and follow a different path when it does. The matching branch could notify a reviewer or apply another configured action.
+
+The exact result depends on the action types, configuration, permissions, and execution mode you choose. Test the rule with representative documents before activating it.
+
+> **A useful boundary:** FlexiRule is a visual business-logic layer, not a replacement for every custom app or integration. Use it for rules that benefit from being centrally visible and maintained; use custom development when the behavior requires code or integration beyond the available actions.
