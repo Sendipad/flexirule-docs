@@ -18,7 +18,7 @@ New to FlexiRule? Follow this progressive sequence:
 1. **[What is FlexiRule?]({{< relref "getting-started/what-is-flexirule.md" >}})**: Learn how FlexiRule replaces scattered scripts with visual orchestration.
 2. **[Getting Started: Quick Start Guide]({{< relref "getting-started/quick-start.md" >}})**: Install FlexiRule and build your first automation in under 5 minutes.
 3. **[Core Concepts]({{< relref "getting-started/core-concepts.md" >}})**: Master the building blocks—Rules, Triggers, Context, Blocks, Action Types, and Value Resolvers.
-4. **[Rule Builder Guide]({{< relref "rule-builder/_index.md" >}})**: Learn canvas navigation, node connections, and the Smart Value Selector.
+4. **[Rule Builder Guide]({{< relref "using-the-builder/_index.md" >}})**: Learn canvas navigation, node connections, and the Smart Value Selector.
 
 ---
 
@@ -103,15 +103,15 @@ Consider a common ERPNext scenario: **Block Sales Orders if customer balance exc
 Understand system architecture, key capabilities, core concepts, and step-by-step quick start guides.
 {{< /card >}}
 
-{{< card title="Rule Builder Guide" href="rule-builder/" icon="canvas" >}}
+{{< card title="Rule Builder Guide" href="using-the-builder/" icon="canvas" >}}
 Explore canvas navigation, node connections, action settings, and the Smart Value Selector.
 {{< /card >}}
 
-{{< card title="Core Actions Catalog" href="action-type/" icon="catalog" >}}
+{{< card title="Core Actions Catalog" href="core-actions/" icon="catalog" >}}
 Browse complete guides for Set Value, Check, Query Records, Update Record, Repeat, Notify, and more.
 {{< /card >}}
 
-{{< card title="Developer Architecture" href="advanced-concepts/" icon="code" >}}
+{{< card title="Developer Architecture" href="advanced-reference/" icon="code" >}}
 Deep dive into execution semantics, compiler optimization, registry contracts, and extension points.
 {{< /card >}}
 
