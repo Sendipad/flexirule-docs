@@ -16,6 +16,8 @@ A query is a data-reading step. It does not itself mean that matching records ar
 
 > **Tip:** Start with a narrow filter and only request the fields your rule needs. Test the query against known records before using its output in a production rule.
 
+{{< video src="/images/demo-condition-and-query.webm" controls="true" muted="true" loop="true" >}}
+
 ## Choose the right mode
 
 | Mode | Use it when you need… | Result concept |
