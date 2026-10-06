@@ -1,7 +1,7 @@
 ---
 title: Smart Value Selector & Value Resolvers
 description: Learn how to input dynamic data across FlexiRule forms using Static Values, Variable References (@), and Dynamic Value Resolvers (⚡).
-weight: 45
+weight: 70
 ---
 
 # Smart Value Selector & Value Resolvers

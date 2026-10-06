@@ -1,7 +1,7 @@
 ---
 title: Query Records
 description: Retrieve records and summaries for decisions in a visual rule.
-weight: 10
+weight: 90
 entity_kind: action_operation
 category: data-operations
 mutation: false
@@ -9,6 +9,8 @@ targets: ["Frappe DocType"]
 ---
 
 # Query Records
+
+[Which Query Mode Should I Use?]({{< relref "which-query-mode.md" >}}) — choose the result shape first, then configure the mode.
 
 Use **Query Records** when a rule needs information beyond the document that triggered it. Configure a target DocType, choose a query mode, define supported filters, and store the result for later actions.
 

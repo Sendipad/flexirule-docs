@@ -1,7 +1,7 @@
 ---
 title: Rule Builder Canvas & Layout Modes
 description: Learn how to navigate the visual Rule Builder canvas and configure rules using Dialog Modal or Three-Panel Workspace View.
-weight: 10
+weight: 20
 aliases:
   - /docs/user-guide/rule-builder/
 ---

@@ -1,7 +1,7 @@
 ---
 title: Adding Actions & The Action Palette
 description: Learn how to add, connect, and arrange logic actions on the Rule Builder canvas.
-weight: 20
+weight: 40
 ---
 
 # Adding Actions & The Action Palette

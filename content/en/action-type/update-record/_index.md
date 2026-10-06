@@ -1,7 +1,7 @@
 ---
 title: Update Record
 description: Modify fields, change states, or perform lifecycle operations on database records in the UI.
-weight: 70
+weight: 100
 entity_kind: action_operation
 category: data-operations
 mutation: true

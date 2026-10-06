@@ -1,7 +1,7 @@
 ---
 title: Wait
 description: Pause rule execution for a specified duration or until a target date and time.
-weight: 80
+weight: 60
 entity_kind: action_operation
 category: logic-control
 mutation: false
@@ -81,4 +81,4 @@ Use the Wait action when you need to:
 ## 7. Related Features
 
 - [Notify]({{< relref "action-type/notify/" >}}): Frequently combined with Wait blocks for delayed follow-up notifications.
-- [Rule Lifecycle]({{< relref "rule-builder/rule-lifecycle.md" >}}): Learn how background execution works in FlexiRule.
+- [Rule Lifecycle]({{< relref "test-operate/rule-lifecycle.md" >}}): Learn how background execution works in FlexiRule.

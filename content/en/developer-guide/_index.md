@@ -1,7 +1,7 @@
 ---
 title: Developer Guide
-weight: 80
-description: Resources for developers extending or contributing to FlexiRule.
+weight: 70
+description: Extend FlexiRule with custom actions, processes, providers, and integrations.
 ---
 
 # Developer Guide

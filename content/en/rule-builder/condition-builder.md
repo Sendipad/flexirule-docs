@@ -1,7 +1,7 @@
 ---
 title: Condition Builder
 description: Learn how to create visual logical condition groups in FlexiRule.
-weight: 50
+weight: 60
 ---
 
 # Condition Builder

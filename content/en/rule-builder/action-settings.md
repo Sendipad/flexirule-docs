@@ -1,7 +1,7 @@
 ---
 title: Action Settings Panel
 description: Learn how to configure individual action nodes using the Action Settings panel and Schema Browser.
-weight: 60
+weight: 50
 ---
 
 # Action Settings Panel

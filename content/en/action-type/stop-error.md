@@ -1,7 +1,7 @@
 ---
 title: Stop / Error
 description: Terminate rule execution cleanly or display a validation error message to block document saving.
-weight: 100
+weight: 50
 entity_kind: action_operation
 category: logic-control
 mutation: false

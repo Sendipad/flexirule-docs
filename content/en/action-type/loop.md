@@ -1,7 +1,7 @@
 ---
 title: Repeat (Loop)
 description: Iterate over child table rows or query result collections to run actions for each item in the UI.
-weight: 60
+weight: 40
 entity_kind: action_operation
 category: logic-control
 mutation: false

@@ -1,7 +1,7 @@
 ---
 title: Notify
 description: Send automated alerts via email, system notifications, or UI messages configured visually.
-weight: 80
+weight: 110
 entity_kind: action_operation
 category: communication
 mutation: false
