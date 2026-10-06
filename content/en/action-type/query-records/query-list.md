@@ -6,7 +6,9 @@ weight: 20
 
 # Query List
 
-Use **Query List** when the flow needs a collection of selected values or list-oriented results, rather than a single document or aggregate. For example, a rule may need a list of task names or item codes before deciding what to do next.
+Use **Query List** when the flow needs a collection of selected values or list-oriented results, rather than a single document or aggregate. For example, a rule may need a list of task names or item codes before deciding what to do.
+
+{{< video src="/images/query-records-query-list-features.webm" controls="true" muted="true" loop="true" >}}
 
 ## Configure a Query List
 
