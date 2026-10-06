@@ -1,7 +1,7 @@
 ---
 title: Set Value (Assignment)
 description: Update document fields or store values in rule variables using a visual configuration grid.
-weight: 50
+weight: 80
 entity_kind: action_operation
 category: data-operations
 mutation: true
