@@ -31,6 +31,10 @@ Save the rule before opening the visual builder. Choose an event that fits the i
 
 Open **Rule Builder** from the Rule form or workspace. The canvas represents the flow as connected action nodes. Start with the entry node, then add the action types needed for your scenario.
 
+## See the flow in action
+
+{{< video src="/images/demo-condition-and-query.webm" controls="true" muted="true" loop="true" >}}
+
 ## 4. Add a condition
 
 Add a **Condition** action (the exact display label may be **Check** in some UI areas). Configure a comparison using the Smart Value Selector rather than guessing field names:
