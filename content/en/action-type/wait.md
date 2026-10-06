@@ -81,4 +81,4 @@ Use the Wait action when you need to:
 ## 7. Related Features
 
 - [Notify]({{< relref "action-type/notify/" >}}): Frequently combined with Wait blocks for delayed follow-up notifications.
-- [Rule Lifecycle]({{< relref "rule-builder/rule-lifecycle.md" >}}): Learn how background execution works in FlexiRule.
+- [Rule Lifecycle]({{< relref "test-operate/rule-lifecycle.md" >}}): Learn how background execution works in FlexiRule.
