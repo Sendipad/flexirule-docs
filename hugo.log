@@ -7,9 +7,9 @@ hugo v0.163.3-4d22555aebf458d5d150500c9ac4bee5b24cf0d3+extended linux/amd64 Buil
  Pages            │ 149
  Paginator pages  │   0
  Non-page files   │   0
- Static files     │  27
+ Static files     │  41
  Processed images │   0
- Aliases          │  33
+ Aliases          │  45
  Cleaned          │   0
 
-Total in 1066 ms
+Total in 1114 ms

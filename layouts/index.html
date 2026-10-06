@@ -7,7 +7,7 @@
     <p class="lead">FlexiRule turns scattered hooks into a product-grade automation layer: visual rules, reusable actions, explicit execution paths, and documentation designed for business analysts and developers.</p>
     <div class="hero-actions" aria-label="Primary actions">
       <a class="btn btn-primary" href='{{ "getting-started/quick-start/" | relLangURL }}'>Get Started</a>
-      <a class="btn btn-secondary" href='{{ "advanced-concepts/architecture/overview/" | relLangURL }}'>View Architecture</a>
+      <a class="btn btn-secondary" href='{{ "advanced-reference/architecture/overview/" | relLangURL }}'>View Architecture</a>
     </div>
     <dl class="hero-metrics" aria-label="FlexiRule documentation highlights">
       <div><dt>4</dt><dd>core concepts</dd></div>
@@ -50,10 +50,10 @@
     <h2 id="concepts-title">Everything starts with a small, memorable model.</h2>
   </div>
   <div class="card-grid feature-grid">
-    <a class="doc-card feature-card" href='{{ "action-type/condition/" | relLangURL }}'><span class="feature-icon">◇</span><span class="card-title">Check (Condition)</span><span class="card-desc">Evaluate condition logic with short-circuiting AND/OR groups.</span></a>
-    <a class="doc-card feature-card" href='{{ "action-type/" | relLangURL }}'><span class="feature-icon">▶</span><span class="card-title">Core Actions</span><span class="card-desc">Run assignments, notifications, document updates, and processes.</span></a>
-    <a class="doc-card feature-card" href='{{ "action-type/assignment/" | relLangURL }}'><span class="feature-icon">=</span><span class="card-title">Set Value</span><span class="card-desc">Batch mutate document fields and context variables sequentially.</span></a>
-    <a class="doc-card feature-card" href='{{ "action-type/process/" | relLangURL }}'><span class="feature-icon">↻</span><span class="card-title">Advanced Process</span><span class="card-desc">Execute registered backend capabilities behind visual configuration.</span></a>
+    <a class="doc-card feature-card" href='{{ "core-actions/condition/" | relLangURL }}'><span class="feature-icon">◇</span><span class="card-title">Check (Condition)</span><span class="card-desc">Evaluate condition logic with short-circuiting AND/OR groups.</span></a>
+    <a class="doc-card feature-card" href='{{ "core-actions/" | relLangURL }}'><span class="feature-icon">▶</span><span class="card-title">Core Actions</span><span class="card-desc">Run assignments, notifications, document updates, and processes.</span></a>
+    <a class="doc-card feature-card" href='{{ "core-actions/assignment/" | relLangURL }}'><span class="feature-icon">=</span><span class="card-title">Set Value</span><span class="card-desc">Batch mutate document fields and context variables sequentially.</span></a>
+    <a class="doc-card feature-card" href='{{ "core-actions/process/" | relLangURL }}'><span class="feature-icon">↻</span><span class="card-title">Advanced Process</span><span class="card-desc">Execute registered backend capabilities behind visual configuration.</span></a>
   </div>
 </section>
 
@@ -62,7 +62,7 @@
     <p class="eyebrow">Architecture Overview</p>
     <h2 id="architecture-title">A minimal pipeline from event to observed execution.</h2>
     <p>FlexiRule separates trigger selection, graph orchestration, action runtime, and execution context so teams can reason about behavior before it ships.</p>
-    <a class="text-link" href='{{ "advanced-concepts/architecture/overview/" | relLangURL }}'>Explore architecture overview →</a>
+    <a class="text-link" href='{{ "advanced-reference/architecture/overview/" | relLangURL }}'>Explore architecture overview →</a>
   </div>
   <div class="architecture-diagram" role="img" aria-label="Trigger flows into rule graph, then runtime, then Frappe documents and logs">
     <span class="architecture-node">Trigger</span><i></i><span class="architecture-node">Rule Graph</span><i></i><span class="architecture-node">Runtime</span><i></i><span class="architecture-node">Documents + Logs</span>
