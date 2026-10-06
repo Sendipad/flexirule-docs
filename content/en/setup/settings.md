@@ -1,32 +1,44 @@
 ---
 title: RuleFlow Settings
-description: Global configuration for the FlexiRule engine.
+description: Configure global runtime behavior and Rule Builder preferences.
 weight: 30
 ---
 
 # RuleFlow Settings
 
-FlexiRule provides a centralized settings page to manage the behavior of the automation engine across your entire Frappe site. Access this by searching for **RuleFlow Settings** in the Desk.
+**RuleFlow Settings** controls site-wide FlexiRule behavior and preferences for the visual builder. Open it from the Frappe Desk by searching for **RuleFlow Settings**. The available fields in your installed version are the source of truth; this page explains the intent of the settings represented in the current RuleFlow Settings DocType.
 
-## Core Settings
+## Runtime and operational settings
 
-### 1. Enable Rule Execution
-- **Checkbox**: `enabled`
-- **Purpose**: This is the global "Master Switch". If unchecked, no rules will trigger, regardless of their individual status. This is useful during maintenance or data migrations.
+| Setting | What it controls | Guidance |
+|---|---|---|
+| Debug Logging | Detailed execution diagnostics | Enable when investigating a rule; verbose logs can add overhead and volume |
+| Log Retention Days | Retention period for execution logs | Choose a period that balances troubleshooting needs and database maintenance |
+| Default Max Execution Time | Default time limit for rule execution | Keep the limit appropriate for the type of work performed |
+| Allow Async Actions | Whether asynchronous actions are permitted | Enable only when background processing is configured and appropriate |
+| Excluded DocTypes | DocTypes excluded from applicable rule behavior | Use this carefully to prevent unwanted execution on selected types |
 
-### 2. Log Retention
-- **Field**: `log_retention_days`
-- **Purpose**: Automatically clean up old execution logs to prevent database bloat. It is recommended to keep logs for 30–90 days depending on your volume.
+## Rule Builder preferences
 
-### 3. Background Queue
-- **Field**: `default_queue`
-- **Purpose**: Specify which Frappe background queue should be used for actions marked as **Run Asynchronously**. Common values are `default`, `long`, or `short`.
+| Setting | Options / purpose |
+|---|---|
+| Action Configuration Mode | Choose Sidebar or Dialog for configuring actions |
+| Open Configuration On | Choose Click, Double Click, or Icon Only according to your workflow |
+| Canvas Theme | System, Light, or Dark |
+| Layout Direction | Left to Right or Top to Bottom |
+| Sidebar Position | Left or Right when Sidebar mode is selected |
+| Enable Edge Insertion | Controls the edge-insertion canvas convenience |
+| Require Approval to Activate | Adds an approval requirement to rule activation |
+| Allow Editing Active Rules | Controls whether active rules may be edited; changing active rules can affect production behavior |
 
-## Advanced Configuration
+## Recommended setup
 
-### 4. Cache Policy
-FlexiRule uses aggressive caching to ensure high performance. You can manage how rules are cached at the site level here, although the default settings are optimized for most production environments.
+1. Review logging and retention before enabling production rules.
+2. Confirm whether asynchronous actions are needed and that the site's background workers are operating.
+3. Choose builder preferences that suit the team; these preferences affect editing experience, not the business meaning of the rule.
+4. Decide whether activation approval is appropriate for your change-control process.
+5. Be cautious with **Allow Editing Active Rules**. For controlled production systems, prefer a review-and-test workflow before changes affect active automation.
 
-### 5. Debug Mode
-- **Checkbox**: `debug_mode`
-- **Purpose**: Enables more verbose logging in the **Rule Execution Log**, including full context snapshots for every step. Use this only during development or troubleshooting, as it increases log size.
+## Important distinction
+
+RuleFlow Settings does not replace per-rule configuration. A rule still has its own trigger type, target DocType where applicable, trigger event, execution mode, timeout, permissions, actions, and activation state. Review both the global settings and the individual Rule when troubleshooting unexpected behavior.
