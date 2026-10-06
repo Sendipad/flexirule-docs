@@ -8,9 +8,7 @@ weight: 100
 
 This walkthrough shows the typical workflow for a simple rule: check a document value, then take an action when the condition is met. Exact labels can vary slightly with your FlexiRule version and builder preferences.
 
-{{< callout type="info" >}}
-Use a development or test site first. Notifications and other actions may have real effects when a rule is active.
-{{< /callout >}}
+> **Before you begin:** Use a development or test site first. Notifications and other actions may have real effects when a rule is active.
 
 ## 1. Open RuleFlow
 
