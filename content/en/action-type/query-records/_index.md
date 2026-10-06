@@ -10,6 +10,8 @@ targets: ["Frappe DocType"]
 
 # Query Records
 
+[Which Query Mode Should I Use?]({{< relref "which-query-mode.md" >}}) — choose the result shape first, then configure the mode.
+
 Use **Query Records** when a rule needs information beyond the document that triggered it. Configure a target DocType, choose a query mode, define supported filters, and store the result for later actions.
 
 A query is a data-reading step. It does not itself mean that matching records are updated; use a separate action when you need to change data.
