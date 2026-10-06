@@ -69,5 +69,5 @@ Return to the Rule form and enable the rule using the activation control availab
 
 - [Rule configuration and triggers]({{< relref "rule-builder/rule-configuration.md" >}})
 - [Canvas guide]({{< relref "rule-builder/canvas.md" >}})
-- [Debugging guide]({{< relref "rule-builder/debugging.md" >}})
+- [Testing & Debugging]({{< relref "test-operate/debugging.md" >}})
 - [Query Records]({{< relref "action-type/query-records/_index.md" >}})
