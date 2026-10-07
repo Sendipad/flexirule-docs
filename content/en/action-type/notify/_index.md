@@ -1,70 +1,52 @@
 ---
 title: Notify
-description: Send automated alerts via email, system notifications, or UI messages configured visually.
-weight: 110
-entity_kind: action_operation
-category: communication
-mutation: false
-targets: ["Email", "System Notification", "UI Message"]
+description: Send notifications through the notification modes provided by FlexiRule.
+weight: 100
 ---
 
-# Notify Action
+# Notify
 
-The **Notify** action is the primary communication hub in FlexiRule, enabling you to send automated emails, system notifications, or real-time UI messages.
+**Notify** sends a notification and then continues through its normal outbound path.
 
----
+## Notification types
 
-## 1. What is it?
+The current Action Type contract provides:
 
-A Notify block sends messages through three available channels:
-- **Email**: Sends queued emails with optional attachments to internal users or external contacts.
-- **System Notification**: Creates a notification log entry in the user's bell toolbar.
-- **UI Message (Toast / Alert)**: Displays real-time popups directly in the user's browser window.
+| Notification Type | Purpose |
+|---|---|
+| **Toast** | Show a temporary user notification. |
+| **System** | Send the supported system/realtime notification. |
+| **Email** | Send an email notification. |
+| **System Notification** | Create a system notification record. |
+| **Provider** | Send through a configured external notification provider. |
 
----
+## Required configuration
 
-## 2. When to Use
+Notify requires:
 
-Use the Notify action when you need to:
-- **Send automated emails** on document events (e.g., sending an order confirmation email to a customer on save).
-- **Alert internal team members** when a high-value transaction requires review.
-- **Display real-time user feedback** (Toasts or Alerts) on form validation events.
+- notification message template;
+- notification type.
 
----
+The UI uses **NotifyConfig**.
 
-## 3. How to Configure
+Additional configuration depends on the selected type:
 
-1. **Add the Action**: Add a **Notify** block to your visual canvas.
-2. **Select Channel**: Choose **Email**, **System Notification**, or **UI Message**.
-3. **Configure Recipients**:
-   - Select users, roles, or dynamic email fields using the **Smart Value Selector**.
-4. **Compose Subject & Message**:
-   - Type message text and insert document fields or variables using the **Smart Value Selector**.
-5. **Set Attachments (Email Channel)**:
-   - Toggle **Attach PDF** to automatically attach a PDF print format of the document.
+- Email requires subject and recipients.
+- System Notification requires subject.
+- Provider requires provider and recipient.
 
----
+## Message templates
 
-## 4. Practical Example
+The notification message is supplied through the action template field and is rendered using the rule execution context.
 
-### Scenario: Send Order Confirmation Email
+Use the Smart Value/templating features supported by the installed Rule Builder rather than assuming a fixed recipient or message syntax.
 
-1. Add a **Notify** action set to **Email** channel.
-2. **Recipients**: Select Customer Email (`@doc.contact_email`) using the Smart Value Selector.
-3. **Subject**: `"Order Confirmation: {doc.name}"` composed via Smart Value Selector.
-4. **Message**: `"Dear {doc.customer_name}, thank you for your order on {doc.posting_date}."`
-5. **Attach PDF**: Enable PDF attachment with default print format.
+## Flow
 
----
+Notify is not terminal. After the notification is sent, execution follows the normal next-step connection.
 
-## 5. Related Features
+## Common mistakes
 
-- [Email Notifications]({{< relref "action-type/notify/email.md" >}}): Detailed guide on email options and templates.
-- [Check (Condition)]({{< relref "action-type/condition.md" >}}): Filter when notifications are triggered.
-
----
-
-## 6. Developer & Technical Details
-
-For notification dispatch mechanics and email queue architecture:
-- [Notify Architecture Reference]({{< relref "advanced-concepts/architecture/actions/notify.md" >}})
+- Treating Notify as an action that stops the rule.
+- Documenting notification modes that are not present in the current Action Type contract.
+- Omitting required type-specific configuration for Email, System Notification, or Provider.
