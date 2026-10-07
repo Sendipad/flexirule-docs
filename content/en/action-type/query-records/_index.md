@@ -14,6 +14,7 @@ It requires a Target DocType and Query Mode, then executes the selected mode and
 
 | Mode | Result |
 |---|---|
+| **Fetch Records** | Query Builder-based record retrieval (**upcoming** on `refactor/query-records`). |
 | **Query List** | A list of matching rows. |
 | **Query Doc** | One document, including supported single/latest/cache strategies. |
 | **Exist Record** | True when at least one matching record exists. |
