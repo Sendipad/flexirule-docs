@@ -20,6 +20,7 @@ Choose the action from the operation you need to perform.
 | Reuse another visual rule | **Sub-Rule** |
 | Apply configured value assignments | **Assignment** |
 | Read records or calculate query results | **Query Records** |
+| Use the upcoming Query Builder-based record retrieval | **Query Records → Fetch Records** |
 | Create, update, or delete a document | **Document Action** |
 | Create a ToDo or add a document comment | **Document Action** |
 | Send a notification | **Notify** |
