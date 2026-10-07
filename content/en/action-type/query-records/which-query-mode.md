@@ -10,6 +10,7 @@ Choose the mode from the result your next step actually needs.
 
 | Need | Mode |
 |---|---|
+| Query Builder-based record retrieval | **Fetch Records** *(upcoming)* |
 | Matching rows | **Query List** |
 | One document | **Query Doc** |
 | Only whether a match exists | **Exist Record** |
@@ -20,6 +21,12 @@ Choose the mode from the result your next step actually needs.
 | Lowest value | **Min** |
 | Highest value | **Max** |
 | Grouped summary | **Group By** |
+
+## Fetch Records vs Query List
+
+Use **Fetch Records** when you need the Query Builder-based implementation being developed on `refactor/query-records`. It is upcoming and should not be treated as available in the current release until that app branch is merged.
+
+Use **Query List** for the current standard list-query path.
 
 ## Prefer the smallest result
 
