@@ -1,90 +1,35 @@
 ---
 title: Switch
-description: Route execution along multiple outbound paths based on matching field values.
+description: Route execution by matching a configured value against cases.
 weight: 30
-entity_kind: action_operation
-category: logic-control
-mutation: false
-targets: ["Frappe DocType", "Context Variable"]
-aliases:
-  - /docs/actions/switch/
 ---
 
-# Switch Action
+# Switch
 
-The **Switch** action provides multi-way visual branching, routing execution down matching case paths based on the value of a target field or variable.
+**Switch** provides multi-way routing.
 
----
+It evaluates the configured switch value/expression and selects the matching case.
 
-## 1. What is it?
+## Configuration
 
-Instead of connecting multiple Check (If/Else) blocks together, a Switch block evaluates a single field or variable and branches execution directly to the matching case port. It also includes a **Default** branch for unhandled values.
+Switch requires its configuration payload and uses **SwitchConfig**.
 
-```
-                     ┌── "High" ───→ Action A (Alert Engineer)
-                     ├── "Medium" ─→ Action B (Queue Email)
-Switch (Priority) ───┼── "Low" ────→ Action C (Set SLA = 5)
-                     └── Default ──→ Action D (Set SLA = 3)
-```
+The configuration contains the value/expression to evaluate and the configured cases. A default path can be provided for values that do not match an explicit case.
 
----
+## When to use it
 
-## 2. When to Use
+Use Switch when one value determines which of several known paths should execute.
 
-Use the Switch action when you need to:
-- **Route logic based on categorical fields** with three or more values (e.g., `Status`, `Territory`, `Customer Group`, `Priority`).
-- **Simplify complex flows** by replacing chained Check (If/Else) blocks with a single multi-port node.
-- **Provide a fallback path** using the **Default** branch when an unexpected or unlisted value is encountered.
+Examples include priority, status, or category values.
 
----
+Use [Condition]({{< relref "condition.md" >}}) for boolean or compound logical questions.
 
-## 3. How to Configure
+## Important behavior
 
-1. **Add the Action**: Add a **Switch** block to your visual canvas.
-2. **Select Target Value**:
-   - Click **Target Field**.
-   - Use the **Smart Value Selector** to pick a document field (e.g., `Priority` or `@doc.priority`) or variable (`@vars.category`).
-3. **Add Cases**:
-   - Click **Add Case**.
-   - Enter the expected value string or number for each branch (e.g., `"High"`, `"Medium"`, `"Low"`).
-4. **Connect Outbound Branches**:
-   - Connect each case port (`"High"`, `"Medium"`, `"Low"`) to its corresponding action.
-   - Connect the **Default** port to the action that should run if none of the explicit cases match.
+Switch does not use the Condition Action Type's True/False contract. Its routing comes from the configured case structure.
 
----
+## Common mistakes
 
-## 4. UI Configuration Options
-
-| Option | Description |
-| :--- | :--- |
-| **Target Field** | Select the field or variable to evaluate using the **Smart Value Selector**. |
-| **Cases List** | Add matching case values (e.g., `"Pending"`, `"Approved"`, `"Rejected"`). Each case creates an outbound port. |
-| **Default Branch** | Outbound port followed when no defined cases match the evaluated target value. |
-
----
-
-## 5. Practical Example
-
-### Scenario: Route Support Tickets by Priority
-
-1. Add a **Switch** action and set Target Field to `Priority` (`@doc.priority`).
-2. Add three cases: `"High"`, `"Medium"`, and `"Low"`.
-3. **Connect Branches**:
-   - **Case "High"**: Connect to **Notify** action (Send instant alert to on-call engineer).
-   - **Case "Medium"**: Connect to **Notify** action (Send email to support team queue).
-   - **Case "Low"**: Connect to **Set Value** action (`doc.sla_days = 5`).
-   - **Default**: Connect to **Set Value** action (`doc.sla_days = 3`).
-
----
-
-## 6. Common Mistakes
-
-- **Case-Sensitivity Mismatches**: Matching `"high"` against `"High"`. Make sure case strings match exact field values.
-- **Unconnected Default Branch**: Leaving the **Default** branch empty, which causes rule execution to stop quietly if an unexpected value occurs.
-
----
-
-## 7. Related Features
-
-- [Check (Condition)]({{< relref "action-type/condition.md" >}}): Use Check when evaluating complex true/false conditions (AND/OR logic) rather than simple value matching.
-- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): How to select target fields visually.
+- Building a long chain of Conditions for simple value-to-case routing.
+- Treating cases as arbitrary boolean expressions.
+- Omitting deliberate default behavior for unmatched values.

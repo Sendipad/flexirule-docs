@@ -1,48 +1,67 @@
 ---
 title: Fetch Records
-description: Retrieve a filtered collection of records for use in later rule steps.
-weight: 11
+description: Query records through Frappe Query Builder using the upcoming Fetch Records mode.
+weight: 5
 ---
 
 # Fetch Records
 
-Use **Fetch Records** when a rule needs a collection of matching records from a DocType. For example, a rule can retrieve submitted invoices for the current customer and use the result to calculate a decision or process each matching record.
+> **Upcoming:** Fetch Records is being developed on the FlexiRule **refactor/query-records** branch. It is not yet part of the current develop release.
 
-## Configure the query
+**Fetch Records** is a Query Records mode built around Frappe Query Builder (frappe.qb.get_query).
 
-1. Add a **Query Records** action to the canvas.
-2. Choose **Fetch Records** in the query mode selector.
-3. Select the target **Reference DocType**.
-4. Add filters for the records that should be returned.
-5. Choose the fields needed by later actions, if field selection is available in your mode.
-6. Set a sensible result limit and ordering where appropriate.
-7. Give the result a clear output name and use the Smart Value Selector to reference it in later steps.
+Unlike Query List, which uses the existing list-query path, Fetch Records is intended to expose Frappe Query Builder's native query capabilities while keeping the FlexiRule configuration contract thin.
 
-## Example: find open invoices for the current customer
+## Current branch contract
 
-The goal is to retrieve submitted invoices for the same customer as the triggering document that still have an outstanding balance.
+The refactor/query-records implementation defines:
 
-| Field | Comparison | Value |
-|---|---|---|
-| Customer | Equals | Current document's customer |
-| Docstatus | Equals | `1` |
-| Outstanding Amount | Greater Than | `0` |
+- **Action Type:** Query Records
+- **Query Mode:** Fetch Records
+- **Target DocType:** required
+- **Result Type:** List of Records
+- **Result Handling:** Set Context Variable, Append to Context Variable, or Update Context Variable
+- **Reference Record:** hidden/not required
+- **Timeout:** available for asynchronous rules
+- **Configuration component:** QueryRecordsConfig
 
-Configure the filters using the UI controls for your installed version. The table describes the intended business criteria; it is not a query-language snippet to paste into the editor.
+The backend dispatches Fetch Records to a dedicated handler and validates the stable FlexiRule inputs before passing the query configuration to Frappe Query Builder.
 
-After running Debug, verify that the result contains only the expected invoices. Then connect the result to a later action, such as a loop, calculation, or condition.
+## Why it is different from Query List
 
-## Understand the result
+| Fetch Records | Query List |
+|---|---|
+| Uses Frappe Query Builder | Uses the existing list-query implementation |
+| Designed to preserve native Query Builder query capabilities | Designed around the standard list query configuration |
+| Returns List of Records | Returns List of Records |
+| Uses Query Builder configuration | Uses Query List configuration |
 
-Fetch Records returns a collection, not a single document or a numeric total. If you need only one document, use **Query Doc** where appropriate. If you need only to know whether a match exists, use **Exist Record**. If you need a count or total, consider **Count** or **Sum** instead of retrieving every record.
+Fetch Records should not be documented as merely another name for Query List.
 
-## Best practices
+## Filters and Query Builder
 
-- Filter early to avoid retrieving unrelated records.
-- Keep the result limit appropriate for the business process.
-- Select only the fields the flow actually uses.
-- Test the empty-result case and the maximum expected result size.
-- Confirm permissions and avoid enabling permission bypass unless there is a documented reason.
-- Do not assume arbitrary linked-field paths or child-table conditions are supported; use only the filter capabilities exposed by the selected query mode.
+The upcoming implementation deliberately avoids creating a second FlexiRule query language for native Query Builder behavior.
 
-[Back to Query Records]({{< relref "action-type/query-records/_index.md" >}}) · [Query filter reference]({{< relref "advanced-concepts/reference/query-filters/index.md" >}})
+The configured query payload is passed to frappe.qb.get_query after FlexiRule-level validation. This allows Frappe Query Builder to remain responsible for its own query semantics, including supported filters and relationship handling.
+
+## Limits and offsets
+
+The Fetch Records contract supports limit and offset.
+
+These values are validated as non-negative integers when they are supplied as concrete values. Dynamic value expressions are allowed to remain unresolved until runtime.
+
+## Permissions
+
+Fetch Records participates in the Query Records permission model. The Action Contract includes the common **Ignore Permissions** control with a required **Permission Audit Reason** when enabled.
+
+Use permission bypass deliberately and document the business reason.
+
+## When to use Fetch Records
+
+Prefer Fetch Records when the rule needs Query Builder capabilities that should remain close to Frappe's native query semantics.
+
+Prefer Query List when the standard Query Records list configuration is sufficient.
+
+## Status
+
+This page documents the implementation on refactor/query-records. Before the branch is merged into the app release branch, treat its exact UI and runtime behavior as **upcoming**, not as functionality guaranteed by the current production/develop version.

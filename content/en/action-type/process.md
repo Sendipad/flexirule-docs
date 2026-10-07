@@ -1,98 +1,49 @@
 ---
-title: Advanced Process
-description: Run reusable, system-registered business processes and custom operations directly from your rules.
+title: Process
+description: Execute a registered Process operation from a rule.
 weight: 110
-entity_kind: action_operation
-category: data-operations
-mutation: true
-targets: ["Frappe DocType", "Context Variable"]
-aliases:
-  - /docs/actions/process/
 ---
 
-# Advanced Process Action
+# Process
 
-The **Advanced Process** action allows you to execute complex, pre-built business operations—such as record deduplication, tax calculations, credit scoring, or external integrations—directly within a visual rule.
+**Process** executes a registered Process operation from the rule flow.
 
----
+The Action Type is **Process**. It is not a generic “Advanced Process” node.
 
-## 1. What is it?
+## When to use it
 
-An Advanced Process block lets you call modular, reusable operations configured in your system without having to build complex logic steps manually on the visual canvas. It passes inputs from your rule into the process and saves the output into a rule variable (`@vars`).
+Use Process when the required business operation is represented by a registered Process and operation.
 
----
+Use Assignment, Query Records, or Document Action when the operation is naturally expressed by those dedicated Action Types.
 
-## 2. When to Use
+## Required configuration
 
-Use the Advanced Process action when you need to:
-- **Run pre-built business algorithms** (e.g., customer deduplication checks, risk score calculations).
-- **Perform integrations or system tasks** (e.g., generating documents, sending webhooks, invoking tax services).
-- **Reuse standard operations** across multiple rules without duplicating canvas nodes.
-- **Run heavy background operations** asynchronously using background worker queues.
+Process requires a Process and a Process Operation.
 
----
+The UI uses **ProcessConfig** and dynamically loads fields and policies defined by the selected operation.
 
-## 3. How to Configure
+## Inputs and outputs
 
-1. **Add the Action**: Add an **Advanced Process** block to your visual canvas.
-2. **Select Process & Operation**:
-   - Select the registered **Process** (e.g., `Deduplication`, `Tax Calculation`).
-   - Select the specific **Operation** (e.g., `Find Duplicates`, `Calculate Line Item Tax`).
-3. **Map Inputs**:
-   - Fill in the required input parameters using the **Smart Value Selector** (`@doc`, `@vars`, or static values).
-4. **Set Output Variable**:
-   - Enter a variable name in **Output Variable** where process outputs will be saved (e.g., `dedup_result`).
-5. **Configure Failure Handling**:
-   - Select how the rule should respond if the process fails (`Stop Rule`, `Continue`, or `Branch on Error`).
+The Process contract supports these result types:
 
----
+- Yes / No
+- Single Record
+- List of Values
+- List of Records
+- Full Document
 
-## 4. UI Configuration Options
+Supported result handling can include Set Context Variable, Update Context Variable, Append to Context Variable, Set Doc Field, Update Doc Field, and Batch Database Set.
 
-| Option | Description |
-| :--- | :--- |
-| **Process** | Select the registered business process group from the dropdown list. |
-| **Operation** | Choose the specific action operation provided by the selected process. |
-| **Input Mapping** | Map required operation parameters to document fields (`@doc`) or variables (`@vars`) using the Smart Value Selector. |
-| **Output Variable** | Variable name in `@vars` where the output dictionary will be stored for downstream actions. |
-| **Error Handling** | Configure rule behavior on failure: **Stop Rule**, **Continue**, or **Branch on Error**. |
+The exact fields and policies are operation-specific.
 
----
+## Timeout and errors
 
-## 5. Practical Example
+Process has a **Timeout (seconds)** field. The Rule Action DocType default is 30 seconds.
 
-### Scenario: Deduplicate Customer Records on Create
+Where the common error policy applies, choices include Stop, Continue, Retry, Rollback, and Escalate.
 
-1. Add an **Advanced Process** block to the canvas.
-2. **Process**: Select `Deduplication`.
-3. **Operation**: Select `Find Duplicates`.
-4. **Input Mapping**:
-   - Map `Email` → Select `@doc.email_id` using Smart Value Selector.
-   - Map `Tax ID` → Select `@doc.tax_id` using Smart Value Selector.
-5. **Output Variable**: Enter `duplicate_check`.
-6. **Next Node (Check)**:
-   - Add a **Check** action following the process.
-   - Condition: `@vars.duplicate_check.is_duplicate == true`
-   - **True Branch**: Connect to **Stop / Error** ("Duplicate customer detected!").
+Retry Count controls retry configuration when Retry is selected.
 
----
+## Important distinction
 
-## 6. Common Mistakes
-
-- **Unmapped Required Inputs**: Leaving mandatory operation parameters empty.
-- **Ignoring Process Failure**: Setting Error Strategy to `Continue` without checking the error output in downstream actions.
-- **Overusing Custom Processes for Simple Logic**: Creating custom code processes for simple field updates that can be built directly using [Set Value]({{< relref "action-type/assignment.md" >}}) blocks.
-
----
-
-## 7. Related Features
-
-- [Set Value]({{< relref "action-type/assignment.md" >}}): For standard field updates and simple variable calculations.
-- [Sub-Rule]({{< relref "action-type/sub-rule.md" >}}): To execute another visual rule rather than a code process.
-
----
-
-## 8. Developer & Technical Details
-
-For process registration, adapter class structures, and schema validation mechanics:
-- [Advanced Process Architecture Reference]({{< relref "advanced-concepts/architecture/actions/advanced-process.md" >}})
+Process is an extensible operation framework. Do not document a fixed list of business algorithms as if every installation has the same Process catalog.
