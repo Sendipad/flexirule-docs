@@ -1,71 +1,67 @@
 ---
 title: Query Records
-description: Retrieve records and summaries for decisions in a visual rule.
+description: Read records and calculate supported query results inside a rule.
 weight: 90
-entity_kind: action_operation
-category: data-operations
-mutation: false
-targets: ["Frappe DocType"]
 ---
 
 # Query Records
 
-[Which Query Mode Should I Use?]({{< relref "which-query-mode.md" >}}) — choose the result shape first, then configure the mode.
+**Query Records** is the read-oriented data Action Type.
 
-Use **Query Records** when a rule needs information beyond the document that triggered it. Configure a target DocType, choose a query mode, define supported filters, and store the result for later actions.
+It requires a Target DocType and Query Mode, then executes the selected mode and sends its result to the next step.
 
-A query is a data-reading step. It does not itself mean that matching records are updated; use a separate action when you need to change data.
+## Query Modes
 
-> **Tip:** Start with a narrow filter and only request the fields your rule needs. Test the query against known records before using its output in a production rule.
+| Mode | Result |
+|---|---|
+| **Query List** | A list of matching rows. |
+| **Query Doc** | One document, including supported single/latest/cache strategies. |
+| **Exist Record** | True when at least one matching record exists. |
+| **Query Report** | Rows returned by a Frappe report. |
+| **Count** | Number of matching records. |
+| **Sum** | Sum of a configured field. |
+| **Average** | Average of a configured field. |
+| **Min** | Minimum value of a configured field. |
+| **Max** | Maximum value of a configured field. |
+| **Group By** | Grouped rows with an aggregate value. |
 
-{{< video src="/images/demo-condition-and-query.webm" controls="true" muted="true" loop="true" >}}
+See [Which Query Mode Should I Use?]({{< relref "which-query-mode.md" >}}).
 
-## Choose the right mode
+## Common configuration
 
-| Mode | Use it when you need… | Result concept |
-|---|---|---|
-| **Fetch Records** | A configurable record query with selected fields, filters, ordering, and a result limit | A collection of matching records |
-| **Query List** | A list-oriented result rather than full document objects | A lightweight list of selected values |
-| **Query Doc** | One particular document or a single-record result | One record |
-| **Exist Record** | To know whether any matching record exists | A yes/no result |
-| **Query Report** | Data from a supported existing report | Report rows or report output |
-| **Count** | The number of matching records | A number |
-| **Sum** | The total of a numeric field | A number |
-| **Average** | The average of a numeric field | A number |
-| **Min** | The lowest value of a field | A value |
-| **Max** | The highest value of a field | A value |
-| **Group By** | A summary grouped by one or more fields | Grouped results |
+The action requires:
 
-Mode availability and configuration fields are defined by the installed FlexiRule version. Use the mode selector and its visible fields as the source of truth.
+- Target DocType
+- Query Mode
 
-## A typical setup
+The configuration can provide filters, fields, ordering, limits, grouping, report filters, and other mode-specific values.
 
-1. Add a **Query Records** action to the canvas.
-2. Select the target **Reference DocType**.
-3. Choose the query mode that matches the result you need.
-4. Add filters to narrow the records.
-5. Configure selected fields, ordering, grouping, or limits when the mode supports them.
-6. Set **Save Result As** (or the corresponding output setting) so later actions can reference the result.
-7. Run a debug test and inspect the output before connecting it to conditions, loops, assignments, or notifications.
+Query filters are resolved against the rule execution context, so dynamic values can come from the document or context variables.
 
-## Use query results in later actions
+## Result handling
 
-The result is useful only when later actions know where to read it from. Give the output a meaningful variable name, then select that value through the Smart Value Selector in the next action. Check whether the selected mode returns a single record, a list, a scalar aggregate, or report rows; these shapes are not interchangeable.
+Query Records can expose results through supported result types such as:
 
-## Performance and reliability
+- Yes / No
+- Single Record
+- List of Values
+- List of Records
 
-- Prefer **Exist Record** for a yes/no question instead of retrieving a whole list.
-- Prefer **Count**, **Sum**, **Average**, **Min**, **Max**, or **Group By** when the required result is an aggregate and the selected mode supports it.
-- Keep list queries bounded with a sensible result limit.
-- Select only fields used by the rule.
-- Test empty results and unexpected values, not only the case where records are found.
-- Review permissions and any explicit permission-bypass setting carefully.
+The allowed result type depends on the selected Query Mode.
 
-## Related guides
+## Permissions
 
-- [Fetch Records](fetch-records.md)
-- [Query List](query-list.md)
-- [Query Doc](query-doc.md)
-- [Exist Record](exist-record.md)
-- [Query Report](query-report.md)
-- [Query filters]({{< relref "advanced-concepts/reference/query-filters/index.md" >}})
+Queries normally use Frappe permission enforcement.
+
+The Rule Action also supports Ignore Permissions for Query Records, with a required Permission Audit Reason when enabled. Query Report mode still relies on the report's own permission checks.
+
+## Choosing a mode
+
+Choose the smallest result that satisfies the next step:
+
+- need only existence → Exist Record;
+- need a number → Count or an aggregate;
+- need one document → Query Doc;
+- need a collection → Query List;
+- need report output → Query Report;
+- need grouped summaries → Group By.
