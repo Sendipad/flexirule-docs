@@ -1,36 +1,52 @@
 ---
-title: Email
-description: Configure automated emails with attachments and dynamic templates in FlexiRule.
+title: Notify — Email
+description: Configure email delivery through the Notify Action Type.
 weight: 10
 ---
 
-# Email Notification
+# Email
 
-The **Email** channel in the Notify action allows you to send automated emails to customers, suppliers, and internal users.
+**Email** is one of the notification types provided by the Notify Action Type.
 
----
+## Required configuration
 
-## 1. How to Configure Email Notifications
+The Notify contract requires:
 
-### Recipients
-Choose recipients using three methods in the UI:
-- **Static List**: Enter one or more email addresses.
-- **Dynamic Field / Variable**: Use the **Smart Value Selector** to select an email field from the document (e.g., `@doc.contact_email`) or a variable (`@vars.manager_email`).
-- **User / Role**: Select specific system users or roles.
+- Action Template: the rendered message;
+- Notification Type: Email.
 
-### Subject & Message
-Compose subjects and body content using text and field tags selected through the **Smart Value Selector**:
-- **Subject**: `"Order Confirmation: {doc.name}"`
-- **Message**: Insert document fields like Customer Name (`@doc.customer`) or Date (`@doc.posting_date`) directly into the body text.
+Email-specific validation requires:
 
-### Attachments
-- **Attach PDF**: Toggle on to generate and attach a PDF of the triggering document using its print format.
+- **recipients**
+- **subject**
 
----
+These values are supplied through the action configuration.
 
-## 2. Practical Example
+## Recipients
 
-1. Add **Notify** action and select **Email** channel.
-2. **Recipients**: Open Smart Value Selector → Select `@doc.contact_email`.
-3. **Subject**: `"Invoice {doc.name} Payment Received"`.
-4. **Attach PDF**: Enable PDF attachment.
+Recipients may be resolved from the rule context using the value/template mechanisms supported by the Rule Builder. The backend normalizes a resolved list or a field-list string into recipients.
+
+Do not assume a fixed recipient UI; use the controls exposed by the installed Notify configuration component.
+
+## Subject and message
+
+The subject is supplied in the Email configuration.
+
+The message comes from the Notify Action Template and is rendered with the rule execution context.
+
+## Attach the current document
+
+The Email implementation supports the configuration flag **attach_doc**. When enabled and a context document is available, FlexiRule attempts to attach a PDF representation of that document.
+
+If attachment generation fails, the implementation logs the attachment failure rather than changing the basic notification mode.
+
+## Flow
+
+Notify Email is not terminal. After the email operation completes, execution follows the action's normal next step.
+
+## Common mistakes
+
+- Omitting recipients.
+- Omitting the subject.
+- Assuming an attachment exists when there is no context document.
+- Treating Email as a terminal action.
