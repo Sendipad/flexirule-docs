@@ -1,87 +1,38 @@
 ---
 title: Sub-Rule
-description: Run an exposed sub-rule as a reusable module within your visual rule flow.
+description: Invoke another rule that is exposed as a sub-rule.
 weight: 70
-entity_kind: action_operation
-category: logic-control
-mutation: true
-targets: ["Rule Execution", "Context Variable"]
-aliases:
-  - /docs/actions/sub-rule/
 ---
 
-# Sub-Rule Action
+# Sub-Rule
 
-The **Sub-Rule** action lets you run another rule—exposed as a sub-rule—directly inside your main rule flow, allowing you to reuse modular logic across multiple rules.
+**Sub-Rule** invokes another FlexiRule rule from the current visual flow.
 
-![FlexiRule canvas with a reusable Sub-Rule node](/images/flexirule-canvas-with-sub-rule.png)
+## Required configuration
 
----
+The Action Type requires a target Rule.
 
-## 1. What is it?
+The Rule link is constrained to rules that use the **Callable Event** trigger type and are exposed as a sub-rule.
 
-A Sub-Rule block executes a separate rule flow and passes variables back and forth. This lets you build reusable logic modules (like standard approval workflows or credit checks) once and call them from multiple rules.
+The action also provides **Skip Trigger Check**.
 
-```
-Main Rule ──→ Sub-Rule ("Calculate Customer Risk") ──→ Next Action (Check Risk Score)
-```
+## Inputs and outputs
 
----
+Sub-Rule supports context result handling and can return:
 
-## 2. When to Use
+- Single Record
+- List of Records
 
-Use a Sub-Rule action when you need to:
-- **Reuse multi-step verification routines** across different DocTypes or trigger events.
-- **Break down complex rules** into clean, modular sub-flows.
-- **Standardize business calculations** (e.g., standard credit scoring or discount rules).
+The selected result can be stored using the Rule Action result-handling fields.
 
----
+## When to use it
 
-## 3. How to Configure
+Use Sub-Rule to reuse a visual rule as a modular unit.
 
-1. **Add the Action**: Add a **Sub-Rule** block to your visual canvas.
-2. **Select Target Sub-Rule**:
-   - Choose from the list of rules exposed as sub-rules.
-3. **Map Input Variables**:
-   - Map values from your main rule to the input variables expected by the sub-rule using the **Smart Value Selector**.
-4. **Set Output Variable**:
-   - Enter a variable name (e.g., `risk_result`) to capture the sub-rule's returned output in `@vars`.
-5. **Connect Outbound Branch**: Connect the Sub-Rule block's output port to the next action node.
+Use [Process]({{< relref "process.md" >}}) when the reusable operation is a registered Process rather than another visual rule.
 
-![Sub-Rule flow with nested rule canvas](/images/ruleflow-canvas-with-sub-rule.png)
+## Permissions
 
----
+The Rule Action supports **Ignore Permissions** for Sub-Rule, Query Records, and Document Action. Enabling it requires a **Permission Audit Reason**.
 
-## 4. UI Configuration Options
-
-| Option | Description |
-| :--- | :--- |
-| **Sub-Rule** | Select target rule (must have *Exposed as Sub-Rule* enabled in its rule configuration). |
-| **Input Mappings** | Map main rule fields/variables to sub-rule parameters using the **Smart Value Selector**. |
-| **Output Variable** | Variable name in `@vars` where sub-rule output results will be stored. |
-
----
-
-## 5. Practical Example
-
-### Scenario: Run Standard Customer Risk Scoring Sub-Rule
-
-1. **Sub-Rule Block Configuration**:
-   - **Sub-Rule**: Select `"Calculate Customer Risk Score"`.
-   - **Input Mapping**: Map `Customer` → `@doc.customer` using Smart Value Selector.
-   - **Output Variable**: Enter `risk_score_result`.
-2. **Next Action (Check)**:
-   - Add a **Check** block following the sub-rule.
-   - **Condition**: `@vars.risk_score_result.score > 80`
-   - **True Branch**: Route to manager review notification.
-
-## 6. Common Mistakes
-
-- **Sub-Rule Not Exposed**: Trying to select a rule that does not have *Exposed as Sub-Rule* enabled in its settings.
-- **Circular Sub-Rule Calls**: Creating a loop where Rule A calls Sub-Rule B, which calls Sub-Rule A.
-- **Missing Input Mappings**: Forgetting to map mandatory input variables required by the sub-rule.
-
-## 7. Related Features
-
-- [Rule Configuration]({{< relref "rule-builder/rule-configuration.md" >}}): Learn how to expose a rule as a reusable sub-rule.
-- [Advanced Process]({{< relref "action-type/process.md" >}}): Execute pre-built code operations rather than visual sub-rules.
+Use this capability deliberately because it changes the normal permission path.
