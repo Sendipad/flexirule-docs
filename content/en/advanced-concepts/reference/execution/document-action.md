@@ -1,59 +1,73 @@
 ---
 title: 'Document Action: Execution Semantics'
-description: Technical runtime behavior, transaction models, and permission escalation
-  for the Document Action.
+description: Runtime behavior, permission checks, results, and transaction boundaries for Document Action.
 weight: 30
 ---
 
 # Document Action: Execution Semantics
 
-## Purpose
-The **Document Action** provides a managed interface for performing CRUD (Create, Read, Update, Delete) operations and social side-effects (ToDo, Comment) within the Frappe framework. It ensures that data mutations are performed according to rule-defined mappings while respecting or explicitly bypassing the system's security model.
+Document Action performs one of five operations: Create New, Update Existing, Delete Record, Create ToDo, or Add Comment. The selected operation determines which fields are required, which result is returned, and which permission checks apply.
 
-## Execution Lifecycle
+## Execution lifecycle
 
-1.  **Plan Hydration**: The `DocumentActionHandler` retrieves the pre-compiled `action_plan`.
-2.  **Input Mapping**: If `input_mapping` is defined, context paths (e.g., `vars.request_payload`) are resolved and merged into the action's configuration.
-3.  **Mode Dispatch**: The engine routes the request to a specific internal method:
-    -   `_create_new`: Builds a `doc_data` dict using static values, scalar mappings, and same-field copies.
-    -   `_update_existing`: Loads the target document via `frappe.get_doc(doctype, name)`.
-    -   `_delete_record`: Verifies existence and permissions before calling `frappe.delete_doc`.
-    -   `_create_todo` / `_add_comment`: Specialized linking to the context document.
-4.  **Table Resolution**: For Create/Update modes, child table mappings are processed. By default, the target table is cleared (`reset_value: True`) before new rows are appended.
-5.  **Permission Escalation**: The `can_skip_permissions` utility verifies if the action is authorized to bypass standard checks based on user roles and the presence of an audit reason.
-6.  **Persistence**:
-    -   Calls `new_doc.insert()` or `doc.save()`.
-    -   In **Async** mode, enqueues the `doc_data` to the `default` Redis queue.
+1. **Plan hydration:** the handler obtains the compiled action plan.
+2. **Input mapping:** when configured, input mappings resolve values from the current execution context and apply them to the action configuration.
+3. **Permission policy:** Skip Permissions is checked through the runtime's can_ignore_permissions policy. The bypass is privileged and requires an audit reason.
+4. **Mode dispatch:** the handler calls the implementation for the selected mode.
+5. **Return:** the handler returns the operation result to the rule engine and continues through the action's next True path if execution succeeds.
 
-## Context Visibility
--   **Read Access**: The action has full access to the `execution_context`, including `doc`, `old_doc`, `vars`, and `frappe` (Safe API).
--   **Mutation**:
-    -   Modifies the database state and external records.
-    -   Updates the `execution_context` if a `return_variable` is specified.
--   **Async Limitation**: Background workers do **not** inherit the transient `vars` or `old_doc` from the enqueuing rule.
+## Mode results
 
-## Transaction Behavior
--   **Atomicity**: Synchronous operations execute within the current database transaction. A failure in `doc.save()` will trigger a rollback of the entire rule execution if the Rule's error policy is set to "Rollback".
--   **Commits**: The action does **not** perform an explicit `frappe.db.commit()`. Persistence depends on the success of the overall request or the parent rule's completion.
--   **Async Isolation**: Asynchronous document creation occurs in a completely separate database transaction and process.
+- **Create New:** synchronous mode inserts a new target document and returns its saved document data. Asynchronous mode enqueues creation and returns an acknowledgement containing the queued state and target DocType, not the saved document.
+- **Update Existing:** loads the target by DocType and document name, applies mappings, saves it, and returns its saved data.
+- **Delete Record:** verifies the target exists, checks delete permission unless a bypass is authorized, deletes the record, and returns a result containing the deletion flag, DocType, and name.
+- **Create ToDo:** inserts a ToDo linked to the current context document and returns the created ToDo data.
+- **Add Comment:** inserts a Comment linked to the current context document and returns the created Comment data.
 
-## Failure Behavior
--   **Validation Failures**: If mandatory fields (like `assigned_to` for ToDos) are missing, the handler raises a `frappe.ValidationError`.
--   **Runtime Exceptions**: Errors during mapping resolution (e.g., division by zero in a source expression) are caught by the `RuleEngine`, which applies the action's configured Error Policy.
--   **Permission Denied**: If a user lacks access and `skip_permissions` is off, a `frappe.PermissionError` is raised.
+The operation contracts constrain result types and context mutation options by mode. Do not assume that every mode exposes the same result selector or produces a full document result.
 
-## Idempotency
--   **Not Idempotent**: `Create New`, `Create ToDo`, and `Add Comment` will create a new record every time they are executed.
--   **Effectively Idempotent**: `Delete Record` (if the record is already gone) and `Update Existing` (if the values remain the same) can be considered idempotent, though database hooks will still fire for updates.
+## Mapping precedence and child tables
 
-## Re-entrancy & Loops
--   **Recursive Risk**: Saving a document via this action **will** trigger standard Frappe hooks (`validate`, `on_update`). If a rule is configured to trigger on the same DocType/Event it modifies, it may enter an infinite loop.
--   **Mitigation**: The FlexiRule engine tracks node visits to detect recursion, but developers must implement logical guards (e.g., "Run If" conditions) to prevent cyclical saves.
+For Create New, optional same-field copying runs first, dynamic scalar mappings run next, and explicit static values run last. For Update Existing, same-field copying runs first, static values next, and dynamic scalar mappings last. If multiple sources target the same field, the later source in this order wins.
 
-## Concurrency
--   **Standard Frappe Locking**: Update operations utilize Frappe's optimistic concurrency control (modified timestamp checks).
--   **Race Conditions**: In high-concurrency environments, multiple rules updating the same record simultaneously may result in a `frappe.TimestampMismatchError`.
+Child-table mappings are applied in Create New and Update Existing. A source must resolve to a list or tuple. Configured conditions and filters determine which rows are appended. Reset Value defaults to true in the runtime mapping config, so a configured table mapping can clear existing target rows before adding mapped rows. Add If Empty can skip a mapping when the target table already has rows.
 
-## Performance Notes
--   **Mapping Complexity**: Complex child table mappings with nested conditions and filters can increase memory usage and execution time.
--   **Heavy DocTypes**: Creating documents with extensive internal logic (e.g., Stock Entries with 100+ rows) should always be performed **Asynchronously**.
+## Context visibility
+
+Mapping expressions can read values from the execution context, including the current document and rule variables. The created or updated record data is returned as the action result, but later actions can only use it according to the operation's configured result/mutation settings.
+
+In asynchronous Create New mode, the background job runs separately and the action does not return the created document synchronously. The worker should not be assumed to inherit transient context objects such as the current rule variables.
+
+## Permissions
+
+Normal Frappe permission checks apply unless Skip Permissions is enabled and the runtime permission policy authorizes the bypass. An audit reason is required for that bypass.
+
+- Create New uses Frappe's insert permission behavior.
+- Update Existing checks write permission on the loaded target unless bypassed.
+- Delete Record checks delete permission for the target unless bypassed.
+- Create ToDo and Add Comment insert the specialized records using the effective permission setting.
+
+A permission error should be resolved by checking the user's actual access and the action's policy. Do not enable a privileged bypass simply to hide a configuration or permission problem.
+
+## Transaction behavior
+
+Synchronous operations run in the surrounding request/rule transaction. The handler does not explicitly commit the database; transaction outcome depends on the parent request and the rule's error/rollback policy.
+
+Asynchronous Create New runs in a separate background job and transaction. Since the main rule receives an acknowledgement before insertion completes, a background validation or worker failure may occur after the rule has continued. Inspect background job logs when an asynchronous record is missing.
+
+## Idempotency and repeated execution
+
+- **Create New, Create ToDo, and Add Comment** normally create another record each time they run.
+- **Update Existing** may write the same values again and still trigger Frappe save hooks.
+- **Delete Record** fails if the target record no longer exists; it does not silently treat a missing record as success.
+
+Saving a target document can trigger its normal Frappe lifecycle hooks and other rules. If a rule updates a DocType/event that triggers the same rule or another dependent rule, add guards to prevent unintended repeated execution.
+
+## Common failures
+
+- **Target name missing:** Update Existing and Delete Record require a target record name from Reference DocName or supported config fallback.
+- **Target missing:** confirm the DocType and name resolve to an existing record.
+- **Mapping failure:** inspect source expressions, target fields, mapping precedence, and child-table options.
+- **Validation failure:** target DocType mandatory fields and normal Frappe validation still apply.
+- **Async creation missing:** inspect the queued job and worker logs; the immediate action result is only an acknowledgement.
+- **ToDo/Comment validation:** verify the specialized target DocType, current context document, and required assignee/description or comment text.
