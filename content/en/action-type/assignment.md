@@ -1,6 +1,6 @@
 ---
-title: Set Value (Assignment)
-description: Update document fields or store values in rule variables using a visual configuration grid.
+title: Assignment
+description: Set supported document or context values using the assignment grid.
 weight: 80
 entity_kind: action_operation
 category: data-operations
@@ -8,100 +8,54 @@ mutation: true
 targets: ["Frappe DocType", "Context Variable"]
 ---
 
-# Set Value (Assignment) Action
+# Assignment
 
-The **Set Value** action is the primary way to update document fields or store calculations in rule variables as execution flows through your rule.
+**Assignment** applies configured value operations to supported targets in the current rule context. The current application terminology is **Assignment**; it has replaced the older “Set Value” label in the documentation.
 
----
+## When to use it
 
-## 1. What is it?
+Use Assignment to set or calculate a supported document field or context variable, or to apply another operator exposed by the current assignment grid. Use [Document Action]({{< relref "update-record/" >}}) when the task is a separate document operation such as creating, updating, or deleting a target record.
 
-A Set Value block allows you to make one or more changes in sequence. You can set a document field (like setting Status to "Approved"), update temporary rule variables, or perform numeric calculations like incrementing a total.
+## Configure the assignment grid
 
----
+1. Add **Assignment** to the canvas.
+2. Add a row in the assignment grid.
+3. Select the target using the target picker. Confirm whether it is a field on the current document or a context variable.
+4. Choose an operator offered for that target. Available operators depend on the target type and the current contract; do not assume every operator applies to every target.
+5. Configure the value using the value control. Choose a static value or a supported dynamic value/resolver mode offered by that control.
+6. If the row exposes a condition, configure it when the assignment should only apply under that condition.
+7. Save and debug the rule, checking the target and resulting value.
 
-## 2. When to Use
+## Important distinctions
 
-Use the Set Value action when you need to:
-- **Update fields on the triggering document** (e.g., set `Workflow State` to `"Approved"` or `Posting Date` to today).
-- **Store temporary values** in rule variables (`@vars`) to use in downstream steps or calculations.
-- **Perform numeric operations** such as adding to or subtracting from existing totals.
-- **Manage collections** by appending items to list variables.
+| Need | Use |
+|---|---|
+| Set a value in the current rule context | Assignment |
+| Read related records | [Query Records]({{< relref "query-records/" >}}) |
+| Create, update, or delete a separate target document | [Document Action]({{< relref "update-record/" >}}) |
+| Branch execution based on a condition | [Condition](condition.md) |
 
----
+The assignment grid applies rows in the order configured. A later row may depend on a value established by an earlier row. If a conditional row is skipped, do not assume it initialized its target.
 
-## 3. How to Configure
+## Values and variables
 
-1. **Add the Action**: Add a **Set Value** block to your visual canvas.
-2. **Add an Assignment Row**: Click **Add Row** in the configuration grid.
-3. **Select Target**:
-   - Click the **Target** field.
-   - Use the picker or search to choose whether you are updating a **Document Field** (e.g., `Status`) or a **Rule Variable** (e.g., `vars.discount_rate`).
-4. **Choose an Operator**:
-   - **Set**: Replaces the target with a new value.
-   - **Clear**: Resets the target to empty.
-   - **Increment / Decrement**: Adds or subtracts a number from the current target value.
-   - **Append**: Adds an item to a list variable.
-   - **Toggle**: Inverts a true/false boolean.
-5. **Set Value using Smart Value Selector**:
-   - Click the **Value** field.
-   - Type `@` or `/` or click the picker icon to open the **Smart Value Selector**.
-   - Pick a document field, variable, system value, or formula.
-6. **Optional Row Condition ("When")**:
-   - Click **Add Condition** on a row if this specific update should only run under certain conditions.
+Use the shared value control to select a supported static or dynamic value. The actual modes depend on the field and control, so use the picker rather than assuming every input accepts every resolver or expression format. See the [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}}).
 
----
+## Permissions and limitations
 
-## 4. UI Configuration Options
+Assignment does not replace Frappe's document lifecycle or permission model. Whether a document field can be changed depends on the rule event, document state, field metadata, and runtime behavior. In particular, updating a submitted or otherwise restricted document may require a separate supported document operation rather than an assignment to the triggering document.
 
-| Option | Description |
-| :--- | :--- |
-| **Target Field** | Select a document field (`doc.field`) or temporary variable (`vars.name`). |
-| **Operator** | `Set`, `Clear`, `Increment`, `Decrement`, `Append`, `Merge`, or `Toggle`. |
-| **Value Input** | Enter values using the **Smart Value Selector** (Static value, `@ Variable`, or `/ Resolver`). |
-| **When Condition** | Optional boolean check evaluated before applying this specific row update. |
+## Troubleshooting
 
----
+- **Wrong target:** choose the field through the target picker and confirm its context path.
+- **Unexpected value:** inspect the selected value mode and test the row in Debug.
+- **A later action sees an empty variable:** check whether the row that assigns it was conditional or whether its execution path was reached.
+- **A field is not updated:** confirm that the target is writable in the current event and document state.
 
-## 5. Practical Example
+## Related guides
 
-### Scenario: Calculate Discount and Update Workflow State
-
-To calculate a customer discount and set the workflow status:
-
-1. Add a **Set Value** action and add three configuration rows:
-2. **Row 1 (Rule Variable Calculation)**:
-   - **Target**: `vars.discount_rate`
-   - **Operator**: `Set`
-   - **Value**: Open Smart Value Selector → Choose Formula → `doc.loyalty_points * 0.01`
-   - **When Condition**: `doc.loyalty_points > 100`
-3. **Row 2 (Document Field Update)**:
-   - **Target**: `doc.discount_amount`
-   - **Operator**: `Set`
-   - **Value**: Open Smart Value Selector → Choose Formula → `doc.grand_total * vars.discount_rate`
-4. **Row 3 (Status Update)**:
-   - **Target**: `doc.workflow_state`
-   - **Operator**: `Set`
-   - **Value**: `"Discount Applied"`
-
----
-
-## 6. Common Mistakes
-
-- **Incorrect Field Target**: Choosing `status` instead of selecting `doc.status` from the target picker.
-- **Updating Read-Only Fields After Save**: Trying to update `@doc` fields during `After Save` or `On Submit` events. Use an [Update Record]({{< relref "action-type/update-record/" >}}) action when updating existing database records outside the initial save.
-- **Using Uninitialized Variables**: Referencing `@vars.discount_rate` in a downstream action when the row that creates it was skipped due to a false row condition.
-
----
-
-## 7. Related Features
-
-- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): Learn how to discover and input values visually.
-- [Update Record]({{< relref "action-type/update-record/" >}}): Use Update Record when modifying other database documents or changing submitted records.
-
----
-
-## 8. Developer & Technical Details
-
-For information on path resolution, sequential mutation mechanics, and value normalization pipelines:
-- [Assignment Architecture Reference]({{< relref "advanced-concepts/architecture/actions/assignment.md" >}})
+- [Which Action Should I Use?](which-action.md)
+- [Condition](condition.md)
+- [Query Records](query-records/)
+- [Document Action]({{< relref "update-record/" >}})
+- [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}})
