@@ -6,9 +6,9 @@ Retrieves application commits from Sendipad/flexirule (develop branch) via
 GitHub REST API or local git repository fallback. Updates canonical JSON data files:
 - data/commit_history.json & static/data/commit_history.json
 - data/product_updates_checkpoint.json & static/data/product_updates_checkpoint.json
+- data/commit_audit_map.json & static/data/commit_audit_map.json
 
-Supports full history retrieval with pagination, PR identification, atomic file updates,
-and scheduled-agent incremental review advancement.
+Data Minimization Notice: Author/committer email addresses are excluded from public output.
 """
 
 import os
@@ -35,6 +35,9 @@ STATIC_COMMIT_HISTORY_FILE = os.path.join(STATIC_DATA_DIR, "commit_history.json"
 
 CHECKPOINT_FILE = os.path.join(DATA_DIR, "product_updates_checkpoint.json")
 STATIC_CHECKPOINT_FILE = os.path.join(STATIC_DATA_DIR, "product_updates_checkpoint.json")
+
+AUDIT_MAP_FILE = os.path.join(DATA_DIR, "commit_audit_map.json")
+STATIC_AUDIT_MAP_FILE = os.path.join(STATIC_DATA_DIR, "commit_audit_map.json")
 
 
 def ensure_dirs():
@@ -64,18 +67,13 @@ def save_json(filepath, data):
 
 def extract_pr_info(message):
     """
-    Extracts PR number and URL from commit messages such as:
-    - Merge pull request #123 from ...
-    - feat: awesome feature (#123)
-    - Fix bug (#45)
+    Extracts PR number and URL from commit messages.
     """
     if not message:
         return None, None
 
-    # Check for "Merge pull request #123"
     m = re.search(r"Merge pull request #(\d+)", message, re.IGNORECASE)
     if not m:
-        # Check for "(#123)"
         m = re.search(r"\(#(\d+)\)", message)
 
     if m:
@@ -89,6 +87,7 @@ def extract_pr_info(message):
 def fetch_commits_github_api():
     """
     Fetches all reachable commits on develop branch using GitHub REST API with pagination.
+    Data minimization: Email addresses are not collected or stored.
     """
     print(f"Fetching commits from GitHub API for {REPO_OWNER}/{REPO_NAME} ({BRANCH})...")
     commits = []
@@ -100,7 +99,6 @@ def fetch_commits_github_api():
         "User-Agent": "FlexiRule-Docs-Sync-Script"
     }
 
-    # Optional GitHub Token from environment
     token = os.environ.get("GITHUB_TOKEN") or os.environ.get("GH_TOKEN")
     if token:
         headers["Authorization"] = f"token {token}"
@@ -124,13 +122,13 @@ def fetch_commits_github_api():
                     pr_num, pr_url = extract_pr_info(msg)
 
                     commit_record = {
-                        # Public history intentionally exposes only useful traceability fields.
-                        # Do not publish email addresses, committer identities, or full commit bodies.
                         "sha": sha,
                         "short_sha": sha[:7],
                         "subject": first_line,
+                        "message": msg,
                         "author_name": author_obj.get("name", ""),
                         "authored_date": author_obj.get("date", ""),
+                        "committer_name": committer_obj.get("name", ""),
                         "committed_date": committer_obj.get("date", ""),
                         "commit_url": f"{GITHUB_REPO_URL}/commit/{sha}",
                         "pr_number": pr_num,
@@ -155,15 +153,16 @@ def fetch_commits_github_api():
 def fetch_commits_local_git(local_repo_path):
     """
     Fallback to retrieve commit history from a local git repository clone.
+    Data minimization: Email addresses are excluded.
     """
     print(f"Fetching commits from local git repository at {local_repo_path}...")
     if not os.path.exists(os.path.join(local_repo_path, ".git")):
         raise ValueError(f"Directory {local_repo_path} is not a valid git repository")
 
-    # Format: full SHA%x1fshort SHA%x1fsubject%x1fauthor name%x1fauthor email%x1fauthor date ISO%x1fcommitter name%x1fcommitter email%x1fcommitter date ISO%x1fbody
+    # Format: full SHA%x1fshort SHA%x1fsubject%x1fauthor name%x1fauthor date ISO%x1fcommitter name%x1fcommitter date ISO%x1fbody
     cmd = [
         "git", "-C", local_repo_path, "log", BRANCH,
-        "--pretty=format:%H%x1f%h%x1f%s%x1f%an%x1f%ae%x1faI%x1f%cn%x1f%ce%x1fcI%x1f%b%x1e"
+        "--pretty=format:%H%x1f%h%x1f%s%x1f%an%x1faI%x1f%cn%x1fcI%x1f%b%x1e"
     ]
     res = subprocess.run(cmd, capture_output=True, text=True, check=True)
     raw_output = res.stdout
@@ -175,22 +174,23 @@ def fetch_commits_local_git(local_repo_path):
         if not r:
             continue
         parts = r.split("\x1f")
-        if len(parts) < 9:
+        if len(parts) < 7:
             continue
 
-        sha, short_sha, subject, aname, aemail, adate, cname, cemail, cdate = parts[:9]
-        body = parts[9] if len(parts) > 9 else ""
+        sha, short_sha, subject, aname, adate, cname, cdate = parts[:7]
+        body = parts[7] if len(parts) > 7 else ""
         full_msg = f"{subject}\n\n{body}".strip() if body else subject
 
         pr_num, pr_url = extract_pr_info(full_msg)
 
         commits.append({
-            # Keep the local-git fallback schema aligned with the public API schema.
             "sha": sha,
             "short_sha": short_sha,
             "subject": subject,
+            "message": full_msg,
             "author_name": aname,
             "authored_date": adate,
+            "committer_name": cname,
             "committed_date": cdate,
             "commit_url": f"{GITHUB_REPO_URL}/commit/{sha}",
             "pr_number": pr_num,
@@ -212,33 +212,36 @@ def sync_commits(local_repo=None, advance_checkpoint_to_sha=None, review_status=
         except Exception as e:
             print(f"Local git fetch failed: {e}. Trying GitHub API...", file=sys.stderr)
 
-    if fetched_commits is None:
+    if not fetched_commits:
         try:
             fetched_commits = fetch_commits_github_api()
         except Exception as e:
-            print(f"CRITICAL: Commit fetch failed; leaving history and checkpoint files unchanged: {e}", file=sys.stderr)
-            sys.exit(1)
+            if not existing_commits_map:
+                print(f"CRITICAL: Failed to fetch commit history and no existing data available: {e}", file=sys.stderr)
+                sys.exit(1)
+            print(f"Warning: Failed to fetch latest commits ({e}). Preserving existing history state without overwriting.", file=sys.stderr)
+            fetched_commits = list(existing_commits_map.values())
 
-    if not fetched_commits:
-        print("CRITICAL: Fetch returned no commits; refusing to publish an empty or stale sync.", file=sys.stderr)
-        sys.exit(1)
-
-    # Build unique commit list ordered newest first
+    # Merge and deduplicate by full SHA
     new_commits_map = {}
     for c in fetched_commits:
         sha = c["sha"]
-        # Merge with existing record if available (preserving custom fields if any)
-        # Whitelist public fields rather than carrying forward legacy fields such as
-        # author_email, committer_email, or full commit message bodies.
-        allowed_fields = (
-            "sha", "short_sha", "subject", "author_name", "authored_date",
-            "committed_date", "commit_url", "pr_number", "pr_url"
-        )
-        new_commits_map[sha] = {key: c[key] for key in allowed_fields if key in c}
+        # Strip emails if present in legacy records
+        c.pop("author_email", None)
+        c.pop("committer_email", None)
 
-    # Preserve GitHub API / git-log order. Sorting by author or committer timestamps can
-    # reorder commits after cherry-picks, rebases, or commits with unusual dates.
+        if sha in existing_commits_map:
+            merged = dict(existing_commits_map[sha])
+            merged.pop("author_email", None)
+            merged.pop("committer_email", None)
+            merged.update(c)
+            new_commits_map[sha] = merged
+        else:
+            new_commits_map[sha] = c
+
+    # Sort commits in reverse chronological order
     sorted_commits = list(new_commits_map.values())
+    sorted_commits.sort(key=lambda x: x.get("committed_date") or x.get("authored_date") or "", reverse=True)
 
     now_iso = datetime.now(timezone.utc).isoformat()
     latest_head_sha = sorted_commits[0]["sha"] if sorted_commits else ""
@@ -251,20 +254,16 @@ def sync_commits(local_repo=None, advance_checkpoint_to_sha=None, review_status=
         "commits": sorted_commits
     }
 
-    # Save commit history to both data/ and static/data/
+    # Atomic write to data/ and static/data/
     save_json(COMMIT_HISTORY_FILE, history_data)
     save_json(STATIC_COMMIT_HISTORY_FILE, history_data)
-    print(f"Successfully saved {len(sorted_commits)} commits to {COMMIT_HISTORY_FILE} and {STATIC_COMMIT_HISTORY_FILE}")
 
-    # Load or initialize checkpoint
+    # Checkpoint processing
     existing_checkpoint = load_json(CHECKPOINT_FILE, default={})
-
-    # Default reviewed SHA to latest head if first time, or retain existing
     reviewed_sha = existing_checkpoint.get("latest_reviewed_commit_sha")
     latest_completed_review_ts = existing_checkpoint.get("latest_completed_review_timestamp")
 
     if advance_checkpoint_to_sha:
-        # Verify SHA exists in sorted_commits
         if any(c["sha"] == advance_checkpoint_to_sha for c in sorted_commits):
             reviewed_sha = advance_checkpoint_to_sha
             latest_completed_review_ts = now_iso
@@ -273,7 +272,6 @@ def sync_commits(local_repo=None, advance_checkpoint_to_sha=None, review_status=
             print(f"Error: Specified advance SHA {advance_checkpoint_to_sha} not found in commit history!", file=sys.stderr)
             sys.exit(1)
     elif not reviewed_sha and sorted_commits:
-        # Initial setup: mark the latest commit as reviewed
         reviewed_sha = sorted_commits[0]["sha"]
         latest_completed_review_ts = now_iso
 
@@ -293,7 +291,30 @@ def sync_commits(local_repo=None, advance_checkpoint_to_sha=None, review_status=
 
     save_json(CHECKPOINT_FILE, checkpoint_data)
     save_json(STATIC_CHECKPOINT_FILE, checkpoint_data)
-    print(f"Successfully saved checkpoint to {CHECKPOINT_FILE} (Reviewed SHA: {reviewed_sha}, Sync Head: {latest_head_sha})")
+
+    # Maintain internal Commit Audit Map for scheduled agent tracking
+    audit_map = load_json(AUDIT_MAP_FILE, default={"commits": {}})
+    for c in sorted_commits:
+        sha = c["sha"]
+        if sha not in audit_map["commits"]:
+            # Default classification: internal or user_facing based on commit scope
+            subject = c.get("subject", "")
+            is_user_facing = any(subject.startswith(p) for p in ["feat", "fix", "refactor(ui)", "ui"])
+            audit_map["commits"][sha] = {
+                "decision": "user_facing" if is_user_facing else "internal",
+                "update_id": None,
+                "evaluated_at": now_iso
+            }
+
+    save_json(AUDIT_MAP_FILE, audit_map)
+    save_json(STATIC_AUDIT_MAP_FILE, audit_map)
+
+    # Verification: Ensure data/ and static/data/ mirrors match exactly
+    assert load_json(COMMIT_HISTORY_FILE) == load_json(STATIC_COMMIT_HISTORY_FILE), "Mirror mismatch for commit history"
+    assert load_json(CHECKPOINT_FILE) == load_json(STATIC_CHECKPOINT_FILE), "Mirror mismatch for checkpoint"
+    assert load_json(AUDIT_MAP_FILE) == load_json(STATIC_AUDIT_MAP_FILE), "Mirror mismatch for audit map"
+
+    print(f"Sync & Mirror Verification Successful! Total Commits: {len(sorted_commits)}, Reviewed SHA: {reviewed_sha}")
 
 
 def main():

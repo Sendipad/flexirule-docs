@@ -29,10 +29,6 @@ Explore data queries, assignments, conditions, notifications, and reusable proce
 Learn when to fetch records, check existence, count, aggregate, or reuse a report.
 {{< /card >}}
 
-{{< card title="What’s new" href="product-updates/" icon="sparkles" >}}
-See recent improvements, new capabilities, and practical guidance for using FlexiRule.
-{{< /card >}}
-
 </div>
 
 ## How FlexiRule works
