@@ -1,6 +1,6 @@
 ---
-title: Check (Condition)
-description: Evaluate logical condition groups in the UI to branch execution paths between True and False branches.
+title: Condition
+description: Evaluate configured conditions and route execution through True or False paths.
 weight: 20
 entity_kind: action_operation
 category: logic-control
@@ -8,107 +8,63 @@ mutation: false
 targets: ["Frappe DocType", "Context Variable"]
 ---
 
-# Check (Condition) Action
+# Condition
 
-A **Check** action lets a rule evaluate one or more conditions and direct execution along different visual paths depending on whether those conditions are satisfied.
+**Condition** evaluates configured logic and routes the rule through a True or False path. Older documentation called this action “Check”; use **Condition**, which matches the current application terminology.
 
----
+## When to use it
 
-## 1. What is it?
+Use Condition when a rule must answer a yes/no question, for example:
 
-The Check block is the visual decision-making hub of a rule. It evaluates your configured logic against document data or context variables and splits execution into two outbound branches:
+- Is the invoice total above the approval threshold?
+- Does the triggering document have a required field?
+- Does a query result contain the expected value?
+- Does a current context variable meet a business requirement?
 
-- **True**: Followed when all or any conditions pass (depending on your logic setting).
-- **False**: Followed when the conditions do not pass.
+Use [Switch](switch.md) when you need to route among multiple configured value cases rather than evaluate a true/false condition.
 
+## How it works
+
+Condition evaluates the configured condition structure against the current execution context. The result determines which outbound path is followed:
+
+```text
+                  ┌── True  ──→ matching path
+Condition ────────┤
+                  └── False ──→ alternative path
 ```
-                 ┌── True ──→ Action A (e.g. Set Status = "Approved")
-Check ───────────┤
-                 └── False ─→ Action B (e.g. Notify Manager)
-```
 
----
+Connect the branch that represents each outcome. If a branch is not connected, execution has no configured next action on that path.
 
-## 2. When to Use
+## Configure it
 
-Use a Check action whenever you need to:
-- **Validate field values** before proceeding (e.g., check if Grand Total is greater than 50,000).
-- **Branch business logic** based on customer tier, region, or document status.
-- **Check child-table data** (e.g., verify if all line items have a warehouse assigned).
-- **Compare current values** against historical document state or temporary rule variables.
+1. Add **Condition** to the canvas.
+2. Configure the condition group using the controls available in the condition editor.
+3. Select the left operand, comparison operator, and right operand where required.
+4. Use nested groups when the business rule requires grouped AND/OR logic and the editor supports that structure.
+5. Connect the True and False outputs to the intended next actions.
+6. Save and test both outcomes with representative documents.
 
----
+The available operators and value modes depend on the condition editor and field types. Choose fields and values from the actual controls; do not assume every operator applies to every data type.
 
-![Check action condition branch preview](/images/action-card-condition-preview.png)
+## Values and comparisons
 
-## 3. How to Configure
+Condition operands may reference document fields, context variables, or supported dynamic values exposed by the shared value/condition controls. A value that looks numeric but is stored as text can compare differently from a numeric value. Check empty/null values explicitly when they are possible, and verify the result in Debug.
 
-1. **Add the Action**: Drag or add a **Check** block onto your visual canvas.
-2. **Choose Logic Grouping**:
-   - **ALL (AND)**: Every condition row in the group must evaluate to true.
-   - **ANY (OR)**: At least one condition row must evaluate to true.
-   - **NOT**: Inverts the result of the condition group.
-3. **Configure Conditions using Smart Value Selector**:
-   - Click the left operand field.
-   - Type `@` or click the value selector to open the **Smart Value Selector**.
-   - Search for and select your document field (e.g., `Grand Total`).
-   - Choose a comparison operator (`Equals`, `Greater Than`, `Contains`, `Is Set`, etc.).
-   - Click the right operand field and select a static value, variable, or calculated value using the Smart Value Selector.
-4. **Connect Branches**:
-   - Drag a line from the **True** port to the action you want to execute when conditions pass.
-   - Drag a line from the **False** port to the action you want to execute when conditions fail.
+For more detail on constructing nested groups, see the [Condition Builder]({{< relref "../rule-builder/condition-builder.md" >}}) and [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}}).
 
----
+## Common mistakes
 
-## 4. UI Configuration Options
+- **Using the old name:** search for and configure **Condition**, not “Check.”
+- **Wrong branch connection:** test both true and false cases and verify each path reaches the intended step.
+- **Type mismatch:** compare values of compatible types.
+- **Empty values:** add a suitable empty/not-empty check where supported rather than relying on an implicit conversion.
+- **Assuming collection operators:** use only collection operations exposed by the current editor and verify them with real test data.
 
-| Setting | Options / Description |
-| :--- | :--- |
-| **Logic Grouping** | Select **ALL** (all rows must match), **ANY** (at least one row matches), or **NOT** (inverts group result). |
-| **Comparison Operators** | `==` (Equals), `!=` (Not Equals), `>`, `>=`, `<`, `<=` (Numeric), `contains`, `is set`, `is not set`, `in`. |
-| **Value Input** | Use the **Smart Value Selector** to select Document Fields (`@doc`), Variables (`@vars`), System values (`@system`), or Resolvers (`/`). |
-| **Collection Conditions** | Evaluate lists and child tables using `all`, `any`, `none`, or `count` operations. |
+## Related guides
 
----
-
-## 5. Practical Example
-
-### Scenario: High-Value VIP Approval
-
-To check if a Sales Order requires manager approval:
-
-1. Add a **Check** action to the canvas and set Logic to **ALL**.
-2. **Row 1**:
-   - Select field: `Grand Total` (`@doc.grand_total`)
-   - Operator: `Greater Than` (`>`)
-   - Value: `100,000`
-3. **Row 2**:
-   - Select field: `Customer Group` (`@doc.customer_group`)
-   - Operator: `Equals` (`==`)
-   - Value: `"VIP"`
-4. **Connect Outbound Branches**:
-   - Connect **True** branch to a **Set Value** action (`doc.workflow_state = "Approved"`).
-   - Connect **False** branch to a **Notify** action (Send credit review request email).
-
----
-
-## 6. Common Mistakes
-
-- **Disconnected Branch**: Leaving either the **True** or **False** branch unconnected when actions were expected on both outcomes.
-- **Missing Null Checks**: Comparing fields that might be empty without adding an `Is Set` condition first.
-- **Type Mismatch**: Comparing a text string `"100"` with a numeric value `100`. Use proper data types in the Smart Value Selector.
-
----
-
-## 7. Related Features
-
-- [Condition Builder]({{< relref "rule-builder/condition-builder.md" >}}): Detailed guide on building nested condition groups in the UI.
-- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): How to select and manipulate values visually.
-- [Switch]({{< relref "action-type/switch.md" >}}): Use Switch when you need to branch based on multiple distinct values instead of a single true/false check.
-
----
-
-## 8. Developer & Technical Details
-
-For low-level execution details, AST payload formats, and Python evaluation internals, refer to the developer documentation:
-- [Condition Architecture Reference]({{< relref "advanced-concepts/architecture/actions/condition.md" >}})
+- [Which Action Should I Use?](which-action.md)
+- [Switch](switch.md)
+- [Assignment](assignment.md)
+- [Query Records](query-records/)
+- [Condition Builder]({{< relref "../rule-builder/condition-builder.md" >}})
+- [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}})
