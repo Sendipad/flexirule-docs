@@ -10,7 +10,7 @@ The **Condition Builder** lets you express a business rule as structured conditi
 
 A condition tree is made from comparison rows and nested groups. The saved structure is compiled for evaluation by the backend; the visual editor is the configuration interface, not the runtime evaluator itself.
 
-![Condition Builder rule configuration panel]({{< relURL "images/condition-builder-panel.png" >}})
+![Condition Builder rule configuration panel]({{ "images/condition-builder-panel.png" | relURL }})
 
 ## 1. Build a condition row
 
@@ -94,6 +94,6 @@ Choose values that match the field's type, and test both the true and false case
 
 The **Condition** action evaluates its saved condition configuration and routes execution through the **True** or **False** connection. Configure both paths intentionally and test both outcomes. The backend uses the compiled condition expression; if configuration exists but compilation is missing, the rule needs to be saved/compiled again.
 
-![Action card showing inline condition branching preview]({{< relURL "images/action-card-condition-preview.png" >}})
+![Action card showing inline condition branching preview]({{ "images/action-card-condition-preview.png" | relURL }})
 
 See [Condition action]({{< relref "action-type/condition.md" >}}) for branch behavior and troubleshooting, and [Which Action Should I Use?]({{< relref "action-type/which-action.md" >}}) for choosing the right action.
