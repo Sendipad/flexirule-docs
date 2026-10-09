@@ -1,6 +1,6 @@
 ---
-title: Update Record
-description: Modify fields, change states, or perform lifecycle operations on database records in the UI.
+title: Document Action
+description: Create, update, and delete other documents, or add linked ToDo tasks and timeline comments.
 weight: 100
 entity_kind: action_operation
 category: data-operations
@@ -8,66 +8,84 @@ mutation: true
 targets: ["Frappe DocType"]
 ---
 
-# Update Record Action
+# Document Action
 
-The **Update Record** action allows a rule to modify records in the database, update linked documents, or execute document workflow state transitions (such as Submit, Cancel, or Re-open).
+**Document Action** performs a supported operation on a target Frappe document. Use it when a rule must create a separate record, update or delete an existing record, create a ToDo linked to the triggering document, or add a timeline comment.
 
----
+This action was previously described in some places as **Update Record**. The current action type is **Document Action**; the selected **Document Mode** determines what it does.
 
-## 1. What is it?
+## Choose a mode
 
-While the **Set Value** action modifies fields on the *currently triggering* document in memory before it saves, the **Update Record** action is used to modify *other* records in the database or execute state actions like Submitting or Cancelling a document.
+| Mode | Use it for | Target DocType |
+|---|---|---|
+| [Create New](create-new.md) | Create a new record and populate its fields and child tables | The DocType you want to create |
+| [Update Existing](update-existing.md) | Load an existing record, apply mapped field changes, and save it | The DocType of the existing record |
+| [Delete Record](delete-record.md) | Permanently delete one specified record | The DocType of the record to delete |
+| [Create ToDo](create-todo.md) | Create a task assigned to a user and linked to the current document | Must be ToDo |
+| [Add Comment](add-comment.md) | Add a timeline comment to the current document | Must be Comment |
 
----
+## Assignment or Document Action?
 
-## 2. When to Use
+Use **Assignment** to change root-level fields on the document that triggered the rule, or to set rule variables. Use **Document Action** when the operation targets another document or creates a separate record or related item.
 
-Use the Update Record action when you need to:
-- **Update linked database records** (e.g., set a Sales Order's status to "Billed" when an Invoice is paid).
-- **Execute workflow lifecycle actions** programmatically (Submit, Cancel, Amend, or Re-open records).
-- **Perform bulk updates** on records fetched by a **Query Records** block.
-- **Create new records** in another DocType automatically.
+For example, setting the triggering Sales Invoice's internal note is an Assignment; creating a Project from that invoice is Document Action → Create New; updating a linked Sales Order is Document Action → Update Existing.
 
----
+## Common configuration concepts
 
-## 3. How to Configure
+### Target DocType and target record
 
-1. **Add the Action**: Add an **Update Record** block to your visual canvas.
-2. **Select Operation**:
-   - **Update**: Modify specific fields on existing records.
-   - **Submit / Cancel / Amend**: Execute document lifecycle transitions.
-   - **Create New**: Create a brand new record.
-3. **Select Target Document(s)**:
-   - Select a target record variable (e.g., a result from a **Query Records** block) or pick a DocType and select the Document Name using the **Smart Value Selector**.
-4. **Configure Field Mappings**:
-   - Add field mapping rows specifying target fields and values selected via the **Smart Value Selector**.
-5. **Connect Outbound Branch**: Connect the Update Record block to your next action.
+Select the target DocType in the action's Setup panel. Update Existing and Delete Record also need a record name, provided through the **Reference DocName** field or a configured document-name expression. A name expression is useful when the target record is determined at runtime—for example, from a field on the current document or a value stored in rule variables.
 
----
+Create ToDo and Add Comment are specialized: they require the target DocType to be ToDo and Comment respectively, and link the created item to the current context document.
 
-## 4. Practical Example
+### Resource Mapper
 
-### Scenario: Update Linked Sales Order Status when Invoice is Paid
+Create New and Update Existing expose the **Resource Mapper** for mapping scalar fields and child-table rows. The builder supports Classic and Visual views. Mapping configuration is stored under the action config and compiled for runtime use.
 
-1. **Target Record**: Select DocType `Sales Order` and map Document Name to `@doc.sales_order` using the Smart Value Selector.
-2. **Operation**: Choose `Update`.
-3. **Field Mappings**:
-   - Target field: `Status`
-   - Value: Select `"Billed"`
-4. **Save Rule**: When the Invoice is paid, the linked Sales Order updates in the database.
+- Scalar mappings assign source values to target fields.
+- Static values explicitly set configured fields.
+- Optional same-field copying maps matching field names from a source object, with exclusions available.
+- Child-table mappings can source a collection, map fields per row, and configure row inclusion/filtering and whether existing target rows are reset.
 
----
+When the same target field is supplied by more than one mapping source, review precedence carefully. For Create New, same-field values are applied first, dynamic field mappings next, and explicit static values last. Update Existing applies same-field values, static values, then dynamic field mappings.
 
-## 5. Related Features
+### Input and output mapping
 
-- [Set Value]({{< relref "action-type/assignment.md" >}}): For updating fields on the *current* triggering document.
-- [Query Records]({{< relref "action-type/query-records/" >}}): Fetch database records to target with Update Record actions.
-- [Create New Record]({{< relref "action-type/update-record/create-new.md" >}}): Guide on creating new records.
-- [Update Existing Record]({{< relref "action-type/update-record/update-existing.md" >}}): Guide on modifying existing records.
+The action can receive input mappings that hydrate its configuration from the current execution context. Its operation returns a result to the rule engine; Create New and Update Existing return the saved document data, while Delete Record returns a deletion result. Create ToDo and Add Comment return the created record data.
 
----
+Use the action's output/result settings and the rule's supported context-mutation options to make the result available to later actions. The available result type and mutation options depend on the selected mode; they are not interchangeable across all modes.
 
-## 6. Developer & Technical Details
+### Permissions and safety
 
-For information on document action handlers, transaction boundaries, and state validation:
-- [Document Action Architecture Reference]({{< relref "advanced-concepts/architecture/actions/document-action.md" >}})
+Document Action normally follows Frappe permission checks. **Skip Permissions** is privileged and may only be used when the runtime's permission policy authorizes it; an audit reason is required. Do not use it as a routine workaround for permission errors.
+
+Delete Record is destructive. Confirm the target DocType and record name, and test the rule with representative data before enabling it.
+
+### Synchronous and asynchronous creation
+
+Create New supports asynchronous creation where the action's async setting is enabled. In asynchronous mode the action enqueues creation and returns an acknowledgement, not the newly saved document. The background job runs separately, so later actions must not assume that the created document is already available in the current execution context.
+
+## Troubleshooting
+
+- **The target record is not found:** verify the target DocType and resolved document name.
+- **A field remains unchanged:** inspect the Resource Mapper target field, source expression, static-value overrides, and mapping order.
+- **Child rows are missing:** check the source collection, target table field, row mappings, and row inclusion/filter expressions.
+- **Permission is denied:** verify the current user's permissions. Use Skip Permissions only where explicitly authorized and provide the required audit reason.
+- **A later action cannot use the created document:** check the selected result type/mutation settings; for asynchronous Create New, the saved document is not returned synchronously.
+- **A ToDo or Comment fails validation:** ensure the correct mode, required values, and a current context document are available.
+
+## Mode guides
+
+- [Create New](create-new.md)
+- [Update Existing](update-existing.md)
+- [Delete Record](delete-record.md)
+- [Create ToDo](create-todo.md)
+- [Add Comment](add-comment.md)
+
+## Related guides
+
+- [Which Action Should I Use?](../which-action.md)
+- [Assignment](../assignment.md)
+- [Query Records](../query-records/)
+- [Document Action: Architecture Reference]({{< relref "../../advanced-concepts/architecture/actions/document-action.md" >}})
+- [Document Action: Execution Semantics]({{< relref "../../advanced-concepts/reference/execution/document-action.md" >}})
