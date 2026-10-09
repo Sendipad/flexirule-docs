@@ -14,13 +14,17 @@ Choose an action by the **business outcome** you want—not just by the name of 
 |---|---|---|
 | Continue one way when a yes/no rule is true, and another way when false | [Condition](condition.md) | Creates True and False execution paths. |
 | Choose among several known cases, such as status = Draft, Submitted, or Cancelled | [Switch](switch.md) | Better for multiple configured cases than chaining many Condition blocks. |
-| Set a value or calculate a value for later steps | [Assignment](assignment.md) | Assigns a value in the rule's supported context; it is not a general document create/update operation. |
+| Set a value or calculate a value for later steps | [Assignment](assignment.md) | Assigns a value to a supported current-document field or rule variable. |
 | Read a list of records matching filters | [Query Records → Fetch Records](query-records/fetch-records.md) | A newer Query Builder-backed mode. Verify filters, permissions, and returned row shape. |
 | Keep an existing list-style record query | [Query Records → Query List](query-records/query-list.md) | Legacy mode with a different implementation/contract from Fetch Records. |
 | Read one document | [Query Records → Query Doc](query-records/query-doc.md) | Check how the configured result is exposed to later steps. |
 | Test whether a matching record exists | [Query Records → Exist Record](query-records/exist-record.md) | Use an existence result rather than retrieving a full list just to test presence. |
 | Count or aggregate matching data | [Query Records](query-records/) | Select the supported Count, Sum, Average, Min, Max, or Group By mode that matches the result you need. |
-| Create, update, or delete a document | [Document Action]({{< relref "update-record/" >}}) | Select the supported operation for the target document. Confirm permissions and mutation behavior. |
+| Create a new document | [Document Action → Create New](update-record/create-new.md) | Maps fields and optional child-table rows, then inserts the target document. |
+| Update an existing document | [Document Action → Update Existing](update-record/update-existing.md) | Requires a target DocType and record name; mapped fields are saved. |
+| Delete a document | [Document Action → Delete Record](update-record/delete-record.md) | Destructive operation for one explicitly resolved record. |
+| Create a user task linked to the current document | [Document Action → Create ToDo](update-record/create-todo.md) | Requires an assignee and description; links the ToDo to the current context document. |
+| Add a timeline comment to the current document | [Document Action → Add Comment](update-record/add-comment.md) | Requires comment text; links the Comment to the current context document. |
 | Run the same steps for each row in a child table or each item in a list | [Loop](loop.md) | The iterator must resolve to a list/tuple; configure an item alias for the current item. |
 | Send a notification | [Notify](notify/) | Use the supported notification configuration. |
 | Reuse logic from another visual rule | [Sub-Rule](sub-rule.md) | The target rule must be configured for the supported callable/reusable use case. |
@@ -36,7 +40,7 @@ Use **Condition** for one logical yes/no decision. Use **Switch** when a value s
 
 ### Assignment or Document Action?
 
-Use **Assignment** to calculate or assign a supported value in the current rule context. Use **Document Action** when the task is to perform an operation on a target document, such as creating, updating, or deleting it. Do not choose Assignment as a substitute for a document mutation.
+Use **Assignment** to set or transform a supported root-level field on the document that triggered the rule, or to update a rule variable. Use **Document Action** when the task is to create, update, or delete a separate target document, or to create a linked ToDo or Comment.
 
 ### Query Records or Document Action?
 
@@ -71,6 +75,7 @@ Use a normal stop when the current path should finish intentionally. Use an erro
 5. **Test the normal, alternate, empty-result, and error paths** in Debug before activation.
 
 → [Actions catalog](./)  
+→ [Document Action and all modes](update-record/)  
 → [Query Records modes](query-records/which-query-mode.md)  
 → [Condition Builder]({{< relref "../rule-builder/condition-builder.md" >}})  
 → [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}})
