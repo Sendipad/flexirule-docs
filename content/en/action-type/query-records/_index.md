@@ -1,71 +1,63 @@
 ---
 title: Query Records
-description: Retrieve records and summaries for decisions in a visual rule.
+description: Read records or query results for use in a visual rule.
 weight: 90
-entity_kind: action_operation
-category: data-operations
-mutation: false
-targets: ["Frappe DocType"]
 ---
 
 # Query Records
 
-[Which Query Mode Should I Use?]({{< relref "which-query-mode.md" >}}) — choose the result shape first, then configure the mode.
+**Query Records** is a data-reading action with several distinct modes. Choose a mode based on the result your next step needs, configure the fields and filters exposed by that mode, and store the result for downstream actions.
 
-Use **Query Records** when a rule needs information beyond the document that triggered it. Configure a target DocType, choose a query mode, define supported filters, and store the result for later actions.
+A query does not itself update the matched records. Use [Assignment](../assignment.md) for supported assignments in the current context or [Document Action]({{< relref "../update-record/" >}}) for supported operations on a target document.
 
-A query is a data-reading step. It does not itself mean that matching records are updated; use a separate action when you need to change data.
-
-> **Tip:** Start with a narrow filter and only request the fields your rule needs. Test the query against known records before using its output in a production rule.
-
-{{< video src="/images/demo-condition-and-query.webm" controls="true" muted="true" loop="true" >}}
+> **Important:** Query modes have different backend implementations and result shapes. Do not assume that a configuration or output from one mode is interchangeable with another.
 
 ## Choose the right mode
 
-| Mode | Use it when you need… | Result concept |
+| Mode | Use it when you need… | Result shape / notes |
 |---|---|---|
-| **Fetch Records** | A configurable record query with selected fields, filters, ordering, and a result limit | A collection of matching records |
-| **Query List** | A list-oriented result rather than full document objects | A lightweight list of selected values |
-| **Query Doc** | One particular document or a single-record result | One record |
-| **Exist Record** | To know whether any matching record exists | A yes/no result |
-| **Query Report** | Data from a supported existing report | Report rows or report output |
-| **Count** | The number of matching records | A number |
-| **Sum** | The total of a numeric field | A number |
-| **Average** | The average of a numeric field | A number |
-| **Min** | The lowest value of a field | A value |
-| **Max** | The highest value of a field | A value |
-| **Group By** | A summary grouped by one or more fields | Grouped results |
+| [Fetch Records](fetch-records.md) | A configurable collection query with fields, filters, sorting, limit, offset, and related options exposed by the UI | List of records; uses Frappe Query Builder compatibility path |
+| [Query List](query-list.md) | An existing list-oriented query | Preserve legacy configuration and verify the selected fields/output |
+| [Query Doc](query-doc.md) | A single target document or record | Single-record or full-document output, depending on configuration |
+| [Exist Record](exist-record.md) | To check whether a matching record exists | Yes/no result |
+| [Query Report](query-report.md) | A supported existing report | Report output; requires a Report target |
+| Count / Sum / Average / Min / Max | A supported aggregate result | Numeric/value result; aggregate modes have their own configuration requirements |
+| Group By | A grouped result supported by the selected configuration | Grouped rows; do not assume arbitrary aggregation expressions are supported |
 
-Mode availability and configuration fields are defined by the installed FlexiRule version. Use the mode selector and its visible fields as the source of truth.
+See [Which Query Mode Should I Use?](which-query-mode.md) for a decision table.
 
-## A typical setup
+## Typical configuration path
 
-1. Add a **Query Records** action to the canvas.
-2. Select the target **Reference DocType**.
-3. Choose the query mode that matches the result you need.
-4. Add filters to narrow the records.
-5. Configure selected fields, ordering, grouping, or limits when the mode supports them.
-6. Set **Save Result As** (or the corresponding output setting) so later actions can reference the result.
-7. Run a debug test and inspect the output before connecting it to conditions, loops, assignments, or notifications.
+1. Add Query Records to the canvas.
+2. Choose a **Query Mode**.
+3. Select the required target DocType or report, depending on the mode.
+4. Configure the fields, filters, sorting, limits, or other options actually shown for that mode.
+5. Set **Result Handling** to store or update a context variable as appropriate.
+6. Debug the rule and inspect the returned value before referencing it downstream.
 
-## Use query results in later actions
+The backend publishes mode-level contracts that determine operation options, required fields, result types, and which controls are shown. Use the selected mode's controls as the authority; not every setting applies to every mode.
 
-The result is useful only when later actions know where to read it from. Give the output a meaningful variable name, then select that value through the Smart Value Selector in the next action. Check whether the selected mode returns a single record, a list, a scalar aggregate, or report rows; these shapes are not interchangeable.
+## Results, variables, and execution
 
-## Performance and reliability
+Query Records resolves configured input mappings and supported dynamic values before dispatching to the selected mode handler. The returned result then follows the action's configured next step. How the result is represented depends on the selected mode; list rows, a single document, a boolean, aggregate values, and report output are not interchangeable.
 
-- Prefer **Exist Record** for a yes/no question instead of retrieving a whole list.
-- Prefer **Count**, **Sum**, **Average**, **Min**, **Max**, or **Group By** when the required result is an aggregate and the selected mode supports it.
-- Keep list queries bounded with a sensible result limit.
-- Select only fields used by the rule.
-- Test empty results and unexpected values, not only the case where records are found.
-- Review permissions and any explicit permission-bypass setting carefully.
+Use the result-handling controls to save the result in context, then choose it in later actions using the shared value controls. Always test both matching and empty-result cases.
+
+## Permissions
+
+Query Records exposes a **Skip Permissions** setting with a conditional audit-reason field. The backend checks permission-bypass eligibility before executing the selected query. Bypassing read permissions can reveal records the current user would not otherwise access, so leave it disabled unless the bypass is explicitly approved. Exact behavior depends on the selected mode and its implementation.
+
+## Compatibility and limitations
+
+Fetch Records is a newer mode backed by `frappe.qb.get_query`; it is not a rename or automatic replacement for Query List. Existing legacy configurations should be preserved unless the application explicitly implements a migration. Query Builder's supported filter syntax and behavior depend on the installed Frappe version.
 
 ## Related guides
 
+- [Which Query Mode Should I Use?](which-query-mode.md)
 - [Fetch Records](fetch-records.md)
 - [Query List](query-list.md)
 - [Query Doc](query-doc.md)
 - [Exist Record](exist-record.md)
 - [Query Report](query-report.md)
-- [Query filters]({{< relref "advanced-concepts/reference/query-filters/index.md" >}})
+- [Query filters]({{< relref "../../advanced-concepts/reference/query-filters/index.md" >}})
+- [Loop](../loop.md)
