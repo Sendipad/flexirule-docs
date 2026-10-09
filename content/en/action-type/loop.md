@@ -1,6 +1,6 @@
 ---
-title: Repeat (Loop)
-description: Iterate over child table rows or query result collections to run actions for each item in the UI.
+title: Loop
+description: Iterate over a list or tuple and run a connected action path for each item.
 weight: 40
 entity_kind: action_operation
 category: logic-control
@@ -10,101 +10,94 @@ aliases:
   - /docs/actions/loop/
 ---
 
-# Repeat (Loop) Action
+# Loop
 
-The **Repeat** action iterates over a list of items—such as child table rows (`Items`) or records returned by a **Query Records** block—running a set of actions for each item before continuing through the rest of the rule.
+The **Loop** action iterates over a list or tuple and exposes the current item to actions in the loop body. Use it when the same sequence of steps must run for every row in a child table or every item returned by an earlier action.
 
----
+Loop is a control-flow action: it does not fetch records by itself. If the collection must come from a database query, configure [Query Records](query-records/) first and use its result as the iterator.
 
-## 1. What is it?
+## When to use Loop
 
-The Repeat block lets you automate actions on lists of records. It loops through a collection item by item, making the current row available to downstream actions through a item alias (like `@vars.item` or `@vars.row`).
+Use Loop to:
 
+- Process each row in a document child table, such as each item in an order.
+- Run actions for each record in a list returned by Query Records.
+- Calculate or validate a value for each item.
+- Send a notification or perform a document operation for each item, where that operation is appropriate and permissions are understood.
+
+Do not use Loop when you only need a single yes/no decision. Use [Condition](condition.md) for branching, or [Switch](switch.md) to choose among several configured cases.
+
+## How the loop runs
+
+The Loop handler reads the configured iterator, selects the current item, exposes it under the item alias, and routes to its **True** output while an item remains. When the collection is exhausted, it routes to the **False** output.
+
+```text
+                 ┌── True / Loop body ──→ actions for current item
+                 │                              │
+Loop ────────────┤                              └── connect back to Loop
+                 │
+                 └── False / Complete ──→ action after the collection
 ```
-                ┌── Loop Body ──→ Action (Set Value / Check)
-                │                      │
-Repeat ─────────┼←─────────────────────┘
- (Collection)   │
-                └── Exit ───────→ Downstream Action
-```
 
----
+Connect the final action in the loop body back to the Loop node so the next iteration can run. Connect the False/completion path to the action that should run after all items have been processed.
 
-## 2. When to Use
+An empty collection has no current item to process, so the loop proceeds to its completion path. The runtime expects the iterator to resolve to a **list or tuple**; if it resolves to another type, it logs a warning and treats it as an empty collection.
 
-Use the Repeat action when you need to:
-- **Process every row in a child table** (e.g., check stock or update prices on every item line in an invoice).
-- **Iterate over retrieved records** returned by a Query Records block.
-- **Perform calculations or validations across collections** row by row.
-- **Send notifications or create records** for each item in a list.
+## Configure Loop
 
----
+1. Add a **Loop** action to the canvas.
+2. In **Iterator (List)**, choose the list or table to iterate over. Examples might include a document child table such as `doc.items` or a list variable produced by an earlier action.
+3. Set **Item Alias** to a variable name for the current item, such as `row` or `item`. This field is required.
+4. Connect the **True** output to the first action in the loop body.
+5. Connect the final action in that body back to the Loop node.
+6. Connect the **False** output to the next action after the loop completes.
+7. Save and test the rule with an empty collection, one item, and multiple items.
 
-![Repeat action showing nested sub-nodes](/images/action-card-sub-nodes.png)
+The iterator picker is based on variables available at the Loop node and filters for table fields or values that expose nested fields. Use the actual available options in the editor; not every value is a valid collection.
 
-## 3. How to Configure
+## Current item and loop metadata
 
-1. **Add the Action**: Add a **Repeat** block to your visual canvas.
-2. **Select Collection Source**:
-   - Click the **Collection** field.
-   - Use the **Smart Value Selector** to select a child table (e.g., `Items` or `doc.items`) or a query result (e.g., `vars.open_invoices`).
-3. **Set Item Alias**:
-   - Enter a variable name to represent the active row during iteration (default is `item`, accessed as `@vars.item` or `@vars.row`).
-4. **Connect Outbound Branches**:
-   - **Loop Branch (Loop Body)**: Connect to the first action you want to run for each row.
-   - **Loop Back Connection**: Connect the final action inside the loop back to the Repeat block so it can advance to the next item.
-   - **Exit Branch (Completed)**: Connect to the action that should run after all rows have been processed.
+During each iteration, FlexiRule makes the current item available under the configured alias in the rule variables. For example, if the alias is `row`, downstream steps can reference the current row as `vars.row` (or select it in the Smart Value Selector).
 
----
+The runtime also exposes loop metadata in `vars.loop`:
 
-## 4. UI Configuration Options
+| Value | Meaning |
+|---|---|
+| `vars.loop.index` | Zero-based index of the current item (first item is 0). |
+| `vars.loop.length` | Number of items in the collection. |
+| `vars.loop.first` | `true` for the first item. |
+| `vars.loop.last` | `true` for the final item. |
 
-| Option | Description |
-| :--- | :--- |
-| **Collection Source** | Select the child table or array variable to iterate over using the **Smart Value Selector**. |
-| **Item Alias** | Set the name used to reference the active row in downstream actions (e.g., `row` gives `@vars.row`). |
-| **Loop Metadata** | Automatically provides iteration info during each loop cycle: |
-| | - `vars.loop.index`: Current row index (0, 1, 2...). |
-| | - `vars.loop.length`: Total number of rows in collection. |
-| | - `vars.loop.first`: `true` on the first row. |
-| | - `vars.loop.last`: `true` on the final row. |
+The loop metadata describes the current iteration. If you use nested loops, choose distinct item aliases so the inner loop does not overwrite the outer loop's current-item variable. Verify variable availability and values in Debug.
 
----
+## Example: process order items
 
-## 5. Practical Example
+**Goal:** apply a calculation to every line item in a Sales Order.
 
-### Scenario: Calculate Line Item Discounts
+1. Configure the Loop iterator to use the order's items table, such as `doc.items`.
+2. Set **Item Alias** to `row`.
+3. In the loop body, use the current row's fields (for example, its rate and quantity) to calculate or assign the required value using the supported action and value controls.
+4. Connect the last body action back to Loop.
+5. Use the Loop's completion/False path for any action that should run once after all rows have been processed.
 
-To calculate a 10% discount on every row in a Sales Order:
+Choose an Assignment or Document Action based on what you intend to change: Assignment handles supported value assignment in the rule context, while Document Action performs a supported operation on a target document. Do not assume that assigning a context value automatically persists a database change.
 
-1. **Repeat Block Configuration**:
-   - **Collection**: Select `Items` (`doc.items`) using Smart Value Selector.
-   - **Item Alias**: Enter `row`.
-2. **Inside Loop Body (Set Value Block)**:
-   - **Target**: `vars.row.discount_amount`
-   - **Value**: Open Smart Value Selector → Choose Formula → `vars.row.rate * 0.10`
-   - **Outbound Edge**: Connect back to the **Repeat** block.
-3. **Exit Branch**:
-   - Connect the **Exit** branch of Repeat to a **Set Value** block (`doc.discount_calculated = true`).
+## Common mistakes
 
----
+- **Missing the loop-back connection:** the body must return to Loop for the next item to be processed.
+- **Using a non-list value:** the iterator must resolve to a list or tuple. If it resolves to a scalar or an unsupported object, the runtime treats it as an empty collection.
+- **Using an alias before the iteration:** the current-item alias is set when Loop processes an item; do not assume it contains a current row outside the loop body.
+- **Confusing the completion path with the body:** the False output is for after the collection is exhausted, not for processing each item.
+- **Reusing aliases in nested loops:** give inner and outer loops distinct aliases and verify which variable downstream actions read.
+- **Querying inside every iteration unnecessarily:** if the same record collection can be fetched once, retrieve it before Loop and iterate over that result. Use a query inside the loop only when the query genuinely depends on the current item.
+- **Assuming context assignments persist:** use the appropriate document operation when a database change is required.
 
-## 6. Common Mistakes
+## Related guides
 
-- **Forgetting the Loop-Back Edge**: Omitting the return arrow from the last action in the loop body back to the Repeat block. Without it, the loop only processes the first row.
-- **Nested Item Alias Collisions**: Reusing the same Item Alias name (e.g. `item`) in nested loops, which overwrites the outer loop's active item.
-- **Running Unnecessary Queries Inside Loops**: Placing single database queries inside a loop body instead of running a single **Query Records** action before entering the loop.
-
----
-
-## 7. Related Features
-
-- [Query Records]({{< relref "action-type/query-records/" >}}): Fetch collections of database records to process in a Repeat loop.
-- [Check]({{< relref "action-type/condition.md" >}}): Check conditions on individual items within a loop.
-
----
-
-## 8. Developer & Technical Details
-
-For information on loop state storage, context pointers, and iteration safety ceilings:
-- [Loop Architecture Reference]({{< relref "advanced-concepts/architecture/actions/loop.md" >}})
+- [Which Action Should I Use?](which-action.md)
+- [Query Records](query-records/)
+- [Assignment](assignment.md)
+- [Document Action]({{< relref "update-record/" >}})
+- [Condition](condition.md)
+- [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}})
+- [Loop Architecture Reference]({{< relref "../advanced-concepts/architecture/actions/loop.md" >}})

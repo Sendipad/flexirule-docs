@@ -74,6 +74,14 @@ jobs:
             --minify \
             --baseURL "${{ steps.pages.outputs.base_url }}/"
 
+      # Google Search Console requires this exact file at the published site root.
+      # Copy it explicitly after Hugo so cleanup/build configuration cannot omit it.
+      - name: Preserve Google Search Console verification file
+        run: |
+          mkdir -p public
+          cp static/google7691163ee09136e8.html public/google7691163ee09136e8.html
+          cmp static/google7691163ee09136e8.html public/google7691163ee09136e8.html
+
       - name: Build Pagefind index
         run: npm run pagefind
 

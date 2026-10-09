@@ -6,76 +6,94 @@ weight: 60
 
 # Condition Builder
 
-The **Condition Builder** is a visual interface used to define logical "True/False" evaluation rules. It is used in **Check** blocks, query filters, and trigger condition evaluations.
+The **Condition Builder** lets you define business logic as structured conditions instead of writing an expression by hand. It is used by the **Condition** action and other configuration flows that accept a condition tree, such as supported query filters.
 
----
+A condition tree contains comparison rows and nested groups. The visual editor configures the tree; the backend evaluates the saved and compiled condition.
 
-## 1. Visual Condition Rows
+![Condition Builder rule configuration panel]({{ "images/condition-builder-panel.png" | relURL }})
 
-Instead of writing complex code, you build conditions using a structured, row-based interface. Each row represents a single comparison check.
+## 1. Build a condition row
 
-![Condition Builder rule configuration panel](/images/condition-builder-panel.png)
+A condition row has three parts:
 
-A condition row consists of three main parts:
+1. **Field / left operand** — select a document field or context reference from the field picker. Available options depend on where the builder is used.
+2. **Operator** — choose a comparison supported for the selected field type.
+3. **Value / right operand** — enter a static value or configure a supported dynamic value using the value control.
 
-1. **Left Operand**: Select the document field or variable to check (e.g., `Status` or `Grand Total`).
-2. **Operator**: Select the comparison operator (e.g., `Equals`, `Not Equals`, `Greater Than`, `Contains`, `Is Set`).
-3. **Right Operand**: Select the comparison value or field to compare against (e.g., `"Open"` or `5000`).
+For example, an approval rule might compare **Grand Total** with `100000`. Operators and inputs are field-aware: not every operator is available for every field type, and operators such as **Is Set** or **Is Not Set** do not need a right-hand value.
 
----
+The application can supply operator choices from backend configuration, with frontend defaults as a fallback. Use the options actually displayed by the editor rather than assuming every operator is available in every context.
 
-## 2. Using the Smart Value Selector
+## 2. Choose values
 
-For both operands in a condition row, click the field to open the **Smart Value Selector**:
-- Select document fields (`@doc.grand_total`).
-- Select temporary rule variables (`@vars.calculated_total`).
-- Select system metadata (`@system.today`).
-- Choose dynamic value resolvers (`/math_formula`, `/fetch`, `/child_aggregation`).
+The value control uses FlexiRule's shared structured-value system. Depending on the editor context, you may be able to choose a literal value, a reference, or a supported resolver.
 
----
+Examples of references used in FlexiRule include:
 
-## 3. Logical Grouping (ALL / ANY / NOT)
+- `@doc.grand_total` — a value from the current document.
+- `@vars.calculated_total` — a rule variable, when exposed in that context.
+- `@system.today` — system context, when available.
+- Resolver values configured through the value control.
 
-You can combine multiple conditions using **Logic Groups**:
+These examples are context-dependent, not a guarantee that every reference or resolver is available in every Condition Builder. The left operand uses the field picker; the right operand uses the value control.
 
-- **ALL (AND)**: Every condition row in the group must be true for the group to evaluate to true (e.g., `Status == "Open"` **ALL** `Grand Total > 5000`).
-- **ANY (OR)**: At least one condition row in the group must be true (e.g., `Customer Group == "VIP"` **ANY** `Priority == "Urgent"`).
-- **NOT**: Inverts the result of the group.
+See [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}).
 
-### Nested Condition Groups
-You can add nested groups inside a parent group to express complex logic. The UI represents nested groups with indented visual cards.
+## 3. Combine conditions with groups
 
----
+Each group combines its children using one logic operator:
 
-## 4. UI Controls
+- **AND** — every child condition or nested group must evaluate to true.
+- **OR** — at least one child condition or nested group must evaluate to true.
 
-- **Add Condition**: Click **+ Condition** to add a new check row to the current group.
-- **Add Group**: Click **+ Group** to create a nested ALL/ANY block.
-- **Toggle Group Logic**: Click the **ALL / ANY** logic pill at the top of a group card to toggle logic.
-- **Remove Row / Group**: Click the trash icon next to a condition row or group to remove it.
+Use **Group** to add a nested AND/OR group. For example:
 
-### Canvas Condition Preview
+`Customer Group = "VIP" AND (Grand Total > 100000 OR Priority = "Urgent")`
 
-Check blocks on the canvas highlight configured conditions directly on the action card for quick visual verification.
+The visual group controls expose **AND** and **OR**; they do not provide a general **NOT group** toggle. If you need negated logic, use a supported inverse comparison where appropriate and test the result.
 
-![Action card showing inline condition branching preview](/images/action-card-condition-preview.png)
+### Collection conditions
 
----
+The builder also provides a **Collection** control. A collection condition evaluates a nested `where` condition against items in a collection, using an alias for the current row. This differs from simply nesting an AND/OR group. Use it only when you need to test items in a child or related collection and configure it using the available controls.
 
-## 5. Practical Example
+## 4. Available controls
 
-### Scenario: High-Value VIP Approval Condition
+- **AND / OR** — select the logic for the current group.
+- **Condition** — add a comparison row.
+- **Group** — add a nested AND/OR group.
+- **Collection** — add a collection-based condition with a nested `where` group.
+- **Remove** — remove a row, group, or collection condition.
+- **Drag and drop** — reorder or move items in the condition tree. A group cannot be moved into itself or one of its descendants.
 
-To check if an order requires manager approval:
-- **Group (ALL)**
-  - Row 1: `Customer Group` `Equals` `"VIP"`
-  - **Group (ANY)**
-    - Row 2: `Grand Total` `Greater Than` `100,000`
-    - Row 3: `Priority` `Equals` `"Urgent"`
+Some embedding contexts may be read-only, in which case editing controls may be hidden or disabled.
 
----
+## 5. Example: high-value VIP approval
 
-## 6. Related Features
+**Goal:** require manager approval when the customer is a VIP and either the order exceeds the threshold or its priority is urgent.
 
-- [Check (Condition) Action]({{< relref "action-type/condition.md" >}}): Use conditions to branch rule execution paths.
-- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): How to pick fields and values in condition rows.
+1. Set the root group to **AND**.
+2. Add a row: **Customer Group** equals `VIP`.
+3. Add a nested **OR** group.
+4. Inside the nested group, add:
+   - **Grand Total** greater than `100000`
+   - **Priority** equals `Urgent`
+
+Conceptually:
+
+```text
+AND
+├── Customer Group equals "VIP"
+└── OR
+    ├── Grand Total > 100000
+    └── Priority equals "Urgent"
+```
+
+Use values that match each field's type. Test both true and false cases with representative data, including unset values where relevant.
+
+## 6. Condition action and execution paths
+
+The **Condition** action evaluates its saved condition and routes execution through its **True** or **False** connection. Configure both paths intentionally and test both outcomes. The backend evaluates the compiled condition; if a saved configuration is not reflected at runtime, save the rule again and inspect validation or execution errors.
+
+![Action card showing inline condition branching preview]({{ "images/action-card-condition-preview.png" | relURL }})
+
+See the [Condition action]({{< relref "action-type/condition.md" >}}) for branching behavior and troubleshooting, and [Which Action Should I Use?]({{< relref "action-type/which-action.md" >}}) to choose the right action.
