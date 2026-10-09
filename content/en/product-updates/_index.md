@@ -32,7 +32,7 @@ The Query Records configuration experience has been refined to make record selec
 
 **Why it helps:** Configure data lookups more deliberately and make it easier to understand how a rule obtains the records it uses.
 
-[Learn about Query Records]({{< relref "action-type/query-records.md" >}})
+[Learn about Query Records]({{< relref "action-type/query-records/_index.md" >}})
 
 ---
 
