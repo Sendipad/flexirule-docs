@@ -124,15 +124,13 @@ def fetch_commits_github_api():
                     pr_num, pr_url = extract_pr_info(msg)
 
                     commit_record = {
+                        # Public history intentionally exposes only useful traceability fields.
+                        # Do not publish email addresses, committer identities, or full commit bodies.
                         "sha": sha,
                         "short_sha": sha[:7],
                         "subject": first_line,
-                        "message": msg,
                         "author_name": author_obj.get("name", ""),
-                        "author_email": author_obj.get("email", ""),
                         "authored_date": author_obj.get("date", ""),
-                        "committer_name": committer_obj.get("name", ""),
-                        "committer_email": committer_obj.get("email", ""),
                         "committed_date": committer_obj.get("date", ""),
                         "commit_url": f"{GITHUB_REPO_URL}/commit/{sha}",
                         "pr_number": pr_num,
@@ -187,15 +185,12 @@ def fetch_commits_local_git(local_repo_path):
         pr_num, pr_url = extract_pr_info(full_msg)
 
         commits.append({
+            # Keep the local-git fallback schema aligned with the public API schema.
             "sha": sha,
             "short_sha": short_sha,
             "subject": subject,
-            "message": full_msg,
             "author_name": aname,
-            "author_email": aemail,
             "authored_date": adate,
-            "committer_name": cname,
-            "committer_email": cemail,
             "committed_date": cdate,
             "commit_url": f"{GITHUB_REPO_URL}/commit/{sha}",
             "pr_number": pr_num,
@@ -217,27 +212,29 @@ def sync_commits(local_repo=None, advance_checkpoint_to_sha=None, review_status=
         except Exception as e:
             print(f"Local git fetch failed: {e}. Trying GitHub API...", file=sys.stderr)
 
-    if not fetched_commits:
+    if fetched_commits is None:
         try:
             fetched_commits = fetch_commits_github_api()
         except Exception as e:
-            if not existing_commits_map:
-                print(f"CRITICAL: Failed to fetch commit history and no existing data available: {e}", file=sys.stderr)
-                sys.exit(1)
-            print(f"Warning: Failed to fetch latest commits ({e}). Preserving existing history state.", file=sys.stderr)
-            fetched_commits = list(existing_commits_map.values())
+            print(f"CRITICAL: Commit fetch failed; leaving history and checkpoint files unchanged: {e}", file=sys.stderr)
+            sys.exit(1)
+
+    if not fetched_commits:
+        print("CRITICAL: Fetch returned no commits; refusing to publish an empty or stale sync.", file=sys.stderr)
+        sys.exit(1)
 
     # Build unique commit list ordered newest first
     new_commits_map = {}
     for c in fetched_commits:
         sha = c["sha"]
         # Merge with existing record if available (preserving custom fields if any)
-        if sha in existing_commits_map:
-            merged = dict(existing_commits_map[sha])
-            merged.update(c)
-            new_commits_map[sha] = merged
-        else:
-            new_commits_map[sha] = c
+        # Whitelist public fields rather than carrying forward legacy fields such as
+        # author_email, committer_email, or full commit message bodies.
+        allowed_fields = (
+            "sha", "short_sha", "subject", "author_name", "authored_date",
+            "committed_date", "commit_url", "pr_number", "pr_url"
+        )
+        new_commits_map[sha] = {key: c[key] for key in allowed_fields if key in c}
 
     # Sort commits in reverse chronological order (newest first)
     # Primary sort by committed_date or authored_date descending
