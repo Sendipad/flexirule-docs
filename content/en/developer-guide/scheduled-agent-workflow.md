@@ -30,15 +30,12 @@ A scheduled agent must execute the following 11-step procedure during each execu
    - If `head_sha == latest_reviewed_commit_sha`, log "No new commits require review" and exit safely with status `0`.
 4. **Synchronize Commit History**: Run `python3 scripts/sync_commit_history.py` to ensure `data/commit_history.json` contains all reachable commits up to `head_sha`.
 5. **Identify Commit Range**: Extract all commits in `data/commit_history.json` between `latest_reviewed_commit_sha` and `head_sha` in chronological order (oldest to newest).
-6. **Analyze Impact**: For each unreviewed commit in the range, inspect:
-   - Commit subject and message
-   - Changed files and pull request details (if available)
-   - Relevant test suites and documentation
-7. **Filter User-Facing Changes**: Group related commits and distinguish user-visible features, workflow changes, UI improvements, bug fixes, or compatibility breaking changes from purely internal tasks (refactors, test-only changes, CI updates).
-8. **Draft Product Update Entries**: Format new entries into `content/en/product-updates/_index.md` using clear, business-oriented language, linking to relevant documentation and GitHub commit SHAs.
-9. **Validate Site Integrity**: Execute `hugo --gc --minify=false` to verify frontmatter, internal links, aliases, and static site build status.
+6. **Enrich the evidence**: For each unreviewed commit, retrieve associated pull-request titles, descriptions, labels, changed-file lists, and review context when available. Inspect the actual diff for material or ambiguous changes. Treat commit subjects as hints, not sufficient evidence of user impact.
+7. **Group changes by user outcome**: Group related commits into a single feature or fix. Exclude refactors, test-only work, CI changes, dependency churn, and other internal changes unless they materially affect users. Do not create one release-note item per commit.
+8. **Draft curated product updates**: Write a short title, publication date, user-visible change, practical benefit, and link to the most relevant documentation. Use plain language and avoid implementation details, internal field names, speculative benefits, unsupported performance claims, or compatibility guarantees that have not been verified. Do not display SHAs, branch names, review checkpoints, synchronization timestamps, author details, or automation status on the public Product Updates page. Keep traceability in the separate developer commit-history page and machine-readable data.
+9. **Validate Site Integrity**: Execute `hugo --gc --minify=false` to verify frontmatter, internal links, aliases, and static site build status. Confirm Product Updates is linked from the documentation home page and reachable from the normal sidebar navigation; do not rely on an unlinked URL.
 10. **Advance Review Checkpoint**: Run `python3 scripts/sync_commit_history.py --advance-checkpoint <head_sha> --review-status assessed` to atomically advance `latest_reviewed_commit_sha` to `head_sha`.
-11. **Commit and Publish**: Commit modified files (`data/`, `static/data/`, `content/en/product-updates/_index.md`) and push to `develop`.
+11. **Commit and Publish**: Commit the synchronized data and curated documentation changes to the task branch, open/update a pull request, and publish only after validation. Ensure public JSON does not include email addresses or full commit bodies; retain only the fields needed for technical traceability.
 
 ---
 
