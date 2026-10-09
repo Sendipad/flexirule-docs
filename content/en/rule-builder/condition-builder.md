@@ -1,81 +1,99 @@
 ---
 title: Condition Builder
-description: Learn how to create visual logical condition groups in FlexiRule.
+description: Build and validate nested ALL/ANY condition groups with field-aware operators and dynamic values.
 weight: 60
 ---
 
 # Condition Builder
 
-The **Condition Builder** is a visual interface used to define logical "True/False" evaluation rules. It is used in **Check** blocks, query filters, and trigger condition evaluations.
+The **Condition Builder** lets you express a business rule as structured conditions instead of writing a Python expression by hand. It is used by the **Condition** action and is also embedded in other configuration flows that need a condition tree, such as collection filters.
 
----
+A condition tree is made from comparison rows and nested groups. The saved structure is compiled for evaluation by the backend; the visual editor is the configuration interface, not the runtime evaluator itself.
 
-## 1. Visual Condition Rows
+![Condition Builder rule configuration panel]({{< relURL "images/condition-builder-panel.png" >}})
 
-Instead of writing complex code, you build conditions using a structured, row-based interface. Each row represents a single comparison check.
+## 1. Build a condition row
 
-![Condition Builder rule configuration panel](/images/condition-builder-panel.png)
+A basic row has three parts:
 
-A condition row consists of three main parts:
+1. **Field / left operand** — choose a field or context reference from the available field picker, such as `doc.grand_total`. The options depend on the context where the builder is opened.
+2. **Operator** — choose a comparison supported for the selected field type. The operator list is supplied by backend configuration when available, with frontend defaults as a fallback.
+3. **Value / right operand** — enter a static value or configure a supported dynamic value using the value control. The control adapts to field type and operator.
 
-1. **Left Operand**: Select the document field or variable to check (e.g., `Status` or `Grand Total`).
-2. **Operator**: Select the comparison operator (e.g., `Equals`, `Not Equals`, `Greater Than`, `Contains`, `Is Set`).
-3. **Right Operand**: Select the comparison value or field to compare against (e.g., `"Open"` or `5000`).
+For example, an invoice approval condition could compare `Grand Total` with `100000`. Operators and value inputs are **field-aware**: not every operator is available for every field type, and some operators (such as `is set` / `is not set`) do not require a right-hand value.
 
----
+Common operator labels include equality and inequality, numeric/date comparisons, list membership, text matching, and set/unset checks. The exact available choices depend on the field and the operator configuration loaded by the application; use the choices shown in the editor rather than assuming every operator is universal.
 
-## 2. Using the Smart Value Selector
+## 2. Choose values
 
-For both operands in a condition row, click the field to open the **Smart Value Selector**:
-- Select document fields (`@doc.grand_total`).
-- Select temporary rule variables (`@vars.calculated_total`).
-- Select system metadata (`@system.today`).
-- Choose dynamic value resolvers (`/math_formula`, `/fetch`, `/child_aggregation`).
+The right-hand value control supports the shared structured-value system. Depending on the context and available options, you may be able to use a literal value or a dynamic reference/resolver rather than hard-coding a value.
 
----
+Examples of value references used elsewhere in FlexiRule include:
 
-## 3. Logical Grouping (ALL / ANY / NOT)
+- `@doc.grand_total` — a document value
+- `@vars.calculated_total` — a rule/context variable, when exposed in that editor
+- `@system.today` — system context, when available
+- Resolver values configured through the value control
 
-You can combine multiple conditions using **Logic Groups**:
+The options presented are context-dependent. Do not assume every reference or resolver is available in every Condition Builder embedding. The left operand is selected through the field picker; the right operand uses the value control.
 
-- **ALL (AND)**: Every condition row in the group must be true for the group to evaluate to true (e.g., `Status == "Open"` **ALL** `Grand Total > 5000`).
-- **ANY (OR)**: At least one condition row in the group must be true (e.g., `Customer Group == "VIP"` **ANY** `Priority == "Urgent"`).
-- **NOT**: Inverts the result of the group.
+For background, see the [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}).
 
-### Nested Condition Groups
-You can add nested groups inside a parent group to express complex logic. The UI represents nested groups with indented visual cards.
+## 3. Combine conditions with groups
 
----
+Each group has a logic operator:
 
-## 4. UI Controls
+- **AND** — every child condition/group must evaluate as true.
+- **OR** — at least one child condition/group must evaluate as true.
 
-- **Add Condition**: Click **+ Condition** to add a new check row to the current group.
-- **Add Group**: Click **+ Group** to create a nested ALL/ANY block.
-- **Toggle Group Logic**: Click the **ALL / ANY** logic pill at the top of a group card to toggle logic.
-- **Remove Row / Group**: Click the trash icon next to a condition row or group to remove it.
+Use **Group** to nest another AND/OR group. Nested groups let you express rules such as:
 
-### Canvas Condition Preview
+`Customer Group = "VIP" AND (Grand Total > 100000 OR Priority = "Urgent")`
 
-Check blocks on the canvas highlight configured conditions directly on the action card for quick visual verification.
+The current visual group controls expose **AND** and **OR**. They do not expose a general **NOT group toggle**, so do not document or rely on a NOT button in this UI. If a rule needs negated logic, express it with a supported inverse comparison/operator where possible, and test the resulting rule.
 
-![Action card showing inline condition branching preview](/images/action-card-condition-preview.png)
+### Collection conditions
 
----
+The builder also has a **Collection** control. A collection condition evaluates a nested `where` condition against rows in a collection, with an alias for the current row. This is different from simply nesting an AND/OR group: use it when the rule needs to test items within a child/related collection. Configure the collection and its nested conditions using the controls shown in the editor.
 
-## 5. Practical Example
+## 4. Available controls
 
-### Scenario: High-Value VIP Approval Condition
+- **AND / OR** — select the logic for the current group.
+- **Condition** — add a comparison row to the current group.
+- **Group** — add a nested AND/OR group.
+- **Collection** — add a collection-based condition with its own nested `where` group.
+- **Remove** — remove a row, group, or collection condition.
+- **Drag and drop** — move rows/groups within the condition tree. A group cannot be moved into itself or one of its descendants.
 
-To check if an order requires manager approval:
-- **Group (ALL)**
-  - Row 1: `Customer Group` `Equals` `"VIP"`
-  - **Group (ANY)**
-    - Row 2: `Grand Total` `Greater Than` `100,000`
-    - Row 3: `Priority` `Equals` `"Urgent"`
+Some embedding contexts may present the builder in read-only mode. In that case, editing controls are disabled or hidden.
 
----
+## 5. Example: high-value VIP approval
 
-## 6. Related Features
+**Goal:** require manager approval when the customer is a VIP and either the order is above the threshold or the priority is urgent.
 
-- [Check (Condition) Action]({{< relref "action-type/condition.md" >}}): Use conditions to branch rule execution paths.
-- [Smart Value System]({{< relref "rule-builder/smart-value-system.md" >}}): How to pick fields and values in condition rows.
+1. Set the root group to **AND**.
+2. Add a row: `Customer Group` **equals** `VIP`.
+3. Add a nested **OR** group.
+4. Inside that group, add:
+   - `Grand Total` **greater than** `100000`
+   - `Priority` **equals** `Urgent`
+
+Conceptually:
+
+```text
+AND
+├── Customer Group equals "VIP"
+└── OR
+    ├── Grand Total > 100000
+    └── Priority equals "Urgent"
+```
+
+Choose values that match the field's type, and test both the true and false cases with representative data. Empty or incompatible values can change the result; use explicit set/unset comparisons when appropriate.
+
+## 6. Condition action and execution paths
+
+The **Condition** action evaluates its saved condition configuration and routes execution through the **True** or **False** connection. Configure both paths intentionally and test both outcomes. The backend uses the compiled condition expression; if configuration exists but compilation is missing, the rule needs to be saved/compiled again.
+
+![Action card showing inline condition branching preview]({{< relURL "images/action-card-condition-preview.png" >}})
+
+See [Condition action]({{< relref "action-type/condition.md" >}}) for branch behavior and troubleshooting, and [Which Action Should I Use?]({{< relref "action-type/which-action.md" >}}) for choosing the right action.
