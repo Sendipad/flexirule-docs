@@ -11,7 +11,7 @@ description: Source-to-documentation audit for the Actions documentation refresh
 
 ## Summary
 
-This pass refreshed the Actions discovery flow and corrected high-impact terminology and Query Records documentation. The source was traced from the Query Records handler contract through the Vue configuration panel, runtime validation, query dispatch, result handling, and permission guard.
+This pass refreshed the Actions discovery flow and corrected high-impact terminology, Query Records documentation, and the shared Condition Builder guide. The source was traced from the Query Records handler contract through its Vue configuration panel, runtime validation, query dispatch, result handling, and permission guard. The Condition Builder UI and Condition action handler were also inspected to align documented controls and branching behavior with the implementation.
 
 ## Application source inspected
 
@@ -23,6 +23,8 @@ This pass refreshed the Actions discovery flow and corrected high-impact termino
 | Fetch Records execution | `validate_fetch_records`, `_fetch_records` in `query_records.py` | FlexiRule resolves dynamic values recursively, passes supported query arguments to the compatibility helper, and converts the canonical filter tree when detected. Frappe Query Builder owns most native field/filter semantics. |
 | Permissions | `can_ignore_permissions` integration and Query Records UI fields | Skip Permissions is an explicit privileged path with a conditional audit reason; documentation warns against casual use. |
 | Query Builder behavior | Existing query capability audit and tests in the app repository | Infix string `"or"` list-filter form is documented as unsupported/broken in the inspected capability audit. Nested filter groups and field-path behavior must be tested against the installed Frappe version. |
+| Condition Builder UI | `components/condition_builder/ConditionBuilder.vue`, `ConditionNode.vue`, and `SimpleCondition.vue` | The editor exposes AND/OR group logic, Condition, Group, and Collection controls. Leaf operators are field-aware and sourced from backend configuration when available, with frontend defaults as fallback. The UI does not expose a general NOT group toggle. |
+| Condition execution | `flexirule/ruleflow/core/action_handlers/condition.py` | The Condition handler evaluates the compiled condition expression and routes through True/False connections. Configuration present without a compiled expression requires the rule to be saved/compiled again. |
 | Shared action terminology | Action handler contract and current documentation inventory | Documentation now uses **Assignment** rather than “Set Value” and **Condition** rather than “Check.” Document Action is distinguished from Assignment. |
 
 ## Documentation pages changed
@@ -34,6 +36,8 @@ This pass refreshed the Actions discovery flow and corrected high-impact termino
 - `content/en/action-type/query-records/_index.md` — clarified mode-specific contracts and result shapes.
 - `content/en/action-type/query-records/which-query-mode.md` — rebuilt the mode decision table around result shape and implementation differences.
 - `content/en/action-type/query-records/fetch-records.md` — expanded UI walkthrough, configuration behavior, result handling, permissions, validation, performance, compatibility, and limitations.
+- `content/en/rule-builder/condition-builder.md` — documented actual AND/OR, row, nested group, Collection, field-aware operator, value-control, and drag/drop behavior; removed unsupported claims about a NOT group toggle and corrected the action terminology.
+- `content/en/action-type/actions-documentation-audit.md` — this audit and verification record.
 
 ## Important findings and documented gaps
 
@@ -43,7 +47,8 @@ This pass refreshed the Actions discovery flow and corrected high-impact termino
 4. **Fetch Records returns a list of rows.** Its contract does not offer a configurable full-document output type. The documentation recommends inspecting actual results in Debug before downstream use.
 5. **The mode supports configured query arguments, not an automatic pagination iterator.** Limit, offset, fields, filters, order_by, group_by, and distinct are passed when present, but the action itself does not promise automatic traversal of multiple pages.
 6. **Permission bypass is sensitive.** The UI exposes Skip Permissions and a conditional Permission Audit Reason. The docs recommend leaving it disabled unless explicitly approved.
-7. **No screenshot was fabricated.** This change documents the actual controls based on source inspection. Existing media was not presented as newly captured UI.
+7. **Condition groups expose AND and OR, not a general NOT toggle.** The documentation describes the current UI rather than claiming controls that are not present. A Collection condition is a distinct node with its own nested `where` group.
+8. **No screenshot was fabricated.** This change documents the actual controls based on source inspection. Existing media was not presented as newly captured UI.
 
 ## Verification status
 
@@ -54,4 +59,4 @@ This pass refreshed the Actions discovery flow and corrected high-impact termino
 
 ## Action inventory considered
 
-The existing action documentation and registry-oriented source were reviewed in the context of these action families: Condition, Switch, Loop, Assignment, Query Records (including Fetch Records and legacy modes), Document Action, Notify, Process, Sub-Rule, Wait, and Stop / Error. This pass concentrates on the Actions landing/discovery experience and Query Records/Fetched Records accuracy; it is not a claim that every individual action guide has received a complete source-to-runtime audit in this change.
+The existing action documentation and registry-oriented source were reviewed in the context of these action families: Condition, Switch, Loop, Assignment, Query Records (including Fetch Records and legacy modes), Document Action, Notify, Process, Sub-Rule, Wait, and Stop / Error. This pass concentrates on the Actions landing/discovery experience, Condition Builder behavior, and Query Records/Fetch Records accuracy; it is not a claim that every individual action guide has received a complete source-to-runtime audit in this change.
