@@ -15,7 +15,7 @@ New to FlexiRule? Start with a guided walkthrough of building and testing a rule
 ## Recent updates
 
 ### A more focused RuleFlow workspace
-<text>October 2026 · Workspace and navigation</text>
+*October 2026 · Workspace and navigation*
 
 The RuleFlow workspace brings rule management into a more focused place in Frappe Desk. Navigation has been streamlined so common rule-management tasks are easier to find, with workspace-level visibility into relevant connection and execution information.
 
@@ -26,7 +26,7 @@ The RuleFlow workspace brings rule management into a more focused place in Frapp
 ---
 
 ### Clearer record-query configuration
-<text>October 2026 · Query Records</text>
+*October 2026 · Query Records*
 
 The Query Records configuration experience has been refined to make record selection and dynamic DocType configuration clearer. Fetch strategies can be chosen to suit the rule's needs, including approaches for standard and single-record retrieval.
 
@@ -37,7 +37,7 @@ The Query Records configuration experience has been refined to make record selec
 ---
 
 ### Easier trigger configuration
-<text>October 2026 · Entry Action</text>
+*October 2026 · Entry Action*
 
 Entry Action configuration has clearer visual cues and field descriptions for supported document events. The Smart Value Selector helps configure trigger conditions without requiring every condition to be written as raw expression syntax.
 
@@ -48,7 +48,7 @@ Entry Action configuration has clearer visual cues and field descriptions for su
 ---
 
 ### More consistent rule-canvas nodes
-<text>September 2026 · Rule Builder</text>
+*September 2026 · Rule Builder*
 
 Action nodes have more consistent visual styling, icons, and summaries across common action types, including Assignment, Condition, Loop, and Stop/Error.
 
@@ -59,7 +59,7 @@ Action nodes have more consistent visual styling, icons, and summaries across co
 ---
 
 ### More flexible date and time values
-<text>September 2026 · Smart Values</text>
+*September 2026 · Smart Values*
 
 Date and time values support more expressive configurations, including relative date calculations, offsets, and working-day logic through the Smart Value system.
 
