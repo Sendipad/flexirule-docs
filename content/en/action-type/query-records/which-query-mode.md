@@ -1,32 +1,34 @@
 ---
 title: Which Query Mode Should I Use?
 weight: 5
-description: Choose the Query Records mode that matches the result your rule needs.
+description: Choose the Query Records mode that matches the required result and implementation.
 ---
 
 # Which Query Mode Should I Use?
 
-Choose the mode from the result you actually need.
+Start with the result your next step needs, not with the longest list of options.
 
-| Need | Mode |
-|---|---|
-| A collection of matching records with selected fields | **Fetch Records** |
-| A lightweight list of selected values | **Query List** |
-| One document or single-record result | **Query Doc** |
-| Only whether a match exists | **Exist Record** |
-| Rows from a supported report | **Query Report** |
-| Number of matching records | **Count** |
-| Total of a numeric field | **Sum** |
-| Average of a numeric field | **Average** |
-| Lowest value | **Min** |
-| Highest value | **Max** |
-| Results summarized by fields | **Group By** |
+| If you need… | Choose | Why |
+|---|---|---|
+| A collection of matching rows with configurable fields, filters, sorting, limit, and offset | **Fetch Records** | Uses the newer Frappe Query Builder path and returns a list of records. |
+| An existing list-style query configuration | **Query List** | Keeps the legacy query implementation; do not assume its filters or output behave identically to Fetch Records. |
+| One document or a single-record result | **Query Doc** | Designed for a single target record/result. |
+| Only whether a matching record exists | **Exist Record** | Avoids fetching a collection just to answer yes/no. |
+| Output from a supported existing report | **Query Report** | Uses a Report target and report-specific execution path. |
+| The number of matching records | **Count** | Use an aggregate mode rather than loading every row. |
+| A total or statistical value for a field | **Sum**, **Average**, **Min**, or **Max** | Select the aggregate that matches the question and configure its required field. |
+| Results grouped by a field | **Group By** | Use only grouping behavior supported by the installed implementation. |
 
-## Prefer the smallest result
+## Prefer the smallest useful result
 
-If you only need to know whether a record exists, use **Exist Record** instead of fetching a list. If you need a count or total, use the corresponding aggregate mode instead of retrieving every record.
+If you need yes/no, choose Exist Record. If you need a count or a supported aggregate, prefer that mode to loading a large list. If you need to process each matching row, Fetch Records may be appropriate with a bounded result size and a Loop.
 
-Check the output shape before connecting the result to another action: list results, single records, scalar aggregates, and grouped results are not interchangeable.
+## Check the contract and output
 
-→ [Query Records]({{< relref "./" >}})  
-→ [Query Filters]({{< relref "../../advanced-concepts/reference/query-filters/" >}})
+Modes expose different controls and result types. Fetch Records is contractually a **List of Records** result; Query Doc can expose single-record/full-document output; Exist Record returns yes/no; other modes have their own result behavior.
+
+After configuration, run Debug and inspect the actual result before connecting it to another action. Test empty results, permission-limited results, and realistic maximum data volumes.
+
+→ [Query Records overview](./)  
+→ [Fetch Records details](fetch-records.md)  
+→ [Query filters]({{< relref "../../advanced-concepts/reference/query-filters/" >}})
