@@ -236,10 +236,9 @@ def sync_commits(local_repo=None, advance_checkpoint_to_sha=None, review_status=
         )
         new_commits_map[sha] = {key: c[key] for key in allowed_fields if key in c}
 
-    # Sort commits in reverse chronological order (newest first)
-    # Primary sort by committed_date or authored_date descending
+    # Preserve GitHub API / git-log order. Sorting by author or committer timestamps can
+    # reorder commits after cherry-picks, rebases, or commits with unusual dates.
     sorted_commits = list(new_commits_map.values())
-    sorted_commits.sort(key=lambda x: x.get("committed_date") or x.get("authored_date") or "", reverse=True)
 
     now_iso = datetime.now(timezone.utc).isoformat()
     latest_head_sha = sorted_commits[0]["sha"] if sorted_commits else ""
