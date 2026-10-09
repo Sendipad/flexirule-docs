@@ -1,56 +1,95 @@
 ---
 title: Assignment
-description: Set supported document or context values using the assignment grid.
+description: Set or transform values on the current document or rule variables using ordered assignment rows.
 weight: 80
 entity_kind: action_operation
 category: data-operations
 mutation: true
-targets: ["Frappe DocType", "Context Variable"]
+targets: ["Current Document Field", "Rule Context Variable"]
 ---
 
 # Assignment
 
-**Assignment** applies configured value operations to supported targets in the current rule context. The current application terminology is **Assignment**; it has replaced the older “Set Value” label in the documentation.
+**Assignment** applies one or more value operations to the current rule context. Configure an ordered list of rows; each row selects a target, an operator, a value when required, and optionally a **Run If** condition.
 
-## When to use it
+Use Assignment when a rule needs to set a field, calculate a value, update a rule variable, or transform a supported value. It is the current action name; older documentation may call this “Set Value,” but that is no longer the action type name.
 
-Use Assignment to set or calculate a supported document field or context variable, or to apply another operator exposed by the current assignment grid. Use [Document Action]({{< relref "update-record/" >}}) when the task is a separate document operation such as creating, updating, or deleting a target record.
+## When to use Assignment
 
-## Configure the assignment grid
-
-1. Add **Assignment** to the canvas.
-2. Add a row in the assignment grid.
-3. Select the target using the target picker. Confirm whether it is a field on the current document or a context variable.
-4. Choose an operator offered for that target. Available operators depend on the target type and the current contract; do not assume every operator applies to every target.
-5. Configure the value using the value control. Choose a static value or a supported dynamic value/resolver mode offered by that control.
-6. If the row exposes a condition, configure it when the assignment should only apply under that condition.
-7. Save and debug the rule, checking the target and resulting value.
-
-## Important distinctions
-
-| Need | Use |
+| Goal | Use |
 |---|---|
-| Set a value in the current rule context | Assignment |
-| Read related records | [Query Records]({{< relref "query-records/" >}}) |
-| Create, update, or delete a separate target document | [Document Action]({{< relref "update-record/" >}}) |
-| Branch execution based on a condition | [Condition](condition.md) |
+| Set or calculate a field on the document that triggered the rule | Assignment |
+| Store an intermediate result for later actions | Assignment targeting a `vars.*` variable |
+| Increase/decrease a numeric value or toggle a Check field | Assignment with the matching operator |
+| Create, update, or delete a separate document | [Document Action]({{< relref "update-record/" >}}) |
+| Read records before using their values | [Query Records]({{< relref "query-records/" >}}) |
+| Choose which execution path to follow | [Condition](condition.md) |
 
-The assignment grid applies rows in the order configured. A later row may depend on a value established by an earlier row. If a conditional row is skipped, do not assume it initialized its target.
+Assignment is not a general-purpose create/update/delete action for arbitrary documents. Its document target is the **current document** in the rule context; use Document Action for operations on a separate target document.
 
-## Values and variables
+## Configure an assignment row
 
-Use the shared value control to select a supported static or dynamic value. The actual modes depend on the field and control, so use the picker rather than assuming every input accepts every resolver or expression format. See the [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}}).
+1. Add an **Assignment** action to the rule canvas.
+2. Add a row to the assignment grid.
+3. Under **Run If**, optionally configure a condition. Leave it unset when the row should run every time the action is reached.
+4. Select the **Target Field**. Targets must be in the current document scope (`doc.*`) or rule-variable scope (`vars.*`).
+5. Choose an **Operator** that is appropriate for the target field type.
+6. If the operator requires an operand, configure **Value Expression** with the value control. Use a static value or one of the dynamic modes offered by the control.
+7. Arrange rows in the intended order, then save and test the rule in Debug.
 
-## Permissions and limitations
+The grid supports adding, removing, and reordering rows. The order matters: each row reads the target's current value when it runs, so later rows can use the result of earlier rows.
 
-Assignment does not replace Frappe's document lifecycle or permission model. Whether a document field can be changed depends on the rule event, document state, field metadata, and runtime behavior. In particular, updating a submitted or otherwise restricted document may require a separate supported document operation rather than an assignment to the triggering document.
+## Operators
+
+The available operators are supplied by the operator registry and may be filtered by the target field type in the UI. The current backend registry includes:
+
+| Operator | What it does | Target considerations |
+|---|---|---|
+| **Set Value** (`set`) | Replaces the current value with the resolved operand | General-purpose; operand required |
+| **Clear** (`clear`) | Clears the value without an operand | Lists become empty lists, objects become empty objects, strings become empty strings, and other values become `None` |
+| **Increment By** (`increment`) | Adds the operand to the current value | Numeric field types: Int, Float, Currency, Percent |
+| **Decrement By** (`decrement`) | Subtracts the operand from the current value | Numeric field types: Int, Float, Currency, Percent |
+| **Append To List** (`append`) | Appends the operand to a list | Table and Table MultiSelect targets |
+| **Merge Object** (`merge`) | Merges operand keys into the existing object; operand keys overwrite matching keys | JSON, Code, and Text targets; operand must resolve to an object/dictionary |
+| **Toggle Boolean** (`toggle`) | Switches a boolean-like value between enabled and disabled | Check targets; no operand required |
+
+For operators with a type restriction, use the target picker and operator list rather than assuming an operator is valid for every field. If an operand is required, its resolved type must also suit the operation. For example, Merge Object requires an object/dictionary, while Increment By and Decrement By require numeric values.
+
+## Target paths and supported scope
+
+- **`doc.fieldname`** targets a root-level field on the document that triggered the rule.
+- **`vars.name`** targets a rule context variable. Nested variable paths such as `vars.summary.total` can be created through intermediate dictionaries.
+- System paths such as `meta.*`, `frappe.*`, `rule.*`, and `caller.*` are protected and cannot be Assignment targets.
+- Deep document paths such as `doc.customer.address` are not supported by the current runtime. Assignment to document fields is limited to root-level fields.
+- Assignment does not produce a separate result object. To pass an intermediate value to later actions, assign it to a `vars.*` variable and reference that variable in the later action.
+
+## Values and dynamic expressions
+
+The value control supports static and structured dynamic values, with the exact choices depending on the field/control. Dynamic values are resolved by FlexiRule's shared value resolver. Use the available picker/configuration UI instead of assuming every value mode or expression syntax is valid in every input.
+
+See the [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}}) for supported value patterns and configuration guidance.
+
+## Conditional rows: Run If
+
+A row can include a **Run If** condition. If that condition evaluates to false, the row is skipped and the next assignment row is evaluated. A skipped row does not initialize or clear its target. If a later row depends on a value from an earlier row, make sure the earlier row is guaranteed to run or provide a safe default.
+
+The condition belongs to the assignment row; it is not the same as a separate [Condition action](condition.md), which routes the rule through True and False execution paths.
+
+## Execution and document lifecycle
+
+Assignment processes configured rows sequentially and updates the current execution context. It does not by itself create another document or call a separate document operation. Changes to the current document participate in the rule's surrounding Frappe event/lifecycle behavior.
+
+Some event phases restrict mutation of the triggering document. The runtime blocks `doc.*` assignment for configured after-event mutation-restricted events. If a document field does not change as expected, check the trigger event, document state, target path, and runtime logs. Use Document Action when the required operation is a supported action on a separate document.
 
 ## Troubleshooting
 
-- **Wrong target:** choose the field through the target picker and confirm its context path.
-- **Unexpected value:** inspect the selected value mode and test the row in Debug.
-- **A later action sees an empty variable:** check whether the row that assigns it was conditional or whether its execution path was reached.
-- **A field is not updated:** confirm that the target is writable in the current event and document state.
+- **The row does not run:** inspect its **Run If** condition and confirm the action path reaches Assignment.
+- **The target is rejected:** ensure it starts with `doc.` or `vars.`; use a root-level `doc.fieldname` for document fields.
+- **An operator is missing or fails:** check the target field type and choose an operator supported for that type.
+- **A numeric operation fails:** confirm the current value and operand are numeric.
+- **Merge Object fails:** make sure the operand resolves to an object/dictionary and the current value is either an object or empty.
+- **A later action sees an empty variable:** verify the assignment row ran, its target uses `vars.*`, and its value resolved as expected.
+- **A document field is not updated:** verify the rule event allows mutation and that you are assigning a field on the triggering document—not trying to modify another document.
 
 ## Related guides
 
