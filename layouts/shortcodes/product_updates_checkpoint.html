@@ -1,0 +1,20 @@
+{{ $cp := site.Data.product_updates_checkpoint }}
+<div class="product-updates-checkpoint-card" style="background: var(--bg-surface-elevated, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 2rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05);">
+  <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+    <div>
+      <div style="font-size: 0.75rem; text-transform: uppercase; tracking: 0.05em; color: var(--text-muted, #64748b); font-weight: 600;">Product Review Checkpoint</div>
+      <div style="font-size: 1.125rem; font-weight: 700; color: var(--text-color, #0f172a); margin-top: 0.25rem; display: flex; align-items: center; gap: 0.5rem;">
+        <span>Tracked Branch: <code>{{ $cp.tracked_branch | default "develop" }}</code></span>
+        <span style="font-size: 0.75rem; padding: 0.2rem 0.5rem; border-radius: 9999px; background: #dcfce7; color: #166534; font-weight: 600; text-transform: capitalize;">{{ $cp.review_status | default "assessed" }}</span>
+      </div>
+    </div>
+    <div style="font-size: 0.875rem; color: var(--text-muted, #64748b);">
+      <div>Reviewed Through Commit: <a href="{{ $cp.commit_url }}" target="_blank" rel="noopener noreferrer" style="font-family: monospace; font-weight: 600; text-decoration: underline;">{{ substr ($cp.latest_reviewed_commit_sha | default "1c32acc") 0 7 }}</a></div>
+      <div style="font-size: 0.75rem; margin-top: 0.2rem;">Last Assessed: {{ $cp.latest_completed_review_timestamp | default $cp.checkpoint_timestamp | dateFormat "Jan 2, 2006 15:04 UTC" }}</div>
+    </div>
+  </div>
+  <div style="margin-top: 0.75rem; font-size: 0.8125rem; color: var(--text-muted, #475569); border-top: 1px solid var(--border-color, #e2e8f0); padding-top: 0.5rem; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;">
+    <span>Machine-readable API: <a href='{{ "data/product_updates_checkpoint.json" | relURL }}' target="_blank" style="font-family: monospace; text-decoration: underline;">data/product_updates_checkpoint.json</a></span>
+    <span>Synchronized HEAD: <a href="https://github.com/{{ $cp.repository }}/commit/{{ $cp.latest_synchronized_commit_sha }}" target="_blank" rel="noopener" style="font-family: monospace;">{{ substr ($cp.latest_synchronized_commit_sha | default "") 0 7 }}</a></span>
+  </div>
+</div>

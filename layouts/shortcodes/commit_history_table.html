@@ -1,0 +1,91 @@
+{{ $history := site.Data.commit_history }}
+{{ $commits := $history.commits }}
+<div class="commit-history-container" style="margin-top: 1.5rem;">
+  <div style="background: var(--bg-surface-elevated, #f8fafc); border: 1px solid var(--border-color, #e2e8f0); border-radius: 8px; padding: 1.25rem 1.5rem; margin-bottom: 1.5rem;">
+    <div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 1rem;">
+      <div>
+        <h3 style="margin: 0; font-size: 1.125rem; font-weight: 700;">Synchronized History Meta</h3>
+        <p style="margin: 0.25rem 0 0 0; font-size: 0.875rem; color: var(--text-muted, #64748b);">
+          Repository: <strong>{{ $history.repository }}</strong> (Branch: <code>{{ $history.tracked_branch }}</code>) &bull; Total Commits: <strong>{{ $history.total_commits }}</strong>
+        </p>
+      </div>
+      <div style="font-size: 0.875rem;">
+        <a class="btn" href='{{ "data/commit_history.json" | relURL }}' target="_blank" style="display: inline-flex; align-items: center; gap: 0.4rem; padding: 0.4rem 0.8rem; background: var(--color-primary, #2563eb); color: #fff; border-radius: 6px; text-decoration: none; font-size: 0.8125rem; font-weight: 600;">
+          <svg style="width:14px;height:14px;fill:currentColor;"><use href="#icon-github"/></svg> Raw JSON Endpoint
+        </a>
+      </div>
+    </div>
+    <div style="margin-top: 0.75rem; font-size: 0.8125rem; color: var(--text-muted, #64748b);">
+      Last synchronized: {{ $history.last_synchronized_at | dateFormat "Jan 2, 2006 15:04 UTC" }}
+    </div>
+  </div>
+
+  <div style="margin-bottom: 1rem; display: flex; gap: 0.75rem; flex-wrap: wrap; align-items: center;">
+    <input type="text" id="commit-search-input" placeholder="Search commit messages, SHAs, or authors..." style="flex: 1; min-width: 280px; padding: 0.5rem 0.75rem; border: 1px solid var(--border-color, #cbd5e1); border-radius: 6px; font-size: 0.875rem; background: var(--bg-surface, #fff); color: var(--text-color, #0f172a);" onkeyup="filterCommits()" />
+    <span id="commit-count-badge" style="font-size: 0.8125rem; font-weight: 600; color: var(--text-muted, #64748b);">Showing {{ len $commits }} commits</span>
+  </div>
+
+  <div style="overflow-x: auto; border: 1px solid var(--border-color, #e2e8f0); border-radius: 8px; background: var(--bg-surface, #fff);">
+    <table id="commit-table" style="width: 100%; border-collapse: collapse; text-align: left; font-size: 0.875rem;">
+      <thead>
+        <tr style="background: var(--bg-surface-elevated, #f1f5f9); border-bottom: 1px solid var(--border-color, #e2e8f0);">
+          <th style="padding: 0.75rem 1rem; font-weight: 600; width: 110px;">Date</th>
+          <th style="padding: 0.75rem 1rem; font-weight: 600; width: 90px;">SHA</th>
+          <th style="padding: 0.75rem 1rem; font-weight: 600;">Commit Message</th>
+          <th style="padding: 0.75rem 1rem; font-weight: 600; width: 140px;">Author</th>
+          <th style="padding: 0.75rem 1rem; font-weight: 600; width: 90px;">PR</th>
+        </tr>
+      </thead>
+      <tbody>
+        {{ range $commits }}
+        <tr class="commit-row" style="border-bottom: 1px solid var(--border-color, #f1f5f9);">
+          <td style="padding: 0.6rem 1rem; white-space: nowrap; color: var(--text-muted, #64748b); font-size: 0.8125rem;">
+            {{ (or .committed_date .authored_date) | dateFormat "2006-01-02" }}
+          </td>
+          <td style="padding: 0.6rem 1rem; font-family: monospace;">
+            <a href="{{ .commit_url }}" target="_blank" rel="noopener noreferrer" style="font-weight: 600; text-decoration: underline;">{{ .short_sha }}</a>
+          </td>
+          <td style="padding: 0.6rem 1rem; line-height: 1.4;" class="commit-subject-cell">
+            <span style="font-weight: 500;">{{ .subject }}</span>
+          </td>
+          <td style="padding: 0.6rem 1rem; color: var(--text-muted, #475569); font-size: 0.8125rem;" class="commit-author-cell">
+            {{ .author_name }}
+          </td>
+          <td style="padding: 0.6rem 1rem; font-size: 0.8125rem;">
+            {{ if .pr_url }}
+              <a href="{{ .pr_url }}" target="_blank" rel="noopener noreferrer" style="color: var(--color-primary, #2563eb); font-weight: 600;">#{{ .pr_number }}</a>
+            {{ else }}
+              <span style="color: var(--text-muted, #cbd5e1);">&mdash;</span>
+            {{ end }}
+          </td>
+        </tr>
+        {{ end }}
+      </tbody>
+    </table>
+  </div>
+</div>
+
+<script>
+function filterCommits() {
+  var input = document.getElementById("commit-search-input");
+  var filter = input.value.toLowerCase();
+  var table = document.getElementById("commit-table");
+  var trs = table.getElementsByClassName("commit-row");
+  var visibleCount = 0;
+
+  for (var i = 0; i < trs.length; i++) {
+    var text = trs[i].innerText.toLowerCase();
+    if (text.indexOf(filter) > -1) {
+      trs[i].style.display = "";
+      visibleCount++;
+    } else {
+      trs[i].style.display = "none";
+    }
+  }
+
+  var badge = document.getElementById("commit-count-badge");
+  if (badge) {
+    badge.innerText = "Showing " + visibleCount + " of " + trs.length + " commits";
+  }
+}
+</script>
