@@ -1,67 +1,76 @@
 ---
 title: Which Action Should I Use?
-description: Choose the FlexiRule action that matches the business outcome you need.
+description: Choose the right FlexiRule action for common business tasks, from decisions and data lookup to document changes and repetition.
 weight: 1
 ---
 
 # Which Action Should I Use?
 
-Start with the outcome you need, then choose the action that performs it. Action availability and options can vary with the installed FlexiRule version and the selected operation.
+Choose an action by the **business outcome** you want—not just by the name of a control. The guides below use the current action terminology. The controls, operations, and supported behavior can vary by installed FlexiRule version.
 
-## Choose by outcome
+## Find an action by task
 
-| I need to… | Choose | Notes |
+| Common business task | Use | Why / what to check |
 |---|---|---|
-| Decide whether a condition is true | [Condition](condition.md) | Routes through True/False outputs. |
-| Route by one of several configured value cases | [Switch](switch.md) | Use for multi-case branching. |
-| Set a value or calculate within the current rule context | [Assignment](assignment.md) | The current name; older docs may say “Set Value.” |
-| Read a collection of records | [Query Records → Fetch Records](query-records/fetch-records.md) | Newer Query Builder-backed mode; test query/filter behavior on your Frappe version. |
-| Keep an existing list-style query configuration | [Query Records → Query List](query-records/query-list.md) | Legacy mode; do not assume its contract is identical to Fetch Records. |
-| Read one document | [Query Records → Query Doc](query-records/query-doc.md) | Check the configured output shape. |
-| Check whether a record exists | [Query Records → Exist Record](query-records/exist-record.md) | Returns an existence result. |
-| Get a count or supported aggregate | [Query Records](query-records/) | Choose Count, Sum, Average, Min, Max, or Group By only when that mode fits. |
-| Create, update, or delete a target document | [Document Action]({{< relref "update-record/" >}}) | Use the operation that matches the target document task. |
-| Process each item in a collection | [Loop](loop.md) | The collection must be available in the execution context. |
-| Send a notification | [Notify](notify/) | Configure the notification using the supported UI. |
-| Reuse another visual rule | [Sub-Rule](sub-rule.md) | Requires a suitable callable/reusable rule configuration. |
-| Run a registered process operation | [Process](process.md) | The operation must be available in the installed process registry. |
-| Pause supported work | [Wait](wait.md) | Check the execution-mode and lifecycle constraints. |
-| End a path intentionally | [Stop / Error](stop-error.md) | Choose stop behavior versus an error. |
+| Continue one way when a yes/no rule is true, and another way when false | [Condition](condition.md) | Creates True and False execution paths. |
+| Choose among several known cases, such as status = Draft, Submitted, or Cancelled | [Switch](switch.md) | Better for multiple configured cases than chaining many Condition blocks. |
+| Set a value or calculate a value for later steps | [Assignment](assignment.md) | Assigns a value in the rule's supported context; it is not a general document create/update operation. |
+| Read a list of records matching filters | [Query Records → Fetch Records](query-records/fetch-records.md) | A newer Query Builder-backed mode. Verify filters, permissions, and returned row shape. |
+| Keep an existing list-style record query | [Query Records → Query List](query-records/query-list.md) | Legacy mode with a different implementation/contract from Fetch Records. |
+| Read one document | [Query Records → Query Doc](query-records/query-doc.md) | Check how the configured result is exposed to later steps. |
+| Test whether a matching record exists | [Query Records → Exist Record](query-records/exist-record.md) | Use an existence result rather than retrieving a full list just to test presence. |
+| Count or aggregate matching data | [Query Records](query-records/) | Select the supported Count, Sum, Average, Min, Max, or Group By mode that matches the result you need. |
+| Create, update, or delete a document | [Document Action]({{< relref "update-record/" >}}) | Select the supported operation for the target document. Confirm permissions and mutation behavior. |
+| Run the same steps for each row in a child table or each item in a list | [Loop](loop.md) | The iterator must resolve to a list/tuple; configure an item alias for the current item. |
+| Send a notification | [Notify](notify/) | Use the supported notification configuration. |
+| Reuse logic from another visual rule | [Sub-Rule](sub-rule.md) | The target rule must be configured for the supported callable/reusable use case. |
+| Run a registered business process operation | [Process](process.md) | The operation must exist in the installed Process registry. |
+| Pause supported execution | [Wait](wait.md) | Check execution-mode and lifecycle restrictions for the intended trigger. |
+| Finish a path or deliberately raise an error | [Stop / Error](stop-error.md) | A normal stop and a failed execution have different meanings. |
 
-## Common decisions
+## Quick decision guide
 
 ### Condition or Switch?
 
-Use **Condition** for a yes/no question. Use **Switch** when the rule should select among several configured cases.
+Use **Condition** for one logical yes/no decision. Use **Switch** when a value should select among several configured cases. For example, “total exceeds approval threshold?” is a Condition; “route by document status” is often a Switch.
 
 ### Assignment or Document Action?
 
-Use **Assignment** for supported value assignments in the current rule context. Use **Document Action** for operations on a target document, such as create, update, or delete. Assignment is not named “Set Value” in the current UI terminology.
-
-### Fetch Records or Query List?
-
-Both are Query Records modes, but they are different implementations. Fetch Records uses Frappe's Query Builder compatibility path and supports its own configuration controls. Query List is a legacy mode. Do not rewrite existing Query List configurations just because Fetch Records is available.
+Use **Assignment** to calculate or assign a supported value in the current rule context. Use **Document Action** when the task is to perform an operation on a target document, such as creating, updating, or deleting it. Do not choose Assignment as a substitute for a document mutation.
 
 ### Query Records or Document Action?
 
-Query Records reads data and stores a result for later steps. Document Action performs a supported document operation. Reading a record does not itself update it.
+Use **Query Records** to read information for later steps. Use **Document Action** to change data. A query does not itself create, update, or delete a document.
+
+### Fetch Records or Query List?
+
+Both are modes of Query Records, but they are not interchangeable implementations. Fetch Records uses the Frappe Query Builder compatibility path and has its own configuration and result contract. Query List is a legacy mode. Keep existing configurations unless you have verified that a migration preserves their behavior.
+
+### Query Records or Loop?
+
+Use **Query Records** to retrieve data. Add **Loop** when you need to perform steps for each returned item. Avoid running the same database lookup inside every loop iteration when one query before the loop can provide the collection.
+
+### Condition or Loop?
+
+Use **Condition** to decide which path to take. Use **Loop** to repeat a body of actions for each item in a list. A Condition does not iterate through a collection by itself.
 
 ### Sub-Rule or Process?
 
-Use Sub-Rule to reuse visual rule logic. Use Process to run a registered Process operation.
+Use **Sub-Rule** to reuse visual rule logic. Use **Process** to execute a registered Process operation. They serve different extension points.
 
-### Stop or Raise Error?
+### Stop or Error?
 
-Choose the terminal behavior that matches the intended outcome. A clean stop and an error are not equivalent; consult the [Stop / Error guide](stop-error.md) and test the relevant trigger lifecycle.
+Use a normal stop when the current path should finish intentionally. Use an error when the outcome should be treated as a failure. Check the [Stop / Error guide](stop-error.md) and test the relevant trigger lifecycle.
 
-## Recommended workflow
+## A safe workflow for choosing
 
-1. Identify the business outcome.
-2. Choose the action and operation.
-3. Configure only the fields shown for that operation.
-4. Verify permission behavior and result shape.
-5. Debug success, failure, and empty-result cases before activation.
+1. **Describe the outcome** in plain language: decide, read, change, repeat, notify, reuse, wait, or stop.
+2. **Choose the smallest fitting action** and its specific operation or mode.
+3. **Check its inputs and output shape**, especially when later actions consume a value or collection.
+4. **Review permissions and side effects** before enabling document changes or permission bypasses.
+5. **Test the normal, alternate, empty-result, and error paths** in Debug before activation.
 
 → [Actions catalog](./)  
-→ [Query Records](query-records/)  
+→ [Query Records modes](query-records/which-query-mode.md)  
+→ [Condition Builder]({{< relref "../rule-builder/condition-builder.md" >}})  
 → [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}})
