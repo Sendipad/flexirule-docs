@@ -988,9 +988,12 @@ mark { background: rgba(6, 182, 212, .22); color: inherit; border-radius: .2rem;
 .home-hero--canvas .home-hero__content { max-width: 39rem; }
 .home-hero--canvas h1 { font-size: clamp(2.25rem, 4.1vw, 3.75rem); line-height: 1.06; letter-spacing: -.045em; margin: .8rem 0 1.1rem !important; }
 .home-hero--canvas .lead { font-size: 1.08rem; line-height: 1.75; max-width: 54ch; }
-.hero-proof { display: flex; flex-wrap: wrap; gap: .65rem 1.1rem; padding: 0; margin: 1.5rem 0 0; list-style: none; color: var(--color-muted); font-size: .86rem; }
-.hero-proof li { display: flex; gap: .4rem; align-items: center; }
-.hero-proof li span { color: var(--color-success); font-weight: 900; }
+.hero-proof { display: grid; gap: .8rem; padding: 0; margin: 1.5rem 0 0; list-style: none; color: var(--color-muted); font-size: .86rem; }
+.hero-proof li { display: grid; grid-template-columns: 1rem minmax(0, 1fr); gap: .55rem; align-items: start; }
+.hero-proof li > span { color: var(--color-success); font-weight: 900; line-height: 1.45; }
+.hero-proof li div { display: grid; gap: .15rem; }
+.hero-proof li strong { color: var(--color-text); font-size: .92rem; line-height: 1.35; }
+.hero-proof li small { color: var(--color-muted); font-size: .82rem; line-height: 1.5; }
 .rule-canvas { display: flex; flex-direction: column; align-items: stretch; justify-content: flex-start; min-height: 0; border-radius: 1rem; background: var(--color-surface); box-shadow: 0 28px 80px rgba(15,23,42,.16); overflow: hidden; isolation: isolate; }
 .rule-canvas::before { display: none; }
 .canvas-toolbar { position: relative; z-index: 2; padding: .85rem 1rem; background: var(--color-surface); border-bottom: 1px solid var(--color-border); }
