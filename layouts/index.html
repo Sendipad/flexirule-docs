@@ -67,11 +67,11 @@
           <div class="demo-node__body"><div class="demo-node__operation">Terminal</div><strong>End rule path</strong><div class="demo-node__details"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i> Execution complete</span></div></div>
           <div class="demo-node__footer"><span class="demo-node__status demo-node__status--terminal"><i></i> No outgoing connection</span></div>
         </article>
-        <div class="demo-canvas-added" id="demo-canvas-added" aria-live="polite"></div>
+        
       </div>
     </div>
-    <div class="canvas-footer"><span><i class="canvas-footer-dot"></i> Example graph</span><span>Nodes · connections · decisions</span><button type="button" id="demo-add-action" class="canvas-add-action">＋ Add example action</button></div>
-    <p class="canvas-note" id="demo-canvas-note">A concept preview—not a live or executable rule.</p>
+    <div class="canvas-footer"></div>
+    <p class="canvas-note">A concept preview—not a live or executable rule.</p>
   </div>
 </section>
 
@@ -140,23 +140,5 @@
     <div class="hero-actions compact"><a class="btn btn-secondary" href="{{ .Site.Params.github_app_repo }}">GitHub</a><a class="btn btn-secondary" href="{{ .Site.Params.github_docs_repo }}">Docs source</a></div>
   </article>
 </section>
-<script>
-(() => {
-  const button = document.getElementById("demo-add-action");
-  const target = document.getElementById("demo-canvas-added");
-  const note = document.getElementById("demo-canvas-note");
-  if (!button || !target || !note) return;
-  let count = 0;
-  button.addEventListener("click", () => {
-    if (count >= 3) { note.textContent = "This is a visual sample; explore the guide to build a real rule."; return; }
-    count += 1;
-    const node = document.createElement("div");
-    node.className = "demo-added-node";
-    node.innerHTML = '<span class="demo-added-node__connector" aria-hidden="true">↓</span><span class="demo-node__icon" aria-hidden="true">＋</span><span><strong>Example action ' + count + '</strong><small>Preview node · not saved</small></span>';
-    target.appendChild(node);
-    note.textContent = "Added a sample node to the illustration. Nothing is saved or executed.";
-    if (count === 3) button.textContent = "＋ Add more in the builder";
-  });
-})();
-</script>
+
 {{ end }}
