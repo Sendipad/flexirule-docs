@@ -16,6 +16,7 @@
 <meta property="og:url" content="{{ .Permalink }}">
 <meta property="og:title" content="{{ $title }}">
 <meta property="og:description" content="{{ $description }}">
+<meta property="og:site_name" content="{{ .Site.Title }}">
 {{ with $image }}<meta property="og:image" content="{{ . }}">{{ end }}
 
 <meta name="twitter:card" content="{{ if $image }}summary_large_image{{ else }}summary{{ end }}">
@@ -24,14 +25,14 @@
 {{ with .Site.Params.seo.twitter_handle }}<meta name="twitter:site" content="{{ . }}">{{ end }}
 {{ with $image }}<meta name="twitter:image" content="{{ . }}">{{ end }}
 
-<link rel="sitemap" type="application/xml" href='{{ "sitemap.xml" | absURL }}'>
+<link rel="sitemap" type="application/xml" href='{{ "sitemap_index.xml" | absURL }}'>
 
 {{ $crumbs := slice (dict "@type" "ListItem" "position" 1 "name" "Home" "item" .Site.BaseURL) }}
 {{ range $i, $a := .Ancestors.Reverse }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" (add $i 2) "name" $a.Title "item" $a.Permalink) }}{{ end }}
 {{ if not .IsHome }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" (add (len .Ancestors) 2) "name" .Title "item" .Permalink) }}{{ end }}
 
 {{ $org := dict "@context" "https://schema.org" "@type" "Organization" "name" (.Site.Params.organization.name | default "FlexiRule") "url" (.Site.Params.organization.url | default .Site.BaseURL) "logo" (absURL "images/logo.png") }}
-{{ $search := dict "@context" "https://schema.org" "@type" "WebSite" "url" .Site.BaseURL "name" .Site.Title "potentialAction" (dict "@type" "SearchAction" "target" (printf "%s?search={search_term_string}" .Site.BaseURL) "query-input" "required name=search_term_string") }}
+{{ $search := dict "@context" "https://schema.org" "@type" "WebSite" "url" .Site.BaseURL "name" .Site.Title "alternateName" (slice "FlexiRule Docs" "FlexiRule") "potentialAction" (dict "@type" "SearchAction" "target" (printf "%s?search={search_term_string}" .Site.BaseURL) "query-input" "required name=search_term_string") }}
 {{ $breadcrumbs := dict "@context" "https://schema.org" "@type" "BreadcrumbList" "itemListElement" $crumbs }}
 {{ $software := dict "@context" "https://schema.org" "@type" "SoftwareApplication" "name" (.Site.Params.seo.software_name | default "FlexiRule") "applicationCategory" (.Site.Params.seo.software_category | default "BusinessApplication") "operatingSystem" (.Site.Params.seo.software_os | default "Any") "description" (.Site.Params.seo.software_description | default "Enterprise-Grade Rule Flow and Decision Automation Engine") }}
 

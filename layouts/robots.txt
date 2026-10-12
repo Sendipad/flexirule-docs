@@ -17,4 +17,4 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
-Sitemap: {{ "sitemap.xml" | absURL }}
+Sitemap: {{ "sitemap_index.xml" | absURL }}

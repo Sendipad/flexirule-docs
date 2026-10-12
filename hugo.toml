@@ -1,4 +1,4 @@
-baseURL = 'https://sendipad.github.io/flexirule-docs/'
+baseURL = 'https://sendipad.github.io/flexirule/'
 locale = 'en-us'
 title = 'FlexiRule Documentation'
 
@@ -6,6 +6,9 @@ defaultContentLanguage = 'en'
 enableRobotsTXT = true
 enableGitInfo = true
 summaryLength = 28
+
+[sitemap]
+  filename = 'sitemap_index.xml'
 
 [languages]
   [languages.en]
@@ -25,7 +28,7 @@ summaryLength = 28
 
   [params.organization]
     name = 'FlexiRule'
-    url = 'https://sendipad.github.io/flexirule-docs/'
+    url = 'https://sendipad.github.io/flexirule/'
 
   [params.seo]
     twitter_handle = '@flexirule'
