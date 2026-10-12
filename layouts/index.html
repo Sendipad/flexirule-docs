@@ -1,32 +1,52 @@
 {{ define "main" }}
 {{ $tutorials := site.GetPage "section" "tutorials" }}
-<section class="home-hero" data-pagefind-body>
+<section class="home-hero home-hero--canvas" data-pagefind-body>
   <div class="home-hero__content">
-    <p class="eyebrow">Enterprise rules orchestration for Frappe</p>
-    <h1>Build visual business logic that is auditable, deterministic, and fast.</h1>
-    <p class="lead">FlexiRule turns scattered hooks into a product-grade automation layer: visual rules, reusable actions, explicit execution paths, and documentation designed for business analysts and developers.</p>
+    <p class="eyebrow">Visual rule orchestration for Frappe</p>
+    <h1>Make business rules visible. Make execution understandable.</h1>
+    <p class="lead">FlexiRule gives Frappe teams a visual, maintainable way to compose business policies from triggers, conditions, and reusable actions—with an execution path you can inspect before it runs.</p>
     <div class="hero-actions" aria-label="Primary actions">
       <a class="btn btn-primary" href='{{ "getting-started/quick-start/" | relLangURL }}'>Get Started</a>
-      <a class="btn btn-secondary" href='{{ "product-updates/" | relLangURL }}'>Product Updates</a>
+      <a class="btn btn-secondary" href='{{ "action-type/" | relLangURL }}'>Explore Actions</a>
     </div>
-    <dl class="hero-metrics" aria-label="FlexiRule documentation highlights">
-      <div><dt>4</dt><dd>core concepts</dd></div>
-      <div><dt>12+</dt><dd>action patterns</dd></div>
-      <div><dt>v1.0</dt><dd>docs version</dd></div>
-    </dl>
+    <ul class="hero-proof" aria-label="Key benefits">
+      <li><span aria-hidden="true">✓</span> Visual execution paths</li>
+      <li><span aria-hidden="true">✓</span> Reusable action patterns</li>
+      <li><span aria-hidden="true">✓</span> Frappe-native context</li>
+    </ul>
   </div>
-  <div class="home-hero__visual" aria-label="FlexiRule execution preview">
-    <div class="workflow-card">
-      <div class="workflow-node node-trigger">Trigger</div>
-      <div class="workflow-edge"></div>
-      <div class="workflow-node node-condition">Condition</div>
-      <div class="workflow-edge"></div>
-      <div class="workflow-node node-action">Action</div>
+  <div class="home-hero__visual rule-canvas" aria-label="Interactive example of a FlexiRule rule builder canvas">
+    <div class="canvas-toolbar">
+      <div><span class="canvas-live-dot"></span><strong>Order approval</strong><small>Example rule · Draft</small></div>
+      <span class="canvas-toolbar-chip">Visual builder</span>
     </div>
-    <div class="floating-panel">
-      <span class="status-dot"></span>
-      Rule graph validated
+    <div class="canvas-viewport">
+      <div class="canvas-grid" aria-hidden="true"></div>
+      <div class="canvas-flow">
+        <article class="demo-node demo-node--start">
+          <div class="demo-node__header"><span class="demo-node__icon">▶</span><span>TRIGGER</span></div>
+          <strong>Document Event</strong><small>Sales Order · Before Save</small>
+          <span class="demo-node__status"><i></i> Configured</span>
+        </article>
+        <div class="demo-edge demo-edge--vertical"><span class="demo-plus" aria-hidden="true">+</span></div>
+        <article class="demo-node demo-node--condition">
+          <div class="demo-node__header"><span class="demo-node__icon">◇</span><span>CONDITION</span></div>
+          <strong>Requires approval?</strong><small>grand_total ≥ 5,000</small>
+          <div class="demo-branches"><span>YES</span><span>NO</span></div>
+        </article>
+        <div class="demo-branch-row">
+          <div class="demo-branch demo-branch--yes"><span class="demo-edge demo-edge--short"><span class="demo-plus" aria-hidden="true">+</span></span>
+            <article class="demo-node demo-node--action"><div class="demo-node__header"><span class="demo-node__icon">↗</span><span>NOTIFICATION</span></div><strong>Request approval</strong><small>Notify approver</small><span class="demo-node__status"><i></i> Ready</span></article>
+          </div>
+          <div class="demo-branch demo-branch--no"><span class="demo-edge demo-edge--short"><span class="demo-plus" aria-hidden="true">+</span></span>
+            <article class="demo-node demo-node--assignment"><div class="demo-node__header"><span class="demo-node__icon">＝</span><span>ASSIGNMENT</span></div><strong>Mark as confirmed</strong><small>Set workflow state</small><span class="demo-node__status"><i></i> Ready</span></article>
+          </div>
+        </div>
+        <div class="demo-canvas-added" id="demo-canvas-added" aria-live="polite"></div>
+      </div>
     </div>
+    <div class="canvas-footer"><span><i class="canvas-footer-dot"></i> Example graph</span><span>Nodes · connections · decisions</span><button type="button" id="demo-add-action" class="canvas-add-action">＋ Add example action</button></div>
+    <p class="canvas-note" id="demo-canvas-note">A concept preview—not a live or executable rule.</p>
   </div>
 </section>
 
@@ -47,12 +67,12 @@
 <section class="home-section" aria-labelledby="concepts-title">
   <div class="section-heading">
     <p class="eyebrow">Core Concepts</p>
-    <h2 id="concepts-title">Everything starts with a small, memorable model.</h2>
+    <h2 id="concepts-title">Compose rules from a few clear building blocks.</h2>
   </div>
   <div class="card-grid feature-grid">
-    <a class="doc-card feature-card" href='{{ "action-type/condition/" | relLangURL }}'><span class="feature-icon">◇</span><span class="card-title">Check (Condition)</span><span class="card-desc">Evaluate condition logic with short-circuiting AND/OR groups.</span></a>
+    <a class="doc-card feature-card" href='{{ "action-type/condition/" | relLangURL }}'><span class="feature-icon">◇</span><span class="card-title">Condition</span><span class="card-desc">Route execution using explicit conditions and true/false outcomes.</span></a>
     <a class="doc-card feature-card" href='{{ "action-type/" | relLangURL }}'><span class="feature-icon">▶</span><span class="card-title">Core Actions</span><span class="card-desc">Run assignments, notifications, document updates, and processes.</span></a>
-    <a class="doc-card feature-card" href='{{ "action-type/assignment/" | relLangURL }}'><span class="feature-icon">=</span><span class="card-title">Set Value</span><span class="card-desc">Batch mutate document fields and context variables sequentially.</span></a>
+    <a class="doc-card feature-card" href='{{ "action-type/assignment/" | relLangURL }}'><span class="feature-icon">=</span><span class="card-title">Assignment</span><span class="card-desc">Set document fields and context variables with explicit, ordered assignments.</span></a>
     <a class="doc-card feature-card" href='{{ "action-type/process/" | relLangURL }}'><span class="feature-icon">↻</span><span class="card-title">Advanced Process</span><span class="card-desc">Execute registered backend capabilities behind visual configuration.</span></a>
   </div>
 </section>
@@ -77,7 +97,26 @@
   <div class="card-grid">
     {{ with $tutorials }}{{ range first 6 .Pages.ByWeight }}
       <a class="doc-card guide-card" href="{{ .RelPermalink }}"><span class="card-title">{{ .Title }}</span><span class="card-desc">{{ .Description | default .Summary | plainify | truncate 132 }}</span></a>
-    {{ end }}{{ end }}
+    <script>
+(() => {
+  const button = document.getElementById("demo-add-action");
+  const target = document.getElementById("demo-canvas-added");
+  const note = document.getElementById("demo-canvas-note");
+  if (!button || !target || !note) return;
+  let count = 0;
+  button.addEventListener("click", () => {
+    if (count >= 3) { note.textContent = "This is a visual sample; explore the guide to build a real rule."; return; }
+    count += 1;
+    const node = document.createElement("div");
+    node.className = "demo-added-node";
+    node.innerHTML = '<span class="demo-added-node__connector" aria-hidden="true">↓</span><span class="demo-node__icon" aria-hidden="true">＋</span><span><strong>Example action ' + count + '</strong><small>Preview node · not saved</small></span>';
+    target.appendChild(node);
+    note.textContent = "Added a sample node to the illustration. Nothing is saved or executed.";
+    if (count === 3) button.textContent = "＋ Add more in the builder";
+  });
+})();
+</script>
+{{ end }}{{ end }}
   </div>
 </section>
 
