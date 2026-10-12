@@ -1004,10 +1004,16 @@ mark { background: rgba(6, 182, 212, .22); color: inherit; border-radius: .2rem;
 .canvas-grid { position: absolute; inset: 0; opacity: .8; background-image: radial-gradient(color-mix(in srgb, var(--color-soft) 35%, transparent) 1px, transparent 1px); background-size: 17px 17px; }
 .canvas-flow { position: relative; z-index: 1; display: flex; flex-direction: column; align-items: center; padding: 1.5rem .75rem 1rem; }
 .demo-node { position: relative; width: 100%; max-width: 17rem; padding: .8rem .9rem .75rem; border: 1px solid var(--color-border); border-left: 3px solid var(--node-accent, var(--color-primary)); border-radius: .65rem; background: var(--color-surface); box-shadow: 0 5px 16px rgba(15,23,42,.07); color: var(--color-text); }
-.demo-node--start { --node-accent: #64748b; }
+.demo-node--entry { --node-accent: #22c55e; }
 .demo-node--condition { --node-accent: #d97706; width: 100%; max-width: 18rem; }
 .demo-node--action { --node-accent: #2563eb; }
-.demo-node--assignment { --node-accent: #7c3aed; }
+.demo-node--loop { --node-accent: #fab005; }
+.demo-node--assignment { --node-accent: #14b8a6; }
+.demo-node--terminal { --node-accent: #ef4444; }
+.demo-node__header .demo-node__icon { background: color-mix(in srgb, var(--node-accent, var(--color-primary)) 12%, var(--color-surface)); font-size: .8rem; }
+.demo-loop-body { display: grid; justify-items: center; gap: .65rem; width: calc(100% - .6rem); margin: .65rem 0 0; padding: .65rem; border: 1px dashed color-mix(in srgb, #fab005 60%, var(--color-border)); border-radius: .7rem; background: color-mix(in srgb, #fab005 5%, var(--color-surface)); }
+.demo-loop-caption { color: var(--color-soft); font-size: .55rem; font-weight: 800; letter-spacing: .08em; }
+.demo-loop-body .demo-node { max-width: 100%; }
 .demo-node__header { display: flex; align-items: center; gap: .45rem; padding-bottom: .5rem; margin-bottom: .55rem; border-bottom: 1px solid var(--color-border); color: var(--color-soft); font-size: .59rem; font-weight: 800; letter-spacing: .08em; }
 .demo-node__icon { display: inline-grid; place-items: center; width: 1.3rem; height: 1.3rem; border-radius: .35rem; background: color-mix(in srgb, var(--node-accent, var(--color-primary)) 12%, var(--color-surface)); color: var(--node-accent, var(--color-primary)); font-size: .8rem; font-weight: 800; }
 .demo-node > strong { display: block; font-size: .83rem; font-weight: 750; }
@@ -1023,6 +1029,8 @@ mark { background: rgba(6, 182, 212, .22); color: inherit; border-radius: .2rem;
 .demo-branch-row { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1fr); gap: 1rem; width: 100%; max-width: 35rem; }
 .demo-branch { display: flex; flex-direction: column; align-items: center; min-width: 0; }
 .demo-edge--short { height: 1.7rem; }
+.demo-edge--terminal { margin-top: .6rem; height: 1.6rem; }
+.demo-node--terminal .demo-node__status { color: var(--color-danger); }
 .demo-branch--yes .demo-edge { background: color-mix(in srgb, var(--color-success) 55%, var(--color-border)); }
 .demo-branch--no .demo-edge { background: color-mix(in srgb, var(--color-danger) 45%, var(--color-border)); }
 .demo-branch .demo-node { width: 100%; padding: .65rem; }
