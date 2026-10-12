@@ -1,46 +1,83 @@
 ---
 title: How FlexiRule Works
 weight: 20
-description: Understand the flow from trigger to conditions, actions, outputs, and execution.
+description: Follow the lifecycle of a visual rule, from its trigger and conditions through actions, data, and execution results.
 ---
 
 # How FlexiRule Works
 
-FlexiRule turns a business policy into a visual rule that can be configured, tested, and executed consistently.
+A FlexiRule rule describes a business decision as a connected flow. Instead of hiding every decision in code, the rule makes its entry point, steps, branches, and configured inputs visible in one place.
 
-## The execution model
+## The execution journey
 
-A typical rule follows this mental model:
+```text
+Business event or supported trigger
+                 │
+                 ▼
+        Trigger configuration
+                 │
+                 ▼
+      Optional trigger condition
+                 │
+                 ▼
+           Rule starts
+                 │
+                 ▼
+     Connected action steps
+      ├── Read or query data
+      ├── Evaluate a condition
+      ├── Assign or update values
+      └── Notify or call reusable logic
+                 │
+                 ▼
+          Result and logs
+```
 
-**Trigger → optional trigger condition → actions → branches/loops → outputs**
+1. **A trigger defines when a rule is eligible to run.** For example, a rule may be associated with a DocType event.
+2. **An optional trigger condition filters early.** It can prevent the rule flow from starting when the incoming document does not meet the configured criteria.
+3. **The canvas defines the path.** Connected action nodes determine the sequence and branches of work.
+4. **Each action has its own configuration.** It determines what the step does and which inputs it uses.
+5. **Smart Values supply data.** Inputs can reference the current document, runtime variables, earlier results, or supported value resolvers.
+6. **The execution result can be inspected.** Testing and execution logs help explain which path ran and where a problem occurred.
 
-1. **Trigger** defines when the rule is eligible to run.
-2. **Trigger conditions** reject irrelevant events before the action flow starts.
-3. **Actions** perform decisions, reads, assignments, updates, notifications, or other supported operations.
-4. **Branches and loops** control which parts of the flow execute.
-5. **Outputs and variables** make results available to later steps.
-6. **Execution logs** record live activity for operational inspection.
+## The canvas is more than a diagram
 
-## What you see is what executes
+The canvas represents the configured execution flow; it is not merely an illustration of a separate script. A connection matters because it determines which step can run next. Action settings matter because they define the behavior of each step.
 
-The canvas is the primary representation of the rule flow. Connections determine execution paths, while each action's configuration determines the inputs and behavior of that step.
+When troubleshooting, check these layers separately:
 
-This is why FlexiRule separates:
+| Layer | Question to ask |
+|---|---|
+| Rule configuration | Is the trigger, target DocType, and event correct? |
+| Flow connections | Does the intended branch lead to the correct next step? |
+| Action settings | Is each action configured for the intended operation? |
+| Smart Values | Does each input refer to data that is available at that point? |
+| Test and execution results | What path ran, what values were returned, and where did it fail? |
 
-- **Rule configuration** — when and where the rule can run.
-- **Canvas flow** — the order and branching of execution.
-- **Action settings** — what each step does.
-- **Smart values** — where each input comes from.
-- **Testing** — what happens when the rule is simulated before production use.
+## A practical example: flag a high-value invoice
 
-## FlexiRule and custom code
+Suppose a finance team wants to alert a reviewer when a Sales Invoice exceeds a configured amount.
 
-FlexiRule is a declarative business-logic layer. It does not replace all custom development.
+1. Configure a rule for the appropriate Sales Invoice event.
+2. Add a **Condition** that compares the invoice's grand total with the threshold.
+3. Connect the matching branch to a **Notify** action.
+4. Configure the notification using the relevant document information.
+5. Test with one invoice above the threshold and another below it.
+6. Review the trace and action outcomes before activation.
 
-Use a rule when the policy is best represented as configurable business behavior. Use custom Frappe/Python development when the requirement needs application-specific technical logic, complex integrations, or capabilities not exposed by supported actions and processes.
+The example illustrates the pattern: **trigger → decision → action → verification**. Choose the trigger event carefully; different events have different timing and side effects.
 
-## Continue
+## FlexiRule and custom code work together
+
+FlexiRule is a declarative layer for configurable business policies, not a replacement for all development.
+
+- Use **FlexiRule** when business behavior benefits from a visible flow that can be configured, tested, and maintained as policy changes.
+- Use **custom Frappe/Python development** for new application capabilities, complex technical logic, integrations, and behavior that supported actions cannot express.
+- Use **both together** when custom code provides a reliable capability and a FlexiRule rule determines the business circumstances in which it should be used.
+
+## Next steps
 
 - [Core Concepts]({{< relref "core-concepts.md" >}})
+- [Quick Start]({{< relref "quick-start.md" >}})
 - [Build Your First Rule]({{< relref "first-rule.md" >}})
-- [Build Rules]({{< relref "../rule-builder/" >}})
+- [Rule Builder guide]({{< relref "../rule-builder/_index.md" >}})
