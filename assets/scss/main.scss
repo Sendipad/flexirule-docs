@@ -1030,6 +1030,7 @@ mark { background: rgba(6, 182, 212, .22); color: inherit; border-radius: .2rem;
 .demo-branch { display: flex; flex-direction: column; align-items: center; min-width: 0; }
 .demo-edge--short { height: 1.7rem; }
 .demo-edge--terminal { margin-top: .6rem; height: 1.6rem; }
+.demo-edge--inside { height: 1.25rem; background: color-mix(in srgb, #14b8a6 45%, var(--color-border)); }
 .demo-node--terminal .demo-node__status { color: var(--color-danger); }
 .demo-branch--yes .demo-edge { background: color-mix(in srgb, var(--color-success) 55%, var(--color-border)); }
 .demo-branch--no .demo-edge { background: color-mix(in srgb, var(--color-danger) 45%, var(--color-border)); }
