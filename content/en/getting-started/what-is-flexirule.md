@@ -1,36 +1,53 @@
 ---
 title: What is FlexiRule?
 weight: 10
-description: A high-level overview of FlexiRule and its role in the Frappe ecosystem.
+description: Learn what FlexiRule does, the problems it solves, and how it fits into Frappe and ERPNext.
 aliases:
   - /introduction/what-is-flexirule/
 ---
 
 # What is FlexiRule?
 
-FlexiRule is a **Visual Rule Engineering & Orchestration Engine** built specifically for the Frappe Framework and ERPNext. It provides a visual, graph-based layer that allows you to design, execute, and manage complex business logic without writing scattered Python code.
+FlexiRule is a visual business-rule and orchestration platform for the Frappe Framework and ERPNext. It lets teams represent supported business policies as connected, configurable rules instead of spreading every decision across custom hooks, scripts, and app code.
 
-In modern enterprise systems, business logic often evolves into a fragmented web of Python hooks, server scripts, and custom app overrides. This "technical debt" makes execution order difficult to track, debugging nearly impossible, and system upgrades risky. FlexiRule changes this paradigm by centralizing logic into a visual, auditable orchestration layer.
+A rule can respond to a supported trigger, evaluate conditions, read data, assign values, update documents, send notifications, and connect steps into a visible flow. The exact behavior available depends on the installed FlexiRule version and its configured action types.
 
-## The Problem: "Hook Hell"
+## The problem it addresses
 
-As ERPNext implementations grow, developers typically resort to:
-1.  **Python Hooks**: Hidden in multiple custom apps.
-2.  **Server Scripts**: Hard to version control and test.
-3.  **Client Scripts**: Fragmented logic across the UI.
+As an ERPNext implementation grows, business decisions can become scattered across hooks, server scripts, custom methods, and separate applications. The resulting behavior may be difficult to discover, explain, test, or safely change because no single view shows how the pieces work together.
 
-This leads to **Hook Hell**, where it's unclear which logic runs first, why a document was modified, or how to change a process without breaking unrelated features.
+FlexiRule provides a dedicated place to model supported business policies. The rule's trigger, connected steps, action configuration, and available execution information help a team reason about what should happen and investigate what happened.
 
-## The Solution: Visual Orchestration
+## What FlexiRule is—and is not
 
-FlexiRule sits as a middle layer between the Frappe Framework and your business processes. Instead of writing code, you build **Rules** on a visual canvas.
+- **It is** a visual layer for expressing and maintaining supported business rules.
+- **It is** a way to make decision paths more discoverable and testable.
+- **It is not** a replacement for Frappe, ERPNext, or custom application development.
+- **It does not** make every configuration automatically safe; rules still require correct permissions, testing, and review of side effects.
 
--   **Deterministic**: You define the exact execution path.
--   **Observable**: Every step is logged and traceable on the canvas.
--   **Safe**: Built-in validation, cycle detection, and sandboxing prevent system instability.
+## A simple example
 
-## Role in the Ecosystem
+Imagine that finance wants to notify a reviewer when a Sales Invoice exceeds a threshold. A rule can express the intended flow:
 
-FlexiRule is not a replacement for Frappe; it is an enhancement. It leverages standard Frappe features—like DocTypes, Events, and Permissions—while providing a superior way to organize the logic that connects them.
+```text
+Invoice event
+     │
+     ▼
+Compare grand total with threshold
+     │
+     ├── Above threshold → Notify reviewer
+     └── Otherwise       → No notification
+```
 
-Whether you are automating a simple notification or a multi-stage credit approval process, FlexiRule provides the tools to build it visually and manage it professionally.
+The example separates the **business policy** (which invoices need review) from the technical capabilities used to execute it (document events, data access, and notification delivery).
+
+## How it fits into a Frappe application
+
+Custom development remains the right place to build new DocTypes, APIs, integrations, and technical capabilities. FlexiRule can then orchestrate those capabilities where supported, while keeping changeable business decisions visible in configurable rules.
+
+## Where to go next
+
+- [How FlexiRule Works]({{< relref "how-it-works.md" >}})
+- [Core Concepts]({{< relref "core-concepts.md" >}})
+- [Do I need FlexiRule?]({{< relref "do-i-need-flexirule.md" >}})
+- [Quick Start]({{< relref "quick-start.md" >}})
