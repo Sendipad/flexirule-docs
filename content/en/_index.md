@@ -1,6 +1,6 @@
 ---
-title: "FlexiRule: Visual Business Automation for Frappe"
-description: "Build, test, and manage business rules visually in Frappe and ERPNext."
+title: "FlexiRule — Visual Rule Builder for Frappe & ERPNext"
+description: "Build and test business rules visually in Frappe and ERPNext. Configure supported logic without hand-written expressions, reuse rules, and inspect execution."
 ---
 
 # Build business rules visually
