@@ -24,47 +24,48 @@
       <div class="canvas-grid" aria-hidden="true"></div>
       <div class="canvas-flow">
         <article class="demo-node demo-node--entry">
-          <div class="demo-node__header"><i class="fa fa-play demo-node__icon" aria-hidden="true"></i><span>ENTRY ACTION</span></div>
-          <strong>Order approval</strong><small>Sales Order · Before Save</small>
-          <span class="demo-node__status"><i></i> Configured</span>
+          <div class="demo-node__header"><div class="demo-node__header-left"><i class="fa fa-play demo-node__icon" aria-hidden="true"></i><span>ENTRY ACTION</span></div></div>
+          <div class="demo-node__body"><div class="demo-node__operation">Before Save</div><strong>Order approval</strong><div class="demo-node__details"><span><i class="fa fa-file-text-o" aria-hidden="true"></i> Sales Order</span></div></div>
+          <div class="demo-node__footer"><span class="demo-node__status"><i></i> Configured</span></div>
         </article>
         <div class="demo-edge demo-edge--vertical"><span class="demo-plus" aria-hidden="true">+</span></div>
         <article class="demo-node demo-node--condition">
-          <div class="demo-node__header"><i class="fa fa-code-fork demo-node__icon" aria-hidden="true"></i><span>CONDITION</span></div>
-          <strong>Requires approval?</strong><small>grand_total ≥ 5,000</small>
-          <div class="demo-branches"><span>YES</span><span>NO</span></div>
+          <div class="demo-node__header"><div class="demo-node__header-left"><i class="fa fa-code-fork demo-node__icon" aria-hidden="true"></i><span>CONDITION</span></div></div>
+          <div class="demo-node__body"><strong>Requires approval?</strong><div class="demo-node__details"><span><i class="fa fa-code" aria-hidden="true"></i> grand_total ≥ 5,000</span></div><div class="demo-branches"><span>YES</span><span>NO</span></div></div>
+          <div class="demo-node__footer"><span class="demo-node__status"><i></i> Configured</span></div>
         </article>
         <div class="demo-branch-row">
           <div class="demo-branch demo-branch--yes">
             <span class="demo-edge demo-edge--short"><span class="demo-plus" aria-hidden="true">+</span></span>
             <article class="demo-node demo-node--loop">
-              <div class="demo-node__header"><i class="fa fa-refresh demo-node__icon" aria-hidden="true"></i><span>LOOP</span></div>
-              <strong>For each item</strong><small>items · as item</small>
-              <span class="demo-node__status"><i></i> Configured</span>
+              <div class="demo-node__header"><div class="demo-node__header-left"><i class="fa fa-refresh demo-node__icon" aria-hidden="true"></i><span>LOOP</span></div></div>
+              <div class="demo-node__body"><strong>For each item</strong><div class="demo-node__details"><span><i class="fa fa-list" aria-hidden="true"></i> items · as item</span></div></div>
+              <div class="demo-node__footer"><span class="demo-node__status"><i></i> Configured</span></div>
             </article>
             <div class="demo-loop-body">
               <span class="demo-loop-caption">LOOP BODY · FOR EACH</span>
               <span class="demo-edge demo-edge--inside"><span class="demo-plus" aria-hidden="true">+</span></span>
               <article class="demo-node demo-node--assignment">
-                <div class="demo-node__header"><i class="fa fa-list-ol demo-node__icon" aria-hidden="true"></i><span>ASSIGNMENT</span></div>
-                <strong>Calculate line total</strong><small>item.amount → item.total</small>
+                <div class="demo-node__header"><div class="demo-node__header-left"><i class="fa fa-list-ol demo-node__icon" aria-hidden="true"></i><span>ASSIGNMENT</span></div></div>
+                <div class="demo-node__body"><strong>Calculate line total</strong><div class="demo-node__details"><span><i class="fa fa-arrow-right" aria-hidden="true"></i> item.amount → item.total</span></div></div>
+                <div class="demo-node__footer"><span class="demo-node__status"><i></i> Configured</span></div>
               </article>
             </div>
           </div>
           <div class="demo-branch demo-branch--no">
             <span class="demo-edge demo-edge--short"><span class="demo-plus" aria-hidden="true">+</span></span>
             <article class="demo-node demo-node--action">
-              <div class="demo-node__header"><i class="fa fa-bell demo-node__icon" aria-hidden="true"></i><span>NOTIFICATION</span></div>
-              <strong>Notify approver</strong><small>Send approval request</small>
-              <span class="demo-node__status"><i></i> Ready</span>
+              <div class="demo-node__header"><div class="demo-node__header-left"><i class="fa fa-bell demo-node__icon" aria-hidden="true"></i><span>NOTIFY</span></div></div>
+              <div class="demo-node__body"><div class="demo-node__operation">Email</div><strong>Notify approver</strong><div class="demo-node__details"><span><i class="fa fa-envelope-o" aria-hidden="true"></i> Send approval request</span></div></div>
+              <div class="demo-node__footer"><span class="demo-node__status"><i></i> Configured</span></div>
             </article>
           </div>
         </div>
         <div class="demo-edge demo-edge--terminal"><span class="demo-plus" aria-hidden="true">+</span></div>
         <article class="demo-node demo-node--terminal">
-          <div class="demo-node__header"><i class="fa fa-stop demo-node__icon" aria-hidden="true"></i><span>STOP · TERMINAL</span></div>
-          <strong>End rule path</strong><small>Execution complete</small>
-          <span class="demo-node__status"><i></i> Terminal node · no outgoing edge</span>
+          <div class="demo-node__header"><div class="demo-node__header-left"><i class="fa fa-stop demo-node__icon" aria-hidden="true"></i><span>STOP</span></div></div>
+          <div class="demo-node__body"><div class="demo-node__operation">Terminal</div><strong>End rule path</strong><div class="demo-node__details"><span><i class="fa fa-check-circle-o" aria-hidden="true"></i> Execution complete</span></div></div>
+          <div class="demo-node__footer"><span class="demo-node__status demo-node__status--terminal"><i></i> No outgoing connection</span></div>
         </article>
         <div class="demo-canvas-added" id="demo-canvas-added" aria-live="polite"></div>
       </div>
