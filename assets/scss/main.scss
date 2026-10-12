@@ -703,6 +703,11 @@ mark { background: rgba(6, 182, 212, .22); color: inherit; border-radius: .2rem;
 .section-heading { max-width: 44rem; }
 .split-heading { max-width: none; display: flex; justify-content: space-between; gap: var(--space-6); align-items: end; }
 .section-heading h2, .surface-card h2, .architecture-strip h2 { margin-top: 0; }
+.section-intro { max-width: 68ch; color: var(--color-muted); line-height: 1.75; }
+.principle-quote { padding-block: clamp(1.5rem, 4vw, 3rem); }
+.principle-quote blockquote { max-width: 58rem; margin: 0 auto; padding: clamp(1.5rem, 4vw, 3rem); border-left: 4px solid var(--color-primary); border-radius: 0 var(--radius) var(--radius) 0; background: color-mix(in srgb, var(--color-surface) 94%, var(--color-primary)); }
+.principle-quote blockquote p { margin: 0; font-size: clamp(1.35rem, 2.6vw, 2rem); font-weight: 650; line-height: 1.4; letter-spacing: -.025em; }
+.principle-quote cite { display: block; margin-top: 1rem; color: var(--color-muted); font-size: .9rem; font-style: normal; }
 .step-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(13rem, 1fr)); gap: var(--space-4); }
 .feature-grid { grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); }
 .architecture-strip { display: grid; grid-template-columns: minmax(0, .85fr) minmax(20rem, 1.15fr); gap: var(--space-8); align-items: center; }
