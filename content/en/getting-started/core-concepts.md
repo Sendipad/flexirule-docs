@@ -1,7 +1,7 @@
 ---
 title: Core Concepts
 weight: 60
-description: Learn the essential FlexiRule concepts: rules, triggers, actions, execution context, Smart Values, conditions, and lifecycle.
+description: "Learn the essential FlexiRule concepts: rules, triggers, actions, execution context, Smart Values, conditions, and lifecycle."
 aliases:
   - /introduction/core-concepts/
 ---
