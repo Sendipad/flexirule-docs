@@ -1,174 +1,149 @@
 ---
 title: Core Concepts
 weight: 60
-description: The fundamental building blocks of the FlexiRule ecosystem.
+description: Learn the essential FlexiRule concepts: rules, triggers, actions, execution context, Smart Values, conditions, and lifecycle.
 aliases:
   - /introduction/core-concepts/
 ---
 
 # Core Concepts
 
-FlexiRule is built from a small set of reusable concepts. A rule is not a single script; it is a flow of blocks that read data, make decisions, and perform actions. Understanding these building blocks will help you design, read, and troubleshoot rules, and each concept will later have its own dedicated page for deeper explanation.
+You do not need to memorize every action before building a rule. Start with the concepts below: they explain when a rule runs, how its steps connect, where data comes from, and how to test changes safely.
 
-## How a rule runs
+## The big picture
 
 ```text
-Business Event
-      │
-      ▼
-   Trigger
-      │
-      ▼
-     Rule
-      │
-      ▼
-Execution Context
-      │
-      ▼
-   Blocks
-      │
-      ▼
-Queries, Value Resolvers, and Logical Commands
-      │
-      ▼
-Execution Result
+Trigger
+  │
+  ▼
+Optional trigger condition
+  │
+  ▼
+Rule flow on the canvas
+  ├── Read data
+  ├── Evaluate a Condition
+  ├── Assign values or perform document operations
+  └── Notify or run supported reusable logic
+  │
+  ▼
+Result and available execution details
 ```
 
-In practice, a business event starts the process, a trigger decides whether the rule should run, the rule creates an execution context, and the blocks inside the rule use queries, values, and logic to produce the final result.
+## Rule
 
----
+A **Rule** is the automation definition. It brings together when the automation can run, the flow of action steps, and each step's configuration.
 
-## 1. Rule
+*Ask:* What business behavior should this rule implement?
 
-A **Rule** is the top-level automation definition in FlexiRule, and it exists so business behavior can be modeled in one place instead of being scattered across hard-coded application logic; it interacts with the trigger that starts execution, the execution context that carries runtime data, and the blocks that perform the actual work, and for example a rule can automatically approve a Sales Order when the total amount is below a configured limit and the customer is in good standing.
+## Trigger
 
----
+A **Trigger** determines when a rule is eligible to run, such as a supported DocType event. Choose an event whose timing matches the business requirement; different lifecycle events can have different consequences.
 
-## 2. Trigger
+*Ask:* When should this rule start?
 
-A **Trigger** is the entry point that starts a rule, and it exists so FlexiRule only evaluates automation when the correct business event happens instead of running continuously; it interacts with the rule by deciding whether execution should begin, and if the trigger matches then the execution context is created and the rule continues, for example a trigger can run when a Purchase Invoice is submitted or on a nightly schedule to check overdue documents.
+## Trigger condition
 
----
+A **Trigger Condition** is an optional early filter that determines whether the rule should start for a particular event or document. It is different from a **Condition** action inside the flow: the trigger condition gates entry, while a Condition action chooses what happens after the rule starts.
 
-## 3. Execution Context
+*Ask:* Should this event enter the rule at all?
 
-The **Execution Context** is the runtime memory available while a rule is running, and it exists so blocks can share data and reuse values during execution without losing state between steps; it interacts with the rule, blocks, value resolvers, and logical commands by holding the current document as `doc`, the previous state as `old_doc` when available, and custom runtime values in `vars`, and for example a customer credit check rule can store the calculated credit limit in `vars.credit_limit` and use it later in the same flow.
+## Action node and Action Type
 
----
+An **action node** is a step on the canvas. Its **Action Type** defines the kind of work it performs. Depending on the installed version and configuration, actions may evaluate conditions, read records, assign values, perform document operations, notify users, or call supported reusable logic.
 
-## 4. Block (Rule Action)
+Choose an action by intent, not by a similar-sounding label. **Assignment** is for assigning a value; **Document Action** is for a supported operation on a document. They are not interchangeable.
 
-A **Block** is one node in the visual rule canvas, and it exists so automation can be built as a sequence of small, understandable steps instead of one large script; it interacts with the rule as a contained step, uses an action type to determine what it does, reads from and writes to the execution context, and may branch the flow based on a condition, for example one block may fetch related records, another may check whether a condition is true, and a third may send a notification.
+*Ask:* What work should this step do?
 
----
+See [Which action should I use?]({{< relref "../action-type/which-action.md" >}}).
 
-## 5. Action Type
+## The canvas and connections
 
-An **Action Type** defines what a block actually does, and it exists so different automation steps can perform different kinds of work while still fitting into the same visual rule structure; it interacts with the block as the behavior behind it and often uses value resolvers, queries, and logical commands to complete its task, and for example action types may retrieve data, set values, send notifications, run reusable logic, or evaluate decisions.
+The canvas is the connected flow of action nodes. Connections describe which step can follow another and which branch is taken. A node's presence alone does not guarantee it will run; its position and connections matter.
 
----
+*Ask:* Does the connected path match the intended business process?
 
-## 6. Query Records
+## Execution context
 
-**Query Records** is an action type used to fetch full records from a DocType, and it exists so a rule can inspect related documents before deciding what to do next; it interacts with the execution context by reading filter values from it and returning matching documents that can be stored in `vars` or used by later blocks, and for example before approving a Sales Order the rule can query all open invoices for the same customer to check whether there are overdue payments.
+The **execution context** is the data available while a rule runs. Depending on the trigger and runtime, it may include the current document as `doc`, the previous document state as `old_doc` when available, runtime variables as `vars`, and results produced by earlier actions.
 
----
+A value should only be referenced where it is available. Do not assume a later action's result exists before that action runs.
 
-## 7. Query List
+*Ask:* What data is available at this point in the flow?
 
-**Query List** is an action type used to fetch a lightweight list of values, and it exists so a rule can work with only the small amount of data it needs instead of loading full records; it interacts with the execution context by reading filters and field selections from it and returning a compact result that can be used in conditions, notifications, or assignments, and for example a rule can get the list of item codes from a Purchase Order to check whether any restricted items are included.
+## Smart Values and value resolvers
 
----
+**Smart Values** are the value-selection experience used to configure inputs. They help you select a field or supported dynamic value instead of manually guessing a reference. A **value resolver** is a supported mechanism for resolving a dynamic input at runtime.
 
-## 8. Set Value
+Examples of common references include `@doc.grand_total` for a field on the current document and `@vars.some_name` for a runtime variable, where those references are supported in the relevant control. The exact choices depend on the input, runtime context, and installed version.
 
-**Set Value** is an action type used to assign a value to a field or variable, and it exists so rules can calculate, update, or overwrite values as part of automation; it interacts with the execution context by usually using a value resolver to calculate the final value and then writing the result into `doc` or `vars`, and for example a rule can set `doc.approval_status` to `Approved` when the rule conditions are satisfied.
+*Ask:* Where should this input come from, and will it be available when this action runs?
 
----
+See [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}}).
 
-## 9. Notify
+## Condition and Switch
 
-**Notify** is an action type used to send messages or alerts, and it exists so automation can inform the right people at the right time instead of only changing data; it interacts with the execution context by using values from it and often combining them with resolved values from value resolvers, and for example a rule can send an email to the finance team when a Purchase Invoice exceeds the approval threshold.
+A **Condition** evaluates criteria and directs execution along an appropriate outcome, commonly a true/false branch. A **Switch** is intended for choosing among multiple cases when that action type is available and appropriate.
 
----
+Use a Condition for a yes/no decision; consider Switch when the business decision is naturally expressed as several alternatives. Confirm the available action configuration in your installed version.
 
-## 10. Process
+*Ask:* Is this a yes/no decision or a choice among multiple cases?
 
-**Process** is an action type used to run reusable logic, and it exists so business logic that is needed in multiple rules can be centralized instead of duplicated; it interacts with the execution context by receiving data from it, calling internal logic or a reusable module, and returning results that later blocks can use, and for example a rule can run a reusable stock validation process before confirming a Sales Order.
+## Reading data versus changing data
 
----
+These goals should be kept distinct:
 
-## 11. Value Resolver
+- **Read/query records:** retrieve data that the rule needs for a decision or later step. Use the supported record-query action available in your version.
+- **Assignment:** assign a value to a supported target, such as a runtime variable or eligible document field.
+- **Document Action:** perform a supported operation on a document.
+- **Notify:** send a configured message or alert.
 
-A **Value Resolver** is the mechanism that turns a dynamic expression into a real value at runtime, and it exists so rules can work with values that are not known until execution time; it interacts with the execution context by reading from `doc`, `old_doc`, `vars`, or query results and is used by Set Value, Notify, Query Records, Query List, and Condition blocks, and for example it can resolve `doc.grand_total`, `vars.credit_limit`, or a calculated discount before comparing values or updating a field.
+A read action does not itself mean a document is changed. Likewise, assigning a value in the runtime context is not the same as performing a persistent document operation.
 
----
+*Ask:* Am I retrieving information, assigning a value, or changing a document?
 
-## 12. Logical Commands & Smart Value Selector
+## Variables
 
-A **Logical Command** is a decision or comparison primitive evaluated within rule logic (e.g., `equals`, `not equals`, `greater than`, `less than`, `contains`, `in`, `is set`, `AND`, `OR`, `NOT`). Configured through the **Smart Value Selector**, logical commands combine dynamic value resolvers and context fields to evaluate boolean conditions, determining execution branching or action triggers. For example, a check condition can evaluate `doc.grand_total > vars.credit_limit AND doc.status == "Submitted"` to route high-value approvals.
+**Variables** store intermediate values for reuse during a rule's execution. They are useful for holding a calculation or a result from an earlier step so that later steps can refer to it, where supported.
 
----
+*Ask:* What result needs to be reused later in this rule?
 
-## 13. Trigger Condition
+## Testing and execution details
 
-A **Trigger Condition** is a pre-check attached to the trigger itself, and it exists so FlexiRule can decide very early whether a rule is worth loading and executing at all; it interacts with the trigger rather than the main rule flow, but it still uses the same Condition Builder and the same logical building blocks to evaluate data, and for example a trigger condition can prevent a Sales Order rule from running unless the document belongs to a specific company, a specific customer group, or a specific workflow state.
+Use the available debug or simulation tools with representative inputs before activation. Test both sides of a decision, inspect the path and action outcomes, and resolve missing or invalid values. Available logs and trace details depend on the execution path and installation.
 
-This concept is different from a normal **Condition** block inside the rule flow:
+*Ask:* Does the rule behave correctly for both expected and unexpected inputs?
 
-* A **Trigger Condition** decides whether the rule should start.
-* A **Condition** block decides what should happen after the rule has already started.
+## Lifecycle and versioning
 
-They may look similar because both use the Condition Builder, but they serve different purposes. The trigger condition is a fast gate at the entry point, while the condition block is part of the actual execution path inside the rule.
+Rule lifecycle controls determine whether a rule can be edited, tested, or run automatically. Exact states and transitions can vary by installed version and site configuration. Follow the lifecycle controls shown by your installation rather than assuming every environment uses identical labels.
 
----
+When changing an active rule, use the supported lifecycle or amendment process for your installation so changes are reviewed and tested before they affect live events.
 
-## 14. Condition and Branching
+*Ask:* Is this a draft I can test, or a live rule that can affect business data?
 
-A **Condition** block uses logical commands to choose the next path in the rule, and it exists so business processes can follow different outcomes depending on the data; it interacts with logical commands, the execution context, and the next block in the flow by evaluating to true or false and deciding which branch should execute, and for example if a Sales Order total is below the approval limit the rule can continue to approval, otherwise it can send the document for manager review.
+## Summary
 
----
+| Concept | Main question |
+|---|---|
+| Rule | What business behavior should be automated? |
+| Trigger | When is the rule eligible to start? |
+| Trigger condition | Should this event enter the rule? |
+| Action node / Action Type | What should this step do? |
+| Canvas connections | Which step or branch runs next? |
+| Execution context | What data is available now? |
+| Smart Values / resolvers | Where does an input come from? |
+| Condition / Switch | Which path should be selected? |
+| Query action | What data needs to be read? |
+| Assignment / Document Action | What value should be assigned, or what document operation should occur? |
+| Variables | What intermediate result is reused later? |
+| Testing and logs | Did the rule follow the expected path? |
+| Lifecycle | Can the rule run live, and how should it be changed safely? |
 
-## 15. Variables
+## Continue learning
 
-**Variables** are custom values stored during rule execution, and they exist so blocks can share intermediate results without changing the document immediately; they interact with the execution context through `vars`, can be created or updated by one block, and can then be read by later blocks together with value resolvers and logical commands, and for example a rule can store `vars.discount_rate = 10` after a pricing check and reuse it in a notification and a field update.
-
----
-
-## 16. Lifecycle States
-
-Rules move through lifecycle states to control how they are used, and these states exist so live business logic can be managed safely without accidental changes; they interact with the rule by controlling whether it can be edited or executed, where Draft means the rule can be edited and tested but does not run automatically, Active means it is live and can be triggered by the system, Disabled means it is temporarily turned off without being deleted, and Archived means it is retired and kept for historical reference.
-
----
-
-## 17. Versioning (Amending)
-
-**Versioning**, also called **Amending**, is the safe way to update a live rule, and it exists so active business logic is never edited directly while it is running in production; it interacts with lifecycle states by creating a new Draft version from an Active rule, allowing the current live version to continue running while the new version is edited and tested, and for example if the approval threshold for a Purchase Invoice changes you can amend the active rule, update the draft, test it, and then activate the new version.
-
----
-
-## Summary Table
-
-| Concept               | Purpose                                 | Typical Questions                                           |
-| --------------------- | --------------------------------------- | ----------------------------------------------------------- |
-| Rule                  | Defines a complete automation           | What should happen?                                         |
-| Trigger               | Starts rule execution                   | When should it run?                                         |
-| Execution Context     | Holds runtime data                      | What data is available now?                                 |
-| Block (Rule Action)   | Represents one step in the flow         | What should happen next?                                    |
-| Action Type           | Defines the behavior of a block         | Is this a query, value update, notification, or process?    |
-| Query Records         | Fetches full documents                  | Which records match these filters?                          |
-| Query List            | Fetches a lightweight list of values    | Which values do I need?                                     |
-| Set Value             | Updates a field or variable             | What value should be written?                               |
-| Notify                | Sends alerts or messages                | Who should be informed?                                     |
-| Process               | Runs reusable logic                     | Which shared logic should be executed?                      |
-| Value Resolver        | Resolves dynamic values at runtime      | What is the actual value right now?                         |
-| Logical Command       | Evaluates comparisons and boolean logic | Is this condition true or false?                            |
-| Trigger Condition     | Decides whether the rule should start   | Should this trigger load the rule at all?                   |
-| Condition             | Chooses the next branch                 | Which path should run?                                      |
-| Variables             | Stores temporary runtime values         | What data should be reused later?                           |
-| Lifecycle States      | Controls rule availability              | Is the rule draft, active, disabled, or archived?           |
-| Versioning (Amending) | Safely updates live rules               | How do I change a running rule without breaking production? |
-
----
-
-Understanding these concepts gives you the foundation for everything else in FlexiRule. Once you know how rules, triggers, blocks, queries, values, and logic work together, the rest of the documentation becomes much easier to follow.
+- [How FlexiRule Works]({{< relref "how-it-works.md" >}})
+- [Build Your First Rule]({{< relref "first-rule.md" >}})
+- [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}})
+- [Choosing an action type]({{< relref "../action-type/which-action.md" >}})
+- [Testing and debugging]({{< relref "../test-operate/debugging.md" >}})
