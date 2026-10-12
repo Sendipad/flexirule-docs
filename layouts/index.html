@@ -16,10 +16,13 @@
     </ul>
   </div>
   <div class="home-hero__visual rule-canvas" aria-label="Interactive example of a FlexiRule rule builder canvas">
-    <div class="canvas-toolbar">
-      <div><span class="canvas-live-dot"></span><strong>Order approval</strong><small>Example rule · Draft</small></div>
-      <span class="canvas-toolbar-chip">Visual builder</span>
-    </div>
+    <nav class="canvas-toolbar" aria-label="RuleFlow steps">
+      <ol class="canvas-steps">
+        <li class="canvas-step canvas-step--current"><span class="canvas-step__number">1</span><span class="canvas-step__text"><strong>Build RuleFlow</strong><small>With an interactive graph</small></span></li>
+        <li class="canvas-step"><span class="canvas-step__number">2</span><span class="canvas-step__text"><strong>Test RuleFlow</strong><small>Safely on existing records</small></span></li>
+        <li class="canvas-step"><span class="canvas-step__number">3</span><span class="canvas-step__text"><strong>Activate</strong></span></li>
+      </ol>
+    </nav>
     <div class="canvas-viewport">
       <div class="canvas-grid" aria-hidden="true"></div>
       <div class="canvas-flow">
@@ -70,7 +73,6 @@
         
       </div>
     </div>
-    <div class="canvas-footer"></div>
     <p class="canvas-note">A concept preview—not a live or executable rule.</p>
   </div>
 </section>
