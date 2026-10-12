@@ -1,6 +1,7 @@
 {{ define "main" }}
 {{ $tutorials := site.GetPage "section" "tutorials" }}
-<section class="home-hero home-hero--canvas" data-pagefind-body>
+<div class="home-page-content" data-pagefind-body>
+<section class="home-hero home-hero--canvas">
   <div class="home-hero__content">
     <p class="eyebrow">No-code business rule automation for Frappe</p>
     <h1>Build business rules visually. Keep execution understandable.</h1>
@@ -225,5 +226,6 @@
     </div>
   </div>
 </section>
+</div>
 
 {{ end }}
