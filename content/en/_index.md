@@ -7,9 +7,12 @@ description: "Build and test business rules visually in Frappe and ERPNext. Conf
 
 **FlexiRule helps teams turn business policies into visible, testable automations** for Frappe and ERPNext. Build a rule from a trigger, decisions, data lookups, assignments, and follow-up actions—without scattering every policy across custom scripts.
 
-{{< figure src="/landing-page/rule_builder.png" alt="FlexiRule visual rule builder canvas" >}}
+<div class="homepage-ruleflow-illustration">
 
-{{< video src="/images/flexirule-overview-demo.webm" controls="true" muted="true" loop="true" >}}
+{{< figure src="/landing-page/rule-flow-illustration.svg" alt="Static illustrative FlexiRule flow: a Contact Before Save trigger leads to a condition; the YES path goes to an assignment and the NO path goes to STOP. Illustration only, not executable." >}}
+
+<p class="illustration-disclaimer"><strong>Illustration only · Not a live or executable rule.</strong> This sample shows how trigger, condition, branch, assignment, and stop nodes can be arranged on the canvas. It is a static concept image and cannot be run or edited.</p>
+</div>
 
 <div class="grid-2">
 

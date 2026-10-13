@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 960 650" role="img" aria-labelledby="title desc">
+<title id="title">Illustrative FlexiRule rule flow</title>
+<desc id="desc">A static example of a Contact Before Save trigger leading to a condition. The yes path goes to an assignment; the no path goes to a stop node. This is an illustration only and is not executable.</desc>
+<defs>
+  <pattern id="dots" width="18" height="18" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1" fill="#d9e0e8"/></pattern>
+  <filter id="shadow" x="-20%" y="-20%" width="140%" height="150%"><feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#1d2939" flood-opacity=".10"/></filter>
+  <style>
+    .ui{font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}
+    .small{font-size:12px;fill:#667085}.label{font-size:14px;font-weight:700;fill:#344054}.body{font-size:16px;font-weight:650;fill:#273444}
+    .wire{fill:none;stroke:#aeb4be;stroke-width:4;stroke-linecap:round;stroke-linejoin:round}
+  </style>
+</defs>
+<rect width="960" height="650" rx="24" fill="#fff"/>
+<rect x="1" y="1" width="958" height="648" rx="23" fill="url(#dots)" stroke="#e2e8f0"/>
+<g class="ui">
+  <rect x="28" y="24" width="166" height="52" rx="13" fill="#fff" stroke="#e1e6ed"/>
+  <circle cx="49" cy="50" r="14" fill="#f4f6f8"/><path d="M43 50h12M49 44v12" stroke="#475467" stroke-width="2"/>
+  <path d="M77 38v24M123 38v24" stroke="#e4e7ec"/>
+  <text x="89" y="55" font-size="14" font-weight="600" fill="#475467">−</text><text x="103" y="55" font-size="13" fill="#475467">Fit</text>
+  <rect x="139" y="34" width="43" height="32" rx="8" fill="#f5f6f7"/><text x="150" y="55" font-size="15" font-weight="800" fill="#344054">R</text>
+  <rect x="404" y="18" width="152" height="143" rx="30" fill="#20c66b" filter="url(#shadow)"/>
+  <circle cx="480" cy="50" r="22" fill="#fff" fill-opacity=".23"/><path d="M475 40l15 10-15 9z" fill="#fff"/>
+  <text x="480" y="83" text-anchor="middle" font-size="11" font-weight="800" fill="#fff" letter-spacing="1">TRIGGER</text>
+  <text x="480" y="103" text-anchor="middle" font-size="17" font-weight="750" fill="#fff">Contact / Before</text><text x="480" y="123" text-anchor="middle" font-size="17" font-weight="750" fill="#fff">Save</text>
+  <rect x="449" y="132" width="62" height="17" rx="4" fill="#fff" fill-opacity=".2"/><text x="480" y="144" text-anchor="middle" font-size="10" fill="#fff">Priority: 9</text>
+  <path class="wire" d="M480 161V205"/><circle cx="480" cy="183" r="7" fill="#fff" stroke="#3876d8" stroke-width="3"/>
+  <rect x="402" y="188" width="156" height="27" rx="13" fill="#fff" stroke="#e4e7ec"/><text x="480" y="205" text-anchor="middle" font-size="12" font-weight="600" fill="#667085">♟  System Manager</text>
+  <circle cx="480" cy="230" r="12" fill="#fff" stroke="#d0d5dd"/><path d="M475 230h10M480 225v10" stroke="#475467" stroke-width="1.5"/>
+  <path class="wire" d="M480 242V267"/>
+  <rect x="328" y="267" width="304" height="132" rx="18" fill="#fff" stroke="#e0e6ef" filter="url(#shadow)"/>
+  <path d="M346 268h268" stroke="#3478f6" stroke-width="5" stroke-linecap="round"/>
+  <text x="352" y="294" font-size="14" font-weight="800" fill="#3478f6">⑂  CONDITION</text><text x="604" y="294" font-size="17" fill="#3478f6">✎</text>
+  <path d="M344 309h272" stroke="#edf0f4"/>
+  <text x="352" y="337" class="body">Check Full Name</text><text x="352" y="360" class="body">Changes &amp; Set</text>
+  <rect x="507" y="321" width="98" height="22" rx="7" fill="#f4f6f8"/><text x="556" y="336" text-anchor="middle" font-size="11" fill="#667085">2 conditions</text>
+  <circle cx="480" cy="421" r="7" fill="#fff" stroke="#10b981" stroke-width="3"/>
+  <path class="wire" d="M480 421V454H300V494"/>
+  <path class="wire" d="M632 333H700Q744 333 744 377V427Q744 469 704 469H682Q660 469 660 492V500"/>
+  <text x="500" y="441" font-size="13" font-weight="800" fill="#079669">YES</text><text x="686" y="317" font-size="13" font-weight="800" fill="#e11d48">NO</text>
+  <circle cx="350" cy="454" r="12" fill="#fff" stroke="#d0d5dd"/><path d="M345 454h10M350 449v10" stroke="#475467" stroke-width="1.5"/>
+  <circle cx="744" cy="412" r="12" fill="#fff" stroke="#d0d5dd"/><path d="M739 412h10M744 407v10" stroke="#475467" stroke-width="1.5"/>
+  <rect x="168" y="494" width="264" height="124" rx="17" fill="#fff" stroke="#e0e6ef" filter="url(#shadow)"/>
+  <path d="M185 495h230" stroke="#11bfa8" stroke-width="5" stroke-linecap="round"/>
+  <text x="190" y="523" font-size="14" font-weight="800" fill="#079c8c">▤  ASSIGNMENT</text><text x="401" y="523" font-size="17" fill="#11bfa8">✎</text>
+  <path d="M184 537h232" stroke="#edf0f4"/><text x="190" y="565" class="body">Set missing value</text>
+  <path d="M190 583h230" stroke="#edf0f4"/><circle cx="197" cy="601" r="6" fill="#dcefe8"/><text x="197" y="604" text-anchor="middle" font-size="9" fill="#07845c">✓</text><text x="211" y="605" font-size="12" fill="#667085">Contact</text>
+  <rect x="560" y="500" width="200" height="118" rx="16" fill="#e93348" filter="url(#shadow)"/>
+  <rect x="636" y="519" width="48" height="42" rx="10" fill="#fff" fill-opacity=".22"/><rect x="652" y="532" width="16" height="16" rx="3" fill="#fff"/><text x="660" y="580" text-anchor="middle" font-size="10" font-weight="800" fill="#fff" letter-spacing="1">TERMINAL</text><text x="660" y="601" text-anchor="middle" font-size="19" font-weight="800" fill="#fff">STOP</text>
+  <circle cx="300" cy="618" r="11" fill="#fff" stroke="#d0d5dd"/><path d="M295 618h10M300 613v10" stroke="#475467" stroke-width="1.5"/>
+  <rect x="640" y="28" width="278" height="32" rx="16" fill="#fff7ed" stroke="#fed7aa"/><circle cx="657" cy="44" r="4" fill="#ea580c"/><text x="669" y="48" font-size="12" font-weight="750" fill="#9a3412">ILLUSTRATION ONLY · NOT EXECUTABLE</text>
+</g>
+</svg>
