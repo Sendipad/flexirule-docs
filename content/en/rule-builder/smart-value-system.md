@@ -1,10 +1,10 @@
 ---
-title: Choose the Right Value for Your Rule
+title: Smart Values: Use the Right Information in Your Rules
 description: Learn how to use fixed values, information available when a rule runs, calculations, lookups, and collections in FlexiRule—without writing code.
 weight: 70
 ---
 
-# Choose the Right Value for Your Rule
+# Smart Values: Use the Right Information in Your Rules
 
 When you build a rule, you often need to answer two questions:
 
