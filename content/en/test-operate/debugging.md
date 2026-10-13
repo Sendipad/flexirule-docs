@@ -32,7 +32,11 @@ The debugger shows which nodes executed, which branches were skipped, and where 
 
 ![Debug View Return Result](/images/debug-view-return-result.png)
 
-{{< video src="/images/debug-rule-view-execution-path.webm" >}}
+### Video: Inspecting the rule execution path
+
+Watch how the debugger highlights the execution path and shows the result of each rule step.
+
+{{< video src="/images/debug-rule-view-execution-path.webm" title="Inspecting a FlexiRule debug execution path" description="A walkthrough of the FlexiRule debugger showing the executed rule path and step results." thumbnail="/images/debug-view-return-result.png" controls="true" >}}
 
 ## Production execution logs
 
