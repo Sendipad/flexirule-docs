@@ -2,4 +2,31 @@
 {{ if not (or (hasPrefix $src "http://") (hasPrefix $src "https://")) }}
   {{ $src = (strings.TrimPrefix "/" $src) | relURL }}
 {{ end }}
-<video src="{{ $src }}" {{ if .Get "controls" | default true }}controls{{ end }} {{ if .Get "autoplay" }}autoplay{{ end }} {{ if .Get "loop" }}loop{{ end }} {{ if .Get "muted" }}muted{{ end }}></video>
+{{ $title := .Get "title" | default .Page.Title }}
+{{ $description := .Get "description" | default (.Page.Description | default .Page.Title) }}
+{{ $thumbnail := .Get "thumbnail" }}
+{{ $poster := "" }}
+{{ with $thumbnail }}{{ $poster = (strings.TrimPrefix "/" .) | absURL }}{{ end }}
+<video
+  src="{{ $src }}"
+  {{ with $poster }}poster="{{ . }}"{{ end }}
+  {{ if .Get "controls" | default true }}controls{{ end }}
+  {{ if .Get "autoplay" }}autoplay{{ end }}
+  {{ if .Get "loop" }}loop{{ end }}
+  {{ if .Get "muted" }}muted{{ end }}
+  preload="metadata"
+  playsinline
+  aria-label="{{ $title }}"
+></video>
+{{ if and $thumbnail (.Get "title") (.Get "description") }}
+  {{ $video := dict
+    "@context" "https://schema.org"
+    "@type" "VideoObject"
+    "name" (.Get "title")
+    "description" (.Get "description")
+    "thumbnailUrl" (slice $poster)
+    "contentUrl" ($src | absURL)
+    "embedUrl" .Page.Permalink
+  }}
+  <script type="application/ld+json">{{ $video | jsonify | safeJS }}</script>
+{{ end }}
