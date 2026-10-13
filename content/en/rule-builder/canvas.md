@@ -12,7 +12,11 @@ The **Rule Builder** is FlexiRule's visual workspace where you build and edit ru
 
 ![Rule Builder Canvas Overview](/images/rule-builder-canvas-overview.png)
 
-{{< video src="/images/remove-a-node-will-dynamically-reconnet-nodes.webm" controls="true" muted="true" loop="true" >}}
+### Video: Remove a node and reconnect the canvas
+
+Watch how the Rule Builder reconnects surrounding nodes when a node is removed from the flow.
+
+{{< video src="/images/remove-a-node-will-dynamically-reconnet-nodes.webm" title="Remove a node and reconnect the FlexiRule canvas" description="A visual demonstration of removing a node from a FlexiRule flow and automatically reconnecting the remaining nodes." thumbnail="/images/rule-builder-canvas-overview.png" controls="true" >}}
 
 ---
 
