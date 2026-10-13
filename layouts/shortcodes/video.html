@@ -19,7 +19,10 @@
   aria-label="{{ $title }}"
 ></video>
 {{ if and $thumbnail (.Get "title") (.Get "description") }}
-  {{ $uploadDate := .Get "uploadDate" | default (.Page.Date.Format "2006-01-02") }}
+  {{ $uploadDate := .Get "uploadDate" }}
+  {{ if not $uploadDate }}
+    {{ $uploadDate = .Page.Lastmod.Format "2006-01-02T15:04:05Z07:00" }}
+  {{ end }}
   {{ $video := dict
     "@context" "https://schema.org"
     "@type" "VideoObject"
