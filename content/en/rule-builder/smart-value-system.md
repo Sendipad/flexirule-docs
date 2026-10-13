@@ -1,113 +1,123 @@
 ---
-title: Smart Value Selector & Value Resolvers
-description: Learn how to input dynamic data across FlexiRule forms using Static Values, Variable References (@), and Dynamic Value Resolvers (⚡).
+title: Choose the Right Value for Your Rule
+description: Learn how to enter a value, reuse information from a record, or calculate it visually in FlexiRule—without writing expressions or code.
 weight: 70
 ---
 
-# Smart Value Selector & Value Resolvers
+# Choose the Right Value for Your Rule
 
-The **Smart Value Selector** is the core dynamic input component in FlexiRule. Whenever you configure an input field—whether setting a document field in Set Value, building conditions in Check, creating query filters, or drafting email templates—you use the Smart Value Selector.
+When you build a rule, you often need to answer a simple question: **Where should this value come from?**
 
-> **Core Principle**: Every smart input field allows you to seamlessly toggle between static literal values, context variable references (`@`), and dynamic value resolvers (`⚡`) without needing to write code or complex syntax.
+For example, you might want to set a payment due date, use a customer's credit limit, calculate a discount, or include a document number in a message. FlexiRule gives you visual controls to choose the value you need. You do not have to write code or remember special expressions.
 
----
+You will find these controls in many places, including **Set Value**, **Check**, record filters, and message content.
 
-## The Three Input Modes
+## Three ways to provide a value
 
-Every input field in FlexiRule supports three operational modes:
+Depending on the field you are configuring, choose one of these approaches.
 
-### 1. Static Value
-Directly enter constant literal values based on the field's expected data type:
-- **Text / Strings**: `Approved`, `Urgent`, `Follow up needed`
-- **Numbers**: `100`, `0.15`, `-5`
-- **Dates & Times**: Selected via interactive calendar pickers or standard date strings (`YYYY-MM-DD`).
-- **Select Dropdowns**: Standard single-choice options.
+### 1. Enter a value yourself
 
-### 2. Variable Reference (`@`)
-Press the `@` key inside any smart input field (or click the **Variable (@)** button) to open the variable picker popup:
+Use this when the answer should stay the same whenever the rule runs.
 
-![Smart Value Selector showing Logic Commands dropdown](/images/smart-value-selector-commands.png)
+Examples:
+- Set a priority to **High**.
+- Set a discount rate to **10**.
+- Add the message **Please review this request**.
 
-Available variable context scopes include:
-- **Document Fields (`@doc`)** <i class="fa fa-file-text-o"></i>: Fields on the record triggering the rule (e.g. `@doc.grand_total`, `@doc.customer`).
-- **Previous Record Values (`@old_doc`)** <i class="fa fa-history"></i>: Pre-update field state on save events (e.g. compare `@old_doc.status` with `@doc.status` to check for status changes).
-- **Rule Variables (`@vars`)** <i class="fa fa-cube"></i>: Temporary variables stored by earlier actions in the current flow (e.g. `@vars.calculated_discount`).
-- **Parent Document Fields (`@parent`)** <i class="fa fa-level-up"></i>: Parent document fields when inside a child table loop.
-- **Loop Item Context (`@loop`)** <i class="fa fa-repeat"></i>: Current row item (`@loop.item`) and iteration index (`@loop.index`) inside Repeat (Loop) blocks.
-- **Session & Environment (`@session`)** <i class="fa fa-user"></i>: Information about the active user (`@session.user`, `@session.company`).
+Choose or type the value in the field. FlexiRule provides suitable controls for the kind of information expected, such as text fields, number inputs, date pickers, and choice lists.
 
-### 3. Resolver (`⚡`)
-Press the `/` key or click the **Resolver (`⚡`)** button to launch visual value calculation engines.
+### 2. Use information that already exists
 
----
+Use this when the rule should take its value from a document or from an earlier step in the same rule.
 
-## Value Resolver Families
+Click the **Variable (@)** control, or type `@` where supported, to browse the information available to you. Choose an item from the picker rather than typing its reference from memory.
 
-FlexiRule includes 6 visual Value Resolver families accessible via the **Resolver (`⚡`)** menu:
+Common choices include:
 
-| Resolver Family | Icon | Primary Output | Business Use Case |
-| :--- | :---: | :--- | :--- |
-| **Date & Time** | <i class="fa fa-calendar"></i> | Date / Datetime | Add/subtract days or months, calculate date diffs, format dates, fetch current time, or locate boundary dates (start/end of month). |
-| **Math Formula** | <i class="fa fa-calculator"></i> | Number / Float | Perform arithmetic calculations (`+`, `-`, `*`, `/`) combining variables and numeric constants with decimal rounding. |
-| **Lookup** | <i class="fa fa-search"></i> | Field Value | Fetch a field value from any linked record or DocType in the system. |
-| **Text Transform** | <i class="fa fa-font"></i> | Text String | Concatenate text strings, adjust casing (UPPERCASE/lowercase), trim whitespace, or substitute text. |
-| **Collection** | <i class="fa fa-table"></i> | List / Value | Perform child table operations: count rows, sum child amounts, average, min/max, filter rows, or pluck unique field lists. |
-| **System Context** | <i class="fa fa-globe"></i> | Context String | Retrieve environment information, global system defaults, or session properties. |
+| Choose information from | When it is useful |
+| --- | --- |
+| **The current document** | Use the customer's name, invoice total, posting date, or another field on the document being processed. |
+| **The previous value** | Compare a field's earlier value with its new value when checking what changed. |
+| **A value created earlier in the rule** | Reuse a result calculated or saved by a previous step. |
+| **The current row in a Repeat step** | Work with the item currently being processed in a repeating list. |
+| **The signed-in user or company** | Use available session information when a rule needs it. |
 
----
+The choices shown depend on where you are in the rule. For example, information about the current row is only relevant inside a repeating step.
 
-## Visual Resolver Builders in Detail
+## 3. Calculate, find, or prepare a value
 
-### 1. Date & Time Resolver <i class="fa fa-calendar"></i>
-
-Calculates dates dynamically using six operation modes:
-
-![Date & Time formula configuration](/images/date-formula-configuration.png)
+Use the **Resolver (⚡)** control when you need FlexiRule to work something out or retrieve information for you. Choose an available operation and complete its visual settings.
 
 ![Smart Value Selector showing Date & Time Formula options](/images/smart-value-resolver-date-formula.png)
 
-- **Calculate Mode**: Add or subtract offsets (e.g. `@doc.posting_date + 30 Days` to compute payment due date).
-- **Difference Mode**: Calculate duration between two dates in days, months, or years (e.g. age of invoice).
-- **Extract Mode**: Pull specific components from a date (Day, Month, Year, Day of Week).
-- **Format Mode**: Convert raw dates into custom user display formats (e.g. `DD/MM/YYYY`).
-- **Current Mode**: Get the current system Date, Time, or Datetime.
-- **Boundary Mode**: Locate Start of Day, End of Day, Start of Month, or End of Month.
+### Date and time
 
-### 2. Math Formula Resolver <i class="fa fa-calculator"></i>
-Visually builds arithmetic formulas combining variables and constant values:
-- **Field A**: Operand variable (e.g. `@doc.net_total`).
-- **Operator**: Choose `+`, `-`, `*`, or `/`.
-- **Field B**: Second operand variable or constant number (e.g. `0.15`).
-- **Rounding Precision**: Set decimal place rounding (e.g. `2`).
-- **Example**: `@doc.net_total * 0.15` rounded to 2 decimal places to calculate tax.
+Use date tools to calculate a date, find the time between two dates, format a date, or use the current date and time.
 
-### 3. Lookup Resolver <i class="fa fa-search"></i>
-Performs single-field record lookups from any DocType:
-- **Target DocType**: Select target document type (e.g. `Customer`).
-- **Filter Criteria**: Specify lookup condition (e.g. `name == @doc.customer`).
-- **Field to Fetch**: Choose target field to return (e.g. `credit_limit`).
+**Example:** Set a payment due date to 30 days after an invoice's posting date. Select the invoice date, choose the date calculation, and set the offset to 30 days.
 
-### 4. Text Transform Resolver <i class="fa fa-font"></i>
-Manipulates text strings cleanly:
-- **Operations**: `Concatenate` (join multiple variables/text strings), `Uppercase`, `Lowercase`, `Trim`, `Find & Replace`, `Substring`.
-- **Example**: Concatenate `INV-` + `@doc.name` + ` - ` + `@doc.customer_name`.
+### Math
 
-### 5. Collection Resolver <i class="fa fa-table"></i>
-Performs list and child table aggregations:
-- **Target Collection**: Select child table field (e.g. `@doc.items`).
-- **Operations**:
-  - `Count`: Total number of child rows.
-  - `Sum`: Sum of a numeric child field (e.g. sum of `qty`).
-  - `Average`: Mean average of a child field.
-  - `Min / Max`: Minimum or maximum value in child rows.
-  - `Filter`: Filter child rows matching specific criteria.
-  - `Pluck`: Extract a list of specific field values across all rows.
-  - `Unique`: Deduplicate list values.
+Use math tools for calculations based on numbers from the document or earlier steps.
 
----
+**Example:** Calculate a 15% charge from the document's net total, with the result rounded to two decimal places.
 
-## Variable Lifetime & Scope
+### Look up information
 
-1. **Rule Duration**: Variables stored in `@vars` exist during the current execution run.
-2. **Branch Isolation**: Variables set inside a conditional branch (e.g. **True** branch) are isolated to that branch path.
-3. **Loop Scope**: `@loop.item` and `@loop.index` are available inside Repeat (Loop) blocks.
+Find a field on a related record instead of asking someone to enter the same information again.
+
+**Example:** Use the customer linked to an invoice to retrieve that customer's credit limit. Select the record type, choose how to identify the record, and select the field to return.
+
+### Text
+
+Combine or tidy up text for a field or message.
+
+**Example:** Prepare a message that includes an invoice number and customer name. Choose the pieces of text and arrange them in the required order.
+
+### Lists and table rows
+
+Work with a list or the rows in a document's table. Depending on the available operation, you can count rows, total a numeric column, find an average or minimum/maximum, filter rows, or collect field values.
+
+**Example:** Calculate the total quantity across all items on an order.
+
+### System information
+
+Use supported information about the current session or system settings when it is relevant to your rule.
+
+> The available operations depend on the field and the context where you are building the rule. If an option is not offered, it may not be supported for that input.
+
+## A practical example: set a payment due date
+
+Imagine your team wants every new invoice to receive a due date 30 days after its posting date.
+
+1. Add a **Set Value** step and choose the invoice's due-date field.
+2. Open the value control and choose **Resolver (⚡)**.
+3. Choose the date calculation operation.
+4. Select the invoice's posting date as the starting date.
+5. Set the adjustment to **30 days after** the posting date.
+6. Save the rule and test it with an example invoice before activating it.
+
+The rule now calculates the due date when it runs, rather than using a date that someone must update manually.
+
+## Tips for choosing the right approach
+
+- **Use a fixed value** when the same answer should be used every time.
+- **Choose existing information** when the value should come from the current document, the user, or an earlier step.
+- **Use a resolver** when you need to calculate, look up, combine, or transform information.
+- **Choose from the picker whenever possible.** It helps you select available information without memorizing internal names.
+- **Test the rule with realistic examples.** Check that the resulting value is what your business process expects before activating the rule.
+
+## What happens to values created by earlier steps?
+
+A value created during a rule run is available for later steps in that run, subject to the path the rule follows. For example, a value created inside one branch may not be available when a different branch runs. Values for the current row are relevant within the repeating step.
+
+You usually do not need to manage these details yourself: use the value picker in the step where you need the information and choose from the options it offers.
+
+## Related guides
+
+- [Build your first rule]({{< relref "getting-started/" >}})
+- [Add and configure actions]({{< relref "add-action.md" >}})
+- [Set values on a document]({{< relref "../action-type/assignment.md" >}})
+- [Check conditions]({{< relref "../action-type/condition.md" >}})
+- [Repeat actions for a list of items]({{< relref "../action-type/loop.md" >}})
