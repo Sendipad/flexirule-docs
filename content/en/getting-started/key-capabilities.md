@@ -1,41 +1,47 @@
 ---
 title: Key Capabilities
 weight: 50
-description: A summary of the major features and functional highlights of FlexiRule.
+description: Explore the core capabilities of FlexiRule and how they support configurable business automation.
 aliases:
   - /introduction/key-capabilities/
 ---
 
 # Key Capabilities
 
-FlexiRule combines the power of visual programming with enterprise-grade governance. Here are the major features that define the platform:
+FlexiRule brings rule configuration, visual flow design, dynamic values, and execution inspection into one Frappe-native business-automation experience. The capabilities available to you depend on the installed version, permissions, and configuration.
 
-## Visual Rule Builder
--   **Vue 3 Interface**: A modern, responsive canvas for designing complex logic.
--   **Drag-and-Drop**: Easily add and connect logic blocks.
--   **Real-time Validation**: The builder alerts you to missing configuration or broken connections as you work.
+## Visual rule design
 
-## Advanced Logic Control
--   **Nested Conditions**: Build multi-level `if-then-else` logic visually.
--   **Switch Blocks**: Handle multiple branching scenarios from a single node.
--   **Sub-Rules**: Call one rule from another to maintain modularity and reuse logic.
+Build a rule from connected action nodes. The canvas helps communicate the order of work and the branches that represent different business outcomes.
 
-## Safety and Governance
--   **Cycle Detection**: Native protection against infinite loops in the graph.
--   **Sandboxed Environment**: Rules are executed in a safe container that prevents unauthorized database modifications.
--   **Role-Based Permissions**: Control who can view, edit, or execute specific rules.
+## Conditions and flow control
 
-## High-Performance Engine
--   **Condition Compilation**: Logic is pre-compiled for near-zero execution overhead.
--   **Layered Caching**: Multi-level cache (Redis + Local) for lightning-fast rule lookups.
--   **Asynchronous Processing**: Offload heavy tasks to background workers without slowing down the user.
+Use **Condition** actions to evaluate criteria and choose a path. Use other supported flow-control actions when a process requires repeated work or multiple outcomes. Keep decisions explicit so a reviewer can understand why the flow proceeds in a particular direction.
 
-## Observability
--   **Execution Logs**: Detailed audit trail for every rule run.
--   **Visual Path Trace**: See exactly which path a document took through your logic graph.
--   **Debug Mode**: Enable enhanced logging for complex troubleshooting.
+## Smart Values and dynamic inputs
 
-## Developer Friendly
--   **JSON Schema Driven**: Configuration forms for custom logic are auto-generated.
--   **Extensible Actions**: Register custom Python logic as new block types.
--   **Git Friendly**: Rules are stored as DocTypes, making them easy to migrate between environments.
+Configure action inputs using the available value controls. Values may come from the current document, prior state where available, runtime variables, earlier action results, or supported resolvers. Selecting a value through the UI helps reduce mistakes caused by manually entering references that are unavailable at that point in the flow.
+
+## Data access and document operations
+
+Supported actions can retrieve records or perform configured document operations. Choose the action based on the goal—reading data, assigning a value, or performing a document operation are distinct tasks. Permissions and supported query or operation options still apply.
+
+## Testing and execution visibility
+
+Use the available debug or test tools to check representative scenarios before activation. Execution information can help you inspect the path and action outcomes, but it should be paired with careful test cases and review of side effects.
+
+## Lifecycle and governance
+
+Rule lifecycle controls and permissions help teams manage who can edit and activate business logic. Follow the lifecycle behavior of your installed version, and review activation requirements before a rule is allowed to affect live events.
+
+## Extensibility alongside custom development
+
+FlexiRule does not eliminate the need for developers. Custom apps remain responsible for technical capabilities such as new DocTypes, APIs, and integrations; supported rules can coordinate those capabilities around changing business policies.
+
+## Explore a capability
+
+- [How FlexiRule Works]({{< relref "how-it-works.md" >}})
+- [Core Concepts]({{< relref "core-concepts.md" >}})
+- [Smart Value System]({{< relref "../rule-builder/smart-value-system.md" >}})
+- [Choosing an action type]({{< relref "../action-type/which-action.md" >}})
+- [Testing and debugging]({{< relref "../test-operate/debugging.md" >}})

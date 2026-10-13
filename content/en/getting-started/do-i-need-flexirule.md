@@ -1,48 +1,55 @@
 ---
 title: Do I need FlexiRule?
 weight: 30
-description: A decision guide to help you determine if FlexiRule is the right investment for your organization.
+description: Decide whether a requirement belongs in FlexiRule, a standard Frappe feature, or custom application code.
 aliases:
   - /introduction/do-i-need-flexirule/
 ---
 
 # Do I need FlexiRule?
 
-Not every ERPNext implementation requires a visual orchestration engine. Use this guide to determine if FlexiRule is the right investment for your organization based on your current pain points and future growth.
+FlexiRule is most useful when a business policy changes over time and the team needs to understand, test, and maintain the logic without tracing it through several unrelated code paths. It is not necessary for every automation.
 
-## You Need FlexiRule if...
+## A quick decision guide
 
-### 1. Your Business Processes are Growing
-As your company scales, simple automations become complex multi-stage processes. If you find yourself adding more and more "hacks" to standard DocTypes to handle new business cases, it's time for a professional logic layer.
+| Your requirement | A sensible starting point |
+|---|---|
+| A straightforward approval or validation policy | Consider a standard Frappe workflow or feature first; use FlexiRule if the decision logic needs more flexibility or visibility. |
+| A business rule changes frequently | FlexiRule may help make the policy easier to adjust and test. |
+| A decision depends on several fields, related records, or multiple branches | FlexiRule can make the decision flow explicit, if supported actions cover the requirement. |
+| A process needs readable, inspectable execution steps | Consider FlexiRule and its testing and execution-inspection tools. |
+| You need a new DocType, API integration, or application capability | Build the capability in a custom app; FlexiRule may orchestrate it where supported. |
+| The logic is tiny, stable, and already easy to maintain | Existing Frappe functionality or a small, well-tested customization may be simpler. |
 
-### 2. Workflow Changes are Frequent
-If your business rules change seasonally (e.g., promotional pricing) or in response to market shifts, waiting for code deployments is a competitive disadvantage. FlexiRule allows you to pivot logic in minutes.
+## FlexiRule is a strong candidate when…
 
-### 3. You Manage Customer-Specific Rules
-If you have multiple customers with unique validation or approval requirements, managing these through standard Python hooks leads to "spaghetti code." FlexiRule allows you to build separate, named rules for specific scenarios.
+### Business policy changes regularly
+Examples include approval thresholds, customer-specific rules, discount eligibility, and escalation criteria. A visual rule can make the policy easier to review when requirements change.
 
-### 4. You Have Heavy Custom Scripting
-If your `hooks.py` or `server_scripts` list is becoming unmanageable, FlexiRule can help you consolidate and document that logic visually.
+### The decision spans multiple steps
+When a process reads data, evaluates conditions, follows different paths, and performs follow-up actions, a connected flow can be easier to understand than logic scattered across hooks.
 
-### 5. You Need Better Auditability
-If "Who changed this value?" and "Why did this rule trigger?" are common questions in your organization, FlexiRule's detailed execution logs provide the necessary transparency.
+### You need to explain why a result occurred
+A visible rule definition and available execution information can help a team investigate which decisions and steps were involved. Logging and trace detail depend on the configuration and execution path; do not treat them as a substitute for testing.
 
-## You May NOT Need FlexiRule if...
+### Business and technical responsibilities should be separated
+Developers can implement reusable capabilities while administrators or functional owners maintain supported business policies within the permissions and governance of the installation.
 
-### Your Requirements are Static
-If your business logic hasn't changed in three years and your current automations work perfectly, the overhead of introducing a new tool may not be justified.
+## When another approach may be better
 
-### You Have a Simple Setup
-If you are using ERPNext for basic accounting and lead management without complex custom workflows, standard features are likely sufficient.
+- **Use standard Frappe features** when a Workflow, permission rule, notification, or existing setting already solves the problem cleanly.
+- **Use custom code** when the requirement needs complex algorithms, external integrations, new data models, or technical behavior not exposed by supported actions.
+- **Keep the existing solution** when it is small, stable, well-tested, and inexpensive to maintain. Moving it only to use a new tool may add needless complexity.
 
-### You Have Very Few Customizations
-If you only have 2 or 3 simple scripts, moving them to FlexiRule might be overkill.
+## A useful rule of thumb
 
-## Summary Checklist
+Choose FlexiRule when the logic is **policy-driven, likely to change, and easier to govern as a visible flow**. Choose custom development when you are building technical capabilities. Many solutions benefit from both.
 
-| Pain Point | Solution with FlexiRule |
-| :--- | :--- |
-| "I'm afraid to change code because I might break something." | **Visual Trace & Validation** |
-| "I can't tell which script modified this document." | **Execution Logs** |
-| "It takes too long to deploy a simple logic change." | **One-click Activation** |
-| "Only our senior developer knows how the approval works." | **Visual Rule Builder** |
+Before committing to an approach, prototype one representative rule on a development or test site. Verify that the required trigger, action types, values, permissions, and expected side effects are supported.
+
+## Related guides
+
+- [What is FlexiRule?]({{< relref "what-is-flexirule.md" >}})
+- [FlexiRule and custom code]({{< relref "better-than-hard-coded.md" >}})
+- [Key capabilities]({{< relref "key-capabilities.md" >}})
+- [Quick Start]({{< relref "quick-start.md" >}})
