@@ -19,6 +19,7 @@
   aria-label="{{ $title }}"
 ></video>
 {{ if and $thumbnail (.Get "title") (.Get "description") }}
+  {{ $uploadDate := .Get "uploadDate" | default (.Page.Date.Format "2006-01-02") }}
   {{ $video := dict
     "@context" "https://schema.org"
     "@type" "VideoObject"
@@ -27,6 +28,7 @@
     "thumbnailUrl" (slice $poster)
     "contentUrl" ($src | absURL)
     "embedUrl" .Page.Permalink
+    "uploadDate" $uploadDate
   }}
   <script type="application/ld+json">{{ $video | jsonify | safeJS }}</script>
 {{ end }}
