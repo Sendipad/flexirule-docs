@@ -37,7 +37,11 @@ The available settings and event choices depend on the installed version. Save t
 
 The canvas shows connected action nodes. Start with the entry point, add the action steps you need, and connect them to express the intended path. A node that is present but not connected to the right path will not produce the intended flow.
 
-{{< video src="images/demo-condition-and-query.webm" controls="true" muted="true" loop="true" >}}
+### Video: Configure a condition and query
+
+This short demonstration shows the Rule Builder canvas while adding a condition and configuring a query.
+
+{{< video src="/images/demo-condition-and-query.webm" title="Configure a condition and query in FlexiRule" description="A FlexiRule Rule Builder walkthrough demonstrating condition setup and a query action on the visual canvas." thumbnail="/images/rule-builder-canvas-overview.png" controls="true" >}}
 
 ## 4. Add a Condition
 
