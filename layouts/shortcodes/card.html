@@ -1,2 +1,2 @@
 {{ $link := .Get "href" | default (.Get "link") | default "#" }}
-<a class="doc-card" href="{{ $link | absURL }}"><span class="card-title">{{ .Get "title" }}</span><span class="card-desc">{{ .Inner | markdownify }}</span></a>
+<a class="doc-card" href="{{ $link | relURL }}"><span class="card-title">{{ .Get "title" }}</span><span class="card-desc">{{ .Inner | markdownify }}</span></a>
