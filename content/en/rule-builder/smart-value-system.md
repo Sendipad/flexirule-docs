@@ -1,5 +1,5 @@
 ---
-title: Smart Values: Use the Right Information in Your Rules
+title: "Smart Values: Use the Right Information in Your Rules"
 description: Learn how to use fixed values, information available when a rule runs, calculations, lookups, and collections in FlexiRule—without writing code.
 weight: 70
 ---
