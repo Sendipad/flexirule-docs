@@ -10,7 +10,7 @@
     </header>
 
     <div class="hero-actions" style="justify-content: center; margin-top: var(--space-10);">
-      <a href="{{ relLangURL "/" }}" class="btn btn-primary">
+      <a href="{{ .Site.Home.RelPermalink }}" class="btn btn-primary">
         Return Home
       </a>
       <button id="error-search-trigger" class="btn btn-secondary" onclick="document.getElementById('search-trigger')?.click()">
