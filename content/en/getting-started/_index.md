@@ -14,27 +14,27 @@ FlexiRule is a visual business-logic layer for Frappe and ERPNext. It helps team
 
 <div class="grid-2">
 
-{{< card title="1. Understand FlexiRule" href="what-is-flexirule/" icon="compass" >}}
+{{< card title="1. Understand FlexiRule" href="/getting-started/what-is-flexirule/" icon="compass" >}}
 Learn what FlexiRule does, where it fits in a Frappe application, and which problems it is designed to solve.
 {{< /card >}}
 
-{{< card title="2. See how a rule runs" href="how-it-works/" icon="workflow" >}}
+{{< card title="2. See how a rule runs" href="/getting-started/how-it-works/" icon="workflow" >}}
 Follow a rule from its trigger through conditions and actions to its result.
 {{< /card >}}
 
-{{< card title="3. Learn the essentials" href="core-concepts/" icon="layers" >}}
+{{< card title="3. Learn the essentials" href="/getting-started/core-concepts/" icon="layers" >}}
 Understand rules, triggers, actions, execution context, variables, and Smart Values.
 {{< /card >}}
 
-{{< card title="4. Decide if it fits" href="do-i-need-flexirule/" icon="check-circle" >}}
+{{< card title="4. Decide if it fits" href="/getting-started/do-i-need-flexirule/" icon="check-circle" >}}
 Know when a configurable rule is a good fit—and when a standard Frappe feature or custom code is better.
 {{< /card >}}
 
-{{< card title="5. Create a first rule" href="quick-start/" icon="rocket" >}}
+{{< card title="5. Create a first rule" href="/getting-started/quick-start/" icon="rocket" >}}
 Walk through setup, a condition, a follow-up action, debugging, and activation.
 {{< /card >}}
 
-{{< card title="6. Build it step by step" href="first-rule/" icon="graduation-cap" >}}
+{{< card title="6. Build it step by step" href="/getting-started/first-rule/" icon="graduation-cap" >}}
 Use the guided tutorial to understand the decisions behind each step, not just which buttons to click.
 {{< /card >}}
 
