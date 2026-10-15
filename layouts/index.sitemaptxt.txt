@@ -1,0 +1,3 @@
+{{- range where .Site.AllPages "Kind" "in" (slice "home" "page" "section") }}
+{{ .Permalink }}
+{{- end }}
