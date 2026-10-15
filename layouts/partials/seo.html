@@ -25,7 +25,8 @@
 {{ with .Site.Params.seo.twitter_handle }}<meta name="twitter:site" content="{{ . }}">{{ end }}
 {{ with $image }}<meta name="twitter:image" content="{{ . }}">{{ end }}
 
-<link rel="sitemap" type="application/xml" href='{{ "sitemap_index.xml" | absURL }}'>
+<link rel="sitemap" type="application/xml" href='{{ "sitemap.xml" | absURL }}'>
+<link rel="sitemap" type="text/plain" href='{{ "sitemap.txt" | absURL }}'>
 
 {{ $crumbs := slice (dict "@type" "ListItem" "position" 1 "name" "Home" "item" .Site.BaseURL) }}
 {{ range $i, $a := .Ancestors.Reverse }}{{ $crumbs = $crumbs | append (dict "@type" "ListItem" "position" (add $i 2) "name" $a.Title "item" $a.Permalink) }}{{ end }}
