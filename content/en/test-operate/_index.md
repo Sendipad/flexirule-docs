@@ -26,7 +26,7 @@ Use this section to learn how to test safely, investigate execution results, and
 | --- | --- |
 | Understand Draft, Active, Disabled, and Archived states | [Rule Lifecycle]({{< relref "rule-lifecycle.md" >}}) |
 | Run a manual test and inspect the path and step results | [Testing & Debugging]({{< relref "debugging.md" >}}) |
-| Investigate an actual production execution | [Testing & Debugging — Production execution logs]( {{< relref "debugging.md" >}} ) |
+| Investigate an actual production execution | [Testing & Debugging]({{< relref "debugging.md" >}}) — see the Production execution logs section. |
 | Configure triggers and entry conditions | [Rule Configuration]({{< relref "../rule-builder/rule-configuration.md" >}}) |
 | Check the meaning of an action before testing it | [Action Types]({{< relref "../action-type/" >}}) |
 
