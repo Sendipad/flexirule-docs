@@ -42,7 +42,7 @@ summaryLength = 28
   lastmod = [':git', 'lastmod', 'date']
 
 [outputs]
-  home = ['HTML', 'RSS', 'LLMS', 'LLMSFULL']
+  home = ['HTML', 'RSS', 'LLMS', 'LLMSFULL', 'SITEMAPTXT']
   section = ['HTML']
   page = ['HTML']
 
@@ -50,6 +50,8 @@ summaryLength = 28
   [mediaTypes.'text/llms']
     suffixes = ['txt']
   [mediaTypes.'text/llms-full']
+    suffixes = ['txt']
+  [mediaTypes.'text/sitemap']
     suffixes = ['txt']
 
 [outputFormats]
@@ -61,6 +63,11 @@ summaryLength = 28
   [outputFormats.LLMSFULL]
     mediaType = 'text/llms-full'
     baseName = 'llms-full'
+    isPlainText = true
+    notAlternative = true
+  [outputFormats.SITEMAPTXT]
+    mediaType = 'text/sitemap'
+    baseName = 'sitemap'
     isPlainText = true
     notAlternative = true
 
