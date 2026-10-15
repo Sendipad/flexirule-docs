@@ -1,6 +1,10 @@
 User-agent: *
 Allow: /
 
+# Explicitly allow Google Search to crawl the documentation site.
+User-agent: Googlebot
+Allow: /
+
 # LLM Crawler Directives
 User-agent: GPTBot
 Allow: /
@@ -17,5 +21,6 @@ Allow: /
 User-agent: Google-Extended
 Allow: /
 
+Sitemap: {{ "sitemap_index.xml" | absURL }}
 Sitemap: {{ "sitemap.xml" | absURL }}
 Sitemap: {{ "sitemap.txt" | absURL }}
