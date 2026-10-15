@@ -23,6 +23,10 @@ Choose a different mode when you need a different shape:
 
 ## Configure the UI
 
+The Fetch Records editor brings field selection and nested filter configuration together. The screenshot below shows the filter builder and returned-field configuration in the Fetch Records setup.
+
+![Fetch Records filter builder and return fields configuration](/images/fetch-records-filter-configuration.png "Fetch Records filter builder and return fields configuration")
+
 1. Add **Query Records** to the canvas and choose **Fetch Records** as the **Query Mode** in the Setup panel.
 2. Select the **Target DocType** / reference DocType. The filter and field controls use this DocType's metadata.
 3. Under **Fields**, select the fields to return. The selected field expressions are passed to Frappe Query Builder; leaving the field list empty omits the `fields` argument, allowing the API's default behavior to apply.

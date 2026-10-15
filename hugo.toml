@@ -8,7 +8,7 @@ enableGitInfo = true
 summaryLength = 28
 
 [sitemap]
-  filename = 'sitemap_index.xml'
+  filename = 'sitemap.xml'
 
 [languages]
   [languages.en]
